@@ -1,0 +1,33 @@
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  height: fit-content;
+}
+
+.btn {
+}
+
+.btn-main {
+  background: #62d9f1;
+  border-radius: 7px;
+  padding: 10px 24px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+
+  text-align: center;
+
+  color: #12130f;
+
+  &:hover {
+    background: #8aebff;
+  }
+  &:active {
+    background: #37ceed;
+  }
+  &:disabled {
+    background: #f3f3f5;
+    color: #b4b4bc;
+  }
+}

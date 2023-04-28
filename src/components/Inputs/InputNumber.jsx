@@ -1,0 +1,25 @@
+//Import React
+import React, { useState } from 'react';
+
+//Import Componentsyarn
+import InputMask from 'react-input-mask';
+
+//Import Styles
+import './InputNumber.scss';
+
+const InputNumber = (props) => {
+
+  return (
+    <label className='inputNumber' htmlFor='inputNumber'>
+      <span>Телефон</span>
+      <InputMask
+        mask='+380 (99) 999 99 99'
+        id='inputNumber'
+        placeholder='+380 (__) ___ __ __'
+        onChange={(e) => props.onChange(e.target.value)}
+      />
+    </label>
+  );
+};
+
+export default InputNumber;

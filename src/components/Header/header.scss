@@ -1,0 +1,12 @@
+.header {
+    &__content {
+        display: flex;
+    }
+    &__logo {
+        width: 64px;
+        height: 64px;
+        img {
+            width: 100%;
+        }
+    }
+}
