@@ -1,7 +1,7 @@
 //Import React
 import React from 'react';
 
-//Import Style  
+//Import Style
 import './popup.scss';
 
 const Popup = ({ children }) => {
