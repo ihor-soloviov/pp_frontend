@@ -1,6 +1,7 @@
 .header {
     &__content {
         display: flex;
+        justify-content: space-between;
     }
     &__logo {
         width: 64px;

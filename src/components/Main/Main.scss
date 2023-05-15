@@ -1,0 +1,13 @@
+.grid_layout {
+  display: grid; 
+  grid-template-columns: 0.8fr 1.2fr 1fr; 
+  grid-template-rows: 1fr 1fr 1.1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    "side main main"
+    "side main main"
+    "side main main"; 
+
+    &--side { grid-area: side; }
+    &--main { grid-area: main; }
+}

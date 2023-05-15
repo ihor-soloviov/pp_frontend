@@ -16,7 +16,7 @@ const Header = () => {
     <header className='header'>
       <Container>
         <div className='header__content'>
-          <a className='header__logo'>
+          <a href='/' className='header__logo'>
             <img src={logo} alt='Polar Pelmeni – авторські пельмені' />
           </a>
           <BtnMain name={'Увійти'} onClick={() => console.log('Click')} />

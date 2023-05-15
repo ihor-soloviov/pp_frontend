@@ -1,0 +1,28 @@
+.profile_sidebar {
+  &--header {
+    font-family: 'Unbounded', cursive;
+    font-size: 16px;
+    line-height: 1.3;
+    padding-bottom: 48px;
+  }
+
+  &--nav {
+    list-style-type: none;
+    color: #757479;
+    
+    
+    &__item {
+    }
+
+    &__link {
+      display: block;
+      padding-bottom: 29px;
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}
+
+.sign_out {
+  color: #F55D66
+}
