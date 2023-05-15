@@ -1,5 +1,10 @@
-//Import Reacr
+//Import React
 import React from 'react';
+
+//Import Rounting
+import { Routes, Route } from 'react-router-dom';
+//Import pages
+import Menu from './Pages/Menu';
 
 //Import components
 import Header from './components/Header/Header';
@@ -12,15 +17,22 @@ import SingUp from './components/SIngUp/SingUp';
 //Import Firebase
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
+
+
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
   return (
     <>
       <Header />
-      <Popup>
+      {/* <Popup>
         <SingUp />
-      </Popup>
+      </Popup> */}
+      <Routes>
+        <Route path='/' element={<Menu />} />
+      </Routes>
+
+
     </>
   );
 };

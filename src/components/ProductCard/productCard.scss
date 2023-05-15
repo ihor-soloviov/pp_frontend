@@ -1,0 +1,72 @@
+.product {
+  max-width: 315px;
+  &__preview {
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    line-height: 0;
+    &:hover {
+      .product__addToCard {
+        bottom: 0;
+      }
+    }
+    img {
+      width: 100%;
+    }
+  }
+  &__addToCard {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+
+    padding: 8px 0;
+    color: #ffffff;
+    &:hover {
+      background: #12130f;
+    }
+    &-active {
+    }
+  }
+  &__weight {
+    padding: 20px 0 12px 0;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 150%;
+    color: #a4a4a4;
+  }
+  &__name {
+    font-family: 'Unbounded';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    color: #12130f;
+    padding-bottom: 8px;
+  }
+  &__composition {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    /* or 21px */
+
+    color: #787780;
+  }
+  &__price {
+    padding: 26px 0 0 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__total-price {
+    font-family: 'Unbounded';
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+
+    color: #12130f;
+  }
+}

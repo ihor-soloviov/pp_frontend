@@ -1,0 +1,21 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  &__ico {
+    width: 32px;
+    height: 32px;
+    background-color: rgba(18, 19, 15, 1);
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__text {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #12130f;
+  }
+}
