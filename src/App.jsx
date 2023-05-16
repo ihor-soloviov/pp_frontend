@@ -17,6 +17,7 @@ import SingUp from './components/SIngUp/SingUp';
 //Import Firebase
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
+import Profile from './Pages/Profile/Profile';
 
 
 firebase.initializeApp(firebaseConfig);
@@ -24,17 +25,22 @@ firebase.initializeApp(firebaseConfig);
 const App = () => {
   return (
     <>
-      <Header />
-      {/* <Popup>
-        <SingUp />
-      </Popup> */}
-      <Routes>
-        <Route path='/' element={<Menu />} />
-      </Routes>
-
-
+      <Profile />
     </>
   );
 };
 
 export default App;
+
+
+// <>
+// <Header />
+// {/* <Popup>
+//   <SingUp />
+// </Popup> */}
+// <Routes>
+//   <Route path='/' element={<Menu />} />
+// </Routes>
+
+
+// </>
