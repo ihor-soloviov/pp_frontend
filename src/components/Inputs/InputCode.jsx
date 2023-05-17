@@ -7,9 +7,7 @@ const InputCode = ({ onData }) => {
   const [code, setCode] = useState('');
   const inputRefs = useRef([]);
   useEffect(() => {
-    if (code.length === 6) {
-      onData(code);
-    }
+    onData(code);
   }, [code]);
 
   const handleInputChange = (event, index) => {
