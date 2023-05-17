@@ -25,19 +25,20 @@ firebase.initializeApp(firebaseConfig);
 const App = () => {
   return (
     <>
-<Header />
-{/* <Popup>
-  <SingUp />
-</Popup> */}
-<Routes>
-  <Route path='/' element={<Menu />} />
-  <Route path='/profile'>
-    <Route index element={<Profile />} />
-    <Route path=':item' element={<Profile />} />
-  </Route>
-</Routes>
+      <Header />
+      <Popup>
+        <SingUp />
+      </Popup>
+      <Routes>
+        <Route path='/' element={<Menu />} />
+        <Route path='/profile'>
+          <Route index element={<Profile />} />
+          <Route path=':item' element={<Profile />} />
+        </Route>
+      </Routes>
 
-</>
+
+    </>
   );
 };
 

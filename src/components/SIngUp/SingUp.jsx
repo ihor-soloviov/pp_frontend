@@ -13,18 +13,35 @@ import './singup.scss';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import InputText from '../Inputs/InputText';
 
-
+//Import API
+import axios from 'axios';
+import { url } from '../../api';
 
 const SingUp = () => {
   const [step, setStep] = useState('STEP_01');
-  const [phoneNumber, setPhoneNumber] = useState('+380985299485');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [verificationCode, setVerificationCode] = useState('');
+  const [token, setToken] = useState('');
 
+  const [btnNext, setBtnNext] = useState(true);
+
+  //STEP 01 Validation
   useEffect(() => {
     const cleaned = phoneNumber.replace(/\s|[()]/g, '');
     console.log(cleaned);
+
+    if (!cleaned.includes('_')) {
+      setBtnNext(false);
+    } else {
+      setBtnNext(true);
+    }
+    setPhoneNumber(cleaned);
   }, [phoneNumber]);
 
   const handlePhoneNumberSubmit = (event) => {
@@ -50,16 +67,75 @@ const SingUp = () => {
       });
   };
 
+  //STEP 02 Validation
+  useEffect(() => {
+    if (step === 'STEP_02') {
+      setBtnNext(true);
+      if (verificationCode.length === 6) {
+        setBtnNext(false);
+      } else {
+        setBtnNext(true);
+      }
+    }
+  }, [verificationCode, step]);
+
+  //STEP 02 Validation
+  useEffect(() => {
+    if (step === 'STEP_03') {
+      setBtnNext(true);
+      if (verificationCode.length === 6) {
+        setBtnNext(false);
+      } else {
+        setBtnNext(true);
+      }
+    }
+  }, [verificationCode, step]);
+
   const handleVerificationCodeSubmit = () => {
     confirmationResult
       .confirm(verificationCode)
       .then((result) => {
-        console.log(result);
+        console.log('handleVerificationCodeSubmit:', result);
+        setToken(result.user.multiFactor.user.accessToken);
+        setStep('STEP_03');
       })
       .catch((error) => {
-        error.log(error);
+        console.error('ERROR:', error);
       });
   };
+
+  const registration = () => {
+    console.log('click', `${url}/api/registrate`);
+
+    const userData = {
+      name: userName,
+      email: userEmail,
+      token: token,
+      phone: phoneNumber,
+    };
+
+    const userDataJSON = JSON.stringify(userData);
+    console.log(userDataJSON);
+    axios
+      .post(`${url}/api/registrate`, userDataJSON)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  //STEP 03 Validation
+  useEffect(() => {
+    if (step === 'STEP_03') {
+      setBtnNext(true);
+      if (userName !== '' && userEmail !== '') {
+        setBtnNext(false);
+      } else {
+        setBtnNext(true);
+      }
+    }
+  }, [step, userName, userEmail]);
 
   const steps = () => {
     if (step === 'STEP_01') {
@@ -76,7 +152,7 @@ const SingUp = () => {
 
           <BtnMain
             name={'Продовжити'}
-            disabled={false}
+            disabled={btnNext}
             onClick={handlePhoneNumberSubmit}
           />
         </>
@@ -86,20 +162,55 @@ const SingUp = () => {
     if (step === 'STEP_02') {
       return (
         <>
-          <InputCode onData={(data) => setVerificationCode(data)} />
+          <div className='singup__description'>
+            <h3 className='singup__title'>Вхід на сайт</h3>
+            <p className='singup__text'>
+              Введіть код підтвердження, який ми відправили на {phoneNumber}{' '}
+              <span
+                className='singup__text singup__text-action'
+                onClick={() => setStep('STEP_01')}
+              >
+                Змінити
+              </span>
+            </p>
+          </div>
+          <form className='singup__form'>
+            <InputCode onData={(data) => setVerificationCode(data)} />
+          </form>
 
           <BtnMain
             name={'Продовжити'}
-            disabled={false}
+            disabled={btnNext}
             onClick={handleVerificationCodeSubmit}
           />
         </>
       );
     }
+
     if (step === 'STEP_03') {
       return (
         <>
-          <InputNumber onChange={(value) => setPhoneNumber(value)} />
+          <div className='singup__description'>
+            <h3 className='singup__title'>Реєстрація</h3>
+            <p className='singup__text'>Будь ласка, введіть свої дані</p>
+          </div>
+          <form className='singup__form'>
+            <InputText
+              name={`Ім’я`}
+              placeholder={`Ім’я`}
+              onChange={(value) => setUserName(value)}
+            />
+            <InputText
+              name={`Пошта`}
+              placeholder={`xxx@gmail.com`}
+              onChange={(value) => setUserEmail(value)}
+            />
+          </form>
+          <BtnMain
+            name={'Зареєструватися'}
+            disabled={btnNext}
+            onClick={() => registration()}
+          />
         </>
       );
     }
