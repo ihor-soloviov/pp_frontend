@@ -24,5 +24,20 @@
     line-height: 150%;
 
     color: #5f5e64;
+    &-action {
+      color: #131313;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 }
