@@ -113,8 +113,9 @@ const SingUp = () => {
       token: token,
       phone: phoneNumber,
     };
-    const userDataJSON = JSON.stringify(userData);
 
+    const userDataJSON = JSON.stringify(userData);
+    console.log(userDataJSON);
     axios
       .post(`${url}/api/registrate`, userDataJSON)
       .then((response) => {

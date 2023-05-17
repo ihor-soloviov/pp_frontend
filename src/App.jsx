@@ -26,9 +26,9 @@ const App = () => {
   return (
     <>
       <Header />
-      {/* <Popup>
+      <Popup>
         <SingUp />
-      </Popup> */}
+      </Popup>
       <Routes>
         <Route path='/' element={<Menu />} />
       </Routes>
