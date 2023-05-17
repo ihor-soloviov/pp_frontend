@@ -1,0 +1,33 @@
+.modal {
+  &-content--title {
+    font-family: "Unbounded";
+    font-size: 20px;
+  }
+}
+
+.address-form {
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+
+  &__item {
+    color: #757479;
+    font-size: 12px;
+  }
+
+  &__half {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.radio {
+  display: flex;
+
+  p{
+    padding-left: 8px;
+  }
+
+
+}

@@ -1,0 +1,33 @@
+.addresses {
+  display: flex;
+  flex-direction: row;
+
+  &_new {
+    display: flex;
+    flex-direction: column;
+    background-image: url(../../../src/assets/dashed-border.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 315px;
+    
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      padding: 115px 99px 116px;
+
+      &--icon {
+        height: 44px;
+        transition: transform 0.3s ease-in-out ;
+
+        &:hover {
+          transform: scale(1.4);
+        }
+      }
+
+      &--text {
+        font-size: 16px;
+        padding-top: 16px;
+      }
+    }
+  }
+}

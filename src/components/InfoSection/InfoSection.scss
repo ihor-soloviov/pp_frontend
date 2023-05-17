@@ -1,5 +1,4 @@
 .profile_info {
-  
   &--head {
     display: flex;
     flex-direction: row;
@@ -16,13 +15,12 @@
     }
 
     &__button {
-      
       padding-left: 32px;
     }
   }
 
   &--form {
-    border-top: 1px solid #EBEBEE;
+    border-top: 1px solid #ebebee;
     padding-top: 36px;
     color: #757479;
     font-size: 12px;
@@ -71,9 +69,9 @@
     &:nth-child(-n + 2) {
       padding-bottom: 20px;
     }
-    
+
     &--label {
-      background-color: #F3F3F5;
+      background-color: #f3f3f5;
 
       input {
         padding: 14px 0 12px 12px;
@@ -88,20 +86,34 @@
         }
       }
 
-    select {
-      padding: 14px 0 12px 12px;
-      outline: none;
-      border: none;
-      border-radius: 5px;
-      width: 100%;
-      background-color: inherit;
+      textarea {
+        padding: 14px 0 12px 12px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        background-color: inherit;
+        resize: vertical;
+        height: auto;
 
-      &:focus {
-        box-shadow: 0 0 2px 2px #8aebff;
+        &:focus {
+          box-shadow: 0 0 2px 2px #8aebff;
+        }
+      }
+
+      select {
+        padding: 14px 0 12px 12px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        background-color: inherit;
+
+        &:focus {
+          box-shadow: 0 0 2px 2px #8aebff;
+        }
       }
     }
-    }
-      
   }
 
   &-button {
@@ -110,4 +122,3 @@
     padding-top: 57px;
   }
 }
-

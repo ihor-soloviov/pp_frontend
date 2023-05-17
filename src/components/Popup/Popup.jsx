@@ -4,11 +4,11 @@ import React from 'react';
 //Import Style
 import './popup.scss';
 
-const Popup = ({ children }) => {
+const Popup = ({ children, closeModal }) => {
   return (
     <div className='popup'>
       <div className='popup__content'>
-        <button className='popup__close'>
+        <button className='popup__close' onClick={closeModal}>
           <svg
             width='12'
             height='12'
