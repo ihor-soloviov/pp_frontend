@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import "../Main/Main.scss";
-import "./ProfileSection.scss";
+import "../ProfileGrid/ProfileGrid.scss"
+import "./InfoSection.scss";
 import React from "react";
 
-const ProfileSection = () => {
+const InfoSection = () => {
   return (
     <section className="grid_layout--main profile_info">
       <div className="profile_info--head">
@@ -75,4 +75,4 @@ const ProfileSection = () => {
   );
 };
 
-export default ProfileSection;
+export default InfoSection;

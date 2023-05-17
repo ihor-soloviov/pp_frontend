@@ -31,6 +31,10 @@ const App = () => {
       </Popup>
       <Routes>
         <Route path='/' element={<Menu />} />
+        <Route path='/profile'>
+          <Route index element={<Profile />} />
+          <Route path=':item' element={<Profile />} />
+        </Route>
       </Routes>
 
 
@@ -41,14 +45,3 @@ const App = () => {
 export default App;
 
 
-// <>
-// <Header />
-// {/* <Popup>
-//   <SingUp />
-// </Popup> */}
-// <Routes>
-//   <Route path='/' element={<Menu />} />
-// </Routes>
-
-
-// </>
