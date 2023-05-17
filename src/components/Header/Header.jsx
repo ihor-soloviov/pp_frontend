@@ -28,6 +28,7 @@ const Header = () => {
             <Link to={'/'}>Меню</Link>
             <Link to={'/about-us'}>Про нас</Link>
             <Link to={'/contact'}>Контакти</Link>
+            <Link to={'/profile/info'}>Кабінет</Link>
           </nav>
           <div className='header__right'>
             <Card />

@@ -10,17 +10,31 @@
     list-style-type: none;
     color: #757479;
     
-    
-    &__item {
-    }
 
+    &__item {
+      margin-bottom: 16px;
+    }
     &__link {
       display: block;
-      padding-bottom: 29px;
+      padding: 8px 12px 12px;
+      width: max-content;
       text-decoration: none;
       color: inherit;
+      transition: all 0.8s;
+
+      &:hover {
+        border-radius: 10px;
+        color: black;
+        background-color: #F3F3F5;
+      }
     }
   }
+}
+
+.active {
+  border-radius: 10px;
+  color: #12130F;
+  background-color: #F3F3F5;
 }
 
 .sign_out {
