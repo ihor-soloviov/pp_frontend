@@ -1,6 +1,6 @@
 .addresses {
   display: flex;
-  flex-direction: row;
+  gap: 20px;
 
   &_new {
     display: flex;
@@ -30,4 +30,64 @@
       }
     }
   }
+
+  &_created {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #EBEBEE;
+    border-radius: 15px;
+    height: 315px;
+    
+    &__container {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      &--bot {
+        span {
+          color: #757479;
+          font-size: 14px;
+        }
+
+        p {
+          padding-top: 5px;
+        }
+
+        button {
+          background-color: #F3F3F5;
+          border-radius: 7px;
+          font-size: 16px;
+          margin-top: 16px;
+          padding: 10px 95px 8px;
+        }
+      }
+    }
+  }
+}
+
+.top-name {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  
+  h4 {
+    font-family: 'Unbounded';
+  }
+
+  button {
+    display: flex;
+    padding: 10px;
+    background-color: #F3F3F5;
+    border-radius: 50%;
+  }
+}
+
+.top-street {
+  padding-top: 12px;
+  font-size: 14px;
+  
+  span {
+    color: #757479
+  };
 }

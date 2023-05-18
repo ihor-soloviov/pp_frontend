@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import "../ProfileGrid/ProfileGrid.scss";
-import plus from "../../../src/assets/add.svg";
 import "./Addresses.scss";
 import AddressModal from "../AddressModal/AddressModal";
+import NewAddress from "../NewAddress/NewAddress";
+import CreatedAddress from "../CreatedAddress/CreatedAddress";
+
+const arr = [];
 
 const Addresses = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const createAddress = (data) => {
+    arr.push(data);
+  };
+
   const openModal = () => {
-    console.log('opened')
     setModalOpen(true);
   };
 
@@ -17,15 +23,17 @@ const Addresses = () => {
   };
   return (
     <section className="grid_layout--main addresses">
-      <div className="addresses_new">
-        <div className="addresses_new__inner">
-          <button onClick={openModal}>
-            <img className="addresses_new__inner--icon" src={plus} alt="add" />
-          </button>
-          <p className="addresses_new__inner--text">Додати адресу</p>
-        </div>
-      </div>
-      <AddressModal closeModal={closeModal} isModalOpen={isModalOpen} />
+      <NewAddress openModal={openModal}/>
+      <AddressModal
+        closeModal={closeModal}
+        isModalOpen={isModalOpen}
+        createAddress={createAddress}
+      />
+      {arr.length > 0 && (
+        arr.map(data => (
+          <CreatedAddress key={data.addressName} data={data} openModal={openModal}/>
+        ))
+      )}
     </section>
   );
 };
