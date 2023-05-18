@@ -43,6 +43,6 @@ const App = () => {
 export default App;
 
 <Popup>
-<SingUp />
+<SingUp /> 
 </Popup>
 

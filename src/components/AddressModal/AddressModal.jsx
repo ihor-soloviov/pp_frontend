@@ -19,30 +19,26 @@ const AddressModal = ({ closeModal, isModalOpen }) => {
           <div className="modal-content">
             <h2 className="modal-content--title">Додати адресу</h2>
             <form action="post" method="post">
-              <div className="form address-form">
-                <div className="form_item address-form__item">
-                  Назва адреси
+              <div className="modal-grid">
+                <div class="modal-grid--item-0 grid-item">
+                  <p className="grid-item__text">Назва адреси</p>
                   <label className="form_item--label">
                     <input type="text" placeholder="Назва адреси" />
                   </label>
                 </div>
-
-                <div className="address-form__half">
-                  <div className="form_item address-form__item">
-                    Вулиця
-                    <label className="form_item--label">
-                      <input type="text" placeholder="Вулиця" />
-                    </label>
-                  </div>
-
-                  <div className="form_item address-form__item">
-                    № Будинку
-                    <label className="form_item--label">
-                      <input type="text" placeholder="№ Будинку" />
-                    </label>
-                  </div>
+                <div class="modal-grid--item-1 grid-item">
+                  <p className="grid-item__text">Вулиця</p>
+                  <label className="form_item--label">
+                    <input type="text" placeholder="Вулиця" />
+                  </label>
                 </div>
-                <div className="address-form__half">
+                <div class="modal-grid--item-2 grid-item">
+                  <p className="grid-item__text">№ Будинку</p>
+                  <label className="form_item--label">
+                    <input type="text" placeholder="№ Будинку" />
+                  </label>
+                </div>
+                <div class="modal-grid--item-3 grid-item grid-radio">
                   <label className="radio">
                     <div
                       className="radio-button"
@@ -58,7 +54,8 @@ const AddressModal = ({ closeModal, isModalOpen }) => {
                     </div>
                     <p>Квартира</p>
                   </label>
-
+                </div>
+                <div class="modal-grid--item-4 grid-item grid-radio">
                   <label className="radio">
                     <div
                       className="radio-button"
@@ -76,45 +73,42 @@ const AddressModal = ({ closeModal, isModalOpen }) => {
                   </label>
                 </div>
                 {selectedOption === "flat" && (
-                  <>
-                    <div className="address-form__half">
-                      <div className="form_item address-form__item">
-                        Квартира
-                        <label className="form_item--label">
-                          <input type="text" placeholder="Квартира" />
-                        </label>
-                      </div>
-
-                      <div className="form_item address-form__item">
-                        Парадна
-                        <label className="form_item--label">
-                          <input type="text" placeholder="Парадна" />
-                        </label>
-                      </div>
+                  <div className="modal-grid--item-5 flat-grid">
+                    <div class="flat-grid--item-0 grid-item">
+                      <p className="grid-item__text">Квартира</p>
+                      <label className="form_item--label">
+                        <input type="text" placeholder="Квартира" />
+                      </label>
                     </div>
-                    <div className="address-form__half">
-                      <div className="form_item address-form__item">
-                        Код
-                        <label className="form_item--label">
-                          <input type="text" placeholder="Код" />
-                        </label>
-                      </div>
-
-                      <div className="form_item address-form__item">
-                        Поверх
-                        <label className="form_item--label">
-                          <input type="text" placeholder="Поверх" />
-                        </label>
-                      </div>
+                    <div class="flat-grid--item-1 grid-item">
+                      <p className="grid-item__text">Парадна</p>
+                      <label className="form_item--label">
+                        <input type="text" placeholder="Парадна" />
+                      </label>
                     </div>
-                  </>
+                    <div class="flat-grid--item-2 grid-item">
+                      <p className="grid-item__text">Код</p>
+                      <label className="form_item--label">
+                        <input type="text" placeholder="Код" />
+                      </label>
+                    </div>
+                    <div class="flat-grid--item-3 grid-item">
+                      <p className="grid-item__text">Поверх</p>
+                      <label className="form_item--label">
+                        <input type="text" placeholder="Поверх" />
+                      </label>
+                    </div>
+                  </div>
                 )}
-                <div className="form_item address-form__item">
-                Коментар
-                <label className="form_item--label">
-                  <textarea placeholder='Можете тут написати будь-що:)' rows={1} />
-                </label>
-              </div>
+                <div class="modal-grid--item-9 grid-item">
+                  <p className="grid-item__text">Коментар</p>
+                  <label className="form_item--label">
+                    <textarea
+                      placeholder="Можете тут написати будь-що:)"
+                      rows={1}
+                    />
+                  </label>
+                </div>
               </div>
               <div className="form-button">
                 <button className="btn-main " type="submit">
