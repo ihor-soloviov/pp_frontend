@@ -64,7 +64,7 @@ const Menu = () => {
         const data = res.data.response;
 
         setProducts(data);
-        console.log(data);
+
       })
       .catch((err) => console.error(err));
   };
@@ -100,7 +100,7 @@ const Menu = () => {
       </div>
       <div className='menu__products'>
         {products.map((product) => {
-          console.log(product);
+
           return (
             <ProductCard
               preview={poster_url + product.photo}

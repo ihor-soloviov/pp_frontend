@@ -1,6 +1,13 @@
 //Import React
 import React, { useEffect, useState } from 'react';
 
+//Impor Route
+import { useNavigate } from 'react-router-dom';
+
+//Import Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogin } from '../../store/userSlice';
+
 //Import Components
 import InputNumber from '../Inputs/InputNumber';
 import InputCode from '../Inputs/InputCode';
@@ -20,15 +27,25 @@ import axios from 'axios';
 import { url } from '../../api';
 
 const SingUp = () => {
+  //Tools
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userData = useSelector((state) => state.user);
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
+
+  //User data state
   const [step, setStep] = useState('STEP_01');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
-
+  const [token, setToken] = useState('');
+  //Auth
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [verificationCode, setVerificationCode] = useState('');
-  const [token, setToken] = useState('');
 
+  //Next step
   const [btnNext, setBtnNext] = useState(true);
 
   //STEP 01 Validation
@@ -106,8 +123,6 @@ const SingUp = () => {
   };
 
   const registration = () => {
-    console.log('click', `${url}/api/registrate`);
-
     const userData = {
       name: userName,
       email: userEmail,
@@ -121,13 +136,21 @@ const SingUp = () => {
       .post(`${url}/api/registrate`, userDataJSON)
       .then((response) => {
         const data = response.data;
-        
         if (response.status === 200) {
-          console.log('Go to profile page');
+          console.log(data);
+          dispatch(
+            userLogin({
+              name: userName,
+              phone: phoneNumber,
+              email: userEmail,
+              token: token,
+            })
+          );
+          navigate('/profile/info')
         }
       })
       .catch((err) => console.error(err));
-  };
+  }; 
 
   //STEP 03 Validation
   useEffect(() => {

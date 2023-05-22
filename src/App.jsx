@@ -12,7 +12,7 @@ import Popup from './components/Popup/Popup';
 
 //Import Reset Styles
 import './reset.scss';
-import SingUp from './components/SIngUp/SingUp';
+import SingUp from './components/SingUp/SingUp';
 
 //Import Firebase
 import { firebaseConfig } from './firebaseConfig';

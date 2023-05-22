@@ -15,7 +15,7 @@ import './header.scss';
 import logo from '../../assets/logo/logo.png';
 import Card from '../Card/Card';
 import Popup from '../Popup/Popup';
-import SingUp from '../SIngUp/SingUp';
+import SingUp from '../SingUp/SingUp';
 
 const Header = () => {
   const [isModalOpen, setModalOpen] = useState(false);
