@@ -11,7 +11,12 @@ const ProductCard = (props) => {
     <div className='product'>
       <div className='product__preview'>
         <img src={props.preview} alt={props.name} />
-        <button className='product__addToCard'>В кошик</button>
+        <button
+          className='product__addToCard'
+          onClick={() => console.log('go to cart')}
+        >
+          В кошик
+        </button>
       </div>
       <div className='product__info'>
         <p className='product__weight'>{props.weight} г</p>
@@ -42,7 +47,9 @@ const ProductCard = (props) => {
             -
           </div>
           <div className='counter__value'>{count}</div>
-          <div className='counter__btn' onClick={() => setCount(count + 1)}>+</div>
+          <div className='counter__btn' onClick={() => setCount(count + 1)}>
+            +
+          </div>
         </div>
       </div>
     </div>
