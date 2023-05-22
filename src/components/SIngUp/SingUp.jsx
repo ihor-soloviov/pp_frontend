@@ -96,7 +96,8 @@ const SingUp = () => {
       .confirm(verificationCode)
       .then((result) => {
         console.log('handleVerificationCodeSubmit:', result);
-        setToken(result.user.multiFactor.user.accessToken);
+        const token = result.user.multiFactor.user.accessToken;
+        setToken(token.slice(0, 40));
         setStep('STEP_03');
       })
       .catch((error) => {
@@ -120,7 +121,10 @@ const SingUp = () => {
       .post(`${url}/api/registrate`, userDataJSON)
       .then((response) => {
         const data = response.data;
-        console.log(data);
+        
+        if (response.status === 200) {
+          console.log('Go to profile page');
+        }
       })
       .catch((err) => console.error(err));
   };

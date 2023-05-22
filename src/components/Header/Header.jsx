@@ -1,5 +1,5 @@
 //Import React
-import React from 'react';
+import React, { useState } from 'react';
 
 //Import Routes
 import { Link } from 'react-router-dom';
@@ -14,29 +14,41 @@ import './header.scss';
 //Import logo
 import logo from '../../assets/logo/logo.png';
 import Card from '../Card/Card';
+import Popup from '../Popup/Popup';
+import SingUp from '../SIngUp/SingUp';
 
 const Header = () => {
-  return (
-    <header className='header'>
-      <Container>
-        <div className='header__content'>
-          <Link className='header__logo' to={'/'}>
-            <img src={logo} alt='Polar Pelmeni – авторські пельмені' />
-          </Link>
+  const [isModalOpen, setModalOpen] = useState(false);
 
-          <nav className='header__navigation'>
-            <Link to={'/'}>Меню</Link>
-            <Link to={'/about-us'}>Про нас</Link>
-            <Link to={'/contact'}>Контакти</Link>
-            <Link to={'/profile/info'}>Кабінет</Link>
-          </nav>
-          <div className='header__right'>
-            <Card />
-            <BtnMain name={'Увійти'} onClick={() => console.log('Click')} />
+  return (
+    <>
+      {isModalOpen && (
+        <Popup>
+          <SingUp />
+        </Popup>
+      )}
+
+      <header className='header'>
+        <Container>
+          <div className='header__content'>
+            <Link className='header__logo' to={'/'}>
+              <img src={logo} alt='Polar Pelmeni – авторські пельмені' />
+            </Link>
+
+            <nav className='header__navigation'>
+              <Link to={'/'}>Меню</Link>
+              <Link to={'/about-us'}>Про нас</Link>
+              <Link to={'/contact'}>Контакти</Link>
+              <Link to={'/profile/info'}>Кабінет</Link>
+            </nav>
+            <div className='header__right'>
+              <Card />
+              <BtnMain name={'Увійти'} onClick={() => setModalOpen(true)} />
+            </div>
           </div>
-        </div>
-      </Container>
-    </header>
+        </Container>
+      </header>
+    </>
   );
 };
 
