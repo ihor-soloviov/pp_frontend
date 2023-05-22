@@ -3,10 +3,10 @@ import classNames from "classnames";
 import React from "react";
 import { Link} from "react-router-dom";
 
-const SidebarLink = ({ children, index, pathlink }) => {
+const SidebarLink = ({ children, index, pathlink, closeSidebar }) => {
   const links = ["info", "favourite", "addresses", "history", "bonuses", "signout"];
   return (
-    <li className="profile_sidebar--nav__item">
+    <li className="profile_sidebar--nav__item sidebar-mobile__item" onClick={closeSidebar}>
       <Link
         to={`/profile/${links[index]}`}
         className={classNames("profile_sidebar--nav__link", {

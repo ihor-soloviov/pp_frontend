@@ -31,8 +31,10 @@ const App = () => {
 
   const loadUserDataFromLocalStorage = () => {
     const data = localStorage.getItem('userData');
-    const dataParse = JSON.parse(data);
-    dispatch(userLogin(dataParse));
+    if (data) {
+      const dataParse = JSON.parse(data);
+      dispatch(userLogin(dataParse));
+    }
   };
 
   useEffect(() => {

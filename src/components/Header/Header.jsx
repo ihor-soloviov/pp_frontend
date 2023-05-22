@@ -35,7 +35,7 @@ const Header = () => {
         </Popup>
       )}
 
-      <header className='header'>
+      <header className='header profile-header'>
         <Container>
           <div className='header__content'>
             <Link className='header__logo' to={'/'}>
