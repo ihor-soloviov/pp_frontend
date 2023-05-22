@@ -2,7 +2,10 @@
 import React, { useState } from 'react';
 
 //Import Routes
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+//Import Redux
+import { useSelector } from 'react-redux';
 
 //Import components
 import Container from '../Container/Container';
@@ -18,6 +21,10 @@ import Popup from '../Popup/Popup';
 import SingUp from '../SingUp/SingUp';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const userData = useSelector((state) => state.user);
+
+  //Modal
   const [isModalOpen, setModalOpen] = useState(false);
 
   return (
@@ -43,7 +50,33 @@ const Header = () => {
             </nav>
             <div className='header__right'>
               <Card />
-              <BtnMain name={'Увійти'} onClick={() => setModalOpen(true)} />
+              {userData.isAuthenticated ? (
+                <div className='header__profile-btn' onClick={() => navigate('/profile/info')}>
+                  <div className='header__avatar'>
+                    <img
+                      src={
+                        'https://cdn-icons-png.flaticon.com/512/552/552721.png'
+                      }
+                      alt=''
+                    />
+                  </div>
+                  <span className='header__username'>{userData.name}</span>
+                  <svg
+                    width='10'
+                    height='6'
+                    viewBox='0 0 10 6'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M5.00048 3.78132L8.30048 0.481323L9.24315 1.42399L5.00048 5.66666L0.757812 1.42399L1.70048 0.481323L5.00048 3.78132Z'
+                      fill='#12130F'
+                    />
+                  </svg>
+                </div>
+              ) : (
+                <BtnMain name={'Увійти'} onClick={() => setModalOpen(true)} />
+              )}
             </div>
           </div>
         </Container>

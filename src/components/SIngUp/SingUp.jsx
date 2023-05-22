@@ -132,12 +132,20 @@ const SingUp = () => {
 
     const userDataJSON = JSON.stringify(userData);
     console.log(userDataJSON);
+
     axios
       .post(`${url}/api/registrate`, userDataJSON)
       .then((response) => {
         const data = response.data;
+
         if (response.status === 200) {
           console.log(data);
+          console.log("user data",{
+            name: userName,
+            phone: phoneNumber,
+            email: userEmail,
+            token: token,
+          });
           dispatch(
             userLogin({
               name: userName,
@@ -146,11 +154,11 @@ const SingUp = () => {
               token: token,
             })
           );
-          navigate('/profile/info')
+          navigate('/profile/info');
         }
       })
       .catch((err) => console.error(err));
-  }; 
+  };
 
   //STEP 03 Validation
   useEffect(() => {

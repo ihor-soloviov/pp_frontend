@@ -1,8 +1,12 @@
 //Import React
-import React from 'react';
+import React, { useEffect } from 'react';
 
-//Import Rounting
+//Import Routing
 import { Routes, Route } from 'react-router-dom';
+
+//Import Redux
+import { useDispatch } from 'react-redux';
+
 //Import pages
 import Menu from './Pages/Menu';
 
@@ -18,11 +22,23 @@ import SingUp from './components/SingUp/SingUp';
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 import Profile from './Pages/Profile/Profile';
-
+import { userLogin } from './store/userSlice';
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  const loadUserDataFromLocalStorage = () => {
+    const data = localStorage.getItem('userData');
+    const dataParse = JSON.parse(data);
+    dispatch(userLogin(dataParse));
+  };
+
+  useEffect(() => {
+    loadUserDataFromLocalStorage();
+  }, []);
+
   return (
     <>
       <Header />
@@ -33,8 +49,6 @@ const App = () => {
           <Route path=':item' element={<Profile />} />
         </Route>
       </Routes>
-
-
     </>
   );
 };
@@ -42,6 +56,5 @@ const App = () => {
 export default App;
 
 <Popup>
-<SingUp /> 
-</Popup>
-
+  <SingUp />
+</Popup>;
