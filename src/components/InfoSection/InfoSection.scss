@@ -1,0 +1,124 @@
+.profile_info {
+  &--head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 32px;
+
+    &__photo {
+      display: block;
+      border-radius: 50%;
+    }
+
+    &__contacts {
+      padding-left: 24px;
+    }
+
+    &__button {
+      padding-left: 32px;
+    }
+  }
+
+  &--form {
+    border-top: 1px solid #ebebee;
+    padding-top: 36px;
+    color: #757479;
+    font-size: 12px;
+    max-width: 700px;
+  }
+}
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  padding-bottom: 5px;
+
+  &_name {
+    font-size: 18px;
+    padding-bottom: 12px;
+  }
+
+  &_phone {
+    font-size: 14px;
+    color: #757479;
+  }
+}
+
+.button {
+  height: 100%;
+  padding-top: 27px;
+  &_link {
+    color: #000;
+    font-weight: 500;
+    flex: 1;
+  }
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: space-between;
+
+  &_item {
+    max-width: 427px;
+    flex-basis: calc(50% - 20px);
+    width: 100%;
+    &:nth-child(-n + 2) {
+      padding-bottom: 20px;
+    }
+
+    &--label {
+      background-color: #f3f3f5;
+
+      input {
+        padding: 14px 0 12px 12px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        background-color: inherit;
+
+        &:focus {
+          box-shadow: 0 0 2px 2px #8aebff;
+        }
+      }
+
+      textarea {
+        padding: 14px 0 12px 12px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        background-color: inherit;
+        resize: vertical;
+        height: auto;
+
+        &:focus {
+          box-shadow: 0 0 2px 2px #8aebff;
+        }
+      }
+
+      select {
+        padding: 14px 0 12px 12px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        background-color: inherit;
+
+        &:focus {
+          box-shadow: 0 0 2px 2px #8aebff;
+        }
+      }
+    }
+  }
+
+  &-button {
+    display: flex;
+    justify-content: end;
+    padding-top: 57px;
+  }
+}

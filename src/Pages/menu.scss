@@ -1,0 +1,37 @@
+.menu {
+  &__products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+.categories {
+  margin-bottom: 48px;
+  &__list {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  &__btn {
+    padding: 10px 16px 8px 16px;
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+
+    /* 800 */
+
+    color: #49484d;
+
+    border: 1px solid #d9d9de;
+    border-radius: 10px;
+    &-active {
+      background: #62D9F1;
+      border: 1px solid #62D9F1;
+    }
+  }
+}
