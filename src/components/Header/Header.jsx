@@ -5,7 +5,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 //Import Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { authModalUpdateState } from '../../store/modalsSlice';
 
 //Import components
 import Container from '../Container/Container';
@@ -22,15 +23,19 @@ import SingUp from '../SingUp/SingUp';
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const userData = useSelector((state) => state.user);
 
   //Modal
-  const [isModalOpen, setModalOpen] = useState(false);
+  const isModalOpen = useSelector((state) => state.modals.authModal);
 
   return (
     <>
       {isModalOpen && (
-        <Popup>
+        <Popup
+          closeModal={() => dispatch(authModalUpdateState({ isOpen: false }))}
+        >
           <SingUp />
         </Popup>
       )}
@@ -51,7 +56,10 @@ const Header = () => {
             <div className='header__right'>
               <Card />
               {userData.isAuthenticated ? (
-                <div className='header__profile-btn' onClick={() => navigate('/profile/info')}>
+                <div
+                  className='header__profile-btn'
+                  onClick={() => navigate('/profile/info')}
+                >
                   <div className='header__avatar'>
                     <img
                       src={
@@ -75,7 +83,12 @@ const Header = () => {
                   </svg>
                 </div>
               ) : (
-                <BtnMain name={'Увійти'} onClick={() => setModalOpen(true)} />
+                <BtnMain
+                  name={'Увійти'}
+                  onClick={() =>
+                    dispatch(authModalUpdateState({ isOpen: true }))
+                  }
+                />
               )}
             </div>
           </div>

@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 
 //Import Routing
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 //Import Redux
 import { useDispatch } from 'react-redux';
@@ -22,23 +22,32 @@ import SingUp from './components/SingUp/SingUp';
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 import Profile from './Pages/Profile/Profile';
-import { userLogin } from './store/userSlice';
+import { userLogin, userLogout } from './store/userSlice';
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const loadUserDataFromLocalStorage = () => {
     const data = localStorage.getItem('userData');
-    const dataParse = JSON.parse(data);
-    dispatch(userLogin(dataParse));
+    if (data) {
+      const dataParse = JSON.parse(data);
+      dispatch(userLogin(dataParse));
+    }
   };
-
   useEffect(() => {
     loadUserDataFromLocalStorage();
   }, []);
 
+  useEffect(() => {
+    if (location.pathname === '/profile/signout') {
+      dispatch(userLogout());
+      navigate('/');
+    }
+  }, [location]);
   return (
     <>
       <Header />
