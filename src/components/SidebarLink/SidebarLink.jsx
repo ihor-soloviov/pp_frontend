@@ -10,7 +10,7 @@ const SidebarLink = ({ children, index, pathlink }) => {
     'addresses',
     'history',
     'bonuses',
-    'signout',
+    'signout',  
   ];
   return (
     <li className='profile_sidebar--nav__item'>

@@ -1,1 +1,1 @@
-export const url = 'http://185.65.247.241:8080'
+export const url = 'https://polar-pelmeni-odessa.joinposter.com/api'
