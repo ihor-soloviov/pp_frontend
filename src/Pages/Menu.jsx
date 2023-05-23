@@ -24,7 +24,7 @@ const Menu = () => {
 
   const getCategories = () => {
     axios
-      .get(url1, {
+      .get(`${poster_url}/api/menu.getCategories?token=${token}`, {
         headers: {
           'Access-Control-Allow-Origin': 'localhost',
           'Access-Control-Allow-Methods': 'GET, POST, PUT',
@@ -51,7 +51,7 @@ const Menu = () => {
   const getPruducts = (id) => {
     axios
       .get(
-        `http://localhost:5656/api/menu.getProducts?token=${token}&category_id=${id}&type=batchtickets`,
+        `${poster_url}/api/menu.getProducts?token=${token}&category_id=${id}&type=batchtickets`,
         {
           headers: {
             'Access-Control-Allow-Origin': 'localhost',
@@ -64,7 +64,6 @@ const Menu = () => {
         const data = res.data.response;
 
         setProducts(data);
-
       })
       .catch((err) => console.error(err));
   };
@@ -100,7 +99,6 @@ const Menu = () => {
       </div>
       <div className='menu__products'>
         {products.map((product) => {
-
           return (
             <ProductCard
               preview={poster_url + product.photo}
