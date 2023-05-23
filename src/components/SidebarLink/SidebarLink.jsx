@@ -4,8 +4,15 @@ import React from "react";
 import { Link} from "react-router-dom";
 import arrow from '../../assets/arrow-left.svg';
 
-const SidebarLink = ({ children, index, pathlink, closeSidebar }) => {
-  const links = ["info", "favourite", "addresses", "history", "bonuses", "signout"];
+const SidebarLink = ({ children, index, pathlink }) => {
+  const links = [
+    'info',
+    'favourite',
+    'addresses',
+    'history',
+    'bonuses',
+    'signout',  
+  ];
   return (
     <li className="profile_sidebar--nav__item sidebar-mobile__item--mobile" onClick={closeSidebar}>
       <Link
