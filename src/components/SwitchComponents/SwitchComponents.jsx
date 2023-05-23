@@ -21,9 +21,9 @@ export const SwitchComponents = ({
           />
         );
       case "addresses":
-        return <Addresses />;
+        return <Addresses openSidebar={openSidebar}/>;
       case "history":
-        return <Orders />;
+        return <Orders openSidebar={openSidebar} />;
       case "":
         return <MobileSidebar closeSidebar={closeSidebar} />;
       default:

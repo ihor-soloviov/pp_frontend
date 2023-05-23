@@ -57,7 +57,9 @@ const InfoSection = ({openSidebar, isSidebarOpened, closeSidebar}) => {
             </a>
           </div>
         </div>
-        <ProfileLink openSidebar={openSidebar} />
+        <ProfileLink openSidebar={openSidebar}>
+          Інформація        
+        </ProfileLink>
         <div className="profile_info--head__mobile">
           <img
             src="https://via.placeholder.com/70x70"

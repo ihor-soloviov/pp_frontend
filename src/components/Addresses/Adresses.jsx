@@ -4,10 +4,11 @@ import "./Addresses.scss";
 import AddressModal from "../AddressModal/AddressModal";
 import NewAddress from "../NewAddress/NewAddress";
 import CreatedAddress from "../CreatedAddress/CreatedAddress";
+import ProfileLink from "../ProfileLink/ProfileLink";
 
 const arr = [];
 
-const Addresses = () => {
+const Addresses = ({openSidebar}) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const createAddress = (data) => {
@@ -23,6 +24,9 @@ const Addresses = () => {
   };
   return (
     <section className="grid_layout--main addresses">
+    <ProfileLink openSidebar={openSidebar} >
+      Збережені адреси
+    </ProfileLink>
       <NewAddress openModal={openModal}/>
       <AddressModal
         closeModal={closeModal}
