@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import classNames from 'classnames';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import classNames from "classnames";
+import React from "react";
+import { Link} from "react-router-dom";
+import arrow from '../../assets/arrow-left.svg';
 
 const SidebarLink = ({ children, index, pathlink }) => {
   const links = [
@@ -13,19 +14,17 @@ const SidebarLink = ({ children, index, pathlink }) => {
     'signout',  
   ];
   return (
-    <li className='profile_sidebar--nav__item'>
+    <li className="profile_sidebar--nav__item sidebar-mobile__item--mobile" onClick={closeSidebar}>
       <Link
         to={`/profile/${links[index]}`}
-        className={classNames(
-          'profile_sidebar--nav__link',
-          {
-            sign_out: children === 'Вихід',
-          },
-          { active: pathlink === links[index] }
-        )}
+        className={classNames("profile_sidebar--nav__link sidebar-mobile__link", {
+          sign_out: children === "Вихід",
+        }, {active: pathlink === links[index]})}
       >
         {children}
       </Link>
+      
+      <img className="sidebar-mobile__item--arrow" src={arrow} alt="left" />
     </li>
   );
 };

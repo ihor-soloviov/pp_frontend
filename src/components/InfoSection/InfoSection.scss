@@ -94,6 +94,7 @@
   justify-content: space-around;
   height: 100%;
   padding-bottom: 5px;
+  margin-left: 20px;
 
   @media (max-width: 400px) {
     padding-bottom: 0px;
@@ -227,3 +228,12 @@
     }
   }
 }
+
+.mobile {
+  color:#000
+}
+
+.mobile-inner {
+  display: flex;
+}
+
