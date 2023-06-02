@@ -164,6 +164,48 @@ const SingUp = () => {
       .catch((err) => console.error(err));
   };
 
+  const authenticationTest = () => {
+    const tokennn = {
+      token: 'asdasdasSSADsad21321',
+    };
+    const data = JSON.stringify(tokennn);
+
+    axios
+      .post(`http://185.65.247.241:8080/api/auth`, {
+        data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log('response:', response);
+        if (response.ok) {
+          console.log('I have this user:', response.status);
+          dispatch(
+            userLogin({
+              name: response.data.name,
+              phone: response.data.phone,
+              email: response.data.email,
+              token: response.data.token,
+            })
+          );
+          dispatch(authModalUpdateState({ isOpen: false }));
+          // navigate('/profile/info');
+        } else {
+          setStep('STEP_03');
+          // registration();
+        }
+      })
+      .catch((error) => {
+        console.error('error', error);
+        console.log('i dont have this user');
+      });
+  };
+
+  useEffect(() => {
+    authenticationTest();
+  }, []);
+
   const authentication = () => {
     const data = {
       token: token,

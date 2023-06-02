@@ -4,14 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const SidebarLink = ({ children, index, pathlink }) => {
-  const links = [
-    'info',
-    'favourite',
-    'addresses',
-    'history',
-    'bonuses',
-    'signout',  
-  ];
+  const links = ['info', 'favourite', 'addresses', 'history', 'bonuses'];
   return (
     <li className='profile_sidebar--nav__item'>
       <Link

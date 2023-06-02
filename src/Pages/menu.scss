@@ -6,6 +6,23 @@
   }
 }
 
+@media screen and (max-width: 1024px) {
+  .menu {
+    &__products {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+@media screen and (max-width: 786px) {
+  .menu {
+    &__products {
+      justify-content: center;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
 .categories {
   margin-bottom: 48px;
   &__list {
@@ -30,8 +47,8 @@
     border: 1px solid #d9d9de;
     border-radius: 10px;
     &-active {
-      background: #62D9F1;
-      border: 1px solid #62D9F1;
+      background: #62d9f1;
+      border: 1px solid #62d9f1;
     }
   }
 }

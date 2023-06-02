@@ -8,20 +8,20 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 //Import pages
+import Profile from './Pages/Profile/Profile';
 import Menu from './Pages/Menu';
+import ProductPage from './Pages/ProductPage/ProductPage';
 
 //Import components
 import Header from './components/Header/Header';
 import Popup from './components/Popup/Popup';
 
-//Import Reset Styles
-import './reset.scss';
 import SingUp from './components/SingUp/SingUp';
 
 //Import Firebase
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
-import Profile from './Pages/Profile/Profile';
+
 import { userLogin, userLogout } from './store/userSlice';
 
 firebase.initializeApp(firebaseConfig);
@@ -53,6 +53,8 @@ const App = () => {
       <Header />
       <Routes>
         <Route path='/' element={<Menu />} />
+        <Route path='/product/:id' element={<ProductPage />} />
+
         <Route path='/profile'>
           <Route index element={<Profile />} />
           <Route path=':item' element={<Profile />} />

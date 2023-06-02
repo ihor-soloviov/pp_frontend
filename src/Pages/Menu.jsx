@@ -11,10 +11,8 @@ import axios from 'axios';
 import Container from '../components/Container/Container';
 const token = '436783:670964579c5655f22513de1218a29b4d';
 
-const url1 = `http://localhost:5656/api/menu.getCategories?token=${token}`;
+const proxy_url = `http://localhost:5656/`;
 // eslint-disable-next-line
-const url = `http://localhost:5656/api/menu.getProducts?token=${token}&category_id=41&type=batchtickets`;
-
 const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
 
 const Menu = () => {
@@ -24,7 +22,7 @@ const Menu = () => {
 
   const getCategories = () => {
     axios
-      .get(`${poster_url}/api/menu.getCategories?token=${token}`, {
+      .get(`${proxy_url}/api/menu.getCategories?token=${token}`, {
         headers: {
           'Access-Control-Allow-Origin': 'localhost',
           'Access-Control-Allow-Methods': 'GET, POST, PUT',
@@ -51,7 +49,7 @@ const Menu = () => {
   const getPruducts = (id) => {
     axios
       .get(
-        `${poster_url}/api/menu.getProducts?token=${token}&category_id=${id}&type=batchtickets`,
+        `${proxy_url}/api/menu.getProducts?token=${token}&category_id=${id}&type=batchtickets`,
         {
           headers: {
             'Access-Control-Allow-Origin': 'localhost',
@@ -107,6 +105,7 @@ const Menu = () => {
               ingredients={product.ingredients}
               weight={product.out}
               key={product.product_id}
+              id={product.product_id}
             />
           );
         })}
