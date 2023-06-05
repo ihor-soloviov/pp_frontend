@@ -21,10 +21,11 @@
 }
 
 .shopping-cart {
-  z-index: 200;
+  
+  z-index: 500;
   top: 0;
   right: 0;
-  position: absolute;
+  position: fixed;
   background: #ffffff;
   width: 550px;
   height: 100%;
@@ -38,6 +39,17 @@
   &__content {
     padding: 24px 0 0 0;
     border-top: 1px solid #ebebee;
+    &--empty {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+
+      h5 {
+        margin: 32px 0 16px 0;
+      }
+    }
   }
   &__preview {
     flex-shrink: 0;

@@ -11,7 +11,7 @@ import axios from 'axios';
 import Container from '../components/Container/Container';
 const token = '436783:670964579c5655f22513de1218a29b4d';
 
-const proxy_url = `http://localhost:5656/`;
+const proxy_url = `https://pelmeni-proxy.work-set.eu`;
 // eslint-disable-next-line
 const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
 
@@ -24,12 +24,16 @@ const Menu = () => {
     axios
       .get(`${proxy_url}/api/menu.getCategories?token=${token}`, {
         headers: {
-          'Access-Control-Allow-Origin': 'localhost',
+          'Access-Control-Allow-Origin': '*',
+
           'Access-Control-Allow-Methods': 'GET, POST, PUT',
           'Access-Control-Allow-Headers': 'Content-Type',
+          'Content-Type': 'application/json',
         },
       })
       .then((res) => {
+        console.log('start');
+        console.log(res);
         const data = res.data.response;
 
         const filteredCat = data.filter((obj) =>
