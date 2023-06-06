@@ -23,6 +23,7 @@ import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 
 import { userLogin, userLogout } from './store/userSlice';
+import AboutUs from './Pages/AboutUs/AboutUs';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -54,6 +55,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Menu />} />
         <Route path='/product/:id' element={<ProductPage />} />
+        <Route path='/about-us' element={<AboutUs />} />
 
         <Route path='/profile'>
           <Route index element={<Profile />} />

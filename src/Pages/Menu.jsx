@@ -22,12 +22,9 @@ const Menu = () => {
 
   const getCategories = () => {
     axios
-      .get(`${proxy_url}/api/menu.getCategories?token=${token}`, {
+      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
-
-          'Access-Control-Allow-Methods': 'GET, POST, PUT',
-          'Access-Control-Allow-Headers': 'Content-Type',
           'Content-Type': 'application/json',
         },
       })
@@ -51,20 +48,21 @@ const Menu = () => {
       .catch((err) => console.error(err));
   };
   const getPruducts = (id) => {
+    const data = JSON.stringify({ categoryId: id });
+    console.log('json', data);
     axios
       .get(
-        `${proxy_url}/api/menu.getProducts?token=${token}&category_id=${id}&type=batchtickets`,
+        `https://polarpelmeni-api.work-set.eu/api/products?categoryId=${id}`,
         {
           headers: {
-            'Access-Control-Allow-Origin': 'localhost',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT',
-            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
           },
         }
       )
       .then((res) => {
         const data = res.data.response;
-
+        console.log(data, 'res GP');
         setProducts(data);
       })
       .catch((err) => console.error(err));
