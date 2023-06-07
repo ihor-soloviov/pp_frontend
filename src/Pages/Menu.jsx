@@ -1,68 +1,65 @@
 //Import React
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 //Impost styles
-import './menu.scss';
+import "./menu.scss";
 
 //Import Components
-import ProductCard from '../components/ProductCard/ProductCard';
+import ProductCard from "../components/ProductCard/ProductCard";
 
 //Import plug
-import axios from 'axios';
-import Container from '../components/Container/Container';
-const token = '436783:670964579c5655f22513de1218a29b4d';
+import axios from "axios";
+import Container from "../components/Container/Container";
+const token = "436783:670964579c5655f22513de1218a29b4d";
 
 const proxy_url = `https://pelmeni-proxy.work-set.eu`;
 // eslint-disable-next-line
-const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
+const poster_url = "https://polar-pelmeni-odessa.joinposter.com";
 
 const Menu = () => {
-  const [currentCatId, setCurrentCatId] = useState('41');
-  const [catigories, setCatigories] = useState([]);
+  const [currentCatId, setCurrentCatId] = useState("41");
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
 
   const getCategories = () => {
     axios
       .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        console.log('start');
+        console.log("start");
         console.log(res);
         const data = res.data.response;
 
         const filteredCat = data.filter((obj) =>
-          obj.category_name.startsWith('onlineOrder:')
+          obj.category_name.startsWith("onlineOrder:")
         );
         const mapCat = filteredCat.map((el) => {
           return {
-            category_name: el.category_name.replace(/onlineOrder: /, ''),
+            category_name: el.category_name.replace(/onlineOrder: /, ""),
             category_id: el.category_id,
           };
         });
 
-        setCatigories(mapCat);
+        setCategories(mapCat);
       })
       .catch((err) => console.error(err));
   };
-  const getPruducts = (id) => {
+  const getProducts = (id) => {
     const data = JSON.stringify({ categoryId: id });
-    console.log('json', data);
+    console.log("json", data);
     axios
-      .get(
-        `https://polarpelmeni-api.work-set.eu/api/products?categoryId=${id}`,
-        {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+      .post(`https://polarpelmeni-api.work-set.eu/api/products`, data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         const data = res.data.response;
-        console.log(data, 'res GP');
+        console.log(data, "res GP");
         setProducts(data);
       })
       .catch((err) => console.error(err));
@@ -73,21 +70,21 @@ const Menu = () => {
   }, []);
 
   useEffect(() => {
-    getPruducts(currentCatId);
+    getProducts(currentCatId);
   }, [currentCatId]);
 
   return (
     <Container>
-      <div className='categories'>
-        <div className='categories__list'>
-          {catigories.map((cat) => {
+      <div className="categories">
+        <div className="categories__list">
+          {categories.map((cat) => {
             return (
               <button
                 key={cat.category_id}
                 className={`categories__btn ${
                   currentCatId === cat.category_id
-                    ? 'categories__btn-active'
-                    : ''
+                    ? "categories__btn-active"
+                    : ""
                 }`}
                 onClick={() => setCurrentCatId(cat.category_id)}
               >
@@ -97,7 +94,7 @@ const Menu = () => {
           })}
         </div>
       </div>
-      <div className='menu__products'>
+      <div className="menu__products">
         {products.map((product) => {
           return (
             <ProductCard
