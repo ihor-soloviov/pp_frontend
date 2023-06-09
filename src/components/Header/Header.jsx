@@ -201,7 +201,7 @@ const Header = () => {
                   <div className='mobile-menu__auth'>
                     {userData.isAuthenticated ? (
                       <div
-                        className='mobile-menu__profile-btn'
+                        className='mobile-menu__profile-btn mobile-menu__profile-btn--profile'
                         onClick={() => navigate('/profile/info')}
                       >
                         <div className='mobile-menu__avatar'>
@@ -216,9 +216,12 @@ const Header = () => {
                           <span className='mobile-menu__username'>
                             {userData.name}
                           </span>
-                          <div className='mobile-menu__goto'>
-                            Перейти в профіль
-                          </div>
+                          <p className='mobile-menu__phone'>
+                            {userData.phone}
+                          </p>
+                          <p className='mobile-menu__bonus'>
+                          Доступно 23 бонуси
+                          </p>
                         </div>
                       </div>
                     ) : (
@@ -246,9 +249,16 @@ const Header = () => {
                     <li className='mobile-menu__link'>
                       <Link>Бонуси</Link>
                     </li>
-                    <li className='mobile-menu__link'>
+                    <li className='mobile-menu__link mobile-menu__link--exit'>
                       <Link>Вихід</Link>
                     </li>
+                  </ul>
+
+                  <ul className="mobile-menu__nav">
+                    <li>Головна</li>
+                    <li>Меню</li>
+                    <li>Про нас</li>
+                    <li>Контакти</li>
                   </ul>
                 </nav>
               </div>
