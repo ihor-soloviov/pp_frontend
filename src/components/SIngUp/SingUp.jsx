@@ -25,21 +25,20 @@ import InputText from '../Inputs/InputText';
 //Import API
 import axios from 'axios';
 import { url } from '../../api';
+import { authModalUpdateState } from '../../store/modalsSlice';
 
 const SingUp = () => {
   //Tools
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.user);
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   //User data state
   const [step, setStep] = useState('STEP_01');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+
   const [token, setToken] = useState('');
   //Auth
   const [confirmationResult, setConfirmationResult] = useState(null);
@@ -51,7 +50,6 @@ const SingUp = () => {
   //STEP 01 Validation
   useEffect(() => {
     const cleaned = phoneNumber.replace(/\s|[()]/g, '');
-    console.log(cleaned);
 
     if (!cleaned.includes('_')) {
       setBtnNext(false);
@@ -112,16 +110,20 @@ const SingUp = () => {
     confirmationResult
       .confirm(verificationCode)
       .then((result) => {
-        console.log('handleVerificationCodeSubmit:', result);
-        const token = result.user.multiFactor.user.accessToken;
-        setToken(token.slice(0, 40));
-        setStep('STEP_03');
+        console.log('handleVerificationCodeSubmit:', result.user);
+
+        const accessToken = result.user.multiFactor.user.uid;
+
+        console.log('accessToken:', accessToken);
+
+        // setToken();
+        setToken(accessToken);
+        authentication(accessToken);
       })
       .catch((error) => {
         console.error('ERROR:', error);
       });
   };
-
   const registration = () => {
     const userData = {
       name: userName,
@@ -134,13 +136,17 @@ const SingUp = () => {
     console.log(userDataJSON);
 
     axios
-      .post(`${url}/api/registrate`, userDataJSON)
+      .post(`${url}/api/registrate`, userDataJSON, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       .then((response) => {
         const data = response.data;
 
         if (response.status === 200) {
           console.log(data);
-          console.log("user data",{
+          console.log('user data', {
             name: userName,
             phone: phoneNumber,
             email: userEmail,
@@ -154,10 +160,47 @@ const SingUp = () => {
               token: token,
             })
           );
+          dispatch(authModalUpdateState({ isOpen: false }));
           navigate('/profile/info');
         }
       })
       .catch((err) => console.error(err));
+  };
+
+  const authentication = (accessToken) => {
+    const data = {
+      token: accessToken,
+    };
+
+    console.log('AUTH TOKEN in AUTH:', data);
+    const tokenJSON = JSON.stringify(data);
+    console.log('tokenJSON:', tokenJSON);
+    axios
+      .post(`${url}/api/auth`, tokenJSON, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          dispatch(
+            userLogin({
+              name: response.data.name,
+              phone: response.data.phone,
+              email: response.data.email,
+              token: response.data.token,
+            })
+          );
+          dispatch(authModalUpdateState({ isOpen: false }));
+          navigate('/profile/info');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setStep('STEP_03');
+        // registration(accessToken);
+      });
   };
 
   //STEP 03 Validation

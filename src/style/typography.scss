@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=Unbounded:wght@200;300;400;500;600;700;800;900&display=swap');
+
+$primaryColor: #000000;
+$secondaryColor: #ffffff;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $primaryColor;
+  font-family: 'Unbounded';
+}
+
+p,
+span {
+  color: $primaryColor;
+  font-family: 'Golos Text';
+}
+
+.title {
+  &__hero {
+    font-weight: 500;
+    font-size: 45px;
+    line-height: 130%;
+    letter-spacing: -0.02em;
+  }
+  &__h1 {
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 130%;
+    letter-spacing: -0.02em;
+  }
+  &__h2 {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 130%;
+    letter-spacing: -0.02em;
+  }
+  &__h3 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 130%;
+  }
+  &__h4 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 130%;
+  }
+  &__h5 {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 130%;
+  }
+  &__h6 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+  }
+  &__h7 {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+  }
+}
+.text {
+  &__body {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+  }
+}
+
+.text {
+  &__color {
+    &--secondary {
+      color: $secondaryColor;
+    }
+  }
+}
+
+.text-price {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 130%;
+}

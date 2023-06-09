@@ -3,17 +3,37 @@ import React, { useState } from 'react';
 
 //Import Styles
 import './productCard.scss';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../store/shoppingCartSlice';
 
 const ProductCard = (props) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [count, setCount] = useState(1);
 
   return (
     <div className='product'>
       <div className='product__preview'>
-        <img src={props.preview} alt={props.name} />
+        <img
+          src={props.preview}
+          alt={props.name}
+          onClick={() => navigate(`/product/${props.id}`)}
+        />
         <button
           className='product__addToCard'
-          onClick={() => console.log('go to cart')}
+          onClick={() => {
+            dispatch(
+              addProduct({
+                name: props.name,
+                price: props.price,
+                count: count,
+                preview: props.preview,
+                weight: props.weight,
+              })
+            );
+          }}
         >
           В кошик
         </button>
