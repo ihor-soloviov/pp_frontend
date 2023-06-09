@@ -10641,6 +10641,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.43.9"
     react-input-mask: "npm:^2.0.4"
+    react-intersection-observer: "npm:^9.4.4"
     react-redux: "npm:^8.0.5"
     react-router-dom: "npm:^6.10.0"
     react-scripts: "npm:5.0.1"
@@ -11842,6 +11843,15 @@ __metadata:
     react: ">=0.14.0"
     react-dom: ">=0.14.0"
   checksum: b537d790b3fac6fed58ee0233675d21c545294d483f960f402af180e3c54d374c9f7a93190b43638649cfcc3cfdd4ef2c768696ee754f040de16fad8157987f2
+  languageName: node
+  linkType: hard
+
+"react-intersection-observer@npm:^9.4.4":
+  version: 9.4.4
+  resolution: "react-intersection-observer@npm:9.4.4"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 10d3f05dba90dbcb6e41d7f94dfaccc7f6249ae8007746b43c433f3e1d1f42a26a2a3f4325e6cb9f82d30c952f060db6644993592bae4bc5b1e0191728928f16
   languageName: node
   linkType: hard
 

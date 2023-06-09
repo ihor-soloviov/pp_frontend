@@ -10,6 +10,8 @@ import ProductCard from '../components/ProductCard/ProductCard';
 import axios from 'axios';
 import Container from '../components/Container/Container';
 import { useParams } from 'react-router-dom';
+import Banner from '../components/Banner/Banner';
+import Slider from '../components/Slider/Slider';
 const token = '436783:670964579c5655f22513de1218a29b4d';
 
 const proxy_url = `https://pelmeni-proxy.work-set.eu`;
@@ -18,7 +20,6 @@ const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
 
 const Menu = () => {
   const { id } = useParams();
-
 
   const [currentCatId, setCurrentCatId] = useState('41');
   const [categories, setCategories] = useState([]);
@@ -86,7 +87,27 @@ const Menu = () => {
 
   return (
     <Container>
+      <Slider />
+      {/* <Banner
+        title={'Polar Доставка'}
+        desc={
+          'Необов’язково покидати улюблене ліжко або ж взагалі виходити з дому, аби поласувати улюбленими пельменями!'
+        }
+      />
+      <Banner
+        title={'Любов з першого погляду існує... '}
+        desc={
+          'Насолоджуйтесь смачною їжею та будьте коханими в будь-який день'
+        }
+      />
+      <Banner
+        title={'Замовляй смаколики від Полар додому'}
+        desc={
+          'Швидко, яксіно і смачно'
+        }
+      /> */}
       <div className='categories'>
+        <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
         <div className='categories__list'>
           {categories.map((cat) => {
             return (

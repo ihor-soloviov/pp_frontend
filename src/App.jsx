@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 //Import Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Import pages
 import Profile from './Pages/Profile/Profile';
@@ -24,10 +24,15 @@ import firebase from 'firebase/compat/app';
 
 import { userLogin, userLogout } from './store/userSlice';
 import AboutUs from './Pages/AboutUs/AboutUs';
+import Order from './Pages/Order/Order';
+import Footer from './components/Footer/Footer';
+import SelectCity from './components/SelectCity/SelectCity';
+import { cityModalUpdateState } from './store/modalsSlice';
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
+  const city = useSelector((state) => state.modals.cityModal);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,24 +56,31 @@ const App = () => {
   }, [location]);
   return (
     <>
+      {city && (
+        <Popup
+          small={true}
+          closeModal={() => dispatch(cityModalUpdateState({ isOpen: false }))}
+        >
+          <SelectCity />
+        </Popup>
+      )}
+
       <Header />
       <Routes>
         <Route path='/' element={<Menu />} />
         <Route path='/menu/:id' element={<Menu />} />
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/about-us' element={<AboutUs />} />
+        <Route path='/order' element={<Order />} />
 
         <Route path='/profile'>
           <Route index element={<Profile />} />
           <Route path=':item' element={<Profile />} />
         </Route>
       </Routes>
+      <Footer />
     </>
   );
 };
 
 export default App;
-
-<Popup>
-  <SingUp />
-</Popup>;
