@@ -1,0 +1,25 @@
+.order-page {
+    &__content {
+        display: grid;
+        grid-template-columns: 60% 40%;
+        gap: 132px;
+    }
+    &__section {
+        margin-top: 40px;
+        padding-bottom: 42px;
+        border-bottom: 1px solid #EBEBEE;
+    }
+    &__section-inputs {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        &-row {
+            flex-direction: row;
+            gap: 20px;
+        }
+        .inputNumber {
+            max-width: 100%;
+        }
+    }
+}

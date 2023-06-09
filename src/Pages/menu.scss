@@ -27,6 +27,10 @@
 
 .categories {
   margin-bottom: 48px;
+  h1 {
+    text-align: center;
+    margin: 116px 0 30px 0;
+  }
   &__list {
     display: flex;
     gap: 12px;
@@ -35,7 +39,7 @@
   }
   &__btn {
     padding: 10px 16px 8px 16px;
-    text-transform: uppercase;
+    // text-transform: uppercase;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -51,6 +55,15 @@
     &-active {
       background: #62d9f1;
       border: 1px solid #62d9f1;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .categories {
+    margin-bottom: 48px;
+    h1 {
+      font-size: 28px;
     }
   }
 }

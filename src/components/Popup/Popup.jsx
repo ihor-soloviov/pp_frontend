@@ -4,10 +4,10 @@ import React from 'react';
 //Import Style
 import './popup.scss';
 
-const Popup = ({ children, closeModal }) => {
+const Popup = ({ children, closeModal, small }) => {
   return (
-    <div className='popup'>
-      <div className='popup__content'>
+    <div className={`popup ${small && 'popup-small'}`}>
+      <div className={`popup__content ${small && 'popup__content-small'}`}>
         <button className='popup__close' onClick={closeModal}>
           <svg
             width='12'

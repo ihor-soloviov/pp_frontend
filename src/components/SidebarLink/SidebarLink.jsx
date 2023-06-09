@@ -7,7 +7,7 @@ import arrow from '../../assets/arrow-left.svg';
 const SidebarLink = ({ children, index, pathlink }) => {
   const links = ['info', 'favourite', 'addresses', 'history', 'bonuses'];
   return (
-    <li className="profile_sidebar--nav__item sidebar-mobile__item--mobile" onClick={closeSidebar}>
+    <li className="profile_sidebar--nav__item sidebar-mobile__item--mobile">
       <Link
         to={`/profile/${links[index]}`}
         className={classNames("profile_sidebar--nav__link sidebar-mobile__link", {
