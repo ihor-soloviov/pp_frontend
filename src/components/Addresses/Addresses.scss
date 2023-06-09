@@ -22,9 +22,9 @@
       background: rgba(98, 217, 241, 0.1);
     }
 
-    @media (max-width: 401px) {
+    @media (max-width: 768px) {
       height: 335px;
-      width: 100%;
+      max-width: 335px;
     }
 
     &__inner {
