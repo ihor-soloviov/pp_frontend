@@ -4,6 +4,7 @@ const user = createSlice({
   name: 'user',
   initialState: {
     isAuthenticated: false,
+    city: 'Одеса',
     name: null,
     phone: null,
     email: null,
@@ -29,9 +30,13 @@ const user = createSlice({
 
       localStorage.removeItem('userData');
     },
+    updateCity(state, actions) {
+      state.city = actions.payload.city;
+      localStorage.setItem('userData', JSON.stringify(state));
+    },
   },
 });
 
-export const { userLogin, userLogout } = user.actions;
+export const { userLogin, userLogout, updateCity } = user.actions;
 
 export default user.reducer;

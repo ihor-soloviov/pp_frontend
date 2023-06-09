@@ -21,20 +21,35 @@ const ProductPage = () => {
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
 
   useEffect(() => {
+    const data = {
+      productId: id,
+    };
+
+    const dataJSON = JSON.stringify(data);
     axios
-      .get(`${proxy_url}api/menu.getProduct?token=${token}&product_id=${id}`)
+      .post(`https://polarpelmeni-api.work-set.eu/api/product`, dataJSON, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      })
       .then((res) => {
-        console.log(res.data.response);
+        console.log('pp', res);
         setProduct(res.data.response);
         axios
-          .get(
-            `${proxy_url}/api/menu.getProducts?token=${token}&category_id=${res.data.response.menu_category_id}&type=batchtickets`
-          )
+          .post(`https://polarpelmeni-api.work-set.eu/api/products`, {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+          })
           .then((res) => setRecommendationsProducts(res.data.response));
-      });
+      })
+      .catch((err) => console.error(err));
   }, [id]);
+  console.log(product);
 
-  if (product !== null) {
+  if (product !== null && product !== false) {
     return (
       <div>
         <div className='product-page'>
@@ -148,6 +163,8 @@ const ProductPage = () => {
         </div>
       </div>
     );
+  } else {
+    return 'Продукт не найден';
   }
 };
 

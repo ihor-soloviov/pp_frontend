@@ -1,0 +1,51 @@
+.slider {
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  &__track {
+    gap: 20px;
+    display: flex;
+    width: 2000px;
+    overflow-x: scroll;
+    scroll-snap-type: mandatory;
+    scroll-snap-points-x: repeat(100%);
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    width: 100%;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  &__slider {
+    flex-shrink: 0;
+  }
+  &__dots {
+    position: absolute;
+    width: fit-content;
+    display: flex;
+    gap: 8px;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 100px;
+    background: #ffffff;
+    opacity: 0.4;
+    &-active {
+      opacity: 1;
+    }
+  }
+}
+@media screen and (max-width: 786px) {
+  .slider {
+    &__wrapper {
+      width: 355px;
+      margin: 0 auto;
+    }
+  }
+}

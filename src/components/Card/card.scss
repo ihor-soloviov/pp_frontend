@@ -20,8 +20,28 @@
   }
 }
 
+@media screen and (max-width: 786px) {
+  .card {
+    &__ico {
+      width: 44px;
+      height: 44px;
+      background-color: #f3f3f5;
+      svg {
+        width: 20px;
+        height: 20px;
+        path {
+          fill: #000000;
+       
+        }
+      }
+    }
+    &__text {
+      display: none;
+    }
+  }
+}
+
 .shopping-cart {
-  
   z-index: 500;
   top: 0;
   right: 0;

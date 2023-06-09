@@ -17,6 +17,26 @@
       width: 100%;
     }
   }
+  &__left {
+    display: flex;
+    align-items: center;
+  }
+  &__selectors {
+    margin-left: 54px;
+    display: flex;
+    gap: 34px;
+  }
+  &__selector {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    span {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+    }
+  }
   &__right {
     display: flex;
     align-items: center;
@@ -102,10 +122,17 @@
 
 @media screen and (max-width: 786px) {
   .header {
+    border-bottom: 1px solid #EBEBEE;
+    padding: 18px 0;
+    &__logo {
+      width: 44px;
+      height: 44px;
+    }
     &__navigation {
       display: none;
     }
     &__right {
+      gap: 30px;
       .btn {
         display: none;
       }
@@ -114,6 +141,12 @@
       display: flex;
     }
     &__profile-btn {
+      display: none;
+    }
+    &__selectors {
+      margin-left: 24px;
+    }
+    &__selector-lang {
       display: none;
     }
   }
