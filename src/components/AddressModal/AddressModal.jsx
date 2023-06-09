@@ -7,7 +7,7 @@ import selected from "../../../src/assets/radiobuttons/selected.svg";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
+const AddressModal = ({ closeModal, isModalOpen, setIsAddressesUpdating }) => {
   const userData = useSelector((state) => state.user);
   const [selectedOption, setSelectedOption] = useState("");
   const {
@@ -21,25 +21,32 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
     setSelectedOption(event.target.value);
   };
 
-  const onSubmit = (e, data) => {
+  const onSubmit = (data, e) => formSubmit(data, e);
+
+  const formSubmit = async (data, e) => {
     e.preventDefault();
+    try {
+      const JSONdata = JSON.stringify({ token: userData.token, data });
 
-    const JSONdata = JSON.stringify({ token: userData.token, data });
+      await axios.post(
+        "https://polarpelmeni-api.work-set.eu/api/addresses",
+        JSONdata,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    axios
-      .post("https://polarpelmeni-api.work-set.eu/api/addresses", JSONdata, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => console.log(response))
-      .catch((error) => console.log(error));
-
-    createAddress(data);
-    reset();
-    setSelectedOption("");
-    closeModal();
+      setIsAddressesUpdating(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      reset();
+      setSelectedOption("");
+      closeModal();
+    }
   };
 
   return (
@@ -48,7 +55,7 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
         <Popup closeModal={closeModal}>
           <div className="modal-content">
             <h2 className="modal-content--title">Додати адресу</h2>
-            <form action="post" method="post" onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="modal-grid">
                 <div className="modal-grid--item-0 grid-item">
                   <p className="grid-item__text">Назва адреси</p>
@@ -125,7 +132,7 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
                 </div>
                 {selectedOption === "flat" && (
                   <div className="modal-grid--item-5 flat-grid">
-                    <div class="flat-grid--item-0 grid-item">
+                    <div className="flat-grid--item-0 grid-item">
                       <p className="grid-item__text">Квартира</p>
                       <label className="form_item--label">
                         <input
@@ -137,7 +144,7 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
                         />
                       </label>
                     </div>
-                    <div class="flat-grid--item-1 grid-item">
+                    <div className="flat-grid--item-1 grid-item">
                       <p className="grid-item__text">Парадна</p>
                       <label className="form_item--label">
                         <input
@@ -149,7 +156,7 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
                         />
                       </label>
                     </div>
-                    <div class="flat-grid--item-2 grid-item">
+                    <div className="flat-grid--item-2 grid-item">
                       <p className="grid-item__text">Код</p>
                       <label className="form_item--label">
                         <input
@@ -161,7 +168,7 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
                         />
                       </label>
                     </div>
-                    <div class="flat-grid--item-3 grid-item">
+                    <div className="flat-grid--item-3 grid-item">
                       <p className="grid-item__text">Поверх</p>
                       <label className="form_item--label">
                         <input

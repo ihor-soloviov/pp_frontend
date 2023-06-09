@@ -41,7 +41,7 @@ const InfoSection = ({ openSidebar, isSidebarOpened, closeSidebar }) => {
 
     return formattedNumber;
   }
-  console.log(isSidebarOpened);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,7 +51,6 @@ const InfoSection = ({ openSidebar, isSidebarOpened, closeSidebar }) => {
     e.preventDefault();
 
     try {
-      console.log(formData)
       const response = await axios.put(
         "https://polarpelmeni-api.work-set.eu/api/upload/",
         formData
@@ -60,7 +59,7 @@ const InfoSection = ({ openSidebar, isSidebarOpened, closeSidebar }) => {
       // Додаткова обробка відповіді сервера
     } catch (error) {
       console.error(error);
-      // Обробка помилки
+      // Обробка помилкита
     }
   };
 

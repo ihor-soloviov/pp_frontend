@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../ProfileGrid/ProfileGrid.scss";
 import "./Addresses.scss";
 import AddressModal from "../AddressModal/AddressModal";
@@ -12,39 +12,53 @@ const Addresses = ({ openSidebar }) => {
   const userData = useSelector((state) => state.user);
   const [isModalOpen, setModalOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
+  const [isAddressesUpdating, setIsAddressesUpdating] = useState(false)
 
-  const createAddress = (data) => {
-    axios
-      .post(
-        "https://polarpelmeni-api.work-set.eu/api/auth",
-        JSON.stringify(userData.token)
-      )
-      .then((response) => setAddresses((prev) => [...prev, response.addresses]))
-      .catch((error) => console.log(error));
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const JSONtoken = JSON.stringify({ token: userData.token });
+        const response = await axios.post(
+          "https://polarpelmeni-api.work-set.eu/api/auth",
+          JSONtoken,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        setAddresses(response.data.addresses);
+      } catch (error) {
+        console.log(error);
+      } finally{
+        setIsAddressesUpdating(false)
+      }
+    };
+  
+    fetchData();
+  }, [userData.token, isAddressesUpdating, addresses]);
 
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
+  const handleModal = () => {
+    setModalOpen((prev => !prev))
   };
   return (
     <section className="grid_layout--main addresses">
       <ProfileLink openSidebar={openSidebar}>Збережені адреси</ProfileLink>
-      <NewAddress openModal={openModal} />
+      <NewAddress openModal={handleModal} />
       <AddressModal
-        closeModal={closeModal}
+        closeModal={handleModal}
         isModalOpen={isModalOpen}
-        createAddress={createAddress}
+        setIsAddressesUpdating={setIsAddressesUpdating}
       />
       {addresses.length > 0 &&
-        addresses.map((data) => (
+        addresses.map((address) => (
           <CreatedAddress
-            key={data.addressName}
-            data={data}
-            openModal={openModal}
+            key={address.addressName}
+            address={address}
+            openModal={handleModal}
+            setIsAddressesUpdating={setIsAddressesUpdating}
           />
         ))}
     </section>
@@ -52,3 +66,5 @@ const Addresses = ({ openSidebar }) => {
 };
 
 export default Addresses;
+
+
