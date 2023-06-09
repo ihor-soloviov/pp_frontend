@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCount } from '../../store/shoppingCartSlice';
+import { removeProduct, updateCount } from '../../store/shoppingCartSlice';
 
 const ShoppingCartItem = ({ preview, name, weight, price, count, id }) => {
   const [currentCount, setCurrentCount] = useState(count);
@@ -19,7 +19,10 @@ const ShoppingCartItem = ({ preview, name, weight, price, count, id }) => {
       <div className='shopping-cart__info'>
         <div className='shopping-cart__row'>
           <h6 className='title__h8'>{name}</h6>
-          <div className='shopping-cart__remove'>
+          <div
+            className='shopping-cart__remove'
+            onClick={() => dispatch(removeProduct({ id: id }))}
+          >
             <svg
               width='12'
               height='12'

@@ -180,3 +180,9 @@
     color: #000000;
   }
 }
+
+@media screen and (max-width: 786px) {
+  .shopping-cart {
+    width: 100%;
+  }
+}

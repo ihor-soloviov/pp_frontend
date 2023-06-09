@@ -19,6 +19,11 @@ const shoppingCart = createSlice({
 
       state.products.push(product);
     },
+    removeProduct(state, actions) {
+      state.products = state.products.filter(
+        (product) => product.id !== actions.payload.id
+      );
+    },
     updateCount(state, actions) {
       // const elem = state.products.find(el => el.id === actions.payload.id)
       state.products[actions.payload.id].count = actions.payload.count;
@@ -28,6 +33,6 @@ const shoppingCart = createSlice({
   },
 });
 
-export const { addProduct, updateCount } = shoppingCart.actions;
+export const { addProduct, removeProduct, updateCount } = shoppingCart.actions;
 
 export default shoppingCart.reducer;

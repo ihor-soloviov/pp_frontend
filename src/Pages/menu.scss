@@ -18,7 +18,9 @@
   .menu {
     &__products {
       justify-content: center;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin: 0 auto;
     }
   }
 }
