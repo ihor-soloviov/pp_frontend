@@ -1,17 +1,27 @@
 //Import React
-import React from "react";
+import React, { useState } from "react";
 
 //Import Redux
 import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 //Import styles
 import "../ProfileGrid/ProfileGrid.scss";
 import "./InfoSection.scss";
 import ProfileLink from "../ProfileLink/ProfileLink";
+import axios from "axios";
 
 // Позже перенести это в редакс
-const InfoSection = ({openSidebar, isSidebarOpened, closeSidebar}) => {
+const InfoSection = ({ openSidebar, isSidebarOpened, closeSidebar }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    birth_date: "",
+    city: "",
+  });
   const userData = useSelector((state) => state.user);
+
+  console.log(localStorage)
 
   // Phone formater
   function formatPhoneNumber(phoneNumber) {
@@ -31,7 +41,28 @@ const InfoSection = ({openSidebar, isSidebarOpened, closeSidebar}) => {
 
     return formattedNumber;
   }
-  console.log(isSidebarOpened)
+  console.log(isSidebarOpened);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log(formData)
+      const response = await axios.put(
+        "https://polarpelmeni-api.work-set.eu/api/upload/",
+        formData
+      );
+      console.log(response.data);
+      // Додаткова обробка відповіді сервера
+    } catch (error) {
+      console.error(error);
+      // Обробка помилки
+    }
+  };
 
   if (!isSidebarOpened) {
     return (
@@ -85,38 +116,56 @@ const InfoSection = ({openSidebar, isSidebarOpened, closeSidebar}) => {
           <p>Доступно 23 бонуси</p>
         </div>
         <div className="profile_info--form">
-          <form action="post" method="post">
+          <form onSubmit={handleSubmit}>
             <div className="form">
               <div className="form_item">
                 <p>Ім'я</p>
                 <label className="form_item--label">
-                  <input type="text" placeholder="Ім'я" />
+                  <input
+                    type="text"
+                    placeholder="Ім'я"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
                 </label>
               </div>
-  
+
               <div className="form_item">
                 <p>Пошта</p>
                 <label className="form_item--label">
-                  <input type="text" placeholder="xxx@gmail.com" />
+                  <input
+                    type="text"
+                    placeholder="xxx@gmail.com"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
                 </label>
               </div>
-  
+
               <div className="form_item">
                 <p>Дата народження</p>
                 <label className="form_item--label">
-                  <input type="text" placeholder="Дата народження" />
+                  <input
+                    type="text"
+                    placeholder="Дата народження"
+                    name="birth_date"
+                    value={formData.birth_date}
+                    onChange={handleChange}
+                  />
                 </label>
               </div>
-  
+
               <div className="form_item">
                 <p>Місто</p>
                 <label className="form_item--label">
-                  <select>
+                  <select name="city" value={formData.city} onChange={handleChange}>
                     <option value="Оберіть місто" disabled>
                       Оберіть місто
                     </option>
-                    <option value="">Одеса</option>
-                    <option value="">Ужгород</option>
+                    <option value="Одеса">Одеса</option>
+                    <option value="Ужгород">Ужгород</option>
                   </select>
                 </label>
               </div>

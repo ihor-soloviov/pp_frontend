@@ -9,29 +9,39 @@ import ProductCard from '../components/ProductCard/ProductCard';
 //Import plug
 import axios from 'axios';
 import Container from '../components/Container/Container';
+import { useParams } from 'react-router-dom';
 const token = '436783:670964579c5655f22513de1218a29b4d';
 
-const url1 = `http://localhost:5656/api/menu.getCategories?token=${token}`;
+const proxy_url = `https://pelmeni-proxy.work-set.eu`;
 // eslint-disable-next-line
-const url = `http://localhost:5656/api/menu.getProducts?token=${token}&category_id=41&type=batchtickets`;
-
 const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
 
 const Menu = () => {
+  const { id } = useParams();
+
+
   const [currentCatId, setCurrentCatId] = useState('41');
-  const [catigories, setCatigories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    console.log('id', id);
+    if (id !== undefined) {
+      setCurrentCatId(id);
+    }
+  }, [id]);
 
   const getCategories = () => {
     axios
-      .get(`${poster_url}/api/menu.getCategories?token=${token}`, {
+      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
         headers: {
-          'Access-Control-Allow-Origin': 'localhost',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT',
-          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
         },
       })
       .then((res) => {
+        console.log('start');
+        console.log(res);
         const data = res.data.response;
 
         const filteredCat = data.filter((obj) =>
@@ -44,25 +54,23 @@ const Menu = () => {
           };
         });
 
-        setCatigories(mapCat);
+        setCategories(mapCat);
       })
       .catch((err) => console.error(err));
   };
-  const getPruducts = (id) => {
+  const getProducts = (id) => {
+    const data = JSON.stringify({ categoryId: id });
+    console.log('json', data);
     axios
-      .get(
-        `${poster_url}/api/menu.getProducts?token=${token}&category_id=${id}&type=batchtickets`,
-        {
-          headers: {
-            'Access-Control-Allow-Origin': 'localhost',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        }
-      )
+      .post(`https://polarpelmeni-api.work-set.eu/api/products`, data, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      })
       .then((res) => {
         const data = res.data.response;
-
+        console.log(data, 'res GP');
         setProducts(data);
       })
       .catch((err) => console.error(err));
@@ -73,14 +81,14 @@ const Menu = () => {
   }, []);
 
   useEffect(() => {
-    getPruducts(currentCatId);
+    getProducts(currentCatId);
   }, [currentCatId]);
 
   return (
     <Container>
       <div className='categories'>
         <div className='categories__list'>
-          {catigories.map((cat) => {
+          {categories.map((cat) => {
             return (
               <button
                 key={cat.category_id}
@@ -107,6 +115,7 @@ const Menu = () => {
               ingredients={product.ingredients}
               weight={product.out}
               key={product.product_id}
+              id={product.product_id}
             />
           );
         })}

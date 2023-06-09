@@ -1,1 +1,1 @@
-export const url = 'https://polar-pelmeni-odessa.joinposter.com/api'
+export const url = 'https://polarpelmeni-api.work-set.eu'

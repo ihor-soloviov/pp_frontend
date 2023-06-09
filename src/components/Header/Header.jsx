@@ -1,8 +1,8 @@
 //Import React
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Import Routes
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 //Import Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,16 +20,60 @@ import logo from '../../assets/logo/logo.png';
 import Card from '../Card/Card';
 import Popup from '../Popup/Popup';
 import SingUp from '../SingUp/SingUp';
+import axios from 'axios';
 
 const Header = () => {
+  const location = useLocation();
+  const [hamburger, setHamburger] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userData = useSelector((state) => state.user);
 
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setHamburger(false);
+      setDropdown(false);
+    }
+  }, [location]);
+
   //Modal
   const isModalOpen = useSelector((state) => state.modals.authModal);
 
+  const getCategories = () => {
+    axios
+      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log('start');
+
+        const data = res.data.response;
+
+        const filteredCat = data.filter((obj) =>
+          obj.category_name.startsWith('onlineOrder:')
+        );
+        const mapCat = filteredCat.map((el) => {
+          return {
+            category_name: el.category_name.replace(/onlineOrder: /, ''),
+            category_id: el.category_id,
+          };
+        });
+
+        setCategories(mapCat);
+        console.log('categories', categories);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
   return (
     <>
       {isModalOpen && (
@@ -51,7 +95,7 @@ const Header = () => {
               <Link to={'/'}>Меню</Link>
               <Link to={'/about-us'}>Про нас</Link>
               <Link to={'/contact'}>Контакти</Link>
-              <Link to={'/profile/info'}>Кабінет</Link>
+              {/* <Link to={'/profile/info'}>Кабінет</Link> */}
             </nav>
             <div className='header__right'>
               <Card />
@@ -90,8 +134,101 @@ const Header = () => {
                   }
                 />
               )}
+              <div
+                className={`header__hamburger ${
+                  hamburger && 'header__hamburger--active'
+                }`}
+                onClick={() => setHamburger(!hamburger)}
+              >
+                <span></span>
+              </div>
             </div>
           </div>
+          {hamburger && (
+            <div className='mobile-menu'>
+              <nav className='mobile-menu__navigation'>
+                <ul className='mobile-menu__menu'>
+                  <li className='mobile-menu__link'>
+                    <Link>Головна</Link>
+                  </li>
+                  <li className='mobile-menu__link '>
+                    <div
+                      className={`mobile-menu__dropdown`}
+                      onClick={() => {
+                        setDropdown(!dropdown);
+                      }}
+                    >
+                      <span>Меню</span>
+                      <svg
+                        width='12'
+                        height='8'
+                        viewBox='0 0 12 8'
+                        fill='none'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <path
+                          d='M5.99959 4.97618L10.1244 0.85141L11.3029 2.02992L5.99959 7.33326L0.696289 2.02992L1.87481 0.85141L5.99959 4.97618Z'
+                          fill='black'
+                        />
+                      </svg>
+                    </div>
+                    {dropdown && (
+                      <ul className='mobile-menu__submenu'>
+                        {categories.map((el) => {
+                          return (
+                            <Link
+                              key={el.category_id}
+                              className='mobile-menu__sublink'
+                              to={`menu/${el.category_id}`}
+                            >
+                              {el.category_name}
+                            </Link>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </li>
+                  <li className='mobile-menu__link'>
+                    <Link>Про нас</Link>
+                  </li>
+                  <li className='mobile-menu__link'>
+                    <Link>Контакти</Link>
+                  </li>
+                </ul>
+
+                <div className='mobile-menu__auth'>
+                  {userData.isAuthenticated ? (
+                    <div
+                      className='mobile-menu__profile-btn'
+                      onClick={() => navigate('/profile/info')}
+                    >
+                      <div className='mobile-menu__avatar'>
+                        <img
+                          src={
+                            'https://cdn-icons-png.flaticon.com/512/552/552721.png'
+                          }
+                          alt=''
+                        />
+                      </div>
+                      <div>
+                        <span className='mobile-menu__username'>
+                          {userData.name}
+                        </span>
+                        <div className='mobile-menu__goto'>Перейти в профіль</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <BtnMain
+                      name={'Увійти в особистий кабінет'}
+                      onClick={() =>
+                        dispatch(authModalUpdateState({ isOpen: true }))
+                      }
+                    />
+                  )}
+                </div>
+              </nav>
+            </div>
+          )}
         </Container>
       </header>
     </>

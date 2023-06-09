@@ -38,6 +38,7 @@ const SingUp = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+
   const [token, setToken] = useState('');
   //Auth
   const [confirmationResult, setConfirmationResult] = useState(null);
@@ -45,9 +46,7 @@ const SingUp = () => {
 
   //Next step
   const [btnNext, setBtnNext] = useState(true);
-  useEffect(() => {
-    console.log(token);
-  }, [token]);
+
   //STEP 01 Validation
   useEffect(() => {
     const cleaned = phoneNumber.replace(/\s|[()]/g, '');
@@ -111,11 +110,15 @@ const SingUp = () => {
     confirmationResult
       .confirm(verificationCode)
       .then((result) => {
-        console.log('handleVerificationCodeSubmit:', result);
-        const token = result.user.multiFactor.user.accessToken;
-        setToken(token.slice(0, 40));
+        console.log('handleVerificationCodeSubmit:', result.user);
 
-        authentication();
+        const accessToken = result.user.multiFactor.user.uid;
+
+        console.log('accessToken:', accessToken);
+
+        // setToken();
+        setToken(accessToken);
+        authentication(accessToken);
       })
       .catch((error) => {
         console.error('ERROR:', error);
@@ -164,14 +167,16 @@ const SingUp = () => {
       .catch((err) => console.error(err));
   };
 
-  const authentication = () => {
+  const authentication = (accessToken) => {
     const data = {
-      token: token,
+      token: accessToken,
     };
+
+    console.log('AUTH TOKEN in AUTH:', data);
     const tokenJSON = JSON.stringify(data);
     console.log('tokenJSON:', tokenJSON);
     axios
-      .get(`${url}/api/auth`, tokenJSON, {
+      .post(`${url}/api/auth`, tokenJSON, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -194,7 +199,7 @@ const SingUp = () => {
       .catch((error) => {
         console.error(error);
         setStep('STEP_03');
-        registration();
+        // registration(accessToken);
       });
   };
 
