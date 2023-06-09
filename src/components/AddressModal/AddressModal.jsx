@@ -4,8 +4,11 @@ import Popup from "../Popup/Popup";
 import "./AddressModal.scss";
 import hover from "../../../src/assets/radiobuttons/hover.svg";
 import selected from "../../../src/assets/radiobuttons/selected.svg";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
+  const userData = useSelector((state) => state.user);
   const [selectedOption, setSelectedOption] = useState("");
   const {
     register,
@@ -18,11 +21,24 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
     setSelectedOption(event.target.value);
   };
 
-  const onSubmit = (data) => {
-    console.log(data)
-    createAddress(data)
-    reset(); 
-    setSelectedOption('');
+  const onSubmit = (e, data) => {
+    e.preventDefault();
+
+    const JSONdata = JSON.stringify({ token: userData.token, data });
+
+    axios
+      .post("https://polarpelmeni-api.work-set.eu/api/addresses", JSONdata, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+
+    createAddress(data);
+    reset();
+    setSelectedOption("");
     closeModal();
   };
 
@@ -136,17 +152,25 @@ const AddressModal = ({ closeModal, isModalOpen, createAddress }) => {
                     <div class="flat-grid--item-2 grid-item">
                       <p className="grid-item__text">Код</p>
                       <label className="form_item--label">
-                        <input type="text" placeholder="Код" {...register("entranceCode", {
-                          required: true,
-                        })}/>
+                        <input
+                          type="text"
+                          placeholder="Код"
+                          {...register("entranceCode", {
+                            required: true,
+                          })}
+                        />
                       </label>
                     </div>
                     <div class="flat-grid--item-3 grid-item">
                       <p className="grid-item__text">Поверх</p>
                       <label className="form_item--label">
-                        <input type="text" placeholder="Поверх" {...register("floar", {
-                          required: true,
-                        })}/>
+                        <input
+                          type="text"
+                          placeholder="Поверх"
+                          {...register("floar", {
+                            required: true,
+                          })}
+                        />
                       </label>
                     </div>
                   </div>
