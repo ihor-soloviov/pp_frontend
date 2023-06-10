@@ -6,26 +6,24 @@ import MobileSidebar from "../MobileSidebar/MobileSidebar";
 
 export const SwitchComponents = ({
   pathlink,
-  openSidebar,
+  handleSidebar,
   isSidebarOpened,
-  closeSidebar,
 }) => {
   const renderComponent = () => {
     switch (pathlink) {
       case "info":
         return (
           <InfoSection
-            openSidebar={openSidebar}
+            handleSidebar={handleSidebar}
             isSidebarOpened={isSidebarOpened}
-            closeSidebar={closeSidebar}
           />
         );
       case "addresses":
-        return <Addresses openSidebar={openSidebar}/>;
+        return <Addresses handleSidebar={handleSidebar} />;
       case "history":
-        return <Orders openSidebar={openSidebar} />;
+        return <Orders handleSidebar={handleSidebar} />;
       case "":
-        return <MobileSidebar closeSidebar={closeSidebar} />;
+        return <MobileSidebar handleSidebar={handleSidebar} />;
       default:
         return ":)";
     }

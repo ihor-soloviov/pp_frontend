@@ -8,7 +8,7 @@ import ProfileLink from "../ProfileLink/ProfileLink";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const Addresses = ({ openSidebar }) => {
+const Addresses = ({ handleSidebar }) => {
   const userData = useSelector((state) => state.user);
   const [isModalOpen, setModalOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
@@ -45,7 +45,7 @@ const Addresses = ({ openSidebar }) => {
   };
   return (
     <section className="grid_layout--main addresses">
-      <ProfileLink openSidebar={openSidebar}>Збережені адреси</ProfileLink>
+      <ProfileLink handleSidebar={handleSidebar}>Збережені адреси</ProfileLink>
       <NewAddress openModal={handleModal} />
       <AddressModal
         closeModal={handleModal}

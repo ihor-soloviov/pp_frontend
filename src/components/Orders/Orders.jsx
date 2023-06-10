@@ -4,7 +4,7 @@ import "./Orders.scss";
 import OrderModal from "../OrderModal/OrderModal";
 import ProfileLink from "../ProfileLink/ProfileLink";
 
-const Orders = ({openSidebar}) => {
+const Orders = ({handleSidebar}) => {
   const [isMainModalOpen, setMainModalOpen] = useState(false);
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
@@ -26,7 +26,7 @@ const Orders = ({openSidebar}) => {
   return (
     <>
       <section className="grid_layout--main orders">
-      <ProfileLink openSidebar={openSidebar}>
+      <ProfileLink handleSidebar={handleSidebar}>
         Історія замовлень
       </ProfileLink>
         <div className="order">

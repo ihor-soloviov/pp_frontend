@@ -6,17 +6,15 @@ import { useLocation } from 'react-router-dom';
 import { SwitchComponents } from '../../components/SwitchComponents/SwitchComponents';
 
 const Profile = () => {
-  const [isSidebarOpened, setIsSidebarOpened] = useState(false);
+  const [isSidebarOpened, setIsSidebarOpened] = useState(true);
   const location = useLocation();
   const pathlink = location.pathname.replace('/profile/', '');
 
-  const openSidebar = () => {
-    setIsSidebarOpened(true);
+  const handleSidebar = () => {
+    setIsSidebarOpened((prev => !prev));
   };
 
-  const closeSidebar = () => {
-    setIsSidebarOpened(false);
-  };
+  console.log(isSidebarOpened)
 
   return (
     <>
@@ -25,9 +23,8 @@ const Profile = () => {
           <Sidebar pathlink={pathlink} />
           <SwitchComponents
             pathlink={pathlink}
-            openSidebar={openSidebar}
+            handleSidebar={handleSidebar}
             isSidebarOpened={isSidebarOpened}
-            closeSidebar={closeSidebar}
           />
         </ProfileGrid>
       </Container>

@@ -4,12 +4,13 @@ import React from "react";
 import { Link} from "react-router-dom";
 import arrow from '../../assets/arrow-left.svg';
 
-const SidebarLink = ({ children, index, pathlink }) => {
+const SidebarLink = ({ children, index, pathlink, handleSidebar }) => {
   const links = ['info', 'favourite', 'addresses', 'history', 'bonuses'];
   return (
     <li className="profile_sidebar--nav__item sidebar-mobile__item--mobile">
       <Link
         to={`/profile/${links[index]}`}
+        onClick={handleSidebar}
         className={classNames("profile_sidebar--nav__link sidebar-mobile__link", {
           sign_out: children === "Вихід",
         }, {active: pathlink === links[index]})}

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 //Import Redux
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 
 //Import styles
 import '../ProfileGrid/ProfileGrid.scss';
@@ -12,7 +11,7 @@ import ProfileLink from '../ProfileLink/ProfileLink';
 import axios from 'axios';
 
 // Позже перенести это в редакс
-const InfoSection = ({ openSidebar, isSidebarOpened, closeSidebar }) => {
+const InfoSection = ({ handleSidebar, isSidebarOpened }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -52,17 +51,16 @@ const InfoSection = ({ openSidebar, isSidebarOpened, closeSidebar }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(
+      await axios.put(
         'https://polarpelmeni-api.work-set.eu/api/upload/',
         formData
       );
-      console.log(response.data);
-      // Додаткова обробка відповіді сервера
     } catch (error) {
       console.error(error);
-      // Обробка помилкита
     }
   };
+
+  console.log(isSidebarOpened)
 
   if (!isSidebarOpened) {
     return (
@@ -88,7 +86,7 @@ const InfoSection = ({ openSidebar, isSidebarOpened, closeSidebar }) => {
             </a>
           </div>
         </div>
-        <ProfileLink openSidebar={openSidebar}>Інформація</ProfileLink>
+        <ProfileLink handleSidebar={handleSidebar}>Інформація</ProfileLink>
         <div className='profile_info--head__mobile'>
           <img
             src='https://via.placeholder.com/70x70'

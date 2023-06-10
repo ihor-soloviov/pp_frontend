@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import cross from "../../../src/assets/Vector.svg";
 
-const MobileSidebar = ({ closeSidebar }) => {
+const MobileSidebar = ({ handleSidebar }) => {
   const userData = useSelector((state) => state.user);
   const sidebar = [
     "Інформація",
@@ -36,7 +36,7 @@ const MobileSidebar = ({ closeSidebar }) => {
             <Link
               to="/"
               className="profile_link--mobile--button mobile-inner__cross"
-              onClick={closeSidebar}
+              onClick={handleSidebar}
             >
               <img src={cross} alt="cross" />
             </Link>
@@ -44,7 +44,7 @@ const MobileSidebar = ({ closeSidebar }) => {
         </div>
         <ul className="sidebar-mobile__list">
           {sidebar.map((el, index) => (
-            <SidebarLink index={index} closeSidebar={closeSidebar}>
+            <SidebarLink key={index} index={index} handleSidebar={handleSidebar}>
               {el}
             </SidebarLink>
           ))}
