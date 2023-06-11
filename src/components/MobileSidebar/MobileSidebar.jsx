@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import cross from "../../../src/assets/Vector.svg";
 
 const MobileSidebar = ({ handleSidebar }) => {
+
   const userData = useSelector((state) => state.user);
-  const sidebar = [
+  const sidebarLinks = [
     "Інформація",
     "Улюблені блюда",
     "Збережені адреси",
@@ -16,7 +17,7 @@ const MobileSidebar = ({ handleSidebar }) => {
   ];
   return (
     <>
-      <section className="sidebar-mobile">
+      <section className="sidebar-mobile animate">
         <div className="profile_info--head__mobile sidebar-mobile__header">
           <div className="mobile-inner">
             <img
@@ -43,8 +44,12 @@ const MobileSidebar = ({ handleSidebar }) => {
           </div>
         </div>
         <ul className="sidebar-mobile__list">
-          {sidebar.map((el, index) => (
-            <SidebarLink key={index} index={index} handleSidebar={handleSidebar}>
+          {sidebarLinks.map((el, index) => (
+            <SidebarLink
+              key={index}
+              index={index}
+              handleSidebar={handleSidebar}
+            >
               {el}
             </SidebarLink>
           ))}

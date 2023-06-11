@@ -21,7 +21,7 @@
       color: inherit;
       transition: all 0.8s;
 
-      @media (min-width: 401px) {
+      @media (min-width: 768px) {
         &:hover {
           border-radius: 10px;
           color: black;
@@ -38,7 +38,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  @media (min-width: 401px) {
+  @media (min-width: 768px) {
     display: none;
   }
 
@@ -50,12 +50,12 @@
   }
 
   &__item--arrow {
-    @media (min-width: 401px) {
+    @media (min-width: 768px) {
         display: none;
     }
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 768px) {
     &__item--mobile {
       display: flex;
       margin-bottom: 0;
@@ -68,7 +68,7 @@
   }
 
   &__link {
-    @media (max-width:401px) {
+    @media (max-width:701px) {
       width: 100%;
       padding-left: 0;
     }
@@ -81,7 +81,7 @@
 
   &__footer {
     display: none;
-    @media (max-width: 401px) {
+    @media (max-width: 768px) {
       display: block;
       margin-bottom: 40px;
 

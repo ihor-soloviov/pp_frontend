@@ -1,6 +1,15 @@
 .addresses {
   display: flex;
-  gap: 20px;
+
+  &_inner {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    @media (min-width: 900px) {
+      justify-content: flex-start;
+    }
+  }
 
   &_new {
     display: flex;
@@ -12,8 +21,8 @@
     // object-fit: contain;
     border: 1px dashed #d9d9de;
     border-radius: 7px;
-    width: 315px;
-    height: 315px;
+    height: 335px;
+    width: 335px;
     order: 2;
 
     transition: background 0.4s ease-in-out;
@@ -23,7 +32,6 @@
     }
 
     @media (max-width: 768px) {
-      height: 335px;
       max-width: 335px;
     }
 
@@ -56,10 +64,11 @@
     display: flex;
     border: 1px solid #ebebee;
     border-radius: 15px;
-    height: 315px;
+    height: 335px;
+    width: 335px;
 
-    @media (max-width: 400px) {
-      height: 335px;
+    @media (max-width: 768px) {
+      height: 260px;
       order: 1;
     }
 
@@ -70,7 +79,7 @@
       flex-direction: column;
       justify-content: space-between;
 
-      @media (max-width: 400px) {
+      @media (max-width: 768px) {
         width: 100%;
         padding: 12px 0;
       }

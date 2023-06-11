@@ -3,11 +3,12 @@ import InfoSection from "../InfoSection/InfoSection";
 import Addresses from "../Addresses/Adresses";
 import Orders from "../Orders/Orders";
 import MobileSidebar from "../MobileSidebar/MobileSidebar";
+import ComingSoon from "../ComingSoon/ComingSoon";
 
 export const SwitchComponents = ({
   pathlink,
   handleSidebar,
-  isSidebarOpened,
+  isSidebarClosed,
 }) => {
   const renderComponent = () => {
     switch (pathlink) {
@@ -15,7 +16,7 @@ export const SwitchComponents = ({
         return (
           <InfoSection
             handleSidebar={handleSidebar}
-            isSidebarOpened={isSidebarOpened}
+            isSidebarClosed={isSidebarClosed}
           />
         );
       case "addresses":
@@ -25,7 +26,7 @@ export const SwitchComponents = ({
       case "":
         return <MobileSidebar handleSidebar={handleSidebar} />;
       default:
-        return ":)";
+        return <ComingSoon handleSidebar={handleSidebar} />;
     }
   };
 

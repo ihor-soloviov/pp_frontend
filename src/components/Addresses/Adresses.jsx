@@ -12,7 +12,7 @@ const Addresses = ({ handleSidebar }) => {
   const userData = useSelector((state) => state.user);
   const [isModalOpen, setModalOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
-  const [isAddressesUpdating, setIsAddressesUpdating] = useState(false)
+  const [isAddressesUpdating, setIsAddressesUpdating] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,43 +28,43 @@ const Addresses = ({ handleSidebar }) => {
             },
           }
         );
-  
+
         setAddresses(response.data.addresses);
       } catch (error) {
         console.log(error);
-      } finally{
-        setIsAddressesUpdating(false)
+      } finally {
+        setIsAddressesUpdating(false);
       }
     };
-  
+
     fetchData();
   }, [userData.token, isAddressesUpdating, addresses]);
 
   const handleModal = () => {
-    setModalOpen((prev => !prev))
+    setModalOpen((prev) => !prev);
   };
   return (
     <section className="grid_layout--main addresses">
       <ProfileLink handleSidebar={handleSidebar}>Збережені адреси</ProfileLink>
-      <NewAddress openModal={handleModal} />
-      <AddressModal
-        closeModal={handleModal}
-        isModalOpen={isModalOpen}
-        setIsAddressesUpdating={setIsAddressesUpdating}
-      />
-      {addresses.length > 0 &&
-        addresses.map((address) => (
-          <CreatedAddress
-            key={address.addressName}
-            address={address}
-            openModal={handleModal}
-            setIsAddressesUpdating={setIsAddressesUpdating}
-          />
-        ))}
+      <div className="addresses_inner">
+        <NewAddress openModal={handleModal} />
+        <AddressModal
+          closeModal={handleModal}
+          isModalOpen={isModalOpen}
+          setIsAddressesUpdating={setIsAddressesUpdating}
+        />
+        {addresses.length > 0 &&
+          addresses.map((address) => (
+            <CreatedAddress
+              key={address.addressName}
+              address={address}
+              openModal={handleModal}
+              setIsAddressesUpdating={setIsAddressesUpdating}
+            />
+          ))}
+      </div>
     </section>
   );
 };
 
 export default Addresses;
-
-

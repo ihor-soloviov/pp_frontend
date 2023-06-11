@@ -11,7 +11,7 @@ import ProfileLink from '../ProfileLink/ProfileLink';
 import axios from 'axios';
 
 // Позже перенести это в редакс
-const InfoSection = ({ handleSidebar, isSidebarOpened }) => {
+const InfoSection = ({ handleSidebar, isSidebarClosed }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -60,9 +60,9 @@ const InfoSection = ({ handleSidebar, isSidebarOpened }) => {
     }
   };
 
-  console.log(isSidebarOpened)
+  console.log(isSidebarClosed)
 
-  if (!isSidebarOpened) {
+  if (!isSidebarClosed) {
     return (
       <section className='grid_layout--main profile_info'>
         <div className='profile_info--head'>
@@ -171,7 +171,7 @@ const InfoSection = ({ handleSidebar, isSidebarOpened }) => {
               </div>
             </div>
             <div className='form-button'>
-              <button className='btn-main ' type='submit'>
+              <button className='btn-main ' type='submit' style={{justifyContent: 'center'}} >
                 Зберегти зміни
               </button>
             </div>
