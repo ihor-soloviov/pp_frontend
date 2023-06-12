@@ -16,15 +16,14 @@ const SidebarLink = ({
     "addresses",
     "history",
     "bonuses",
-    "exit",
+    "signout",
   ];
 
-  const sidebarLink = children === "Вихід" ? "/" : `/profile/${links[index]}`;
 
   return (
     <li className="profile_sidebar--nav__item sidebar-mobile__item--mobile">
       <Link
-        to={sidebarLink}
+        to={`/profile/${links[index]}`}
         onClick={handleSidebar}
         className={classNames(
           "profile_sidebar--nav__link sidebar-mobile__link",

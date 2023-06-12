@@ -45,6 +45,7 @@ const App = () => {
       dispatch(userLogin(dataParse));
     }
   };
+
   useEffect(() => {
     loadUserDataFromLocalStorage();
   }, []);

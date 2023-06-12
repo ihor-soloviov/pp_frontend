@@ -60,8 +60,8 @@ const Banner = ({ title, desc, image_mob, image_desktop, index }) => {
           <img src={image} alt="" />
         </div> */}
         <picture className='banner__preview'>
-          <source media='(max-width: 786px)' srcset={image_mob} />
-          <source media='(min-width: 787px)' srcset={image_desktop} />
+          <source media='(max-width: 786px)' srcSet={image_mob} />
+          <source media='(min-width: 787px)' srcSet={image_desktop} />
           <img src={image_mob} alt='' />
         </picture>
       </div>
