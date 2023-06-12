@@ -1,11 +1,12 @@
 //Import React
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Import Styles
 import './productCard.scss';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../store/shoppingCartSlice';
+import { addToFavorit, removeFromFavorit } from '../../store/userSlice';
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -13,11 +14,42 @@ const ProductCard = (props) => {
 
   const [count, setCount] = useState(1);
   const [liked, setLiked] = useState(false);
+  const favoritList = useSelector((state) => state.user.favoritProducts);
+
+  useEffect(() => {
+    if (favoritList.some((el) => el.id === props.id)) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+  }, [favoritList]);
 
   return (
     <div className='product'>
       <div className='product__cta'>
-        <div className={`product__like ${liked && 'product__like-active'}`} onClick={() => setLiked(!liked)}>
+        <div
+          className={`product__like ${
+            liked === true && 'product__like-active'
+          }`}
+          onClick={() => {
+            // setLiked(!liked);
+            if(favoritList.some((el) => el.id === props.id)) {
+              dispatch(removeFromFavorit({ id: props.id }));
+            } else {
+              dispatch(
+                addToFavorit({
+                  name: props.name,
+                  price: props.price,
+                  count: count,
+                  preview: props.preview,
+                  weight: props.weight,
+                  id: props.id,
+                })
+              );
+            }
+           
+          }}
+        >
           <svg
             width='16'
             height='16'

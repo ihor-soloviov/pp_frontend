@@ -9,7 +9,7 @@ const user = createSlice({
     phone: null,
     email: null,
     token: null,
-    favoritProducts: []
+    favoritProducts: [],
   },
   reducers: {
     userLogin(state, actions) {
@@ -36,11 +36,47 @@ const user = createSlice({
       localStorage.setItem('userData', JSON.stringify(state));
     },
     addToFavorit(state, actions) {
-      
-    }
+      const product = {
+        preview: actions.payload.preview,
+        name: actions.payload.name,
+        price: actions.payload.price,
+        count: 1,
+        weight: actions.payload.weight,
+        id: actions.payload.id,
+      };
+
+      state.favoritProducts.push(product);
+
+      if (state.isAuthenticated) {
+        localStorage.setItem(
+          'favoritProducts',
+          JSON.stringify(state.favoritProducts)
+        );
+      }
+    },
+    removeFromFavorit(state, actions) {
+      const productIdToRemove = actions.payload.id;
+
+      state.favoritProducts = state.favoritProducts.filter(
+        (product) => product.id !== productIdToRemove
+      );
+
+      if (state.isAuthenticated) {
+        localStorage.setItem(
+          'favoritProducts',
+          JSON.stringify(state.favoritProducts)
+        );
+      }
+    },
   },
 });
 
-export const { userLogin, userLogout, updateCity } = user.actions;
+export const {
+  userLogin,
+  userLogout,
+  updateCity,
+  addToFavorit,
+  removeFromFavorit,
+} = user.actions;
 
 export default user.reducer;
