@@ -1,6 +1,33 @@
 .product {
   max-width: 315px;
+  position: relative;
 
+  &__cta {
+    z-index: 200;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+  &__like {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+    transition: linear .2s;
+    &-active {
+      background: rgba(255, 255, 255, 1);
+      svg {
+        fill: #df643a;
+        path {
+          stroke: #df643a;
+        }
+      }
+    }
+  }
   &__preview {
     max-width: 315px;
     aspect-ratio: 1 / 1;
@@ -146,7 +173,7 @@
         height: 100%;
       }
     }
-    &__addToCard  {
+    &__addToCard {
       bottom: 0;
       padding: 15px 0;
     }
