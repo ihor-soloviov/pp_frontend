@@ -30,6 +30,19 @@
     right: 0;
     margin: 0 auto;
   }
+  &__btns {
+    z-index: 300;
+    display: flex;
+    width: 95%;
+    height: fit-content;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  }
   &__dot {
     width: 6px;
     height: 6px;
