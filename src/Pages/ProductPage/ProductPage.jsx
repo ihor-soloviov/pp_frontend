@@ -10,10 +10,13 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ArrowBtn from '../../components/ArrowBtn/ArrowBtn';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../store/shoppingCartSlice';
 const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
 const token = '436783:670964579c5655f22513de1218a29b4d';
 const ProductPage = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const [count, setCount] = useState(1);
 
@@ -91,7 +94,18 @@ const ProductPage = () => {
                 <div className='product-page__order'>
                   <button
                     className='btn btn-main'
-                    onClick={() => console.log('go to cart')}
+                    onClick={() => {
+                      console.log(product);
+                      dispatch(
+                        addProduct({
+                          name: product.product_name,
+                          price: parseInt(product.price[1].slice(0, -2)),
+                          count: count,
+                          preview: proxy_url + product.photo_origin,
+                          weight: product.cost,
+                        })
+                      );
+                    }}
                   >
                     Додати в кошик (
                     {parseInt(product.price[1].slice(0, -2)) * count} ₴)
