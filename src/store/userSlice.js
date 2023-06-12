@@ -9,6 +9,7 @@ const user = createSlice({
     phone: null,
     email: null,
     token: null,
+    favoritProducts: []
   },
   reducers: {
     userLogin(state, actions) {
@@ -34,6 +35,9 @@ const user = createSlice({
       state.city = actions.payload.city;
       localStorage.setItem('userData', JSON.stringify(state));
     },
+    addToFavorit(state, actions) {
+      
+    }
   },
 });
 

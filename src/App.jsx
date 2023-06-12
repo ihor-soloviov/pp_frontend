@@ -1,33 +1,33 @@
 //Import React
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 //Import Routing
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 //Import Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 //Import pages
-import Profile from "./Pages/Profile/Profile";
-import Menu from "./Pages/Menu";
-import ProductPage from "./Pages/ProductPage/ProductPage";
+import Profile from './Pages/Profile/Profile';
+import Menu from './Pages/Menu';
+import ProductPage from './Pages/ProductPage/ProductPage';
 
 //Import components
-import Header from "./components/Header/Header";
-import Popup from "./components/Popup/Popup";
+import Header from './components/Header/Header';
+import Popup from './components/Popup/Popup';
 
-import SingUp from "./components/SingUp/SingUp";
+import SingUp from './components/SingUp/SingUp';
 
 //Import Firebase
-import { firebaseConfig } from "./firebaseConfig";
-import firebase from "firebase/compat/app";
+import { firebaseConfig } from './firebaseConfig';
+import firebase from 'firebase/compat/app';
 
-import { userLogin, userLogout } from "./store/userSlice";
-import AboutUs from "./Pages/AboutUs/AboutUs";
-import Order from "./Pages/Order/Order";
-import Footer from "./components/Footer/Footer";
-import SelectCity from "./components/SelectCity/SelectCity";
-import { cityModalUpdateState } from "./store/modalsSlice";
+import { userLogin, userLogout } from './store/userSlice';
+import AboutUs from './Pages/AboutUs/AboutUs';
+import Order from './Pages/Order/Order';
+import Footer from './components/Footer/Footer';
+import SelectCity from './components/SelectCity/SelectCity';
+import { cityModalUpdateState } from './store/modalsSlice';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -39,7 +39,7 @@ const App = () => {
   const navigate = useNavigate();
 
   const loadUserDataFromLocalStorage = () => {
-    const data = localStorage.getItem("userData");
+    const data = localStorage.getItem('userData');
     if (data) {
       const dataParse = JSON.parse(data);
       dispatch(userLogin(dataParse));
@@ -51,9 +51,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (location.pathname === "/profile/signout") {
+    if (location.pathname === '/profile/signout') {
       dispatch(userLogout());
-      navigate("/");
+      navigate('/');
     }
   }, [location]);
 
@@ -61,7 +61,7 @@ const App = () => {
     // Функція яка скриває хедер в профілі на мобілках та таблетах
     const handleWindowResize = () => {
       const maxWidth = 768;
-      const isProfileItemPage = location.pathname.includes("/profile");
+      const isProfileItemPage = location.pathname.includes('/profile');
 
       if (window.innerWidth <= maxWidth && isProfileItemPage) {
         setShowHeader(false);
@@ -72,10 +72,14 @@ const App = () => {
 
     handleWindowResize(); // Check initial state
 
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
+  }, [location]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
   }, [location]);
 
   return (
@@ -91,15 +95,15 @@ const App = () => {
 
       {showHeader && <Header />}
       <Routes>
-        <Route path="/" element={<Menu />} />
-        <Route path="/menu/:id" element={<Menu />} />
-        <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/order" element={<Order />} />
+        <Route path='/' element={<Menu />} />
+        <Route path='/menu/:id' element={<Menu />} />
+        <Route path='/product/:id' element={<ProductPage />} />
+        <Route path='/about-us' element={<AboutUs />} />
+        <Route path='/order' element={<Order />} />
 
-        <Route path="/profile">
+        <Route path='/profile'>
           <Route index element={<Profile />} />
-          <Route path=":item" element={<Profile />} />
+          <Route path=':item' element={<Profile />} />
         </Route>
       </Routes>
       <Footer />
