@@ -10,7 +10,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ArrowBtn from '../../components/ArrowBtn/ArrowBtn';
-const proxy_url = `http://localhost:5656/`;
+const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
 const token = '436783:670964579c5655f22513de1218a29b4d';
 const ProductPage = () => {
   const { id } = useParams();
@@ -36,13 +36,20 @@ const ProductPage = () => {
       .then((res) => {
         console.log('pp', res);
         setProduct(res.data.response);
+        const menu_category_id = JSON.stringify({
+          categoryId: res.data.response.menu_category_id,
+        });
         axios
-          .post(`https://polarpelmeni-api.work-set.eu/api/products`, {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-          })
+          .post(
+            `https://polarpelmeni-api.work-set.eu/api/products`,
+            menu_category_id,
+            {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+              },
+            }
+          )
           .then((res) => setRecommendationsProducts(res.data.response));
       })
       .catch((err) => console.error(err));
