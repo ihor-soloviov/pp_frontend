@@ -1,0 +1,33 @@
+.popup-actions {
+  background: #12130f;
+  border-radius: 10px;
+  padding: 10px 20px;
+  width: fit-content;
+  position: fixed;
+  bottom: 48px;
+  right: 48px;
+  z-index: 1000;
+  &__ico {
+    line-height: 0;
+  }
+  &__content {
+    display: flex;
+    align-items: center;
+    p {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+      /* identical to box height, or 24px */
+
+      color: #ffffff;
+      padding: 0 12px;
+    }
+  }
+  &__close {
+    cursor: pointer;
+    transition: linear 0.3s;
+    &:hover {
+        opacity: 0.8;
+    }
+  }
+}

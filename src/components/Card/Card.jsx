@@ -130,6 +130,7 @@ const Card = () => {
                         weight={item.weight}
                         count={item.count}
                         id={item.id}
+                        cart_index={item.cart_index}
                       />
                     );
                   })}

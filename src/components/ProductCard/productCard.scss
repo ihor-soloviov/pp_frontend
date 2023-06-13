@@ -17,7 +17,7 @@
     height: 40px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 100px;
-    transition: linear .2s;
+    transition: linear 0.2s;
     &-active {
       background: rgba(255, 255, 255, 1);
       svg {
@@ -59,6 +59,32 @@
 
     padding: 8px 0;
     color: #ffffff;
+    &:hover {
+      background: #12130f;
+    }
+    &-active {
+    }
+  }
+  &__inCart {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0;
+    p {
+      font-size: 16px;
+      line-height: 150%;
+      /* identical to box height, or 24px */
+
+      padding: 8px 0;
+      color: #92939a;
+    }
     &:hover {
       background: #12130f;
     }

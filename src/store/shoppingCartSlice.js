@@ -13,7 +13,8 @@ const shoppingCart = createSlice({
         price: actions.payload.price,
         count: actions.payload.count,
         weight: actions.payload.weight,
-        id: state.products.length,
+        id: actions.payload.id,
+        cart_index: state.products.length,
       };
       product.totalPrice = product.price * product.count;
 
@@ -25,10 +26,13 @@ const shoppingCart = createSlice({
       );
     },
     updateCount(state, actions) {
-      // const elem = state.products.find(el => el.id === actions.payload.id)
-      state.products[actions.payload.id].count = actions.payload.count;
-      state.products[actions.payload.id].totalPrice =
-        state.products[actions.payload.id].price * actions.payload.count;
+      const elem = state.products.find(
+        (el) => el.cart_index === actions.payload.cart_index
+      );
+      state.products[actions.payload.cart_index].count = actions.payload.count;
+      state.products[actions.payload.cart_index].totalPrice =
+        state.products[actions.payload.cart_index].price *
+        actions.payload.count;
     },
   },
 });
