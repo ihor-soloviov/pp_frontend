@@ -199,7 +199,7 @@ const Header = () => {
               <div className='mobile-menu'>
                 <nav className='mobile-menu__navigation'>
                   <div className='mobile-menu__auth'>
-                    {userData.isAuthenticated ? (
+                    {userData.isAuthenticated === true? (
                       <div
                         className='mobile-menu__profile-btn mobile-menu__profile-btn--profile'
                         onClick={() => navigate('/profile/info')}

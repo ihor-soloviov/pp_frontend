@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../store/shoppingCartSlice';
 import { addToFavorit, removeFromFavorit } from '../../store/userSlice';
+import { setActions } from '../../store/popupActionsSlice';
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -14,15 +15,30 @@ const ProductCard = (props) => {
 
   const [count, setCount] = useState(1);
   const [liked, setLiked] = useState(false);
+  const [inCart, setInCart] = useState(false);
   const favoritList = useSelector((state) => state.user.favoritProducts);
+  const cart = useSelector((state) => state.shoppingCart.products);
 
   useEffect(() => {
-    if (favoritList.some((el) => el.id === props.id)) {
-      setLiked(true);
-    } else {
-      setLiked(false);
+    if (favoritList) {
+      if (favoritList.some((el) => el.id === props.id)) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
     }
   }, [favoritList]);
+
+  useEffect(() => {
+    console.log(cart);
+    if (cart) {
+      if (cart.some((el) => el.id === props.id)) {
+        setInCart(true);
+      } else {
+        setInCart(false);
+      }
+    }
+  }, [cart]);
 
   return (
     <div className='product'>
@@ -32,10 +48,13 @@ const ProductCard = (props) => {
             liked === true && 'product__like-active'
           }`}
           onClick={() => {
-            // setLiked(!liked);
-            if(favoritList.some((el) => el.id === props.id)) {
+            if (favoritList.some((el) => el.id === props.id)) {
               dispatch(removeFromFavorit({ id: props.id }));
             } else {
+              dispatch(setActions({ action: 'addToFavorit' }));
+              setTimeout(() => {
+                dispatch(setActions({ action: '' }));
+              }, 2000);
               dispatch(
                 addToFavorit({
                   name: props.name,
@@ -47,7 +66,6 @@ const ProductCard = (props) => {
                 })
               );
             }
-           
           }}
         >
           <svg
@@ -72,22 +90,63 @@ const ProductCard = (props) => {
           alt={props.name}
           onClick={() => navigate(`/product/${props.id}`)}
         />
-        <button
-          className='product__addToCard'
-          onClick={() => {
-            dispatch(
-              addProduct({
-                name: props.name,
-                price: props.price,
-                count: count,
-                preview: props.preview,
-                weight: props.weight,
-              })
-            );
-          }}
-        >
-          В кошик
-        </button>
+        {inCart === true ? (
+          <button
+            className='product__inCart'
+            // onClick={() => {
+            //   dispatch(
+            //     addProduct({
+            //       name: props.name,
+            //       price: props.price,
+            //       count: count,
+            //       preview: props.preview,
+            //       weight: props.weight,
+            //       id: props.id,
+            //     })
+            //   );
+            //   dispatch(setActions({ action: 'addToCard' }));
+            //   setTimeout(() => {
+            //     dispatch(setActions({ action: '' }));
+            //   }, 2000);
+            // }}
+          >
+            <svg
+              width='16'
+              height='16'
+              viewBox='0 0 16 16'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                d='M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z'
+                fill='#92939A'
+              />
+            </svg>
+            <p> Додано до кошику</p>
+          </button>
+        ) : (
+          <button
+            className='product__addToCard'
+            onClick={() => {
+              dispatch(
+                addProduct({
+                  name: props.name,
+                  price: props.price,
+                  count: count,
+                  preview: props.preview,
+                  weight: props.weight,
+                  id: props.id,
+                })
+              );
+              dispatch(setActions({ action: 'addToCard' }));
+              setTimeout(() => {
+                dispatch(setActions({ action: '' }));
+              }, 2000);
+            }}
+          >
+            В кошик
+          </button>
+        )}
       </div>
       <div className='product__info'>
         <p className='product__weight'>{props.weight} г</p>

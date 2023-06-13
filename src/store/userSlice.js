@@ -68,6 +68,11 @@ const user = createSlice({
         );
       }
     },
+    loadFromLocalStorage(state) {
+      const favoritProducts = localStorage.getItem('favoritProducts');
+      const dataParse = JSON.parse(favoritProducts);
+      state.favoritProducts = dataParse;
+    },
   },
 });
 
@@ -77,6 +82,7 @@ export const {
   updateCity,
   addToFavorit,
   removeFromFavorit,
+  loadFromLocalStorage,
 } = user.actions;
 
 export default user.reducer;

@@ -22,33 +22,46 @@ import SingUp from './components/SingUp/SingUp';
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 
-import { userLogin, userLogout } from './store/userSlice';
+import { loadFromLocalStorage, userLogin, userLogout } from './store/userSlice';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import Order from './Pages/Order/Order';
 import Footer from './components/Footer/Footer';
 import SelectCity from './components/SelectCity/SelectCity';
 import { cityModalUpdateState } from './store/modalsSlice';
+import PopupActions from './components/PopupActions/PopupActions';
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
   const [showHeader, setShowHeader] = useState(true);
   const city = useSelector((state) => state.modals.cityModal);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
   const loadUserDataFromLocalStorage = () => {
     const data = localStorage.getItem('userData');
+    const dataParse = JSON.parse(data);
     if (data) {
-      const dataParse = JSON.parse(data);
-      dispatch(userLogin(dataParse));
+      if (dataParse.isAuthenticated === true) {
+        dispatch(userLogin(dataParse));
+      }
     }
   };
 
   useEffect(() => {
     loadUserDataFromLocalStorage();
   }, []);
+
+  useEffect(() => {
+    const favoritProducts = localStorage.getItem('favoritProducts');
+    const dataParse = JSON.parse(favoritProducts);
+    console.log('dataParse', dataParse);
+    if (dataParse) {
+      dispatch(loadFromLocalStorage());
+    }
+  }, [user.isAuthenticated]);
 
   useEffect(() => {
     if (location.pathname === '/profile/signout') {
@@ -82,8 +95,21 @@ const App = () => {
     window.scrollTo(0, 0);
   }, [location]);
 
+  const action = useSelector((state) => state.popupActions.currentAction);
+  const cta = (state) => {
+    if (state === 'addToCard') {
+      return <PopupActions action={'Блюдо додано у кошик'} />;
+    }
+    if (state === 'addToFavorit') {
+      return <PopupActions action={'Блюдо додано в «Улюблене»'} />;
+    } else {
+      return null;
+    }
+  };
+
   return (
     <>
+      {cta(action)}
       {city && (
         <Popup
           small={true}

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { removeProduct, updateCount } from '../../store/shoppingCartSlice';
 
-const ShoppingCartItem = ({ preview, name, weight, price, count, id }) => {
+const ShoppingCartItem = ({ preview, name, weight, price, count, id, cart_index }) => {
   const [currentCount, setCurrentCount] = useState(count);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(updateCount({ id: id, count: currentCount }));
+    dispatch(updateCount({ cart_index: cart_index, count: currentCount }));
   }, [currentCount]);
 
   return (

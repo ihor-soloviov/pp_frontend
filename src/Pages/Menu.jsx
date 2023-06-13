@@ -200,7 +200,7 @@ const Menu = () => {
           return (
             <ProductCard
               preview={poster_url + product.photo}
-              name={product.product_name + ' ID: ' + product.product_id}
+              name={product.product_name}
               price={parseInt(product.price[1].slice(0, -2))}
               ingredients={product.ingredients}
               weight={product.out}

@@ -34,6 +34,8 @@
   &__list {
     display: flex;
     gap: 12px;
+    width: 86%;
+    margin: 0 auto;
     flex-wrap: wrap;
     justify-content: center;
   }
