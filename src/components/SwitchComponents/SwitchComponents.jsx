@@ -4,6 +4,7 @@ import Addresses from "../Addresses/Adresses";
 import Orders from "../Orders/Orders";
 import MobileSidebar from "../MobileSidebar/MobileSidebar";
 import ComingSoon from "../ComingSoon/ComingSoon";
+import Favorites from "../Favorites/Favorites";
 
 export const SwitchComponents = ({
   pathlink,
@@ -25,6 +26,8 @@ export const SwitchComponents = ({
         return <Orders handleSidebar={handleSidebar} />;
       case "":
         return <MobileSidebar handleSidebar={handleSidebar} />;
+      case "favourite":
+        return <Favorites handleSidebar={handleSidebar}/>
       default:
         return <ComingSoon handleSidebar={handleSidebar} />;
     }
