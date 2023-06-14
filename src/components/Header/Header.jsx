@@ -75,6 +75,7 @@ const Header = () => {
   useEffect(() => {
     getCategories();
   }, []);
+
   useEffect(() => {
     console.log(location);
   }, [location]);
@@ -209,7 +210,7 @@ const Header = () => {
                             src={
                               'https://cdn-icons-png.flaticon.com/512/552/552721.png'
                             }
-                            alt=''
+                            alt='avatar'
                           />
                         </div>
                         <div>

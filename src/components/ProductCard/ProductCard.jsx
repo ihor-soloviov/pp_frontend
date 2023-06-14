@@ -27,10 +27,9 @@ const ProductCard = (props) => {
         setLiked(false);
       }
     }
-  }, [favoritList]);
+  }, [favoritList, props.id]);
 
   useEffect(() => {
-    console.log(cart);
     if (cart) {
       if (cart.some((el) => el.id === props.id)) {
         setInCart(true);
@@ -38,7 +37,7 @@ const ProductCard = (props) => {
         setInCart(false);
       }
     }
-  }, [cart]);
+  }, [cart, props.id]);
 
   return (
     <div className='product'>
@@ -63,6 +62,7 @@ const ProductCard = (props) => {
                   preview: props.preview,
                   weight: props.weight,
                   id: props.id,
+                  ingredients: props.ingredients
                 })
               );
             }
@@ -154,6 +154,51 @@ const ProductCard = (props) => {
           <h4 className='product__name'>{props.name}</h4>
           <p className='product__composition'>{props.ingredients}</p>
         </div>
+              <path
+                d='M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z'
+                fill='#92939A'
+              />
+            </svg>
+            <p> Додано до кошику</p>
+          </button>
+        ) : (
+          <button
+            className='product__addToCard'
+            onClick={() => {
+              dispatch(
+                addProduct({
+                  name: props.name,
+                  price: props.price,
+                  count: count,
+                  preview: props.preview,
+                  weight: props.weight,
+                  id: props.id,
+                  ingredients: props.ingredients
+                })
+              );
+              dispatch(setActions({ action: 'addToCard' }));
+              setTimeout(() => {
+                dispatch(setActions({ action: '' }));
+              }, 2000);
+            }}
+          >
+            В кошик
+          </button>
+        )}
+      </div>
+      <div className='product__info'>
+        <p className='product__weight'>{props.weight} г</p>
+        <h4 className='product__name'>{props.name}</h4>
+        <p className='product__composition'>
+          {props.ingredients.map((ing, index) => {
+            if (props.ingredients.length === index + 1) {
+              return `${ing.ingredient_name}`;
+            } else {
+              return `${ing.ingredient_name}, `;
+            }
+          })}
+        </p>
+
       </div>
 
       <div className='product__order'>
