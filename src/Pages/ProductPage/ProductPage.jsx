@@ -201,11 +201,12 @@ const ProductPage = () => {
                       Склад
                     </h6>
                     <ul className='product-page__compile'>
-                      {productIngredients.map((el) => {
-                        return (
-                          <li className='product-page__compile-item'>{el}</li>
-                        );
-                      })}
+                      {productIngredients &&
+                        productIngredients.map((el) => {
+                          return (
+                            <li className='product-page__compile-item'>{el}</li>
+                          );
+                        })}
                     </ul>
                   </>
                 )}
