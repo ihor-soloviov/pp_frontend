@@ -43,6 +43,7 @@ const user = createSlice({
         count: 1,
         weight: actions.payload.weight,
         id: actions.payload.id,
+        ingredients: actions.payload.ingredients
       };
 
       state.favoritProducts.push(product);

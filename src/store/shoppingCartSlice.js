@@ -13,8 +13,9 @@ const shoppingCart = createSlice({
         price: actions.payload.price,
         count: actions.payload.count,
         weight: actions.payload.weight,
-        id: actions.payload.id,
         cart_index: state.products.length,
+        id: state.products.length,
+        ingredients: state.products.ingredients
       };
       product.totalPrice = product.price * product.count;
 

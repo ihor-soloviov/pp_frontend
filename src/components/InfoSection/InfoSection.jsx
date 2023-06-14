@@ -67,9 +67,10 @@ const InfoSection = ({ handleSidebar, isSidebarClosed }) => {
       <section className='grid_layout--main profile_info'>
         <div className='profile_info--head'>
           <img
-            src='https://via.placeholder.com/70x70'
+            src='https://cdn-icons-png.flaticon.com/512/552/552721.png'
             alt='profile'
-            className='profile_info--head__photo'
+            className='mobile-menu__avatar'
+            width={70}
           />
           <div className='profile_info--head__contacts contacts'>
             <div className='contacts_name'>{userData.name} </div>
