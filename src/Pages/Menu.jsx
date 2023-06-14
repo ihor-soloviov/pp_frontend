@@ -1,29 +1,29 @@
 //Import React
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 //Impost styles
-import './menu.scss';
+import "./menu.scss";
 
 //Import Components
-import ProductCard from '../components/ProductCard/ProductCard';
+import ProductCard from "../components/ProductCard/ProductCard";
 
 //Import plug
-import axios from 'axios';
-import Container from '../components/Container/Container';
-import { useParams } from 'react-router-dom';
+import axios from "axios";
+import Container from "../components/Container/Container";
+import { useParams } from "react-router-dom";
 
-import Slider from '../components/Slider/Slider';
-import { useSelector } from 'react-redux';
-const token = '436783:670964579c5655f22513de1218a29b4d';
+import Slider from "../components/Slider/Slider";
+import { useSelector } from "react-redux";
+const token = "436783:670964579c5655f22513de1218a29b4d";
 
 const proxy_url = `https://pelmeni-proxy.work-set.eu`;
 // eslint-disable-next-line
-const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
+const poster_url = "https://polar-pelmeni-odessa.joinposter.com";
 
 const Menu = () => {
   const { id } = useParams();
   const userToken = useSelector((state) => state.user).token;
   const favoritList = useSelector((state) => state.user.favoritProducts);
-  console.log('favoritList', favoritList);
+  console.log("favoritList", favoritList);
   const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -33,25 +33,25 @@ const Menu = () => {
     axios
       .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        console.log('start');
+        console.log("start");
         console.log(res);
         const data = res.data.response;
 
         const filteredCat = data.filter((obj) =>
-          obj.category_name.startsWith('onlineOrder:')
+          obj.category_name.startsWith("onlineOrder:")
         );
         const mapCat = filteredCat.map((el) => {
           return {
-            category_name: el.category_name.replace(/onlineOrder: /, ''),
+            category_name: el.category_name.replace(/onlineOrder: /, ""),
             category_id: el.category_id,
           };
         });
-        console.log('mapCat', mapCat);
+        console.log("mapCat", mapCat);
         setCurrentCatId(mapCat[0].category_id);
         setCategories(mapCat);
       })
@@ -60,17 +60,17 @@ const Menu = () => {
 
   const getProducts = (id) => {
     const data = JSON.stringify({ categoryId: id });
-    console.log('json', data);
+    console.log("json", data);
     axios
       .post(`https://polarpelmeni-api.work-set.eu/api/products`, data, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
         const data = res.data.response;
-        console.log(data, 'res GP');
+        console.log(data, "res GP");
 
         // preview={poster_url + product.photo}
         // name={product.product_name}
@@ -125,9 +125,7 @@ const Menu = () => {
   //   fetchFavoritesFromServer();
   // }, [userToken]);
 
-
   useEffect(() => {
-
     if (id) {
       setCurrentCatId(id);
     }
@@ -141,6 +139,14 @@ const Menu = () => {
     getProducts(currentCatId);
   }, [currentCatId]);
 
+  useEffect(() => {
+    const getFav = () => {
+      const data = localStorage.getItem('favoritProducts');
+      console.log('data: ', data)
+    }
+
+    getFav()
+  }, [favorites]);
 
   // // Відправка змінених даних на сервер при закритті сторінки
   // useEffect(() => {
@@ -175,17 +181,17 @@ const Menu = () => {
     <Container>
       <Slider />
 
-      <div className='categories'>
-        <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
-        <div className='categories__list'>
+      <div className="categories">
+        <h1 className="title__h1">Куштуй тільки найсмачніше</h1>
+        <div className="categories__list">
           {categories.map((cat) => {
             return (
               <button
                 key={cat.category_id}
                 className={`categories__btn ${
                   currentCatId === cat.category_id
-                    ? 'categories__btn-active'
-                    : ''
+                    ? "categories__btn-active"
+                    : ""
                 }`}
                 onClick={() => setCurrentCatId(cat.category_id)}
               >
@@ -195,12 +201,12 @@ const Menu = () => {
           })}
         </div>
       </div>
-      <div className='menu__products'>
+      <div className="menu__products">
         {products.map((product) => {
           return (
             <ProductCard
               preview={poster_url + product.photo}
-              name={product.product_name + ' ID: ' + product.product_id}
+              name={product.product_name + " ID: " + product.product_id}
               price={parseInt(product.price[1].slice(0, -2))}
               ingredients={product.ingredients}
               weight={product.out}

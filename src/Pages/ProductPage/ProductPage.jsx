@@ -57,7 +57,7 @@ const ProductPage = () => {
       })
       .catch((err) => console.error(err));
   }, [id]);
-  console.log(product);
+  console.log('product: ', product);
 
   if (product !== null && product !== false) {
     return (
