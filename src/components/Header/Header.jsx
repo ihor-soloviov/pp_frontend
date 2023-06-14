@@ -16,7 +16,7 @@ import BtnMain from '../Buttons/BtnMain';
 import './header.scss';
 
 //Import logo
-import logo from '../../assets/logo/logo.png';
+import logo from '../../assets/logo/logo.svg';
 import Card from '../Card/Card';
 import Popup from '../Popup/Popup';
 import SingUp from '../SingUp/SingUp';

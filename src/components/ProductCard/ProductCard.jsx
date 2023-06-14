@@ -84,39 +84,76 @@ const ProductCard = (props) => {
           </svg>
         </div>
       </div>
-      <div className='product__preview'>
-        <img
-          src={props.preview}
-          alt={props.name}
-          onClick={() => navigate(`/product/${props.id}`)}
-        />
-        {inCart === true ? (
-          <button
-            className='product__inCart'
-            // onClick={() => {
-            //   dispatch(
-            //     addProduct({
-            //       name: props.name,
-            //       price: props.price,
-            //       count: count,
-            //       preview: props.preview,
-            //       weight: props.weight,
-            //       id: props.id,
-            //     })
-            //   );
-            //   dispatch(setActions({ action: 'addToCard' }));
-            //   setTimeout(() => {
-            //     dispatch(setActions({ action: '' }));
-            //   }, 2000);
-            // }}
-          >
-            <svg
-              width='16'
-              height='16'
-              viewBox='0 0 16 16'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
+      <div>
+        <div className='product__preview'>
+          <img
+            src={props.preview}
+            alt={props.name}
+            onClick={() => navigate(`/product/${props.id}`)}
+          />
+          {inCart === true ? (
+            <button
+              className='product__inCart'
+              // onClick={() => {
+              //   dispatch(
+              //     addProduct({
+              //       name: props.name,
+              //       price: props.price,
+              //       count: count,
+              //       preview: props.preview,
+              //       weight: props.weight,
+              //       id: props.id,
+              //     })
+              //   );
+              //   dispatch(setActions({ action: 'addToCard' }));
+              //   setTimeout(() => {
+              //     dispatch(setActions({ action: '' }));
+              //   }, 2000);
+              // }}
             >
+              <svg
+                width='16'
+                height='16'
+                viewBox='0 0 16 16'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z'
+                  fill='#92939A'
+                />
+              </svg>
+              <p> Додано до кошику</p>
+            </button>
+          ) : (
+            <button
+              className='product__addToCard'
+              onClick={() => {
+                dispatch(
+                  addProduct({
+                    name: props.name,
+                    price: props.price,
+                    count: count,
+                    preview: props.preview,
+                    weight: props.weight,
+                    id: props.id,
+                  })
+                );
+                dispatch(setActions({ action: 'addToCard' }));
+                setTimeout(() => {
+                  dispatch(setActions({ action: '' }));
+                }, 2000);
+              }}
+            >
+              В кошик
+            </button>
+          )}
+        </div>
+        <div className='product__info'>
+          <p className='product__weight'>{props.weight} г</p>
+          <h4 className='product__name'>{props.name}</h4>
+          <p className='product__composition'>{props.ingredients}</p>
+        </div>
               <path
                 d='M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z'
                 fill='#92939A'
@@ -161,7 +198,9 @@ const ProductCard = (props) => {
             }
           })}
         </p>
+
       </div>
+
       <div className='product__order'>
         <div className='product__price'>
           <div className='product__total-price'>{props.price * count} ₴</div>

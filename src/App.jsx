@@ -22,7 +22,7 @@ import SingUp from './components/SingUp/SingUp';
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 
-import { loadFromLocalStorage, userLogin, userLogout } from './store/userSlice';
+import { loadFromLocalStorage, updateCity, userLogin, userLogout } from './store/userSlice';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import Order from './Pages/Order/Order';
 import Footer from './components/Footer/Footer';
@@ -33,9 +33,14 @@ import PopupActions from './components/PopupActions/PopupActions';
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
-  const [showHeader, setShowHeader] = useState(true);
+  //State
   const city = useSelector((state) => state.modals.cityModal);
   const user = useSelector((state) => state.user);
+
+  //Usestate
+  const [showHeader, setShowHeader] = useState(true);
+
+  //Tools
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -44,6 +49,8 @@ const App = () => {
     const data = localStorage.getItem('userData');
     const dataParse = JSON.parse(data);
     if (data) {
+      dispatch(updateCity({ city: dataParse.city }));
+
       if (dataParse.isAuthenticated === true) {
         dispatch(userLogin(dataParse));
       }
@@ -106,6 +113,14 @@ const App = () => {
       return null;
     }
   };
+
+  useEffect(() => {
+    if (user.city !== null) {
+      dispatch(cityModalUpdateState({ isOpen: false }));
+    } else {
+      dispatch(cityModalUpdateState({ isOpen: true }));
+    }
+  }, [user]);
 
   return (
     <>

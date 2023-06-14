@@ -54,7 +54,14 @@ const Banner = ({ title, desc, image_mob, image_desktop, index }) => {
           </div>
           <h3 className='title__h1 text__color--secondary'>{title}</h3>
           <p className='text'>{desc}</p>
-          <BtnMain name={'Дивитись меню'} arrow={true} />
+          <BtnMain
+            name={'Дивитись меню'}
+            arrow={true}
+            onClick={() => {
+              const element = document.querySelector('#menu');
+              element.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
         </div>
         {/* <div className="banner__preview">
           <img src={image} alt="" />
