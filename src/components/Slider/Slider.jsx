@@ -24,7 +24,7 @@ const Slider = () => {
       if (scrollDirection === 'right') {
         const scrollInterval = setInterval(() => {
           slider__track.current.scrollBy({ left: 100, behavior: 'smooth' });
-        }, 7000);
+        }, 7000); 
 
         return () => {
           clearInterval(scrollInterval);
