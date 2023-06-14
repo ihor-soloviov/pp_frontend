@@ -23,7 +23,16 @@ const ProductPage = () => {
   const [inCart, setInCart] = useState(false);
 
   const [product, setProduct] = useState(null);
+  const [productIngredients, setProductIngredients] = useState(null);
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
+
+  useEffect(() => {
+    if (product) {
+      const str = product.product_production_description;
+      const arr = str.split(', ');
+      setProductIngredients(arr);
+    }
+  }, [product]);
 
   useEffect(() => {
     const data = {
@@ -55,7 +64,20 @@ const ProductPage = () => {
               },
             }
           )
-          .then((res) => setRecommendationsProducts(res.data.response));
+          .then((res) => {
+            const resData = res.data.response;
+            const dataMap = resData.map((item) => {
+              return {
+                photo: item.photo_origin,
+                product_name: item.product_name,
+                price: item.price,
+                out: item.out,
+                product_id: item.product_id,
+                ingredients: item.product_production_description,
+              };
+            });
+            setRecommendationsProducts(dataMap);
+          });
       })
       .catch((err) => console.error(err));
   }, [id]);
@@ -173,17 +195,15 @@ const ProductPage = () => {
                   </div>
                 </div>
 
-                {product.group_modifications && (
+                {product.product_production_description && (
                   <>
                     <h6 className='product-page__compile-title title__h6 text__color--secondary'>
                       Склад
                     </h6>
                     <ul className='product-page__compile'>
-                      {product.group_modifications.map((el) => {
+                      {productIngredients.map((el) => {
                         return (
-                          <li className='product-page__compile-item'>
-                            {el.name}
-                          </li>
+                          <li className='product-page__compile-item'>{el}</li>
                         );
                       })}
                     </ul>
@@ -206,7 +226,10 @@ const ProductPage = () => {
                     {recommendationsProducts.map((product) => {
                       return (
                         <ProductCard
-                          preview={proxy_url + product.photo}
+                          preview={
+                            `https://polar-pelmeni-odessa.joinposter.com` +
+                            product.photo
+                          }
                           name={product.product_name}
                           price={parseInt(product.price[1].slice(0, -2))}
                           ingredients={product.ingredients}

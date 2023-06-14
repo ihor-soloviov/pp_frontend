@@ -46,6 +46,7 @@ const SelectCity = () => {
               dispatch(updateCity({ city: 'Ужгород' }));
               dispatch(cityModalUpdateState({ state: false }));
             }}
+            disabled
           >
             Ужгород
           </button>

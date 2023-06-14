@@ -456,6 +456,9 @@ body {
   }
   &__hero-content {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
  
     .text {
       font-weight: 400;

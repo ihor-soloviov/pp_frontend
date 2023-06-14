@@ -4,7 +4,7 @@ const user = createSlice({
   name: 'user',
   initialState: {
     isAuthenticated: false,
-    city: 'Одеса',
+    city: null,
     name: null,
     phone: null,
     email: null,
@@ -33,6 +33,7 @@ const user = createSlice({
     },
     updateCity(state, actions) {
       state.city = actions.payload.city;
+
       localStorage.setItem('userData', JSON.stringify(state));
     },
     addToFavorit(state, actions) {

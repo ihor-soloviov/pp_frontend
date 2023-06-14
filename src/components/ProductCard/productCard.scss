@@ -1,6 +1,9 @@
 .product {
   max-width: 315px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &__cta {
     z-index: 200;

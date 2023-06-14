@@ -87,7 +87,7 @@ const Menu = () => {
             price: item.price,
             out: item.out,
             product_id: item.product_id,
-            ingredients: item.ingredients,
+            ingredients: item.product_production_description,
           };
         });
         setProducts(dataMap);
@@ -175,7 +175,7 @@ const Menu = () => {
     <Container>
       <Slider />
 
-      <div className='categories'>
+      <div className='categories' id={'menu'}>
         <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
         <div className='categories__list'>
           {categories.map((cat) => {
@@ -197,6 +197,7 @@ const Menu = () => {
       </div>
       <div className='menu__products'>
         {products.map((product) => {
+          console.log(product);
           return (
             <ProductCard
               preview={poster_url + product.photo}
@@ -206,7 +207,6 @@ const Menu = () => {
               weight={product.out}
               key={product.product_id}
               id={product.product_id}
-              // liked={false}
             />
           );
         })}
