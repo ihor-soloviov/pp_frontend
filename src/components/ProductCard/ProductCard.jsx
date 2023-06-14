@@ -30,9 +30,12 @@ const ProductCard = (props) => {
   }, [favoritList, props.id]);
 
   useEffect(() => {
+    console.log(cart);
+    console.log(props.id);
     if (cart) {
       if (cart.some((el) => el.id === props.id)) {
         setInCart(true);
+        console.log('tt');
       } else {
         setInCart(false);
       }
@@ -152,9 +155,7 @@ const ProductCard = (props) => {
       <div className='product__info'>
         <p className='product__weight'>{props.weight} г</p>
         <h4 className='product__name'>{props.name}</h4>
-        <p className='product__composition'>
-         {props.ingredients}
-        </p>
+        <p className='product__composition'>{props.ingredients}</p>
       </div>
       <div className='product__order'>
         <div className='product__price'>
