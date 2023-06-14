@@ -27,10 +27,9 @@ const ProductCard = (props) => {
         setLiked(false);
       }
     }
-  }, [favoritList]);
+  }, [favoritList, props.id]);
 
   useEffect(() => {
-    console.log(cart);
     if (cart) {
       if (cart.some((el) => el.id === props.id)) {
         setInCart(true);
@@ -38,7 +37,7 @@ const ProductCard = (props) => {
         setInCart(false);
       }
     }
-  }, [cart]);
+  }, [cart, props.id]);
 
   return (
     <div className='product'>
@@ -63,6 +62,7 @@ const ProductCard = (props) => {
                   preview: props.preview,
                   weight: props.weight,
                   id: props.id,
+                  ingredients: props.ingredients
                 })
               );
             }
@@ -136,6 +136,7 @@ const ProductCard = (props) => {
                   preview: props.preview,
                   weight: props.weight,
                   id: props.id,
+                  ingredients: props.ingredients
                 })
               );
               dispatch(setActions({ action: 'addToCard' }));

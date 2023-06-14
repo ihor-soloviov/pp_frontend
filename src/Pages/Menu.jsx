@@ -22,12 +22,12 @@ const poster_url = "https://polar-pelmeni-odessa.joinposter.com";
 const Menu = () => {
   const { id } = useParams();
   const userToken = useSelector((state) => state.user).token;
-  const favoritList = useSelector((state) => state.user.favoritProducts);
-  console.log("favoritList", favoritList);
+
   const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const data = localStorage.getItem('favoritProducts');
 
   const getCategories = () => {
     axios
@@ -141,12 +141,11 @@ const Menu = () => {
 
   useEffect(() => {
     const getFav = () => {
-      const data = localStorage.getItem('favoritProducts');
-      console.log('data: ', data)
+      setFavorites(JSON.parse(data))
     }
 
     getFav()
-  }, [favorites]);
+  }, [data]);
 
   // // Відправка змінених даних на сервер при закритті сторінки
   // useEffect(() => {
