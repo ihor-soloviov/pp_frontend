@@ -144,7 +144,8 @@ const Header = () => {
               </div>
 
               <nav className='header__navigation'>
-                <Link to={'/'}>Меню</Link>
+                <Link to={'/'}>Головна</Link>
+                <Link to={'/menu'}>Меню</Link>
                 <Link to={'/about-us'}>Про нас</Link>
                 <Link to={'/contact'}>Контакти</Link>
                 {/* <Link to={'/profile/info'}>Кабінет</Link> */}
@@ -200,7 +201,7 @@ const Header = () => {
               <div className='mobile-menu'>
                 <nav className='mobile-menu__navigation'>
                   <div className='mobile-menu__auth'>
-                    {userData.isAuthenticated === true? (
+                    {userData.isAuthenticated === true ? (
                       <div
                         className='mobile-menu__profile-btn mobile-menu__profile-btn--profile'
                         onClick={() => navigate('/profile/info')}
@@ -217,11 +218,9 @@ const Header = () => {
                           <span className='mobile-menu__username'>
                             {userData.name}
                           </span>
-                          <p className='mobile-menu__phone'>
-                            {userData.phone}
-                          </p>
+                          <p className='mobile-menu__phone'>{userData.phone}</p>
                           <p className='mobile-menu__bonus'>
-                          Доступно 23 бонуси
+                            Доступно 23 бонуси
                           </p>
                         </div>
                       </div>
@@ -255,7 +254,7 @@ const Header = () => {
                     </li>
                   </ul>
 
-                  <ul className="mobile-menu__nav">
+                  <ul className='mobile-menu__nav'>
                     <li>Головна</li>
                     <li>Меню</li>
                     <li>Про нас</li>
@@ -333,7 +332,8 @@ const Header = () => {
               </div>
 
               <nav className='header__navigation'>
-                <Link to={'/'}>Меню</Link>
+                <Link to={'/'}>Головна</Link>
+                <Link to={'/menu'}>Меню</Link>
                 <Link to={'/about-us'}>Про нас</Link>
                 <Link to={'/contact'}>Контакти</Link>
                 {/* <Link to={'/profile/info'}>Кабінет</Link> */}

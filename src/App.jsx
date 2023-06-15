@@ -22,13 +22,20 @@ import SingUp from './components/SingUp/SingUp';
 import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 
-import { loadFromLocalStorage, updateCity, userLogin, userLogout } from './store/userSlice';
+import {
+  loadFromLocalStorage,
+  updateCity,
+  userLogin,
+  userLogout,
+} from './store/userSlice';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import Order from './Pages/Order/Order';
 import Footer from './components/Footer/Footer';
 import SelectCity from './components/SelectCity/SelectCity';
 import { cityModalUpdateState } from './store/modalsSlice';
 import PopupActions from './components/PopupActions/PopupActions';
+import Main from './Pages/Main/Main';
+import MenuPage from './Pages/MenuPage/MenuPage';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -136,8 +143,10 @@ const App = () => {
 
       {showHeader && <Header />}
       <Routes>
-        <Route path='/' element={<Menu />} />
-        <Route path='/menu/:id' element={<Menu />} />
+        <Route path='/' element={<Main />} />
+        <Route path='/menu' element={<MenuPage />}>
+          <Route path=':id' element={<MenuPage />} />
+        </Route>
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/about-us' element={<AboutUs />} />
         <Route path='/order' element={<Order />} />

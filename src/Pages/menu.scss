@@ -54,9 +54,17 @@
 
     border: 1px solid #d9d9de;
     border-radius: 10px;
+    transition: linear .25s;
+    &:hover {
+      border: 1px solid #12130f;
+      color: #12130f;
+    }
     &-active {
       background: #62d9f1;
       border: 1px solid #62d9f1;
+      &:hover {
+        border: 1px solid #62d9f1;
+      }
     }
   }
 }

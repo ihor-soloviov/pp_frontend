@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
   &__ico {
     position: relative;
     width: 32px;
@@ -60,6 +61,7 @@
   width: 550px;
   height: 100%;
   padding: 40px;
+
   &__close {
     cursor: pointer;
     display: block;
@@ -69,6 +71,7 @@
   &__content {
     padding: 24px 0 0 0;
     border-top: 1px solid #ebebee;
+
     &--empty {
       height: 100%;
       display: flex;
@@ -126,7 +129,9 @@
     min-height: 120px;
     max-height: 520px;
     overflow: scroll;
-
+    &::-webkit-scrollbar {
+      display: none;
+    }
     &-wrapper {
       position: relative;
       &::before {
