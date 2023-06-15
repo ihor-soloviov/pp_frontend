@@ -38,7 +38,6 @@ const Menu = () => {
         },
       })
       .then((res) => {
-
         const data = res.data.response;
 
         const filteredCat = data.filter((obj) =>
@@ -69,7 +68,6 @@ const Menu = () => {
       })
       .then((res) => {
         const data = res.data.response;
-
 
         // preview={poster_url + product.photo}
         // name={product.product_name}
@@ -176,9 +174,8 @@ const Menu = () => {
   // }, [favorites]);
 
   return (
-    <Container>
-      <Slider />
-      <div className='categories'>
+    <>
+      <div className='categories' id='menu'>
         <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
         <div className='categories__list'>
           {categories.map((cat) => {
@@ -200,7 +197,6 @@ const Menu = () => {
       </div>
       <div className='menu__products'>
         {products.map((product) => {
-
           return (
             <ProductCard
               preview={poster_url + product.photo}
@@ -214,7 +210,7 @@ const Menu = () => {
           );
         })}
       </div>
-    </Container>
+    </>
   );
 };
 

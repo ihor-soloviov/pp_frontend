@@ -6,10 +6,11 @@ import './card.scss';
 import BtnMain from '../Buttons/BtnMain';
 import { useSelector } from 'react-redux';
 import ShoppingCartItem from './ShoppingCartItem';
+import { useNavigate } from 'react-router-dom';
 
 const Card = () => {
   const products_List = useSelector((state) => state.shoppingCart.products);
-
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -35,7 +36,7 @@ const Card = () => {
               </clipPath>
             </defs>
           </svg>
-          {products_List.length !== 0&& (
+          {products_List.length !== 0 && (
             <div className='card__length'>
               <span>{products_List.length}</span>
             </div>
@@ -155,7 +156,14 @@ const Card = () => {
                   </p>
                 </div>
               </div>
-              <BtnMain name={'Замовити'} fullWide />
+              <BtnMain
+                name={'Замовити'}
+                onClick={() => {
+                  setIsOpen(!isOpen)
+                  navigate('/order');
+                }}
+                fullWide
+              />
             </div>
           )}
         </div>
