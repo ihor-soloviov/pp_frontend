@@ -30,8 +30,6 @@ const ProductCard = (props) => {
   }, [favoritList, props.id]);
 
   useEffect(() => {
-    console.log(cart);
-    console.log(props.id);
     if (cart) {
       if (cart.some((el) => el.id === props.id)) {
         setInCart(true);

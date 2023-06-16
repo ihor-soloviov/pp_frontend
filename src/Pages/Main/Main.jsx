@@ -5,10 +5,15 @@ import Menu from '../Menu';
 
 const Main = () => {
   return (
-    <Container>
-      <Slider />
-      <Menu />
-    </Container>
+    <>
+      <div className='slider__container'>
+        <Slider />
+      </div>
+
+      <Container>
+        <Menu />
+      </Container>
+    </>
   );
 };
 
