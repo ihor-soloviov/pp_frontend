@@ -147,19 +147,23 @@ const Card = () => {
                 </div>
                 <div className='shopping-cart__total-row'>
                   <p className='shopping-cart__text'>Доставка:</p>
-                  <p className='shopping-cart__text'>70 ₴</p>
+                  <p className='shopping-cart__text'>
+                    {products_List.reduce((a, b) => a + b.totalPrice, 0) < 500
+                      ? 'за допомогою таксі (оплачується окремо)'
+                      : 'Безкоштовна'}
+                  </p>
                 </div>
                 <div className='shopping-cart__total-row'>
                   <p className='shopping-cart__text-final'>Всього до сплати:</p>
                   <p className='shopping-cart__text-final'>
-                    {products_List.reduce((a, b) => a + b.totalPrice, 0) + 70} ₴
+                    {products_List.reduce((a, b) => a + b.totalPrice, 0)} ₴
                   </p>
                 </div>
               </div>
               <BtnMain
                 name={'Замовити'}
                 onClick={() => {
-                  setIsOpen(!isOpen)
+                  setIsOpen(!isOpen);
                   navigate('/order');
                 }}
                 fullWide

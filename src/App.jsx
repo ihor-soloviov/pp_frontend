@@ -32,16 +32,23 @@ import AboutUs from './Pages/AboutUs/AboutUs';
 import Order from './Pages/Order/Order';
 import Footer from './components/Footer/Footer';
 import SelectCity from './components/SelectCity/SelectCity';
-import { cityModalUpdateState } from './store/modalsSlice';
+import {
+  cityModalUpdateState,
+  thanksModalUpdateState,
+} from './store/modalsSlice';
 import PopupActions from './components/PopupActions/PopupActions';
 import Main from './Pages/Main/Main';
 import MenuPage from './Pages/MenuPage/MenuPage';
+
+import Thanks from './components/Thanks/Thanks';
+import Contact from './Pages/Contact/Contact';
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
   //State
-  const city = useSelector((state) => state.modals.cityModal);
+
+  const modals = useSelector((state) => state.modals);
   const user = useSelector((state) => state.user);
 
   //Usestate
@@ -56,9 +63,10 @@ const App = () => {
     const data = localStorage.getItem('userData');
     const dataParse = JSON.parse(data);
     if (data) {
-      dispatch(updateCity({ city: dataParse.city }));
+      // dispatch(updateCity({ city: dataParse.city }));
 
       if (dataParse.isAuthenticated === true) {
+        dispatch(updateCity({ city: dataParse.city }));
         dispatch(userLogin(dataParse));
       }
     }
@@ -132,7 +140,8 @@ const App = () => {
   return (
     <>
       {cta(action)}
-      {city && (
+
+      {modals.cityModal && (
         <Popup
           small={true}
           closeModal={() => dispatch(cityModalUpdateState({ isOpen: false }))}
@@ -150,6 +159,7 @@ const App = () => {
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/about-us' element={<AboutUs />} />
         <Route path='/order' element={<Order />} />
+        <Route path='/contact' element={<Contact />} />
 
         <Route path='/profile'>
           <Route index element={<Profile />} />

@@ -18,7 +18,6 @@ const user = createSlice({
       state.phone = actions.payload.phone;
       state.email = actions.payload.email;
       state.token = actions.payload.token;
-
       localStorage.setItem('userData', JSON.stringify(state));
     },
 
@@ -33,7 +32,6 @@ const user = createSlice({
     },
     updateCity(state, actions) {
       state.city = actions.payload.city;
-
       localStorage.setItem('userData', JSON.stringify(state));
     },
     addToFavorit(state, actions) {
@@ -44,7 +42,7 @@ const user = createSlice({
         count: 1,
         weight: actions.payload.weight,
         id: actions.payload.id,
-        ingredients: actions.payload.ingredients
+        ingredients: actions.payload.ingredients,
       };
 
       state.favoritProducts.push(product);

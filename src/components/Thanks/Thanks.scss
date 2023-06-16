@@ -1,0 +1,49 @@
+.thanks {
+  width: 350px;
+  margin: 0 auto;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .btn-secondary {
+      margin-top: 50px;
+    }
+  }
+  &__ico {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    border-radius: 100px;
+    background: rgba(223, 100, 58, 0.1);
+    margin-bottom: 24px;
+  }
+  &__text {
+    padding: 16px 0;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #5f5e64;
+  }
+  &__delivery-time {
+    padding: 12px 16px;
+    background: rgba(98, 217, 241, 0.2);
+    border-radius: 7px;
+    p {
+      font-family: 'Golos Text';
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+
+      /* Black */
+
+      color: #12130f;
+      b {
+        font-weight: 500;
+      }
+    }
+  }
+}

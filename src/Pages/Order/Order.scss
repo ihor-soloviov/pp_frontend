@@ -2,8 +2,8 @@
   position: relative;
   &__content {
     display: grid;
-    grid-template-columns: 60% 40%;
-    gap: 132px;
+    grid-template-columns: 50% 40%;
+    gap: 10%;
   }
   &__section {
     margin-top: 40px;
@@ -41,10 +41,107 @@
       padding-bottom: 16px;
     }
   }
-  &__positions {
-    width: fit-content;
-    position: fixed;
-    top: 150px;
-    right: 100px;
+}
+
+.checkout {
+  background: #12130f;
+  height: fit-content;
+  border-radius: 15px;
+  &__content {
+    padding: 40px;
+  }
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__list {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  &__text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+
+    letter-spacing: -0.01em;
+
+    color: #d9d9de;
+    &-bold {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
+      /* identical to box height, or 27px */
+
+      text-align: center;
+      letter-spacing: -0.01em;
+
+      color: #ffffff;
+    }
+  }
+  &__item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+
+    &-name {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+    &-count {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 150%;
+
+      letter-spacing: -0.01em;
+
+      color: #bdbdbd;
+    }
+    &-weight {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 150%;
+
+      letter-spacing: -0.01em;
+
+      color: #b4b4bc;
+    }
+    &-price {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 150%;
+
+      text-align: right;
+      letter-spacing: -0.01em;
+
+      color: #ffffff;
+    }
+  }
+  &__total {
+    margin-top: 126px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .order-page {
+    &__content {
+      grid-template-columns: 90%;
+      justify-content: center;
+      gap: 48px;
+    }
+  }
+  .checkout {
+    order: -1;
+    margin-top: 48px;
   }
 }
