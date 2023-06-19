@@ -52,7 +52,7 @@ const InfoSection = ({ handleSidebar, isSidebarClosed }) => {
 
     try {
       await axios.put(
-        'https://polarpelmeni-api.work-set.eu/api/upload/',
+        'https://api.polarpelmeni.com.ua/api/upload/',
         formData
       );
     } catch (error) {

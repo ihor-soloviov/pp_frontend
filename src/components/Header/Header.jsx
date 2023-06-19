@@ -45,7 +45,7 @@ const Header = () => {
 
   const getCategories = () => {
     axios
-      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
+      .get(`https://api.polarpelmeni.com.ua/api/menu`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',

@@ -15,16 +15,19 @@ const shoppingCart = createSlice({
         weight: actions.payload.weight,
         cart_index: state.products.length,
         id: actions.payload.id,
-        ingredients: state.products.ingredients
+        ingredients: state.products.ingredients,
       };
       product.totalPrice = product.price * product.count;
 
       state.products.push(product);
+
+      localStorage.setItem('shoppingCart', JSON.stringify(state.products));
     },
     removeProduct(state, actions) {
       state.products = state.products.filter(
         (product) => product.id !== actions.payload.id
       );
+      localStorage.setItem('shoppingCart', JSON.stringify(state.products));
     },
     updateCount(state, actions) {
       const elem = state.products.find(
@@ -34,10 +37,23 @@ const shoppingCart = createSlice({
       state.products[actions.payload.cart_index].totalPrice =
         state.products[actions.payload.cart_index].price *
         actions.payload.count;
+      localStorage.setItem('shoppingCart', JSON.stringify(state.products));
+    },
+    getFromLocalStorage(state) {
+      const data = localStorage.getItem('shoppingCart');
+      const dataParse = JSON.parse(data);
+      if (dataParse !== null) {
+        state.products = JSON.parse(data);
+      }
     },
   },
 });
 
-export const { addProduct, removeProduct, updateCount } = shoppingCart.actions;
+export const {
+  addProduct,
+  removeProduct,
+  updateCount,
+  getFromLocalStorage,
+} = shoppingCart.actions;
 
 export default shoppingCart.reducer;
