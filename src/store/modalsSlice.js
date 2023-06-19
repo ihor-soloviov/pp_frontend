@@ -5,7 +5,7 @@ const modals = createSlice({
   initialState: {
     authModal: false,
     cityModal: true,
-    thanksModal: true,
+    thanksModal: false,
   },
   reducers: {
     authModalUpdateState(state, actions) {

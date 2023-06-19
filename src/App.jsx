@@ -42,6 +42,7 @@ import MenuPage from './Pages/MenuPage/MenuPage';
 
 import Thanks from './components/Thanks/Thanks';
 import Contact from './Pages/Contact/Contact';
+import { getFromLocalStorage } from './store/shoppingCartSlice';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -62,6 +63,7 @@ const App = () => {
   const loadUserDataFromLocalStorage = () => {
     const data = localStorage.getItem('userData');
     const dataParse = JSON.parse(data);
+    dispatch(getFromLocalStorage());
     if (data) {
       // dispatch(updateCity({ city: dataParse.city }));
 

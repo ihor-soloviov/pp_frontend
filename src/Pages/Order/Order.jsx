@@ -15,8 +15,26 @@ import axios from 'axios';
 import { thanksModalUpdateState } from '../../store/modalsSlice';
 import Popup from '../../components/Popup/Popup';
 import Thanks from '../../components/Thanks/Thanks';
+import { useLocation } from 'react-router-dom';
+import PopupActions from '../../components/PopupActions/PopupActions';
 
 const Order = () => {
+  const location = useLocation();
+
+  const getCurrentDate = () => {
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes() + 10).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return formattedDate;
+  };
+
   const dispatch = useDispatch();
   const shoppingCart = useSelector((state) => state.shoppingCart.products);
   const modals = useSelector((state) => state.modals);
@@ -33,10 +51,10 @@ const Order = () => {
     apartment: '',
     buildingCode: '',
     floor: '',
-    selectedTime: '',
+    selectedTime: getCurrentDate(),
     promoCode: '',
     bonus: '',
-    paymentMethod: '',
+    paymentMethod: 1,
     change: '',
     withoutDevices: false,
     personCount: 1,
@@ -44,6 +62,7 @@ const Order = () => {
     doNotCall: false,
   });
   const [orderId, setOrderId] = useState(null);
+  const [popupTime, setPopupTime] = useState(null);
   const handleChange = (field, value) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -60,19 +79,7 @@ const Order = () => {
 
     return totalPrice;
   };
-  const getCurrentDate = () => {
-    const currentDate = new Date();
 
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    const day = String(currentDate.getDate()).padStart(2, '0');
-    const hours = String(currentDate.getHours()).padStart(2, '0');
-    const minutes = String(currentDate.getMinutes() + 1).padStart(2, '0');
-    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-
-    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    return formattedDate;
-  };
   const dateFormatter = (timeRange) => {
     // Получение текущей даты
     var currentDate = new Date();
@@ -98,10 +105,10 @@ const Order = () => {
     return startDateTime;
   };
 
-  const pay = () => {
+  const pay = (order_id, amount) => {
     const data = JSON.stringify({
-      amount: 1,
-      order_id: 9999,
+      amount: amount,
+      order_id: order_id,
     });
 
     axios
@@ -114,9 +121,9 @@ const Order = () => {
       .then((res) => {
         const url = `https://liqpay.ua/api/3/checkout?data=${res.data.data}&signature=${res.data.signature}`;
 
-        console.log(res, url);
+        // console.log(res, url);
 
-        // window.location.replace(url);
+        window.location.replace(url);
       })
       .catch((err) => console.log(err));
   };
@@ -124,6 +131,7 @@ const Order = () => {
   const shoppingCartMap = shoppingCart.map((item) => {
     return { product_id: item.id, count: item.count };
   });
+
   const objMap = {
     spot_id: 1,
     phone: formData.number,
@@ -148,11 +156,6 @@ const Order = () => {
       formData.withoutDevices && 'Без приборов'
     },${formData.doNotCall && 'Не перезванивать'}, `,
   };
-  useEffect(() => {
-    console.log(typeof getCurrentDate());
-
-    console.log(objMap);
-  }, [formData]);
 
   const deliveryTimeRadios = [
     { id: 1, value: 'На зараз', label: 'На зараз' },
@@ -181,14 +184,61 @@ const Order = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        if (res.data.response.incoming_order_id) {
-          setOrderId(res.data.response.incoming_order_id);
-          dispatch(thanksModalUpdateState({ isOpen: true }));
+        const response = res.data.response;
+
+        console.log(response);
+        if (response.incoming_order_id) {
+          localStorage.setItem('order', JSON.stringify(res.data.response));
+          setOrderId(response.incoming_order_id);
+          if (formData.paymentMethod === 1) {
+            pay(
+              res.data.response.incoming_order_id,
+              calculateTotalPrice(shoppingCart)
+            );
+          } else {
+            dispatch(thanksModalUpdateState({ isOpen: true }));
+          }
         }
       })
       .catch((err) => console.error(err));
   };
+
+  function modifyDateString(dateString) {
+    // Разделяем строку по пробелу на дату и время
+    var parts = dateString.split(' ');
+    var date = parts[0]; // "гггг-мм-дд"
+    var time = parts[1]; // "чч:мм:сс"
+
+    // Увеличиваем время на один час
+    var newTime = time.split(':');
+    var hours = parseInt(newTime[0]);
+    hours += 1;
+    newTime[0] = hours.toString().padStart(2, '0');
+
+    // Объединяем новую дату и время
+    var newDateString = newTime.join(':'); // "чч:мм:сс"
+
+    return newDateString;
+  }
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const paramValue = searchParams.get('status');
+    if (paramValue === 'done') {
+      const storedOrder = localStorage.getItem('order');
+      const parsedOrder = JSON.parse(storedOrder);
+      const timeSlice = parsedOrder.delivery_time.split(' ');
+      console.log('parsedOrder:', parsedOrder);
+
+      setPopupTime(modifyDateString(parsedOrder.delivery_time));
+      setOrderId(parsedOrder.incoming_order_id);
+      handleChange('deliveryTime', timeSlice[1]);
+      dispatch(thanksModalUpdateState({ isOpen: true }));
+    }
+  }, [location]);
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <>
@@ -198,9 +248,10 @@ const Order = () => {
             dispatch(thanksModalUpdateState({ isOpen: false }));
           }}
         >
-          <Thanks orderId={orderId} deliveryTime={formData.deliveryTime} />
+          <Thanks orderId={orderId} deliveryTime={popupTime} />
         </Popup>
       )}
+      {/* <PopupActions action={'Будь ласка, заповніть дані для замовлення'} error/> */}
       <Container>
         <div className='order-page'>
           <div className='order-page__content'>
@@ -420,7 +471,7 @@ const Order = () => {
                     name={'Оплата'}
                     placeholder={'Онлайн'}
                     data={[
-                      { id: 1, label: 'Онлайн', value: 'Онлайн' },
+                      { id: 0, label: 'Онлайн', value: 'Онлайн' },
                       { id: 1, label: 'Готівка', value: 'Готівка' },
                     ]}
                     value={formData.paymentMethod}
@@ -547,7 +598,7 @@ const Order = () => {
                   </div>
                   <div className='checkout__row'>
                     <p className='checkout__text checkout__text-bold'>
-                      Всього до сплати::
+                      Всього до сплати:
                     </p>
                     <p className='checkout__text-bold'>
                       {calculateTotalPrice(shoppingCart)} ₴
