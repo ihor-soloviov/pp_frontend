@@ -29,7 +29,7 @@ const AddressModal = ({ closeModal, isModalOpen, setIsAddressesUpdating }) => {
       const JSONdata = JSON.stringify({ token: userData.token, data });
 
       await axios.post(
-        "https://polarpelmeni-api.work-set.eu/api/addresses",
+        "https://api.polarpelmeni.com.ua/api/addresses",
         JSONdata,
         {
           headers: {

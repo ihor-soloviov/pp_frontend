@@ -5,10 +5,12 @@ button {
   height: fit-content;
 }
 
+
 .btn {
 }
 
 .btn-main {
+  cursor: pointer;
   transition: linear 0.25s;
   background: #62d9f1;
   border-radius: 7px;

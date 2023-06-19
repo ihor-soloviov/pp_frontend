@@ -30,6 +30,7 @@ import {
 } from './store/userSlice';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import Order from './Pages/Order/Order';
+
 import Footer from './components/Footer/Footer';
 import SelectCity from './components/SelectCity/SelectCity';
 import {
@@ -40,7 +41,7 @@ import PopupActions from './components/PopupActions/PopupActions';
 import Main from './Pages/Main/Main';
 import MenuPage from './Pages/MenuPage/MenuPage';
 
-import Thanks from './components/Thanks/Thanks';
+
 import Contact from './Pages/Contact/Contact';
 import { getFromLocalStorage } from './store/shoppingCartSlice';
 

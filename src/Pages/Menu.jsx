@@ -31,7 +31,7 @@ const Menu = () => {
 
   const getCategories = () => {
     axios
-      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
+      .get(`https://api.polarpelmeni.com.ua/api/menu`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const Menu = () => {
     const data = JSON.stringify({ categoryId: id });
 
     axios
-      .post(`https://polarpelmeni-api.work-set.eu/api/products`, data, {
+      .post(`https://api.polarpelmeni.com.ua/api/products`, data, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const Menu = () => {
   //     if (userToken) {
   //       try {
   //         const response = await axios.post(
-  //           'https://polarpelmeni-api.work-set.eu/api/favourites',
+  //           'https://api.polarpelmeni.com.ua/api/favourites',
   //           JSON.stringify({ token: userToken }),
   //           {
   //             headers: {
@@ -169,7 +169,7 @@ const Menu = () => {
   //   const sendFavoritesToServer = async () => {
   //     try {
   //       const response = await axios.post(
-  //         'https://polarpelmeni-api.work-set.eu/api/updateFavourites',
+  //         'https://api.polarpelmeni.com.ua/api/updateFavourites',
   //         JSON.stringify({ token: userToken }),
   //         {
   //           headers: {

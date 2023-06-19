@@ -19,7 +19,7 @@ const Addresses = ({ handleSidebar }) => {
       try {
         const JSONtoken = JSON.stringify({ token: userData.token });
         const response = await axios.post(
-          "https://polarpelmeni-api.work-set.eu/api/auth",
+          "https://api.polarpelmeni.com.ua/api/auth",
           JSONtoken,
           {
             headers: {
