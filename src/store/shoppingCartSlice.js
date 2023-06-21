@@ -7,19 +7,30 @@ const shoppingCart = createSlice({
   },
   reducers: {
     addProduct(state, actions) {
-      const product = {
-        preview: actions.payload.preview,
-        name: actions.payload.name,
-        price: actions.payload.price,
-        count: actions.payload.count,
-        weight: actions.payload.weight,
-        cart_index: state.products.length,
-        id: actions.payload.id,
-        ingredients: state.products.ingredients,
-      };
-      product.totalPrice = product.price * product.count;
+      const existingProduct = state.products.find(
+        (value) => value.id === actions.payload.id
+      );
 
-      state.products.push(product);
+      if (existingProduct) {
+
+        existingProduct.count += 1;
+        existingProduct.totalPrice =
+          existingProduct.price * existingProduct.count;
+      } else {
+        const product = {
+          preview: actions.payload.preview,
+          name: actions.payload.name,
+          price: actions.payload.price,
+          count: actions.payload.count,
+          weight: actions.payload.weight,
+          cart_index: state.products.length,
+          id: actions.payload.id,
+          ingredients: state.products.ingredients,
+        };
+
+        product.totalPrice = product.price * product.count;
+        state.products.push(product);
+      }
 
       localStorage.setItem('shoppingCart', JSON.stringify(state.products));
     },

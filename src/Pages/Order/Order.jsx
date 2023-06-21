@@ -47,7 +47,6 @@ const Order = () => {
                             {item.weight}г
                           </p>
                           <p className='checkout__item-price'>
-                            {' '}
                             {item.totalPrice} ₴
                           </p>
                         </div>
@@ -62,7 +61,7 @@ const Order = () => {
                       {calculateTotalPrice(shoppingCart)} ₴
                     </p>
                   </div>
-                  <div className='checkout__row'>
+                  <div className='checkout__row checkout__row-delivery'>
                     <p className='checkout__text'>Доставка:</p>
                     <p className='checkout__text'>
                       {' '}

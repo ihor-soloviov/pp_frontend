@@ -79,9 +79,12 @@
     &__preview {
       order: -1;
       height: 232px;
+      overflow: hidden;
+      border-radius: 10px;
       img {
         width: 100%;
-        height: 232px;
+        // height: 232px;
+        height: auto;
       }
     }
   }

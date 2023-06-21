@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { removeProduct, updateCount } from '../../store/shoppingCartSlice';
 
 const ShoppingCartItem = ({ preview, name, weight, price, count, id, cart_index }) => {
+  
   const [currentCount, setCurrentCount] = useState(count);
 
   const dispatch = useDispatch();

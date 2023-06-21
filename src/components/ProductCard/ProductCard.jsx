@@ -16,6 +16,7 @@ const ProductCard = (props) => {
   const [count, setCount] = useState(1);
   const [liked, setLiked] = useState(false);
   const [inCart, setInCart] = useState(false);
+
   const favoritList = useSelector((state) => state.user.favoritProducts);
   const cart = useSelector((state) => state.shoppingCart.products);
 
@@ -29,16 +30,7 @@ const ProductCard = (props) => {
     }
   }, [favoritList, props.id]);
 
-  useEffect(() => {
-    if (cart) {
-      if (cart.some((el) => el.id === props.id)) {
-        setInCart(true);
-        console.log('tt');
-      } else {
-        setInCart(false);
-      }
-    }
-  }, [cart, props.id]);
+
 
   return (
     <div className='product'>
@@ -141,7 +133,10 @@ const ProductCard = (props) => {
                 })
               );
               dispatch(setActions({ action: 'addToCard' }));
+              setInCart(true);
               setTimeout(() => {
+                setInCart(false);
+
                 dispatch(setActions({ action: '' }));
               }, 2000);
             }}

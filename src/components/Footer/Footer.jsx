@@ -60,7 +60,6 @@ const Footer = () => {
   };
   useEffect(() => {
     getCategories();
-    console.log(categories);
   }, []);
 
   return (
@@ -75,9 +74,9 @@ const Footer = () => {
               <p className='footer__title'>Меню:</p>
               <ul className='footer__menu'>
                 {categories &&
-                  categories.map((item) => {
+                  categories.map((item, index) => {
                     return (
-                      <li className='footer__link'>
+                      <li className='footer__link' key={index}>
                         <Link to={`/menu/${item.category_id}`}>
                           {item.category_name}
                         </Link>

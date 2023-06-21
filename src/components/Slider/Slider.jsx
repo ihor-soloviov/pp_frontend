@@ -19,12 +19,11 @@ const Slider = () => {
   const slider__track = useRef(null);
 
   useEffect(() => {
-    console.log();
     if (slider__track.current) {
       if (scrollDirection === 'right') {
         const scrollInterval = setInterval(() => {
           slider__track.current.scrollBy({ left: 100, behavior: 'smooth' });
-        }, 7000); 
+        }, 7000);
 
         return () => {
           clearInterval(scrollInterval);
@@ -33,7 +32,7 @@ const Slider = () => {
       if (scrollDirection === 'left') {
         const scrollInterval = setInterval(() => {
           slider__track.current.scrollBy({ left: -100, behavior: 'smooth' });
-        },7000);
+        }, 7000);
 
         return () => {
           clearInterval(scrollInterval);
@@ -41,9 +40,6 @@ const Slider = () => {
       }
     }
   }, [scrollDirection]);
-  useEffect(() => {
-    console.log('currentSlide:', currentSlide, scrollDirection);
-  }, [currentSlide]);
 
   return (
     <div className='slider'>

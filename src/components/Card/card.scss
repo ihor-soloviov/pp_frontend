@@ -31,7 +31,13 @@
     color: #12130f;
   }
 }
-
+@media screen and (max-width: 940px) {
+  .shopping-cart{
+    .btn-main-fw {
+      display: block;
+    }
+  }
+}
 @media screen and (max-width: 786px) {
   .card {
     &__ico {
@@ -60,6 +66,8 @@
   background: #ffffff;
   width: 550px;
   height: 100%;
+  overflow: scroll;
+
   padding: 40px;
 
   &__close {
@@ -70,6 +78,7 @@
   }
   &__content {
     padding: 24px 0 0 0;
+
     border-top: 1px solid #ebebee;
 
     &--empty {
@@ -127,7 +136,7 @@
     flex-direction: column;
     gap: 12px;
     min-height: 120px;
-    max-height: 520px;
+    max-height: 400px;
     overflow: scroll;
     &::-webkit-scrollbar {
       display: none;
