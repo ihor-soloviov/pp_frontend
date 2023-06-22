@@ -72,8 +72,21 @@
 @media screen and (max-width: 768px) {
   .categories {
     margin-bottom: 48px;
+    
     h1 {
       font-size: 28px;
+    }
+    &__list {
+      width: 99%;
+      justify-content: flex-start;
+      overflow: scroll;
+      flex-wrap: nowrap;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    &__btn {
+      flex-shrink: 0;
     }
   }
 }

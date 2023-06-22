@@ -27,6 +27,7 @@ const Menu = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  
   const data = localStorage.getItem('favoritProducts');
 
   const getCategories = () => {

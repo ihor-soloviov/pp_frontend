@@ -4,6 +4,7 @@
   z-index: 400;
   padding: 9px 0;
   margin-bottom: 24px;
+
   background-color: #ffffff;
   &__content {
     display: flex;
@@ -128,6 +129,10 @@
   .header {
     border-bottom: 1px solid #ebebee;
     padding: 18px 0;
+    &__fh {
+      height: 100vh;
+      overflow: scroll;
+    }
     &__logo {
       width: 44px;
       height: 44px;
@@ -153,13 +158,14 @@
     &__selector-lang {
       display: none;
     }
+
   }
 
   .mobile-menu {
     background: #ffffff;
     position: absolute;
     z-index: 500;
-    top: 100px;
+    top: 70px;
     left: 0;
     width: 100%;
     &__link {
@@ -201,6 +207,7 @@
     }
     &__auth {
       margin: 60px 0;
+      padding: 0 20px;
       display: flex;
       justify-content: center;
     }

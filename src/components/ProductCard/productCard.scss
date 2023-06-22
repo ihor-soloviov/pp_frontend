@@ -222,5 +222,12 @@
       bottom: 0;
       padding: 15px 0;
     }
+    &__inCart {
+      bottom: 0;
+      padding: 15px 0;
+      p {
+        padding: 0;
+      }
+    }
   }
 }
