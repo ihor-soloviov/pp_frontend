@@ -98,19 +98,19 @@ const InfoSection = ({ handleSidebar, isSidebarClosed }) => {
             <div className='contacts_name'>{userData.name}</div>
             <div className='contacts_phone'>
               {userData.phone}{' '}
-              <a href='#' className='button_link'>
+              <a href='#' className='button_link' disabled>
                 Змінити
               </a>
             </div>
             <div className=''>
-              <a href='#' className='button_link'>
+              <a href='#' className='button_link' disabled>
                 Завантажити фото
               </a>
             </div>
           </div>
         </div>
         <div className='profile_info--bonuses__mobile'>
-          <p>Доступно 23 бонуси</p>
+
         </div>
         <div className='profile_info--form'>
           <form onSubmit={handleSubmit}>

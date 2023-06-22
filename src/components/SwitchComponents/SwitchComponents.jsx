@@ -22,7 +22,7 @@ export const SwitchComponents = ({
           />
         );
       case "addresses":
-        return <Addresses handleSidebar={handleSidebar} />;
+        return <h1> Coming soon</h1>;
       case "history":
         return <Orders handleSidebar={handleSidebar} />;
       case "":
