@@ -66,10 +66,13 @@ const App = () => {
         const data = localStorage.getItem('userData');
 
         const dataParse = JSON.parse(data);
-        dispatch(getFromLocalStorage());
+
+
         dispatch(updateOrder())
 
         if (data) {
+            dispatch(getFromLocalStorage());
+
             // dispatch(updateCity({ city: dataParse.city }));
 
             if (dataParse.isAuthenticated === true) {
@@ -82,7 +85,7 @@ const App = () => {
     useEffect(() => {
 
         loadUserDataFromLocalStorage();
-
+        dispatch(loadFromLocalStorage());
     }, []);
 
     useEffect(() => {

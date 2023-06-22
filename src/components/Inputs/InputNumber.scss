@@ -36,3 +36,13 @@
     text-align: center;
   }
 }
+
+
+@media screen  and (max-width: 786px){
+  .inputCode {
+    &__item {
+      aspect-ratio: 1 / 1;
+      padding: 5px;
+    }
+  }
+}

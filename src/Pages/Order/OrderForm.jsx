@@ -27,7 +27,8 @@ import Thanks from '../../components/Thanks/Thanks';
 import {useLocation, useNavigate} from 'react-router-dom';
 import PopupActions from '../../components/PopupActions/PopupActions';
 import {setOrder, updateOrder} from "../../store/orderSlice";
-import {usePromocode, userPromocode} from "../../store/userSlice";
+import {userPromocode} from "../../store/userSlice";
+import {cartPromocode} from "../../store/shoppingCartSlice";
 
 
 const getCurrentDate = () => {
@@ -209,7 +210,7 @@ const OrderForm = () => {
         }`,
         payment: {
             type: paymentStatus,
-            sum: calculateTotalPrice(shoppingCart),
+            sum: isPromotion ? (calculateTotalPrice(shoppingCart) * (40 / 100)) : calculateTotalPrice(shoppingCart),
             currency: 'UAH',
         },
         promotion: isPromotion ? {id: "2", involved_products: shoppingCartMap} : '',
@@ -255,6 +256,7 @@ const OrderForm = () => {
                 console.log("postPromocode/", res)
                 setIsPromotion(true)
                 dispatch(userPromocode())
+                dispatch(cartPromocode())
             })
             .catch((err) => console.log(err));
     }
@@ -293,20 +295,25 @@ const OrderForm = () => {
             .then((res) => {
                 const response = res;
 
-                console.log('res:', response);
+                console.log('res:', response.data.response);
 
 
-                if (formData.paymentMethod === 1) {
-                    dispatch(setOrder({order: res.data.response}))
+                console.log('res2:', res);
+                if (response.status === 200) {
+                    if (formData.paymentMethod === 1) {
 
+                        dispatch(setOrder({order: response.data.response}))
 
-                    getPaymentUrl(
-                        order.data.incoming_order_id,
-                        calculateTotalPrice(shoppingCart)
-                    );
-                } else {
-                    dispatch(setOrder({order: res.data.response}))
-                    setIsOrderCreate(true)
+                        const amount = isPromotion ? (calculateTotalPrice(shoppingCart) * (40 / 100)) : calculateTotalPrice(shoppingCart)
+
+                        getPaymentUrl(
+                            response.data.response.incoming_order_id,
+                            amount
+                        );
+                    } else {
+                        dispatch(setOrder({order: res.data.response}))
+                        setIsOrderCreate(true)
+                    }
                 }
 
 
@@ -391,16 +398,9 @@ const OrderForm = () => {
         const searchParams = new URLSearchParams(location.search);
         const paramValue = searchParams.get('status');
 
-        //        if (paramValue === 'checkout') {
-
-
-        setTimeout(() => {
-
-
-            paymenthCheck(order.data.incoming_order_id)
-
-
-        }, 500)
+        if (paramValue === 'checkout') {
+            setTimeout(() => paymenthCheck(order.data.incoming_order_id), 7000)
+        }
 
         //Parse from localstorage
         //
@@ -418,7 +418,7 @@ const OrderForm = () => {
         //        }
     }, [order]);
 
-
+//    useEffect(() => {console.log(objMap)}, [formData])
     return (
         <>
             {modals.thanksModal && (
@@ -427,7 +427,8 @@ const OrderForm = () => {
                         dispatch(thanksModalUpdateState({isOpen: false}));
                     }}
                 >
-                    <Thanks orderId={order.data.incoming_order_id} deliveryTime={popupTime}/>
+                    <Thanks orderId={order.data.incoming_order_id}
+                            deliveryTime={order.data.delivery_time}/>
                 </Popup>
             )}
             {error.status === true && (
@@ -577,7 +578,7 @@ const OrderForm = () => {
                         />
                         <BtnMain name={'Застосувати'} onClick={() => {
                             postPromocode(user.token)
-                        }} disabled={user.promocode40 ? false : false}/>
+                        }} disabled={user.promocode40 ? false : true}/>
                     </section>
                     {user.promocode40 &&
                         <div className={`order-page__have-promocode`}><span>У ВАС Е ПРОМОКОД НА СКИДКУ 40%</span>

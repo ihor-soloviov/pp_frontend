@@ -9,6 +9,7 @@ const user = createSlice({
         phone: null,
         email: null,
         token: null,
+        promocode40: true,
         favoritProducts: [],
 
     },
@@ -29,7 +30,7 @@ const user = createSlice({
             state.phone = null;
             state.email = null;
             state.token = null;
-
+            state.promocode40 = false;
             localStorage.removeItem('userData');
         },
         updateCity(state, actions) {
