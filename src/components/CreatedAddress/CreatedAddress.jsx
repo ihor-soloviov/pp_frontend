@@ -13,7 +13,7 @@ const CreatedAddress = ({ address, openModal, setIsAddressesUpdating }) => {
         data: address,
       });
       await axios.post(
-        "https://api.polarpelmeni.com.ua/api/deleteAddress",
+        "https://polarpelmeni-api.work-set.eu/api/deleteAddress",
         JSONrequest,
         {
           headers: {

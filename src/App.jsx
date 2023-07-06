@@ -44,7 +44,7 @@ import MenuPage from './Pages/MenuPage/MenuPage';
 
 import Contact from './Pages/Contact/Contact';
 import {getFromLocalStorage} from './store/shoppingCartSlice';
-import {updateOrder} from "./store/orderSlice";
+
 
 firebase.initializeApp(firebaseConfig);
 
@@ -68,7 +68,7 @@ const App = () => {
         const dataParse = JSON.parse(data);
 
 
-        dispatch(updateOrder())
+
 
         if (data) {
             dispatch(getFromLocalStorage());

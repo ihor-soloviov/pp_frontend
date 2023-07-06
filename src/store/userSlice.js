@@ -75,10 +75,17 @@ const user = createSlice({
             state.promocode40 = false;
             localStorage.setItem('userData', JSON.stringify(state));
         },
+        userPromocodeNotUse(state) {
+            state.promocode40 = true;
+            localStorage.setItem('userData', JSON.stringify(state));
+        },
         loadFromLocalStorage(state) {
             const favoritProducts = localStorage.getItem('favoritProducts');
             const dataParse = JSON.parse(favoritProducts);
-            state.favoritProducts = dataParse;
+            if (dataParse !== null) {
+                state.favoritProducts = dataParse;
+            }
+
         },
     },
 });
@@ -91,6 +98,7 @@ export const {
     removeFromFavorit,
     loadFromLocalStorage,
     userPromocode,
+    userPromocodeNotUse
 } = user.actions;
 
 export default user.reducer;

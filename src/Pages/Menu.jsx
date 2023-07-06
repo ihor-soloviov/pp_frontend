@@ -32,7 +32,7 @@ const Menu = () => {
 
   const getCategories = () => {
     axios
-      .get(`https://api.polarpelmeni.com.ua/api/menu`, {
+      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const Menu = () => {
     const data = JSON.stringify({ categoryId: id });
 
     axios
-      .post(`https://api.polarpelmeni.com.ua/api/products`, data, {
+      .post(`https://polarpelmeni-api.work-set.eu/api/products`, data, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ const Menu = () => {
   //     if (userToken) {
   //       try {
   //         const response = await axios.post(
-  //           'https://api.polarpelmeni.com.ua/api/favourites',
+  //           'https://polarpelmeni-api.work-set.eu/api/favourites',
   //           JSON.stringify({ token: userToken }),
   //           {
   //             headers: {
@@ -143,11 +143,7 @@ const Menu = () => {
   //   fetchFavoritesFromServer();
   // }, [userToken]);
 
-  useEffect(() => {
-    if (id) {
-      setCurrentCatId(id);
-    }
-  }, [id]);
+
 
   useEffect(() => {
     getCategories();
@@ -170,7 +166,7 @@ const Menu = () => {
   //   const sendFavoritesToServer = async () => {
   //     try {
   //       const response = await axios.post(
-  //         'https://api.polarpelmeni.com.ua/api/updateFavourites',
+  //         'https://polarpelmeni-api.work-set.eu/api/updateFavourites',
   //         JSON.stringify({ token: userToken }),
   //         {
   //           headers: {
@@ -193,6 +189,12 @@ const Menu = () => {
   //     window.removeEventListener('beforeunload', sendFavoritesToServer);
   //   };
   // }, [favorites]);
+
+  useEffect(() => {
+    if (id) {
+      setCurrentCatId(id);
+    }
+  }, [id]);
 
   return (
     <>

@@ -7,12 +7,14 @@ import './Order.scss';
 import {useDispatch, useSelector} from 'react-redux';
 
 import OrderForm from './OrderForm';
+import {setPaymentData} from "../../store/orderSlice";
 
 const Order = () => {
     const dispatch = useDispatch();
     const shoppingCart = useSelector((state) => state.shoppingCart);
     const modals = useSelector((state) => state.modals);
-
+    const order = useSelector((state) => state.order);
+    const user = useSelector((state) => state.user);
     const calculateTotalPrice = (items) => {
         let totalPrice = 0;
 
@@ -26,11 +28,26 @@ const Order = () => {
     useEffect(() => {
         console.log(shoppingCart.promocode)
     }, [shoppingCart.promocode])
+
+//    useEffect(() => {
+//        const user_payment_data_json = localStorage.getItem('user_payment_data');
+//
+//        if (user_payment_data_json) {
+//            const user_payment_data = JSON.parse(user_payment_data_json)
+//
+//            dispatch(setPaymentData({payment_data: user_payment_data}))
+//        }
+//
+//
+//    })
+
+
     return (
         <>
             <Container>
                 <div className='order-page'>
                     <div className='order-page__content'>
+
                         <OrderForm/>
                         <div className='checkout'>
                             <div className='checkout__content'>
@@ -72,10 +89,10 @@ const Order = () => {
                                                 : 'Безкоштовна'}
                                         </p>
                                     </div>
-                                    {shoppingCart.promocode && <div className='checkout__row'>
+                                    {!user.promocode40 && <div className='checkout__row'>
                                         <p className='checkout__text'>Скидка:</p>
                                         <p className='checkout__text'>
-                                            {calculateTotalPrice(shoppingCart.products) - calculateTotalPrice(shoppingCart.products) * (40 / 100)} ₴
+                                            {(calculateTotalPrice(shoppingCart.products) - calculateTotalPrice(shoppingCart.products) * (60 / 100)).toFixed(2)} ₴
                                         </p>
                                     </div>}
 
@@ -84,7 +101,7 @@ const Order = () => {
                                             Всього до сплати:
                                         </p>
                                         <p className='checkout__text-bold'>
-                                            {shoppingCart.promocode ? (calculateTotalPrice(shoppingCart.products) * (40 / 100)) : calculateTotalPrice(shoppingCart.products)} ₴
+                                            {!user.promocode40 ? (calculateTotalPrice(shoppingCart.products) * (60 / 100)) : calculateTotalPrice(shoppingCart.products)} ₴
                                         </p>
                                     </div>
                                     {/* <BtnMain name={'ОПЛАТИТЬ'} fullWide onClick={() => pay()} /> */}

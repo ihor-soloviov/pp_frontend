@@ -62,7 +62,7 @@ const Header = () => {
 
     const getCategories = () => {
         axios
-            .get(`https://api.polarpelmeni.com.ua/api/menu`, {
+            .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
@@ -289,10 +289,21 @@ const Header = () => {
                                     </ul>
 
                                     <ul className='mobile-menu__nav'>
-                                        <li>Головна</li>
-                                        <li>Меню</li>
-                                        <li>Про нас</li>
-                                        <li>Контакти</li>
+
+
+                                        <li>
+                                            <Link to={'/'}>Головна</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={'/menu'}>Меню</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={'/about-us'}>Про нас</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={'/contact'}>Контакти</Link>
+                                        </li>
+
                                     </ul>
                                 </nav>
                             </div>
@@ -312,7 +323,7 @@ const Header = () => {
                     </Popup>
                 )}
 
-            <header className={`header ${hamburger && 'header__fh'}`}>
+                <header className={`header ${hamburger && 'header__fh'}`}>
                     <Container>
                         <div className='header__content'>
                             <div className='header__left'>
@@ -424,7 +435,7 @@ const Header = () => {
                                 <nav className='mobile-menu__navigation'>
                                     <ul className='mobile-menu__menu'>
                                         <li className='mobile-menu__link'>
-                                            <Link>Головна</Link>
+                                            <Link to={'/'}>Головна</Link>
                                         </li>
                                         <li className='mobile-menu__link '>
                                             <div
@@ -464,10 +475,10 @@ const Header = () => {
                                             )}
                                         </li>
                                         <li className='mobile-menu__link'>
-                                            <Link>Про нас</Link>
+                                            <Link to={'about-us'}>Про нас</Link>
                                         </li>
                                         <li className='mobile-menu__link'>
-                                            <Link>Контакти</Link>
+                                            <Link to={'contact'}>Контакти</Link>
                                         </li>
                                     </ul>
 

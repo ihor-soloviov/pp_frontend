@@ -41,7 +41,7 @@ const ProductPage = () => {
 
     const dataJSON = JSON.stringify(data);
     axios
-      .post(`https://api.polarpelmeni.com.ua/api/product`, dataJSON, {
+      .post(`https://polarpelmeni-api.work-set.eu/api/product`, dataJSON, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const ProductPage = () => {
         });
         axios
           .post(
-            `https://api.polarpelmeni.com.ua/api/products`,
+            `https://polarpelmeni-api.work-set.eu/api/products`,
             menu_category_id,
             {
               headers: {
