@@ -11,8 +11,8 @@ const Contact = () => {
         // width: '100%',
     };
     const center = {
-        lat: 46.4687036955026,
-        lng: 30.742498892070394,
+        lat: 46.44037226802607,
+        lng: 30.721339215781278,
     }
     const options = {
         streetViewControl: false,
@@ -60,7 +60,7 @@ const Contact = () => {
                             <li className='contact__item'>
                                 <span className='contact__item-title'>Адреса</span>
                                 <span className='contact__item-link'>
-                  вул. Лейтенанта Шмідта 25
+                                    вул. Маршала Малиновскього 18
                 </span>
                             </li>
                             <li className='contact__item'>
@@ -95,10 +95,10 @@ const Contact = () => {
                                 <GoogleMap
                                     mapContainerStyle={containerStyle}
                                     center={center}
-                                    zoom={17}
+                                    zoom={16}
                                     options={options}
                                 >
-                                  <MarkerF position={center}/>
+                                    <MarkerF position={center}/>
                                 </GoogleMap>
                             </LoadScript>
                         </div>

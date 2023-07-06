@@ -14,7 +14,7 @@ const shoppingCart = createSlice({
 
             if (existingProduct) {
 
-                existingProduct.count += 1;
+                existingProduct.count += actions.payload.count;
                 existingProduct.totalPrice =
                     existingProduct.price * existingProduct.count;
             } else {

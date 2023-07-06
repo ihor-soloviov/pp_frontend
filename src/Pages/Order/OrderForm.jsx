@@ -378,7 +378,7 @@ const OrderForm = () => {
             } else if (calculateTotalPrice(shoppingCart) <= 200) {
                 setError({
                     status: true,
-                    currentError: 'Минимальна сумма замовлення 200 ₴'
+                    currentError: 'Мінімальна сумма замовлення 200 ₴'
                 })
                 setTimeout(() => {
                     setError({
@@ -639,7 +639,7 @@ const OrderForm = () => {
                                 if (calculateTotalPrice(shoppingCart) * (60 / 100) <= 200) {
                                     setError({
                                         status: true,
-                                        currentError: 'Минимальна сумма замовлення 200 ₴'
+                                        currentError: 'Мінімальна сумма замовлення 200 ₴'
                                     })
                                     setTimeout(() => {
                                         setError({

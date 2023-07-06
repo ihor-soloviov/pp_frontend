@@ -10,7 +10,7 @@ const ShoppingCartItem = ({ preview, name, weight, price, count, id, cart_index 
 
   useEffect(() => {
     dispatch(updateCount({ cart_index: cart_index, count: currentCount }));
-  }, [currentCount]);
+    }, [currentCount]);
 
   return (
     <li className='shopping-cart__item'>
@@ -53,7 +53,7 @@ const ShoppingCartItem = ({ preview, name, weight, price, count, id, cart_index 
             >
               -
             </div>
-            <div className='counter__value'>{currentCount}</div>
+            <div className='counter__value'>{count}</div>
             <div
               className='counter__btn counter__btn--light'
               onClick={() => setCurrentCount(count + 1)}

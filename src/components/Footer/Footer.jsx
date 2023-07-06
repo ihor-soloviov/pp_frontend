@@ -90,7 +90,7 @@ const Footer = () => {
                 <p className='footer__title'>Одеса:</p>
                 <ul className='footer__contacts'>
                   <a href='tel:+380987271991'>+380 (98) 727-19-91</a>
-                  <p>вул. Лентейнанта Шмідта 25</p>
+                  <p>вул. Маршала Малиновскього 18</p>
                 </ul>
               </div>
               <div className='footer__contact'>

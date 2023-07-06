@@ -38,7 +38,7 @@ const Card = () => {
 
     const popupError = (err) => {
         if (err) {
-            return <PopupActions action={'Минимальна сумма замовлення 200 ₴'} error/>;
+            return <PopupActions action={'Мінімальна сумма замовлення 200 ₴'} error/>;
         } else {
             return null;
         }
