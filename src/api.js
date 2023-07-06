@@ -1,1 +1,1 @@
-export const url = 'https://api.polarpelmeni.com.ua/'
+export const url = 'https://polarpelmeni-api.work-set.eu/'

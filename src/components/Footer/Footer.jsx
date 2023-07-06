@@ -14,7 +14,7 @@ const Footer = () => {
   const [categories, setCategories] = useState([]);
   const getCategories = () => {
     axios
-      .get(`https://api.polarpelmeni.com.ua/api/menu`, {
+      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',

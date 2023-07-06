@@ -60,6 +60,10 @@ const shoppingCart = createSlice({
         },
         cartPromocode(state) {
             state.promocode = true
+        },
+        clearCart(state) {
+            state.products = []
+            localStorage.removeItem('shoppingCart')
         }
     },
 });
@@ -70,6 +74,7 @@ export const {
     updateCount,
     getFromLocalStorage,
     cartPromocode,
+    clearCart,
 } = shoppingCart.actions;
 
 export default shoppingCart.reducer;

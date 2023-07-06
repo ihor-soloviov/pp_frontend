@@ -11,6 +11,7 @@ const InputText = (props) => {
       <input
         type='text'
         placeholder={props.placeholder}
+        value={props.inputValue && props.inputValue}
         onChange={(e) => props.onChange(e.target.value)}
       />
     </label>
