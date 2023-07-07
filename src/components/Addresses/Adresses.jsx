@@ -53,8 +53,8 @@ const Addresses = ({ handleSidebar }) => {
           isModalOpen={isModalOpen}
           setIsAddressesUpdating={setIsAddressesUpdating}
         />
-        {addresses.length > 0 &&
-          addresses.map((address) => (
+        {userData.adresses !== null &&
+          userData.adresses.map((address) => (
             <CreatedAddress
               key={address.addressName}
               address={address}

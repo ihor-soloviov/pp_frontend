@@ -154,6 +154,11 @@ const OrderForm = () => {
         const [promotionPopup, setPromotionPopup] = useState(false);
         const [transactionStatus, setTransactionStatus] = useState(false)
         const [posterOrder, setPosterOrder] = useState(null)
+        const [adresses, setAdresses] = useState([{
+            label: 'Немає',
+            value: null,
+            id: 0
+        }])
         const [error, setError] = useState({status: false, currentError: ''});
 
 
@@ -181,6 +186,27 @@ const OrderForm = () => {
         const modals = useSelector((state) => state.modals);
         const user = useSelector((state) => state.user);
         const order = useSelector((state) => state.order);
+
+        useEffect(() => {
+            if (user.adresses !== null) {
+                const selected = [{
+                    label: 'Виберіть адресу',
+                    value: null,
+                    id: 0
+                }]
+                const adressMap = user.adresses.map((data, index) => {
+                    return {
+                        id: index + 1,
+                        label: data.addressName,
+                        value: `Вулица: ${data.streetName}, ${data.homeNumber}, ${data.entranceNumber ? `парадна: ${data.entranceNumber}` : ''} ${data.entranceCode ? `код: ${data.entranceCode} ` : ''} ${data.floar ? `этаж: ${data.floar} ` : ''} ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ''} ${data.comment ? `коментарий: ${data.comment} ` : ''} `
+                    }
+                })
+
+                setAdresses([...selected, ...adressMap])
+
+            }
+
+        }, [user])
 
 
         const time = filterTimeArray(timeArray);
@@ -212,41 +238,46 @@ const OrderForm = () => {
             doNotCall: false,
         });
         const orderData = {
-            spot_id: 1,
-            first_name: formData.name,
-            phone: formData.number,
-            products: shoppingCartMap,
-            client_address: {
-                address1: `Вулиця: ${formData.street}, Дім: ${formData.houseNumber}`,
-                address2: `Парадная: ${formData.entrance}, Квартира: ${formData.apartment}, Код: ${formData.buildingCode}, Поверх: ${formData.floor}, `,
-            },
-            service_mode: formData.howToReciveOrder === 'Самовивіз' ? 2 : 3,
-            delivery_time: `${
-                formData.deliveryTime === 'На зараз'
-                    ? getCurrentDate()
-                    : dateFormatter(formData.selectedTime)
-            }`,
-            payment: {
-                type: formData.paymentMethod === 'Готівка' ? 0 : 1,
-                sum: isPromotion ? 0 : calculateTotalPrice(shoppingCart),
-                currency: 'UAH',
-            },
-            promotion: isPromotion ? shoppingCartMapPromo : '',
-            comment: `
-    Кол-во персон: ${formData.personCount},
-      ${formData.comment && ` ${formData.comment}`}, ${
-                formData.withoutDevices && 'Без приборов'
-            },${formData.doNotCall && 'Не перезванивать'}, ${
-                formData.howToReciveOrder === 2 && 'САМОВЫВОЗ'
-            } ${isPromotion && 'СКИДКА 40%'}`,
-        };
+                spot_id: 1,
+                first_name: formData.name,
+                phone: formData.number,
+                products: shoppingCartMap,
+                client_address: {
+                    address1: `${formData.selectedAddress !== "Виберіть адресу" ? formData.selectedAddress : ` Вулиця: ${formData.street} ,  Вулиця: ${formData.street},
+                Дім: ${formData.houseNumber}`}`
+                    ,
+                    address2: `
+                Парадная: ${formData.entrance},
+                Квартира: ${formData.apartment},
+                Код: ${formData.buildingCode},
+                Поверх: ${formData.floor},`,
+                },
+                service_mode: formData.howToReciveOrder === 'Самовивіз' ? 2 : 3,
+                delivery_time: `${
+                    formData.deliveryTime === 'На зараз'
+                        ? getCurrentDate()
+                        : dateFormatter(formData.selectedTime)
+                }`,
+                payment: {
+                    type: formData.paymentMethod === 'Готівка' ? 0 : 1,
+                    sum: isPromotion ? 0 : calculateTotalPrice(shoppingCart),
+                    currency: 'UAH',
+                },
+                promotion: isPromotion ? shoppingCartMapPromo : '',
+                comment: `
+            Кол - во
+            персон: ${formData.personCount},
+            ${formData.comment && ` ${formData.comment}
+            `}, ${
+                    formData.withoutDevices && 'Без приборов'
+                },${formData.doNotCall && 'Не перезванивать'}, ${
+                    formData.howToReciveOrder === 2 && 'САМОВЫВОЗ'
+                } ${isPromotion && 'СКИДКА 40%'}`,
+            }
+        ;
 
 
-        useEffect(() => {
-            console.log(orderData)
-        }, [orderData])
-
-
+       
         //Update fomdata state
         const handleChange = (field, value) => {
             setFormData((prevFormData) => ({
@@ -466,6 +497,9 @@ const OrderForm = () => {
             }
         }, [user])
 
+        useEffect(() => {
+            console.log(formData)
+        }, [formData])
 
         return (
             <>
@@ -515,13 +549,7 @@ const OrderForm = () => {
                         <section className='order-page__section-inputs'>
                             <InputSelector
                                 name={'Збережені адреси'}
-                                data={[
-                                    {
-                                        id: 1,
-                                        label: 'Немає',
-                                        value: 'Немає',
-                                    },
-                                ]}
+                                data={adresses}
                                 placeholder={'Оберіть адресу'}
                                 value={formData.selectedAddress}
                                 onChange={(value) => handleChange('selectedAddress', value)}
@@ -630,7 +658,11 @@ const OrderForm = () => {
                                 name={'Промокод'}
                                 placeholder={'Промокод'}
                                 data={
-                                    user.isAuthenticated && user.promocode40 ? [{id: 0, label: '40%', value: '40%'}] : []
+                                    user.isAuthenticated && user.promocode40 ? [{
+                                        id: 0,
+                                        label: '40%',
+                                        value: '40%'
+                                    }] : []
                                 }
                                 value={formData.paymentMethod}
                                 onChange={(value) => handleChange('promoCode', value)}

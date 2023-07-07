@@ -11,7 +11,7 @@ const user = createSlice({
         token: null,
         promocode40: true,
         favoritProducts: [],
-
+        adresses: [],
     },
     reducers: {
         userLogin(state, actions) {
@@ -57,6 +57,34 @@ const user = createSlice({
                 );
             }
         },
+        addToAdresses(state, actions) {
+
+            const adress = actions.payload.adress;
+
+
+            state.adresses.push(adress);
+
+            if (state.isAuthenticated) {
+                localStorage.setItem(
+                    'user_adresses',
+                    JSON.stringify(state.adresses)
+                );
+            }
+        },
+        removeAdresses(state, actions) {
+            const productIdToRemove = actions.payload.addressName;
+
+            state.adresses = state.adresses.filter(
+                (product) => product.addressName !== productIdToRemove
+            );
+
+            if (state.isAuthenticated) {
+                localStorage.setItem(
+                    'user_adresses',
+                    JSON.stringify(state.adresses)
+                );
+            }
+        },
         removeFromFavorit(state, actions) {
             const productIdToRemove = actions.payload.id;
 
@@ -86,7 +114,16 @@ const user = createSlice({
                 state.favoritProducts = dataParse;
             }
 
+
         },
+        loadFromLocalStorageAdress(state) {
+            const adresses = localStorage.getItem('user_adresses');
+            const dataParse = JSON.parse(adresses);
+            if (dataParse !== null) {
+                state.adresses = dataParse;
+            }
+
+        }
     },
 });
 
@@ -97,8 +134,11 @@ export const {
     addToFavorit,
     removeFromFavorit,
     loadFromLocalStorage,
+    loadFromLocalStorageAdress,
     userPromocode,
-    userPromocodeNotUse
+    userPromocodeNotUse,
+    addToAdresses,
+    removeAdresses
 } = user.actions;
 
 export default user.reducer;
