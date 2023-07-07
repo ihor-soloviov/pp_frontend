@@ -23,7 +23,7 @@ import {firebaseConfig} from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 
 import {
-    loadFromLocalStorage,
+    loadFromLocalStorage, loadFromLocalStorageAdress,
     updateCity,
     userLogin,
     userLogout,
@@ -86,6 +86,7 @@ const App = () => {
 
         loadUserDataFromLocalStorage();
         dispatch(loadFromLocalStorage());
+        dispatch(loadFromLocalStorageAdress());
     }, []);
 
     useEffect(() => {
