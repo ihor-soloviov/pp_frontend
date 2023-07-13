@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 //Import components
 import Container from '../../components/Container/Container';
-
+import Loader from '../../components/Loader/Loader';
 //Import styles
 import './ProductPage.scss';
 import axios from 'axios';
@@ -13,6 +13,7 @@ import ArrowBtn from '../../components/ArrowBtn/ArrowBtn';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../store/shoppingCartSlice';
 import { setActions } from '../../store/popupActionsSlice';
+import { url } from '../../api';
 const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
 const token = '436783:670964579c5655f22513de1218a29b4d';
 const ProductPage = () => {
@@ -41,7 +42,7 @@ const ProductPage = () => {
 
     const dataJSON = JSON.stringify(data);
     axios
-      .post(`https://polarpelmeni-api.work-set.eu/api/product`, dataJSON, {
+      .post(`${url}/api/product`, dataJSON, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -54,16 +55,12 @@ const ProductPage = () => {
           categoryId: res.data.response.menu_category_id,
         });
         axios
-          .post(
-            `https://polarpelmeni-api.work-set.eu/api/products`,
-            menu_category_id,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-              },
-            }
-          )
+          .post(`${url}/api/products`, menu_category_id, {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+          })
           .then((res) => {
             const resData = res.data.response;
             const dataMap = resData.map((item) => {
@@ -249,7 +246,11 @@ const ProductPage = () => {
       </div>
     );
   } else {
-    return 'Продукт не найден';
+    return (
+      <div className='loader__wrapper'>
+        <Loader />
+      </div>
+    );
   }
 };
 
