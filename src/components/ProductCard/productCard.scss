@@ -1,7 +1,51 @@
 .product {
   max-width: 315px;
-
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &:hover {
+    .product__preview {
+      opacity: 0.9;
+    }
+    .counter {
+      .counter__btn:last-child {
+        color: rgba(18, 19, 15, 1);
+      }
+    }
+  }
+  &__cta {
+    z-index: 200;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+  &__like {
+    transition: linear 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+    transition: linear 0.2s;
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    &-active {
+      background: rgba(255, 255, 255, 1);
+      svg {
+        fill: #df643a;
+        path {
+          stroke: #df643a;
+        }
+      }
+    }
+  }
   &__preview {
+    transition: linear 0.25s;
     max-width: 315px;
     aspect-ratio: 1 / 1;
     cursor: pointer;
@@ -20,6 +64,7 @@
     }
   }
   &__addToCard {
+    transition: linear 0.05s;
     position: absolute;
     bottom: -40px;
     left: 0;
@@ -32,6 +77,32 @@
 
     padding: 8px 0;
     color: #ffffff;
+    &:hover {
+      background: #12130f;
+    }
+    &-active {
+    }
+  }
+  &__inCart {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0;
+    p {
+      font-size: 16px;
+      line-height: 150%;
+      /* identical to box height, or 24px */
+
+      padding: 8px 0;
+      color: #92939a;
+    }
     &:hover {
       background: #12130f;
     }
@@ -88,6 +159,7 @@
   align-items: center;
 
   &__btn {
+    transition: linear 0.25s;
     font-family: 'Unbounded';
     display: flex;
 
@@ -146,9 +218,16 @@
         height: 100%;
       }
     }
-    &__addToCard  {
+    &__addToCard {
       bottom: 0;
       padding: 15px 0;
+    }
+    &__inCart {
+      bottom: 0;
+      padding: 15px 0;
+      p {
+        padding: 0;
+      }
     }
   }
 }

@@ -10,6 +10,10 @@
     h4 {
       font-size: 18px;
       font-weight: 500;
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+      }
     }
   }
 
@@ -54,5 +58,7 @@
   background-color: #62D9F1;
   border-radius: 4px;
 
-  
+  @media (max-width: 768px) {
+    margin-left: 8px;
+  }
 }

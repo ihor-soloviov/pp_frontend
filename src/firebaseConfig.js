@@ -5,12 +5,12 @@ import { initializeApp } from 'firebase/app';
 
 // Your web app's Firebase configuration
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAUpm-rclKNPsR288UAeYbLYjyH34Zi8ds',
-  authDomain: 'pelmeni-phone.firebaseapp.com',
-  projectId: 'pelmeni-phone',
-  storageBucket: 'pelmeni-phone.appspot.com',
-  messagingSenderId: '955345614983',
-  appId: '1:955345614983:web:49f4ad0b9958218e006022',
+  apiKey: 'AIzaSyAZTy2mx9Oje6LQvaiaaCxx0rq0Cm3jGvM',
+  authDomain: 'polar-pelmeni.firebaseapp.com',
+  projectId: 'polar-pelmeni',
+  storageBucket: 'polar-pelmeni.appspot.com',
+  messagingSenderId: '1051342657269',
+  appId: '1:1051342657269:web:4a5d1cc8eb468172dcd7bc',
 };
 
 // Initialize Firebase

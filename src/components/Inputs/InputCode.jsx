@@ -41,6 +41,7 @@ const InputCode = ({ onData }) => {
     <div className='inputCode'>
       {Array.from({ length: 6 }).map((_, index) => (
         <input
+          autocomplete="one-time-code"
           key={index}
           ref={(el) => (inputRefs.current[index] = el)}
           type='text'

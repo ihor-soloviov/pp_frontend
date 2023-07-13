@@ -1,6 +1,11 @@
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 400;
   padding: 9px 0;
   margin-bottom: 24px;
+
+  background-color: #ffffff;
   &__content {
     display: flex;
     justify-content: space-between;
@@ -15,6 +20,26 @@
     height: 64px;
     img {
       width: 100%;
+    }
+  }
+  &__left {
+    display: flex;
+    align-items: center;
+  }
+  &__selectors {
+    margin-left: 54px;
+    display: flex;
+    gap: 34px;
+  }
+  &__selector {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    span {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
     }
   }
   &__right {
@@ -100,12 +125,23 @@
   }
 }
 
-@media screen and (max-width: 786px) {
+@media screen and (max-width: 940px) {
   .header {
+    border-bottom: 1px solid #ebebee;
+    padding: 18px 0;
+    &__fh {
+      height: 100vh;
+      overflow: scroll;
+    }
+    &__logo {
+      width: 44px;
+      height: 44px;
+    }
     &__navigation {
       display: none;
     }
     &__right {
+      gap: 30px;
       .btn {
         display: none;
       }
@@ -116,13 +152,20 @@
     &__profile-btn {
       display: none;
     }
+    &__selectors {
+      margin-left: 24px;
+    }
+    &__selector-lang {
+      display: none;
+    }
+
   }
 
   .mobile-menu {
     background: #ffffff;
     position: absolute;
     z-index: 500;
-    top: 100px;
+    top: 70px;
     left: 0;
     width: 100%;
     &__link {
@@ -132,6 +175,10 @@
       color: #000000;
       padding-bottom: 16px;
       border-bottom: 1px solid #ebebee;
+      &--exit {
+        color: #f55d66;
+        border-bottom: none;
+      }
     }
     &__sublink {
       font-weight: 400;
@@ -160,14 +207,50 @@
     }
     &__auth {
       margin: 60px 0;
+      padding: 0 20px;
       display: flex;
       justify-content: center;
     }
+    &__phone {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 150%;
+      color: #12130f;
+      padding: 6px 0;
+    }
+    &__nav {
+      margin-top: 80px;
+      padding: 0 20px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+
+      li {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 150%;
+
+        color: #92939a;
+      }
+    }
+    &__bonus {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 150%;
+    }
     &__profile-btn {
+      width: 100%;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 18px;
+      &--profile {
+        border-bottom: 1px solid #ebebee;
+        margin: 0 20px;
+        padding-bottom: 30px;
+      }
     }
     &__avatar {
       width: 75px;

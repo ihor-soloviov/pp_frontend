@@ -10,31 +10,90 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ArrowBtn from '../../components/ArrowBtn/ArrowBtn';
-const proxy_url = `http://localhost:5656/`;
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct } from '../../store/shoppingCartSlice';
+import { setActions } from '../../store/popupActionsSlice';
+const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
 const token = '436783:670964579c5655f22513de1218a29b4d';
 const ProductPage = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const [count, setCount] = useState(1);
+  const [inCart, setInCart] = useState(false);
 
   const [product, setProduct] = useState(null);
+  const [productIngredients, setProductIngredients] = useState(null);
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`${proxy_url}api/menu.getProduct?token=${token}&product_id=${id}`)
-      .then((res) => {
-        console.log(res.data.response);
-        setProduct(res.data.response);
-        axios
-          .get(
-            `${proxy_url}/api/menu.getProducts?token=${token}&category_id=${res.data.response.menu_category_id}&type=batchtickets`
-          )
-          .then((res) => setRecommendationsProducts(res.data.response));
-      });
-  }, [id]);
+    if (product) {
+      const str = product.product_production_description;
+      const arr = str.split(', ');
+      setProductIngredients(arr);
+    }
+  }, [product]);
 
-  if (product !== null) {
+  useEffect(() => {
+    const data = {
+      productId: id,
+    };
+
+    const dataJSON = JSON.stringify(data);
+    axios
+      .post(`https://polarpelmeni-api.work-set.eu/api/product`, dataJSON, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log('pp', res);
+        setProduct(res.data.response);
+        const menu_category_id = JSON.stringify({
+          categoryId: res.data.response.menu_category_id,
+        });
+        axios
+          .post(
+            `https://polarpelmeni-api.work-set.eu/api/products`,
+            menu_category_id,
+            {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+          .then((res) => {
+            const resData = res.data.response;
+            const dataMap = resData.map((item) => {
+              return {
+                photo: item.photo_origin,
+                product_name: item.product_name,
+                price: item.price,
+                out: item.out,
+                product_id: item.product_id,
+                ingredients: item.product_production_description,
+              };
+            });
+            setRecommendationsProducts(dataMap);
+          });
+      })
+      .catch((err) => console.error(err));
+  }, [id]);
+  const cart = useSelector((state) => state.shoppingCart.products);
+
+  useEffect(() => {
+    if (cart) {
+      if (cart.some((el) => el.id == id)) {
+        setInCart(true);
+      } else {
+        setInCart(false);
+      }
+    }
+  }, [cart, id]);
+
+  if (product !== null && product !== false) {
     return (
       <div>
         <div className='product-page'>
@@ -67,13 +126,52 @@ const ProductPage = () => {
                 </p>
 
                 <div className='product-page__order'>
-                  <button
-                    className='btn btn-main'
-                    onClick={() => console.log('go to cart')}
-                  >
-                    Додати в кошик (
-                    {parseInt(product.price[1].slice(0, -2)) * count} ₴)
-                  </button>
+                  {inCart === true ? (
+                    <button
+                      className='btn btn-main'
+                      onClick={() => {}}
+                      disabled
+                    >
+                      <svg
+                        width='16'
+                        height='16'
+                        viewBox='0 0 16 16'
+                        fill='none'
+                        xmlns='http://www.w3.org/2000/svg'
+                        style={{ marginRight: 6 }}
+                      >
+                        <path
+                          d='M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z'
+                          fill='#92939A'
+                        />
+                      </svg>
+                      Додано до кошику
+                    </button>
+                  ) : (
+                    <button
+                      className='btn btn-main'
+                      onClick={() => {
+                        dispatch(
+                          addProduct({
+                            name: product.product_name,
+                            price: parseInt(product.price[1].slice(0, -2)),
+                            count: count,
+                            preview: proxy_url + product.photo_origin,
+                            weight: product.cost,
+                            id: id,
+                          })
+                        );
+                        dispatch(setActions({ action: 'addToCard' }));
+                        setTimeout(() => {
+                          dispatch(setActions({ action: '' }));
+                        }, 2000);
+                      }}
+                    >
+                      Додати в кошик (
+                      {parseInt(product.price[1].slice(0, -2)) * count} ₴)
+                    </button>
+                  )}
+
                   <div className='counter'>
                     <div
                       className='counter__btn counter__btn--transperent'
@@ -97,19 +195,18 @@ const ProductPage = () => {
                   </div>
                 </div>
 
-                {product.group_modifications && (
+                {product.product_production_description && (
                   <>
                     <h6 className='product-page__compile-title title__h6 text__color--secondary'>
                       Склад
                     </h6>
                     <ul className='product-page__compile'>
-                      {product.group_modifications.map((el) => {
-                        return (
-                          <li className='product-page__compile-item'>
-                            {el.name}
-                          </li>
-                        );
-                      })}
+                      {productIngredients &&
+                        productIngredients.map((el) => {
+                          return (
+                            <li className='product-page__compile-item'>{el}</li>
+                          );
+                        })}
                     </ul>
                   </>
                 )}
@@ -130,7 +227,10 @@ const ProductPage = () => {
                     {recommendationsProducts.map((product) => {
                       return (
                         <ProductCard
-                          preview={proxy_url + product.photo}
+                          preview={
+                            `https://polar-pelmeni-odessa.joinposter.com` +
+                            product.photo
+                          }
                           name={product.product_name}
                           price={parseInt(product.price[1].slice(0, -2))}
                           ingredients={product.ingredients}
@@ -148,6 +248,8 @@ const ProductPage = () => {
         </div>
       </div>
     );
+  } else {
+    return 'Продукт не найден';
   }
 };
 

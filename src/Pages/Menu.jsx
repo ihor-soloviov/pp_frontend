@@ -10,6 +10,9 @@ import ProductCard from '../components/ProductCard/ProductCard';
 import axios from 'axios';
 import Container from '../components/Container/Container';
 import { useParams } from 'react-router-dom';
+
+import Slider from '../components/Slider/Slider';
+import { useSelector } from 'react-redux';
 const token = '436783:670964579c5655f22513de1218a29b4d';
 
 const proxy_url = `https://pelmeni-proxy.work-set.eu`;
@@ -18,18 +21,14 @@ const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
 
 const Menu = () => {
   const { id } = useParams();
+  const userToken = useSelector((state) => state.user).token;
 
-
-  const [currentCatId, setCurrentCatId] = useState('41');
+  const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    console.log('id', id);
-    if (id !== undefined) {
-      setCurrentCatId(id);
-    }
-  }, [id]);
+  const [favorites, setFavorites] = useState([]);
+  
+  const data = localStorage.getItem('favoritProducts');
 
   const getCategories = () => {
     axios
@@ -40,27 +39,47 @@ const Menu = () => {
         },
       })
       .then((res) => {
-        console.log('start');
-        console.log(res);
         const data = res.data.response;
 
         const filteredCat = data.filter((obj) =>
           obj.category_name.startsWith('onlineOrder:')
         );
-        const mapCat = filteredCat.map((el) => {
+        const mapCat = filteredCat.map((el, index) => {
           return {
             category_name: el.category_name.replace(/onlineOrder: /, ''),
             category_id: el.category_id,
+            category_position_index: index,
           };
         });
+        mapCat[13].category_position_index = 0;
+        mapCat[12].category_position_index = 1;
+        mapCat[11].category_position_index = 2;
+        mapCat[8].category_position_index = 3;
+        mapCat[10].category_position_index = 4;
+        mapCat[9].category_position_index = 5;
+        mapCat[2].category_position_index = 6;
+        mapCat[3].category_position_index = 7;
+        mapCat[0].category_position_index = 8;
+        mapCat[6].category_position_index = 9;
+        mapCat[4].category_position_index = 10;
+        mapCat[7].category_position_index = 11;
+        mapCat[1].category_position_index = 12;
+        mapCat[5].category_position_index = 13;
 
+        mapCat.sort(
+          (a, b) => a.category_position_index - b.category_position_index
+        );
+        console.log(mapCat);
+
+        setCurrentCatId(mapCat[0].category_id);
         setCategories(mapCat);
       })
       .catch((err) => console.error(err));
   };
+
   const getProducts = (id) => {
     const data = JSON.stringify({ categoryId: id });
-    console.log('json', data);
+
     axios
       .post(`https://polarpelmeni-api.work-set.eu/api/products`, data, {
         headers: {
@@ -70,11 +89,61 @@ const Menu = () => {
       })
       .then((res) => {
         const data = res.data.response;
-        console.log(data, 'res GP');
-        setProducts(data);
+
+        // preview={poster_url + product.photo}
+        // name={product.product_name}
+        // price={parseInt(product.price[1].slice(0, -2))}
+        // ingredients={product.ingredients}
+        // weight={product.out}
+        // key={product.product_id}
+        // id={product.product_id}
+
+        const dataMap = data.map((item) => {
+          return {
+            photo: item.photo_origin,
+            product_name: item.product_name,
+            price: item.price,
+            out: item.out,
+            product_id: item.product_id,
+            ingredients: item.product_production_description,
+          };
+        });
+        setProducts(dataMap);
       })
       .catch((err) => console.error(err));
   };
+
+  // //Завантаження улюблених страв
+  // useEffect(() => {
+  //   const fetchFavoritesFromServer = async () => {
+  //     if (userToken) {
+  //       try {
+  //         const response = await axios.post(
+  //           'https://polarpelmeni-api.work-set.eu/api/favourites',
+  //           JSON.stringify({ token: userToken }),
+  //           {
+  //             headers: {
+  //               'Access-Control-Allow-Origin': '*',
+  //               'Content-Type': 'application/json',
+  //             },
+  //           }
+  //         );
+  //         if (response.status === 200) {
+  //           const data = response.data;
+  //           localStorage.setItem('favorites', JSON.stringify(data));
+  //         } else {
+  //           console.error('Failed to fetch favorites from server');
+  //         }
+  //       } catch (error) {
+  //         console.error('Error fetching favorites:', error);
+  //       }
+  //     }
+  //   };
+
+  //   fetchFavoritesFromServer();
+  // }, [userToken]);
+
+
 
   useEffect(() => {
     getCategories();
@@ -84,9 +153,53 @@ const Menu = () => {
     getProducts(currentCatId);
   }, [currentCatId]);
 
+  useEffect(() => {
+    const getFav = () => {
+      setFavorites(JSON.parse(data));
+    };
+
+    getFav();
+  }, [data]);
+
+  // // Відправка змінених даних на сервер при закритті сторінки
+  // useEffect(() => {
+  //   const sendFavoritesToServer = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         'https://polarpelmeni-api.work-set.eu/api/updateFavourites',
+  //         JSON.stringify({ token: userToken }),
+  //         {
+  //           headers: {
+  //             'Access-Control-Allow-Origin': '*',
+  //             'Content-Type': 'application/json',
+  //           },
+  //         }
+  //       );
+  //       if (response.status !== 200) {
+  //         console.error('Failed to update favorites on server');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error updating favorites:', error);
+  //     }
+  //   };
+
+  //   window.addEventListener('beforeunload', sendFavoritesToServer);
+
+  //   return () => {
+  //     window.removeEventListener('beforeunload', sendFavoritesToServer);
+  //   };
+  // }, [favorites]);
+
+  useEffect(() => {
+    if (id) {
+      setCurrentCatId(id);
+    }
+  }, [id]);
+
   return (
-    <Container>
-      <div className='categories'>
+    <>
+      <div className='categories' id='menu'>
+        <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
         <div className='categories__list'>
           {categories.map((cat) => {
             return (
@@ -120,7 +233,7 @@ const Menu = () => {
           );
         })}
       </div>
-    </Container>
+    </>
   );
 };
 

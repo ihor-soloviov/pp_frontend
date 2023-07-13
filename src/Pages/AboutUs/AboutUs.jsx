@@ -1,15 +1,32 @@
 import React from 'react';
 import './AboutUs.scss';
 
+import Container from '../../components/Container/Container';
 //Images
 //    src='./images/about/about-1-desc.png'
 import img01 from '../../../src/assets/images/about/about-1-desc.png';
 import img02 from '../../../src/assets/images/about/about-2-desc.png';
 import img03 from '../../../src/assets/images/about/about-3-desc.png';
+import hero from '../../../src/assets/images/hero_preview.png';
+import svg1 from './sprite.svg';
 
 const AboutUs = () => {
   return (
-    <main>
+    <Container>
+      <section className='about__hero'>
+        <div class='about-container container'>
+          <div className='about__hero-content'>
+            <h1 className='title__h1'>Наша історія</h1>
+            <p className='text'>
+              Коли людям хочеться швидко і смачно, вони обирають Polar
+            </p>
+            <div className='about__hero-preview'>
+              <img src={hero} alt='' />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class='about-section'>
         <div class='about-container container'>
           <div class='about-top-wrap'>
@@ -49,7 +66,7 @@ const AboutUs = () => {
             <img src={img01} alt='women' class='about-top-img first' />
           </div>
           <svg class='about-icon first'>
-            <use href='./src/images/index/sprite.svg#icon-arrow-1'></use>
+            <use href={`${svg1}#icon-arrow-1`}></use>
           </svg>
           <div class='about-wrap'>
             <ul class='about-list list'>
@@ -92,7 +109,7 @@ const AboutUs = () => {
             <img src={img02} alt='dishes' class='about-img second' />
           </div>
           <svg class='about-icon second'>
-            <use href='./src/images/index/sprite.svg#icon-arrow-2'></use>
+            <use href={`${svg1}#icon-arrow-2`}></use>
           </svg>
           <div class='about-bottom-wrap'>
             <ul class='about-bottom-list list'>
@@ -142,7 +159,7 @@ const AboutUs = () => {
               <li class='facts-item'>
                 <div class='facts-icon-wrap'>
                   <svg class='facts-icon'>
-                    <use href='./src/images/index/sprite.svg#icon-facts-1'></use>
+                    <use href={`${svg1}#icon-facts-1`}></use>
                   </svg>
                 </div>
                 <h3 class='facts-title'>Ми самі виробляємо все</h3>
@@ -155,7 +172,7 @@ const AboutUs = () => {
               <li class='facts-item'>
                 <div class='facts-icon-wrap'>
                   <svg class='facts-icon'>
-                    <use href='./src/images/index/sprite.svg#icon-facts-2'></use>
+                  <use href={`${svg1}#icon-facts-2`}></use>
                   </svg>
                 </div>
 
@@ -170,7 +187,7 @@ const AboutUs = () => {
               <li class='facts-item'>
                 <div class='facts-icon-wrap'>
                   <svg class='facts-icon'>
-                    <use href='./src/images/index/sprite.svg#icon-facts-3'></use>
+                  <use href={`${svg1}#icon-facts-3`}></use>
                   </svg>
                 </div>
                 <h3 class='facts-title'>4 хвилини</h3>
@@ -182,7 +199,7 @@ const AboutUs = () => {
               <li class='facts-item'>
                 <div class='facts-icon-wrap'>
                   <svg class='facts-icon'>
-                    <use href='./src/images/index/sprite.svg#icon-facts-4'></use>
+                  <use href={`${svg1}#icon-facts-4`}></use>
                   </svg>
                 </div>
                 <h3 class='facts-title'>Polar з екологією</h3>
@@ -322,7 +339,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-    </main>
+    </Container>
   );
 };
 

@@ -2,16 +2,28 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
   &__ico {
+    position: relative;
     width: 32px;
     height: 32px;
-    background-color: rgba(18, 19, 15, 1);
+    background-color: #f3f3f5;
     border-radius: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  &__length {
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    background-color: #62d9f1;
+    border-radius: 100px;
+    top: -4px;
+    right: -8px;
+  }
   &__text {
+    padding-left: 4px;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -19,17 +31,45 @@
     color: #12130f;
   }
 }
+@media screen and (max-width: 940px) {
+  .shopping-cart{
+    .btn-main-fw {
+      display: block;
+    }
+  }
+}
+@media screen and (max-width: 786px) {
+  .card {
+    &__ico {
+      width: 44px;
+      height: 44px;
+      background-color: #f3f3f5;
+      svg {
+        width: 20px;
+        height: 20px;
+        path {
+          fill: #000000;
+        }
+      }
+    }
+    &__text {
+      display: none;
+    }
+  }
+}
 
 .shopping-cart {
-  
-  z-index: 500;
+  z-index: 1000;
   top: 0;
   right: 0;
   position: fixed;
   background: #ffffff;
   width: 550px;
   height: 100%;
+  overflow: scroll;
+
   padding: 40px;
+
   &__close {
     cursor: pointer;
     display: block;
@@ -38,7 +78,9 @@
   }
   &__content {
     padding: 24px 0 0 0;
+
     border-top: 1px solid #ebebee;
+
     &--empty {
       height: 100%;
       display: flex;
@@ -94,9 +136,11 @@
     flex-direction: column;
     gap: 12px;
     min-height: 120px;
-    max-height: 520px;
+    max-height: 400px;
     overflow: scroll;
-
+    &::-webkit-scrollbar {
+      display: none;
+    }
     &-wrapper {
       position: relative;
       &::before {

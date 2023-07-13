@@ -13,6 +13,7 @@ const InputNumber = (props) => {
     <label className='inputNumber' htmlFor='inputNumber'>
       <span>Телефон</span>
       <InputMask
+        value={props.inputValue && props.inputValue}
         mask='+380 (99) 999 99 99'
         id='inputNumber'
         placeholder='+380 (__) ___ __ __'
