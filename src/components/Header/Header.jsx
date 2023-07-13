@@ -21,6 +21,7 @@ import Card from '../Card/Card';
 import Popup from '../Popup/Popup';
 import SingUp from '../SingUp/SingUp';
 import axios from 'axios';
+import { url } from '../../api';
 
 const Header = () => {
     const location = useLocation();
@@ -62,7 +63,7 @@ const Header = () => {
 
     const getCategories = () => {
         axios
-            .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
+            .get(`${url}/api/menu`, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',

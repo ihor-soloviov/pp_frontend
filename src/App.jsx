@@ -1,11 +1,11 @@
 //Import React
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Import Routing
-import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 //Import Redux
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Import pages
 import Profile from './Pages/Profile/Profile';
@@ -19,14 +19,15 @@ import Popup from './components/Popup/Popup';
 import SingUp from './components/SingUp/SingUp';
 
 //Import Firebase
-import {firebaseConfig} from './firebaseConfig';
+import { firebaseConfig } from './firebaseConfig';
 import firebase from 'firebase/compat/app';
 
 import {
-    loadFromLocalStorage, loadFromLocalStorageAdress,
-    updateCity,
-    userLogin,
-    userLogout,
+  loadFromLocalStorage,
+  loadFromLocalStorageAdress,
+  updateCity,
+  userLogin,
+  userLogout,
 } from './store/userSlice';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import Order from './Pages/Order/Order';
@@ -34,154 +35,159 @@ import Order from './Pages/Order/Order';
 import Footer from './components/Footer/Footer';
 import SelectCity from './components/SelectCity/SelectCity';
 import {
-    cityModalUpdateState,
-    thanksModalUpdateState,
+  cityModalUpdateState,
+  thanksModalUpdateState,
 } from './store/modalsSlice';
 import PopupActions from './components/PopupActions/PopupActions';
 import Main from './Pages/Main/Main';
 import MenuPage from './Pages/MenuPage/MenuPage';
 
-
 import Contact from './Pages/Contact/Contact';
-import {getFromLocalStorage} from './store/shoppingCartSlice';
-
+import { getFromLocalStorage } from './store/shoppingCartSlice';
+import Loader from './components/Loader/Loader';
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
-    //State
+  //State
 
-    const modals = useSelector((state) => state.modals);
-    const user = useSelector((state) => state.user);
+  const modals = useSelector((state) => state.modals);
+  const user = useSelector((state) => state.user);
+  const [isLoader, setIsLoader] = useState(false);
+  //Usestate
+  const [showHeader, setShowHeader] = useState(true);
 
-    //Usestate
-    const [showHeader, setShowHeader] = useState(true);
+  //Tools
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    //Tools
-    const dispatch = useDispatch();
-    const location = useLocation();
-    const navigate = useNavigate();
+  const loadUserDataFromLocalStorage = () => {
+    const data = localStorage.getItem('userData');
 
-    const loadUserDataFromLocalStorage = () => {
-        const data = localStorage.getItem('userData');
+    const dataParse = JSON.parse(data);
 
-        const dataParse = JSON.parse(data);
+    if (data) {
+      dispatch(getFromLocalStorage());
 
+      // dispatch(updateCity({ city: dataParse.city }));
 
+      if (dataParse.isAuthenticated === true) {
+        dispatch(updateCity({ city: dataParse.city }));
+        dispatch(userLogin(dataParse));
+      }
+    }
+  };
 
+  useEffect(() => {
+    loadUserDataFromLocalStorage();
+    dispatch(loadFromLocalStorage());
+    dispatch(loadFromLocalStorageAdress());
+  }, []);
 
-        if (data) {
-            dispatch(getFromLocalStorage());
+  useEffect(() => {
+    const favoritProducts = localStorage.getItem('favoritProducts');
+    const dataParse = JSON.parse(favoritProducts);
 
-            // dispatch(updateCity({ city: dataParse.city }));
+    if (dataParse) {
+      dispatch(loadFromLocalStorage());
+    }
+  }, [user.isAuthenticated]);
 
-            if (dataParse.isAuthenticated === true) {
-                dispatch(updateCity({city: dataParse.city}));
-                dispatch(userLogin(dataParse));
-            }
-        }
+  useEffect(() => {
+    if (location.pathname === '/profile/signout') {
+      dispatch(userLogout());
+      navigate('/');
+    }
+  }, [location]);
+
+  useEffect(() => {
+    // Функція яка скриває хедер в профілі на мобілках та таблетах
+    const handleWindowResize = () => {
+      const maxWidth = 768;
+      const isProfileItemPage = location.pathname.includes('/profile');
+
+      if (window.innerWidth <= maxWidth && isProfileItemPage) {
+        setShowHeader(false);
+      } else {
+        setShowHeader(true);
+      }
     };
 
-    useEffect(() => {
+    handleWindowResize(); // Check initial state
 
-        loadUserDataFromLocalStorage();
-        dispatch(loadFromLocalStorage());
-        dispatch(loadFromLocalStorageAdress());
-    }, []);
-
-    useEffect(() => {
-        const favoritProducts = localStorage.getItem('favoritProducts');
-        const dataParse = JSON.parse(favoritProducts);
-
-        if (dataParse) {
-            dispatch(loadFromLocalStorage());
-        }
-    }, [user.isAuthenticated]);
-
-    useEffect(() => {
-        if (location.pathname === '/profile/signout') {
-            dispatch(userLogout());
-            navigate('/');
-        }
-    }, [location]);
-
-    useEffect(() => {
-        // Функція яка скриває хедер в профілі на мобілках та таблетах
-        const handleWindowResize = () => {
-            const maxWidth = 768;
-            const isProfileItemPage = location.pathname.includes('/profile');
-
-            if (window.innerWidth <= maxWidth && isProfileItemPage) {
-                setShowHeader(false);
-            } else {
-                setShowHeader(true);
-            }
-        };
-
-        handleWindowResize(); // Check initial state
-
-        window.addEventListener('resize', handleWindowResize);
-        return () => {
-            window.removeEventListener('resize', handleWindowResize);
-        };
-    }, [location]);
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [location]);
-
-    const action = useSelector((state) => state.popupActions.currentAction);
-    const cta = (state) => {
-        if (state === 'addToCard') {
-            return <PopupActions action={'Блюдо додано у кошик'}/>;
-        }
-        if (state === 'addToFavorit') {
-            return <PopupActions action={'Блюдо додано в «Улюблене»'}/>;
-        } else {
-            return null;
-        }
+    window.addEventListener('resize', handleWindowResize);
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
     };
+  }, [location]);
 
-    useEffect(() => {
-        if (user.city !== null) {
-            dispatch(cityModalUpdateState({isOpen: false}));
-        } else {
-            dispatch(cityModalUpdateState({isOpen: true}));
-        }
-    }, [user]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setIsLoader(true)
+    setTimeout(() => {
+        setIsLoader(false)
+    }, 1500)
+  }, [location]);
 
-    return (
-        <>
-            {cta(action)}
+  const action = useSelector((state) => state.popupActions.currentAction);
+  const cta = (state) => {
+    if (state === 'addToCard') {
+      return <PopupActions action={'Блюдо додано у кошик'} />;
+    }
+    if (state === 'addToFavorit') {
+      return <PopupActions action={'Блюдо додано в «Улюблене»'} />;
+    } else {
+      return null;
+    }
+  };
 
-            {modals.cityModal && (
-                <Popup
-                    small={true}
-                    closeModal={() => dispatch(cityModalUpdateState({isOpen: false}))}
-                >
-                    <SelectCity/>
-                </Popup>
-            )}
+  useEffect(() => {
+    if (user.city !== null) {
+      dispatch(cityModalUpdateState({ isOpen: false }));
+    } else {
+      dispatch(cityModalUpdateState({ isOpen: true }));
+    }
+  }, [user]);
 
-            {showHeader && <Header/>}
-            <Routes>
-                <Route path='/' element={<Main/>}/>
-                <Route path='/menu' element={<MenuPage/>}>
-                    <Route path=':id' element={<MenuPage/>}/>
-                </Route>
-                <Route path='/product/:id' element={<ProductPage/>}/>
-                <Route path='/about-us' element={<AboutUs/>}/>
-                <Route path='/order' element={<Order/>}/>
-                <Route path='/contact' element={<Contact/>}/>
+  return (
+    <>
+      {cta(action)}
 
-                <Route path='/profile'>
-                    <Route index element={<Profile/>}/>
-                    <Route path=':item' element={<Profile/>}/>
-                </Route>
-            </Routes>
-            <Footer/>
-        </>
-    );
+      {modals.cityModal && (
+        <Popup
+          small={true}
+          closeModal={() => dispatch(cityModalUpdateState({ isOpen: false }))}
+        >
+          <SelectCity />
+        </Popup>
+      )}
+
+      {showHeader && <Header />}
+
+      {isLoader && (
+        <div className='loader__wrapper'>
+          <Loader />
+        </div>
+      )}
+      <Routes>
+        <Route path='/' element={<Main />} />
+        <Route path='/menu' element={<MenuPage />}>
+          <Route path=':id' element={<MenuPage />} />
+        </Route>
+        <Route path='/product/:id' element={<ProductPage />} />
+        <Route path='/about-us' element={<AboutUs />} />
+        <Route path='/order' element={<Order />} />
+        <Route path='/contact' element={<Contact />} />
+
+        <Route path='/profile'>
+          <Route index element={<Profile />} />
+          <Route path=':item' element={<Profile />} />
+        </Route>
+      </Routes>
+      <Footer />
+    </>
+  );
 };
 
 export default App;

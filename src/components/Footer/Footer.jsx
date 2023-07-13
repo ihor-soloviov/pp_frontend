@@ -8,13 +8,14 @@ import Container from '../Container/Container';
 import logo from '../../assets/logo/logo.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { url } from '../../api';
 
 const Footer = () => {
   const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
   const getCategories = () => {
     axios
-      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
+      .get(`${url}/api/menu`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',

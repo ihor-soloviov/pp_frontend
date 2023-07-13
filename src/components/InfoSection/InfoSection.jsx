@@ -9,6 +9,7 @@ import '../ProfileGrid/ProfileGrid.scss';
 import './InfoSection.scss';
 import ProfileLink from '../ProfileLink/ProfileLink';
 import axios from 'axios';
+import { url } from '../../api';
 
 // Позже перенести это в редакс
 const InfoSection = ({ handleSidebar, isSidebarClosed }) => {
@@ -52,7 +53,7 @@ const InfoSection = ({ handleSidebar, isSidebarClosed }) => {
 
     try {
       await axios.put(
-        'https://polarpelmeni-api.work-set.eu/api/upload/',
+        `${url}/api/upload/`,
         formData
       );
     } catch (error) {
