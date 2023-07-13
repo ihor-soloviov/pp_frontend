@@ -7,6 +7,7 @@ import CreatedAddress from "../CreatedAddress/CreatedAddress";
 import ProfileLink from "../ProfileLink/ProfileLink";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { url } from "../../api";
 
 const Addresses = ({ handleSidebar }) => {
   const userData = useSelector((state) => state.user);
@@ -19,7 +20,7 @@ const Addresses = ({ handleSidebar }) => {
       try {
         const JSONtoken = JSON.stringify({ token: userData.token });
         const response = await axios.post(
-          "https://polarpelmeni-api.work-set.eu/api/auth",
+          `${url}/api/auth`,
           JSONtoken,
           {
             headers: {

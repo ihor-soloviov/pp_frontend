@@ -136,7 +136,7 @@ const SingUp = () => {
         console.log(userDataJSON);
 
         axios
-            .post(`${url}api/registrate`, userDataJSON, {
+            .post(`${url}/api/registrate`, userDataJSON, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -177,7 +177,7 @@ const SingUp = () => {
         const tokenJSON = JSON.stringify(data);
         console.log('tokenJSON:', tokenJSON);
         axios
-            .post(`${url}api/auth`, tokenJSON, {
+            .post(`${url}/api/auth`, tokenJSON, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

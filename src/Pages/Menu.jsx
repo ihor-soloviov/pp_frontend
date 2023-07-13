@@ -13,6 +13,8 @@ import { useParams } from 'react-router-dom';
 
 import Slider from '../components/Slider/Slider';
 import { useSelector } from 'react-redux';
+import { url } from '../api';
+import Loader from '../components/Loader/Loader';
 const token = '436783:670964579c5655f22513de1218a29b4d';
 
 const proxy_url = `https://pelmeni-proxy.work-set.eu`;
@@ -25,14 +27,14 @@ const Menu = () => {
 
   const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
   const [favorites, setFavorites] = useState([]);
-  
+
   const data = localStorage.getItem('favoritProducts');
 
   const getCategories = () => {
     axios
-      .get(`https://polarpelmeni-api.work-set.eu/api/menu`, {
+      .get(`${url}/api/menu`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -69,7 +71,6 @@ const Menu = () => {
         mapCat.sort(
           (a, b) => a.category_position_index - b.category_position_index
         );
-        console.log(mapCat);
 
         setCurrentCatId(mapCat[0].category_id);
         setCategories(mapCat);
@@ -81,7 +82,7 @@ const Menu = () => {
     const data = JSON.stringify({ categoryId: id });
 
     axios
-      .post(`https://polarpelmeni-api.work-set.eu/api/products`, data, {
+      .post(`${url}/api/products`, data, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -143,8 +144,6 @@ const Menu = () => {
   //   fetchFavoritesFromServer();
   // }, [userToken]);
 
-
-
   useEffect(() => {
     getCategories();
   }, []);
@@ -200,39 +199,43 @@ const Menu = () => {
     <>
       <div className='categories' id='menu'>
         <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
-        <div className='categories__list'>
-          {categories.map((cat) => {
+        {products && (
+          <div className='categories__list'>
+            {categories.map((cat) => {
+              return (
+                <button
+                  key={cat.category_id}
+                  className={`categories__btn ${
+                    currentCatId === cat.category_id
+                      ? 'categories__btn-active'
+                      : ''
+                  }`}
+                  onClick={() => setCurrentCatId(cat.category_id)}
+                >
+                  {cat.category_name}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+      {products && (
+        <div className='menu__products'>
+          {products.map((product) => {
             return (
-              <button
-                key={cat.category_id}
-                className={`categories__btn ${
-                  currentCatId === cat.category_id
-                    ? 'categories__btn-active'
-                    : ''
-                }`}
-                onClick={() => setCurrentCatId(cat.category_id)}
-              >
-                {cat.category_name}
-              </button>
+              <ProductCard
+                preview={poster_url + product.photo}
+                name={product.product_name}
+                price={parseInt(product.price[1].slice(0, -2))}
+                ingredients={product.ingredients}
+                weight={product.out}
+                key={product.product_id}
+                id={product.product_id}
+              />
             );
           })}
         </div>
-      </div>
-      <div className='menu__products'>
-        {products.map((product) => {
-          return (
-            <ProductCard
-              preview={poster_url + product.photo}
-              name={product.product_name}
-              price={parseInt(product.price[1].slice(0, -2))}
-              ingredients={product.ingredients}
-              weight={product.out}
-              key={product.product_id}
-              id={product.product_id}
-            />
-          );
-        })}
-      </div>
+      )}
     </>
   );
 };
