@@ -1,21 +1,22 @@
 //Import React
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 //Import components
-import Container from '../../components/Container/Container';
-import Loader from '../../components/Loader/Loader';
+import Container from "../../components/Container/Container";
+import Loader from "../../components/Loader/Loader";
 //Import styles
-import './ProductPage.scss';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import ProductCard from '../../components/ProductCard/ProductCard';
-import ArrowBtn from '../../components/ArrowBtn/ArrowBtn';
-import { useDispatch, useSelector } from 'react-redux';
-import { addProduct } from '../../store/shoppingCartSlice';
-import { setActions } from '../../store/popupActionsSlice';
-import { url } from '../../api';
+import "./ProductPage.scss";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import ProductCard from "../../components/ProductCard/ProductCard";
+import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../../store/shoppingCartSlice";
+import { setActions } from "../../store/popupActionsSlice";
+import { url } from "../../api";
+import { add_to_cart, view_item } from "../../gm4";
 const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
-const token = '436783:670964579c5655f22513de1218a29b4d';
+const token = "436783:670964579c5655f22513de1218a29b4d";
 const ProductPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const ProductPage = () => {
   useEffect(() => {
     if (product) {
       const str = product.product_production_description;
-      const arr = str.split(', ');
+      const arr = str.split(", ");
       setProductIngredients(arr);
     }
   }, [product]);
@@ -44,12 +45,12 @@ const ProductPage = () => {
     axios
       .post(`${url}/api/product`, dataJSON, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        console.log('pp', res);
+        console.log("pp", res);
         setProduct(res.data.response);
         const menu_category_id = JSON.stringify({
           categoryId: res.data.response.menu_category_id,
@@ -57,8 +58,8 @@ const ProductPage = () => {
         axios
           .post(`${url}/api/products`, menu_category_id, {
             headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
             },
           })
           .then((res) => {
@@ -71,8 +72,10 @@ const ProductPage = () => {
                 out: item.out,
                 product_id: item.product_id,
                 ingredients: item.product_production_description,
+                category_name: item.category_name
               };
             });
+            console.log(resData);
             setRecommendationsProducts(dataMap);
           });
       })
@@ -91,23 +94,29 @@ const ProductPage = () => {
   }, [cart, id]);
 
   if (product !== null && product !== false) {
+    view_item(
+      product.product_name,
+      product.product_id,
+      parseInt(product.price[1].slice(0, -2)),
+      product.category_name.replace(/onlineOrder: /, "")
+    );
     return (
       <div>
-        <div className='product-page'>
+        <div className="product-page">
           <Container>
-            <div className='product-page__content'>
-              <div className='product-page__preview'>
-                <img src={proxy_url + product.photo_origin} alt='' />
+            <div className="product-page__content">
+              <div className="product-page__preview">
+                <img src={proxy_url + product.photo_origin} alt="" />
               </div>
-              <div className='product-page__info'>
-                <p className='product-page__weight text text__color--secondary'>
+              <div className="product-page__info">
+                <p className="product-page__weight text text__color--secondary">
                   {product.cost} г
                 </p>
-                <h1 className='product-page__title text__color--secondary'>
+                <h1 className="product-page__title text__color--secondary">
                   {product.product_name}
                 </h1>
                 {product.group_modifications && (
-                  <p className='product-page__desc text__color--secondary'>
+                  <p className="product-page__desc text__color--secondary">
                     {product.group_modifications.map((el, index) => {
                       if (product.group_modifications.length === index + 1) {
                         return `${el.name}`;
@@ -118,35 +127,35 @@ const ProductPage = () => {
                   </p>
                 )}
 
-                <p className='product-page__price text-price text__color--secondary'>
+                <p className="product-page__price text-price text__color--secondary">
                   {parseInt(product.price[1].slice(0, -2))} ₴
                 </p>
 
-                <div className='product-page__order'>
+                <div className="product-page__order">
                   {inCart === true ? (
                     <button
-                      className='btn btn-main'
+                      className="btn btn-main"
                       onClick={() => {}}
                       disabled
                     >
                       <svg
-                        width='16'
-                        height='16'
-                        viewBox='0 0 16 16'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                         style={{ marginRight: 6 }}
                       >
                         <path
-                          d='M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z'
-                          fill='#92939A'
+                          d="M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z"
+                          fill="#92939A"
                         />
                       </svg>
                       Додано до кошику
                     </button>
                   ) : (
                     <button
-                      className='btn btn-main'
+                      className="btn btn-main"
                       onClick={() => {
                         dispatch(
                           addProduct({
@@ -155,12 +164,20 @@ const ProductPage = () => {
                             count: count,
                             preview: proxy_url + product.photo_origin,
                             weight: product.cost,
+                            category: product.category_name,
                             id: id,
                           })
                         );
-                        dispatch(setActions({ action: 'addToCard' }));
+                        add_to_cart(
+                          product.product_name,
+                          product.product_id,
+                          parseInt(product.price[1].slice(0, -2)) * count,
+                          product.category_name,
+                          count
+                        );
+                        dispatch(setActions({ action: "addToCard" }));
                         setTimeout(() => {
-                          dispatch(setActions({ action: '' }));
+                          dispatch(setActions({ action: "" }));
                         }, 2000);
                       }}
                     >
@@ -169,9 +186,9 @@ const ProductPage = () => {
                     </button>
                   )}
 
-                  <div className='counter'>
+                  <div className="counter">
                     <div
-                      className='counter__btn counter__btn--transperent'
+                      className="counter__btn counter__btn--transperent"
                       onClick={() => {
                         if (count > 1) {
                           setCount(count - 1);
@@ -180,11 +197,11 @@ const ProductPage = () => {
                     >
                       -
                     </div>
-                    <div className='counter__value text__color--secondary'>
+                    <div className="counter__value text__color--secondary">
                       {count}
                     </div>
                     <div
-                      className='counter__btn counter__btn--transperent'
+                      className="counter__btn counter__btn--transperent"
                       onClick={() => setCount(count + 1)}
                     >
                       +
@@ -194,14 +211,14 @@ const ProductPage = () => {
 
                 {product.product_production_description && (
                   <>
-                    <h6 className='product-page__compile-title title__h6 text__color--secondary'>
+                    <h6 className="product-page__compile-title title__h6 text__color--secondary">
                       Склад
                     </h6>
-                    <ul className='product-page__compile'>
+                    <ul className="product-page__compile">
                       {productIngredients &&
                         productIngredients.map((el) => {
                           return (
-                            <li className='product-page__compile-item'>{el}</li>
+                            <li className="product-page__compile-item">{el}</li>
                           );
                         })}
                     </ul>
@@ -209,19 +226,20 @@ const ProductPage = () => {
                 )}
               </div>
             </div>
-            <div className='product-page__recommendations'>
-              <div className='product-page__recommendations-head'>
-                <h3 className='title__h3'>Рекомендуємо спробувати</h3>
-                <div className='product-page__recommendations-arrows'>
-                  <ArrowBtn direction={'left'} />
-                  <ArrowBtn direction={'right'} />
+            <div className="product-page__recommendations">
+              <div className="product-page__recommendations-head">
+                <h3 className="title__h3">Рекомендуємо спробувати</h3>
+                <div className="product-page__recommendations-arrows">
+                  <ArrowBtn direction={"left"} />
+                  <ArrowBtn direction={"right"} />
                 </div>
               </div>
 
               {recommendationsProducts !== null && (
-                <div className='product-page__recommendations-track'>
-                  <div className='product-page__recommendations-list'>
+                <div className="product-page__recommendations-track">
+                  <div className="product-page__recommendations-list">
                     {recommendationsProducts.map((product) => {
+                      console.log(product);
                       return (
                         <ProductCard
                           preview={
@@ -234,6 +252,7 @@ const ProductPage = () => {
                           weight={product.out}
                           key={product.product_id}
                           id={product.product_id}
+                          category={product.category_name}
                         />
                       );
                     })}
@@ -247,7 +266,7 @@ const ProductPage = () => {
     );
   } else {
     return (
-      <div className='loader__wrapper'>
+      <div className="loader__wrapper">
         <Loader />
       </div>
     );

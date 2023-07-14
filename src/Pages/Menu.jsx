@@ -107,8 +107,10 @@ const Menu = () => {
             out: item.out,
             product_id: item.product_id,
             ingredients: item.product_production_description,
+            category: item.category_name
           };
         });
+
         setProducts(dataMap);
       })
       .catch((err) => console.error(err));
@@ -231,6 +233,7 @@ const Menu = () => {
                 weight={product.out}
                 key={product.product_id}
                 id={product.product_id}
+                category={product.category}
               />
             );
           })}
