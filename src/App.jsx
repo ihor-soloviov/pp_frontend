@@ -1,26 +1,26 @@
 //Import React
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 //Import Routing
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 //Import Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
 //Import pages
-import Profile from './Pages/Profile/Profile';
-import Menu from './Pages/Menu';
-import ProductPage from './Pages/ProductPage/ProductPage';
+import Profile from "./Pages/Profile/Profile";
+import Menu from "./Pages/Menu";
+import ProductPage from "./Pages/ProductPage/ProductPage";
 
 //Import components
-import Header from './components/Header/Header';
-import Popup from './components/Popup/Popup';
+import Header from "./components/Header/Header";
+import Popup from "./components/Popup/Popup";
 
-import SingUp from './components/SingUp/SingUp';
+import SingUp from "./components/SingUp/SingUp";
 
 //Import Firebase
-import { firebaseConfig } from './firebaseConfig';
-import firebase from 'firebase/compat/app';
+import { firebaseConfig } from "./firebaseConfig";
+import firebase from "firebase/compat/app";
 
 import {
   loadFromLocalStorage,
@@ -28,27 +28,38 @@ import {
   updateCity,
   userLogin,
   userLogout,
-} from './store/userSlice';
-import AboutUs from './Pages/AboutUs/AboutUs';
-import Order from './Pages/Order/Order';
+} from "./store/userSlice";
+import AboutUs from "./Pages/AboutUs/AboutUs";
+import Order from "./Pages/Order/Order";
 
-import Footer from './components/Footer/Footer';
-import SelectCity from './components/SelectCity/SelectCity';
+import Footer from "./components/Footer/Footer";
+import SelectCity from "./components/SelectCity/SelectCity";
 import {
   cityModalUpdateState,
   thanksModalUpdateState,
-} from './store/modalsSlice';
-import PopupActions from './components/PopupActions/PopupActions';
-import Main from './Pages/Main/Main';
-import MenuPage from './Pages/MenuPage/MenuPage';
+} from "./store/modalsSlice";
+import PopupActions from "./components/PopupActions/PopupActions";
+import Main from "./Pages/Main/Main";
+import MenuPage from "./Pages/MenuPage/MenuPage";
 
-import Contact from './Pages/Contact/Contact';
-import { getFromLocalStorage } from './store/shoppingCartSlice';
-import Loader from './components/Loader/Loader';
+import Contact from "./Pages/Contact/Contact";
+import { getFromLocalStorage } from "./store/shoppingCartSlice";
+import Loader from "./components/Loader/Loader";
+
+import TagManager from "react-gtm-module";
+
+const tagManagerArgs = {
+  gtmId: "GTM-5CBQPKC",
+};
+
+TagManager.initialize(tagManagerArgs);
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
+
+  
+
   //State
 
   const modals = useSelector((state) => state.modals);
@@ -63,7 +74,7 @@ const App = () => {
   const navigate = useNavigate();
 
   const loadUserDataFromLocalStorage = () => {
-    const data = localStorage.getItem('userData');
+    const data = localStorage.getItem("userData");
 
     const dataParse = JSON.parse(data);
 
@@ -86,7 +97,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const favoritProducts = localStorage.getItem('favoritProducts');
+    const favoritProducts = localStorage.getItem("favoritProducts");
     const dataParse = JSON.parse(favoritProducts);
 
     if (dataParse) {
@@ -95,9 +106,9 @@ const App = () => {
   }, [user.isAuthenticated]);
 
   useEffect(() => {
-    if (location.pathname === '/profile/signout') {
+    if (location.pathname === "/profile/signout") {
       dispatch(userLogout());
-      navigate('/');
+      navigate("/");
     }
   }, [location]);
 
@@ -105,7 +116,7 @@ const App = () => {
     // Функція яка скриває хедер в профілі на мобілках та таблетах
     const handleWindowResize = () => {
       const maxWidth = 768;
-      const isProfileItemPage = location.pathname.includes('/profile');
+      const isProfileItemPage = location.pathname.includes("/profile");
 
       if (window.innerWidth <= maxWidth && isProfileItemPage) {
         setShowHeader(false);
@@ -116,27 +127,27 @@ const App = () => {
 
     handleWindowResize(); // Check initial state
 
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
   }, [location]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setIsLoader(true)
+    setIsLoader(true);
     setTimeout(() => {
-        setIsLoader(false)
-    }, 1500)
+      setIsLoader(false);
+    }, 1500);
   }, [location]);
 
   const action = useSelector((state) => state.popupActions.currentAction);
   const cta = (state) => {
-    if (state === 'addToCard') {
-      return <PopupActions action={'Блюдо додано у кошик'} />;
+    if (state === "addToCard") {
+      return <PopupActions action={"Блюдо додано у кошик"} />;
     }
-    if (state === 'addToFavorit') {
-      return <PopupActions action={'Блюдо додано в «Улюблене»'} />;
+    if (state === "addToFavorit") {
+      return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
     } else {
       return null;
     }
@@ -166,23 +177,23 @@ const App = () => {
       {showHeader && <Header />}
 
       {isLoader && (
-        <div className='loader__wrapper'>
+        <div className="loader__wrapper">
           <Loader />
         </div>
       )}
       <Routes>
-        <Route path='/' element={<Main />} />
-        <Route path='/menu' element={<MenuPage />}>
-          <Route path=':id' element={<MenuPage />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/menu" element={<MenuPage />}>
+          <Route path=":id" element={<MenuPage />} />
         </Route>
-        <Route path='/product/:id' element={<ProductPage />} />
-        <Route path='/about-us' element={<AboutUs />} />
-        <Route path='/order' element={<Order />} />
-        <Route path='/contact' element={<Contact />} />
+        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/order" element={<Order />} />
+        <Route path="/contact" element={<Contact />} />
 
-        <Route path='/profile'>
+        <Route path="/profile">
           <Route index element={<Profile />} />
-          <Route path=':item' element={<Profile />} />
+          <Route path=":item" element={<Profile />} />
         </Route>
       </Routes>
       <Footer />
