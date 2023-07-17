@@ -471,13 +471,17 @@ const OrderForm = () => {
   useEffect(() => {
     if (isOrderCreate) {
       const data = JSON.parse(localStorage.getItem("user_order_data"));
-
+      const shoppingCart = JSON.parse(localStorage.getItem("shoppingCart"));
       setPosterOrder(JSON.parse(localStorage.getItem("poster_order")));
       console.log(
         "order data",
         JSON.parse(localStorage.getItem("poster_order"))
       );
-      purchase();
+      purchase(
+        JSON.parse(localStorage.getItem("poster_order")).incoming_order_id,
+        data.payment.sum,
+        shoppingCart
+      );
       setTimeout(() => {
         localStorage.removeItem("posterOrder");
         localStorage.removeItem("poster_order");
