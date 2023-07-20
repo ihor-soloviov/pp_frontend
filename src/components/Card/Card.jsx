@@ -8,6 +8,7 @@ import {useSelector} from 'react-redux';
 import ShoppingCartItem from './ShoppingCartItem';
 import {useNavigate} from 'react-router-dom';
 import PopupActions from "../PopupActions/PopupActions";
+import { begin_checkout } from '../../gm4';
 
 const Card = () => {
     const products_List = useSelector((state) => state.shoppingCart.products);
@@ -164,6 +165,7 @@ const Card = () => {
                                                 count={item.count}
                                                 id={item.id}
                                                 cart_index={item.cart_index}
+                                                category={item.category}
                                             />
                                         );
                                     })}
@@ -199,6 +201,7 @@ const Card = () => {
                                         setError(true)
                                         setTimeout(() => setError(false), 3000)
                                     } else {
+                                        begin_checkout(products_List)
                                         setIsOpen(!isOpen);
                                         navigate('/order');
                                     }
