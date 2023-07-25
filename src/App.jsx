@@ -47,6 +47,7 @@ import { getFromLocalStorage } from "./store/shoppingCartSlice";
 import Loader from "./components/Loader/Loader";
 
 import TagManager from "react-gtm-module";
+import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -190,7 +191,7 @@ const App = () => {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/order" element={<Order />} />
         <Route path="/contact" element={<Contact />} />
-
+        <Route path="/payment-and-delivery" element={<PaymentAndDelivery />} />
         <Route path="/profile">
           <Route index element={<Profile />} />
           <Route path=":item" element={<Profile />} />
