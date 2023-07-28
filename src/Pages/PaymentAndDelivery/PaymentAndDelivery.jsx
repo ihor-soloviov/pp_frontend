@@ -7,7 +7,7 @@ const PaymentAndDelivery = () => {
       <Container>
         <div className="paymentAndDelivery__content">
           <section className="paymentAndDelivery__block">
-            <h3 className="title__h3">Способы оплаты</h3>
+            <h3 className="title__h3">Способи оплати</h3>
             <div className="paymentAndDelivery__paymentMethodts">
               <div className="paymentAndDelivery__paymentMethodt">
                 <div className="paymentAndDelivery__name">Apple pay</div>
