@@ -338,7 +338,7 @@ const PaymentAndDelivery = () => {
 
           <div className="paymentAndDelivery__block">
             <h3 className="title__h3">Умови доставки</h3>
-            <p className="text text__color--primary">Мы доставляємо:</p>
+            <p className="text text__color--primary">Ми доставляємо:</p>
             <ul className="paymentAndDelivery__list">
               <li>Київский</li>
               <li>Аркадія</li>
