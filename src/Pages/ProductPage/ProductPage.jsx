@@ -64,6 +64,7 @@ const ProductPage = () => {
           })
           .then((res) => {
             const resData = res.data.response;
+            console.log(resData);
             const dataMap = resData.map((item) => {
               return {
                 photo: item.photo_origin,
@@ -110,7 +111,7 @@ const ProductPage = () => {
               </div>
               <div className="product-page__info">
                 <p className="product-page__weight text text__color--secondary">
-                  {product.cost} г
+                  {product.out} г
                 </p>
                 <h1 className="product-page__title text__color--secondary">
                   {product.product_name}
