@@ -1,0 +1,53 @@
+.paymentAndDelivery {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+  &__block {
+    .title__h3 {
+      padding-bottom: 36px;
+    }
+  }
+  &__paymentMethodts {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column-gap: 1.145vw;
+    grid-row-gap: 1.145vw;
+  }
+  &__paymentMethodt {
+    background: #fafcff;
+    border: 1px solid #e0e8f0;
+    border-radius: 0.3125vw;
+    height: 6.041vw;
+    position: relative;
+    padding: 0.52vw;
+  }
+  &__name {
+    font-size: 1.145vw;
+    line-height: 1.77vw;
+    font-weight: 500;
+    color: #212529;
+  }
+  &__ico {
+    position: absolute;
+    right: 0.52vw;
+    bottom: 0.52vw;
+  }
+  &__list {
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    li {
+      list-style: disc;
+      line-height: 150%;
+    }
+    &--num {
+      li {
+        list-style-type: decimal;
+      }
+    }
+  }
+}

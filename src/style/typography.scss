@@ -74,6 +74,9 @@ span {
 
 .text {
   &__color {
+    &--primary {
+      color: $primaryColor;
+    }
     &--secondary {
       color: $secondaryColor;
     }
