@@ -35,7 +35,6 @@ const ProductPage = () => {
     if (product) {
       const stringOfDescription = product.product_production_description;
       const arr = stringOfDescription.split('.')[0].split(", ");
-      console.log(arr)
       setProductIngredients(arr);
     }
   }, [product]);
@@ -54,7 +53,7 @@ const ProductPage = () => {
         },
       })
       .then((res) => {
-        // console.log("pp", res);
+        console.log("pp", res);
         setProduct(res.data.response);
         const menu_category_id = JSON.stringify({
           categoryId: res.data.response.menu_category_id,
@@ -87,7 +86,6 @@ const ProductPage = () => {
       .catch((err) => console.error(err));
   }, [id]);
   const cart = useSelector((state) => state.shoppingCart.products);
-
   useEffect(() => {
     if (cart) {
       if (cart.some((el) => el.id == id)) {
@@ -104,14 +102,16 @@ const ProductPage = () => {
       product.product_id,
       parseInt(product.price[1].slice(0, -2)),
       product.category_name.replace(/onlineOrder: /, "")
-    );
+      );
+
+     
     return (
       <div>
         <div className="product-page">
           <Container>
             <div className="product-page__content">
               <div className="product-page__preview">
-                <img src={proxy_url + product.photo_origin} alt="" />
+                <img src={proxy_url + product.photo_origin} alt={product.product_name} />
               </div>
               <div className="product-page__info">
                 <p className="product-page__weight text text__color--secondary">
