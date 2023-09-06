@@ -1,22 +1,25 @@
 //Import React
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 //Import components
 import Container from "../../components/Container/Container";
 import Loader from "../../components/Loader/Loader";
-//Import styles
-import "./ProductPage.scss";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
-import { useDispatch, useSelector } from "react-redux";
+//Import styles
+import "./ProductPage.scss";
+
 import { addProduct } from "../../store/shoppingCartSlice";
 import { setActions } from "../../store/popupActionsSlice";
 import { url } from "../../api";
 import { add_to_cart, view_item } from "../../gm4";
+
 const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
-const token = "436783:670964579c5655f22513de1218a29b4d";
+// const token = "436783:670964579c5655f22513de1218a29b4d";
+
 const ProductPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -30,8 +33,9 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (product) {
-      const str = product.product_production_description;
-      const arr = str.split(", ");
+      const stringOfDescription = product.product_production_description;
+      const arr = stringOfDescription.split('.')[0].split(", ");
+      console.log(arr)
       setProductIngredients(arr);
     }
   }, [product]);
@@ -50,7 +54,7 @@ const ProductPage = () => {
         },
       })
       .then((res) => {
-        console.log("pp", res);
+        // console.log("pp", res);
         setProduct(res.data.response);
         const menu_category_id = JSON.stringify({
           categoryId: res.data.response.menu_category_id,
@@ -64,7 +68,7 @@ const ProductPage = () => {
           })
           .then((res) => {
             const resData = res.data.response;
-            console.log(resData);
+            // console.log(resData);
             const dataMap = resData.map((item) => {
               return {
                 photo: item.photo_origin,
@@ -72,11 +76,11 @@ const ProductPage = () => {
                 price: item.price,
                 out: item.out,
                 product_id: item.product_id,
-                ingredients: item.product_production_description,
+                ingredients: item.product_production_description.split('.')[0].split(", ").join(', '),
                 category_name: item.category_name
               };
             });
-            console.log(resData);
+            // console.log(resData);
             setRecommendationsProducts(dataMap);
           });
       })
@@ -240,7 +244,7 @@ const ProductPage = () => {
                 <div className="product-page__recommendations-track">
                   <div className="product-page__recommendations-list">
                     {recommendationsProducts.map((product) => {
-                      console.log(product);
+                      // console.log(product);
                       return (
                         <ProductCard
                           preview={

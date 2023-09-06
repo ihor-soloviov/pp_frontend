@@ -106,7 +106,7 @@ const Menu = () => {
             price: item.price,
             out: item.out,
             product_id: item.product_id,
-            ingredients: item.product_production_description,
+            ingredients: item.product_production_description.split('.')[0].split(", ").join(', '),
             category: item.category_name
           };
         });
