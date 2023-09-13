@@ -28,16 +28,38 @@ const ProductPage = () => {
   const [inCart, setInCart] = useState(false);
 
   const [product, setProduct] = useState(null);
+  const [productImage, setProductImage] = useState('');
   const [productIngredients, setProductIngredients] = useState(null);
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
 
   useEffect(() => {
     if (product) {
       const stringOfDescription = product.product_production_description;
-      const arr = stringOfDescription.split('.')[0].split(", ");
+      const arr = stringOfDescription.split(".")[0].split(", ");
       setProductIngredients(arr);
     }
   }, [product]);
+
+  const showImage = () => {
+    console.log("pppp")
+    fetch(`${url}/api/sendImage/${id}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.blob();
+        } else {
+          throw new Error('Файл не знайдено');
+        }
+      })
+      .then((blob) => {
+        const imageUrl = URL.createObjectURL(blob);
+        setProductImage(imageUrl);
+        // setError(null); // Скидаємо помилку, якщо вона була
+      })
+      .catch((error) => {
+        // setError(error.message);
+        setProductImage(''); // Очищаємо URL зображення
+      });
+  };
 
   useEffect(() => {
     const data = {
@@ -53,10 +75,9 @@ const ProductPage = () => {
         },
       })
       .then((res) => {
-        console.log("pp", res);
-        setProduct(res.data.response);
+        setProduct(res.data);
         const menu_category_id = JSON.stringify({
-          categoryId: res.data.response.menu_category_id,
+          categoryId: res.data.menu_category_id,
         });
         axios
           .post(`${url}/api/products`, menu_category_id, {
@@ -75,8 +96,11 @@ const ProductPage = () => {
                 price: item.price,
                 out: item.out,
                 product_id: item.product_id,
-                ingredients: item.product_production_description.split('.')[0].split(", ").join(', '),
-                category_name: item.category_name
+                ingredients: item.product_production_description
+                  .split(".")[0]
+                  .split(", ")
+                  .join(", "),
+                category_name: item.category_name,
               };
             });
             // console.log(resData);
@@ -84,11 +108,17 @@ const ProductPage = () => {
           });
       })
       .catch((err) => console.error(err));
+
+      showImage()
   }, [id]);
+
+
   const cart = useSelector((state) => state.shoppingCart.products);
+
+
   useEffect(() => {
     if (cart) {
-      if (cart.some((el) => el.id == id)) {
+      if (cart.some((el) => el.id === id)) {
         setInCart(true);
       } else {
         setInCart(false);
@@ -102,16 +132,19 @@ const ProductPage = () => {
       product.product_id,
       parseInt(product.price[1].slice(0, -2)),
       product.category_name.replace(/onlineOrder: /, "")
-      );
+    );
 
-     
     return (
       <div>
         <div className="product-page">
           <Container>
             <div className="product-page__content">
               <div className="product-page__preview">
-                <img src={proxy_url + product.photo_origin} alt={product.product_name} />
+                <img
+                  src={productImage}
+                  // src={proxy_url + product.photo_origin}
+                  alt={product.product_name}
+                />
               </div>
               <div className="product-page__info">
                 <p className="product-page__weight text text__color--secondary">
