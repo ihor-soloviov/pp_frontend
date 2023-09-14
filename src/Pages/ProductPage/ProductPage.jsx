@@ -28,7 +28,6 @@ const ProductPage = () => {
   const [inCart, setInCart] = useState(false);
 
   const [product, setProduct] = useState(null);
-  const [productImage, setProductImage] = useState('');
   const [productIngredients, setProductIngredients] = useState(null);
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
 
@@ -39,28 +38,6 @@ const ProductPage = () => {
       setProductIngredients(arr);
     }
   }, [product]);
-
-  const showImage = () => {
-    console.log("pppp")
-    fetch(`${url}/api/sendImage/${id}`)
-      .then((response) => {
-        if (response.ok) {
-          return response.blob();
-        } else {
-          throw new Error('Файл не знайдено');
-        }
-      })
-      .then((blob) => {
-        const imageUrl = URL.createObjectURL(blob);
-        setProductImage(imageUrl);
-        // setError(null); // Скидаємо помилку, якщо вона була
-      })
-      .catch((error) => {
-        // setError(error.message);
-        setProductImage(''); // Очищаємо URL зображення
-      });
-  };
-
   useEffect(() => {
     const data = {
       productId: id,
@@ -91,6 +68,7 @@ const ProductPage = () => {
             // console.log(resData);
             const dataMap = resData.map((item) => {
               return {
+                key: item.product_id,
                 photo: item.photo_origin,
                 product_name: item.product_name,
                 price: item.price,
@@ -108,13 +86,9 @@ const ProductPage = () => {
           });
       })
       .catch((err) => console.error(err));
-
-      showImage()
   }, [id]);
 
-
   const cart = useSelector((state) => state.shoppingCart.products);
-
 
   useEffect(() => {
     if (cart) {
@@ -141,7 +115,7 @@ const ProductPage = () => {
             <div className="product-page__content">
               <div className="product-page__preview">
                 <img
-                  src={productImage}
+                  src={`https://polarpelmeni-api.work-set.eu/api/sendImage/${id}`}
                   // src={proxy_url + product.photo_origin}
                   alt={product.product_name}
                 />

@@ -9,7 +9,7 @@ import axios from 'axios';
 import { addToAdresses } from '../../store/userSlice';
 import { url } from '../../api';
 
-const AddressModal = ({ closeModal, isModalOpen, setIsAddressesUpdating }) => {
+const AddressModal = ({ closeModal, isModalOpen, setIsAdressesUpdating }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const [selectedOption, setSelectedOption] = useState('');
@@ -41,7 +41,7 @@ const AddressModal = ({ closeModal, isModalOpen, setIsAddressesUpdating }) => {
         },
       });
 
-      setIsAddressesUpdating(true);
+      setIsAdressesUpdating(true);
     } catch (error) {
       console.log(error);
     } finally {

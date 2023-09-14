@@ -143,6 +143,7 @@ const App = () => {
   }, [location]);
 
   const action = useSelector((state) => state.popupActions.currentAction);
+  
   const cta = (state) => {
     if (state === "addToCard") {
       return <PopupActions action={"Блюдо додано у кошик"} />;

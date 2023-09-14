@@ -162,35 +162,6 @@ const Menu = () => {
     getFav();
   }, [data]);
 
-  // // Відправка змінених даних на сервер при закритті сторінки
-  // useEffect(() => {
-  //   const sendFavoritesToServer = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         'https://polarpelmeni-api.work-set.eu/api/updateFavourites',
-  //         JSON.stringify({ token: userToken }),
-  //         {
-  //           headers: {
-  //             'Access-Control-Allow-Origin': '*',
-  //             'Content-Type': 'application/json',
-  //           },
-  //         }
-  //       );
-  //       if (response.status !== 200) {
-  //         console.error('Failed to update favorites on server');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error updating favorites:', error);
-  //     }
-  //   };
-
-  //   window.addEventListener('beforeunload', sendFavoritesToServer);
-
-  //   return () => {
-  //     window.removeEventListener('beforeunload', sendFavoritesToServer);
-  //   };
-  // }, [favorites]);
-
   useEffect(() => {
     if (id) {
       setCurrentCatId(id);
@@ -226,7 +197,7 @@ const Menu = () => {
           {products.map((product) => {
             return (
               <ProductCard
-                preview={poster_url + product.photo}
+                preview={`https://polarpelmeni-api.work-set.eu/api/sendImage/${product.product_id}`}
                 name={product.product_name}
                 price={parseInt(product.price[1].slice(0, -2))}
                 ingredients={product.ingredients}

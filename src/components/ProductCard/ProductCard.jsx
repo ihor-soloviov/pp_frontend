@@ -1,5 +1,7 @@
 //Import React
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { url } from "../../api";
 
 //Import Styles
 import "./productCard.scss";
@@ -31,6 +33,47 @@ const ProductCard = (props) => {
     }
   }, [favoritList, props.id]);
 
+  useEffect(() => {
+    
+  
+    return () => {
+      console.log(favoritList)
+    }
+  }, [])
+  
+
+  const handleFavorite = () => {
+    const { id, name, price, count, preview, weight, ingredients } = props;
+    if (favoritList.some((el) => el.id === id)) {
+      dispatch(removeFromFavorit({ id }));
+      console.log(favoritList)
+      // try {
+      //   const response = axios.post(`${url}/api/favourites`, );
+      // } catch (error) {
+        
+      // }
+
+    } else {
+      dispatch(setActions({ action: "addToFavorit" }));
+      console.log(favoritList)
+      setTimeout(() => {
+        dispatch(setActions({ action: "" }));
+      }, 2000);
+      dispatch(
+        addToFavorit({
+          name,
+          price,
+          count,
+          preview,
+          weight,
+          id,
+          ingredients,
+        })
+      );
+    }
+  };
+  
+
   return (
     <div className="product">
       <div className="product__cta">
@@ -38,27 +81,7 @@ const ProductCard = (props) => {
           className={`product__like ${
             liked === true && "product__like-active"
           }`}
-          onClick={() => {
-            if (favoritList.some((el) => el.id === props.id)) {
-              dispatch(removeFromFavorit({ id: props.id }));
-            } else {
-              dispatch(setActions({ action: "addToFavorit" }));
-              setTimeout(() => {
-                dispatch(setActions({ action: "" }));
-              }, 2000);
-              dispatch(
-                addToFavorit({
-                  name: props.name,
-                  price: props.price,
-                  count: count,
-                  preview: props.preview,
-                  weight: props.weight,
-                  id: props.id,
-                  ingredients: props.ingredients,
-                })
-              );
-            }
-          }}
+          onClick={() => handleFavorite()}
         >
           <svg
             width="16"
@@ -129,12 +152,12 @@ const ProductCard = (props) => {
                   weight: props.weight,
                   id: props.id,
                   ingredients: props.ingredients,
-                  category: props.category
+                  category: props.category,
                 })
               );
               dispatch(setActions({ action: "addToCard" }));
               setInCart(true);
-              
+
               add_to_cart(
                 props.name,
                 props.id,

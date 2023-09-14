@@ -11,35 +11,32 @@ import { url } from "../../api";
 
 const Addresses = ({ handleSidebar }) => {
   const userData = useSelector((state) => state.user);
+
   const [isModalOpen, setModalOpen] = useState(false);
-  const [addresses, setAddresses] = useState([]);
-  const [isAddressesUpdating, setIsAddressesUpdating] = useState(false);
+  const [adresses, setAdresses] = useState([]);
+  const [isAdressesUpdating, setIsAdressesUpdating] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAdresses = async () => {
       try {
         const JSONtoken = JSON.stringify({ token: userData.token });
-        const response = await axios.post(
-          `${url}/api/auth`,
-          JSONtoken,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axios.post(`${url}/api/auth`, JSONtoken, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        });
 
-        setAddresses(response.data.addresses);
+        setAdresses(response.data.addresses);
       } catch (error) {
         console.log(error);
       } finally {
-        setIsAddressesUpdating(false);
+        setIsAdressesUpdating(false);
       }
     };
 
-    fetchData();
-  }, [userData.token, isAddressesUpdating, addresses]);
+    fetchAdresses();
+  }, [userData.token, isAdressesUpdating]);
 
   const handleModal = () => {
     setModalOpen((prev) => !prev);
@@ -52,15 +49,15 @@ const Addresses = ({ handleSidebar }) => {
         <AddressModal
           closeModal={handleModal}
           isModalOpen={isModalOpen}
-          setIsAddressesUpdating={setIsAddressesUpdating}
+          setIsAdressesUpdating={setIsAdressesUpdating}
         />
         {userData.adresses !== null &&
-          userData.adresses.map((address) => (
+          userData.adresses.map((adress) => (
             <CreatedAddress
-              key={address.addressName}
-              address={address}
+              key={adress.addressName}
+              adress={adress}
               openModal={handleModal}
-              setIsAddressesUpdating={setIsAddressesUpdating}
+              setIsAdressesUpdating={setIsAdressesUpdating}
             />
           ))}
       </div>
