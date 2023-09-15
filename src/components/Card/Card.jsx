@@ -116,8 +116,8 @@ const Card = () => {
                                         stroke='#12130F'
                                         stroke-width='3'
                                         stroke-miterlimit='10'
-                                        stroke-linecap='round'
-                                        stroke-linejoin='round'
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
                                     />
                                     <path
                                         d='M61.158 65.5436C61.158 64.1616 60.0289 63.0414 58.6359 63.0414C57.2424 63.0414 56.1133 64.1616 56.1133 65.5436C56.1133 66.9257 57.2424 68.0459 58.6359 68.0459C60.0289 68.0459 61.158 66.9257 61.158 65.5436Z'

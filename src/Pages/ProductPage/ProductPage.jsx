@@ -174,7 +174,7 @@ const ProductPage = () => {
                             name: product.product_name,
                             price: parseInt(product.price[1].slice(0, -2)),
                             count: count,
-                            preview: proxy_url + product.photo_origin,
+                            preview: url + product.product_id,
                             weight: product.cost,
                             category: product.category_name,
                             id: id,
@@ -254,10 +254,7 @@ const ProductPage = () => {
                       // console.log(product);
                       return (
                         <ProductCard
-                          preview={
-                            `https://polar-pelmeni-odessa.joinposter.com` +
-                            product.photo
-                          }
+                          preview={'https://polarpelmeni-api.work-set.eu/api/sendImage/' + product.product_id}
                           name={product.product_name}
                           price={parseInt(product.price[1].slice(0, -2))}
                           ingredients={product.ingredients}

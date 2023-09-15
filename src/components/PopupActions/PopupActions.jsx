@@ -38,7 +38,7 @@ const PopupActions = ({action, error, onClick}) => {
                             xmlns='http://www.w3.org/2000/svg'
                         >
                             <circle cx='12' cy='12' r='12' fill='#55CB99'/>
-                            <g clip-path='url(#clip0_390_8333)'>
+                            <g clipPath='url(#clip0_390_8333)'>
                                 <path
                                     d='M10.6665 14.1148L16.7945 7.98608L17.7378 8.92875L10.6665 16.0001L6.42383 11.7574L7.36649 10.8148L10.6665 14.1148Z'
                                     fill='#12130F'

@@ -48,6 +48,8 @@ import Loader from "./components/Loader/Loader";
 
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
+import axios from "axios";
+import { url } from "./api";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -58,9 +60,6 @@ TagManager.initialize(tagManagerArgs);
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
-
-  
-
   //State
 
   const modals = useSelector((state) => state.modals);
@@ -73,6 +72,9 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const favoritList = useSelector((state) => state.user.favoritProducts);
+  const action = useSelector((state) => state.popupActions.currentAction);
+  const userData = useSelector((state) => state.user);
 
   const loadUserDataFromLocalStorage = () => {
     const data = localStorage.getItem("userData");
@@ -142,8 +144,6 @@ const App = () => {
     }, 1500);
   }, [location]);
 
-  const action = useSelector((state) => state.popupActions.currentAction);
-  
   const cta = (state) => {
     if (state === "addToCard") {
       return <PopupActions action={"Блюдо додано у кошик"} />;
@@ -162,6 +162,33 @@ const App = () => {
       dispatch(cityModalUpdateState({ isOpen: true }));
     }
   }, [user]);
+
+  useEffect(() => {
+    const sendFavoritesToServer = async () => {
+      if (favoritList) {
+        try {
+          const link = url + "/api/updateFavorites";
+          const jsonData = JSON.stringify({
+            token: userData.token,
+            favorites: favoritList,
+          });
+          // console.log(jsonData, link);
+          const headers = {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+          };
+          const response = await axios.post(link, jsonData, headers);
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    sendFavoritesToServer();
+  }, [favoritList]);
 
   return (
     <>

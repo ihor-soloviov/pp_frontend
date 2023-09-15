@@ -172,7 +172,7 @@ const PaymentAndDelivery = () => {
                       fill="white"
                       stroke="#E0E8F0"
                     ></rect>
-                    <g clip-path="url(#clip0)">
+                    <g clipPath="url(#clip0)">
                       <path
                         d="M24.8646 15.2769H17.3628V27.5294H24.8646V15.2769Z"
                         fill="#FF5F00"
@@ -222,7 +222,7 @@ const PaymentAndDelivery = () => {
                       fill="white"
                       stroke="#E0E8F0"
                     ></rect>
-                    <g clip-path="url(#clip0)">
+                    <g clipPath="url(#clip0)">
                       <path
                         d="M24.8646 15.2769H17.3628V27.5294H24.8646V15.2769Z"
                         fill="#FF5F00"

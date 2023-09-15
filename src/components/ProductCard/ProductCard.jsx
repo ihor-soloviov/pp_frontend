@@ -17,45 +17,17 @@ const ProductCard = (props) => {
   const dispatch = useDispatch();
 
   const [count, setCount] = useState(1);
-  const [liked, setLiked] = useState(false);
   const [inCart, setInCart] = useState(false);
 
   const favoritList = useSelector((state) => state.user.favoritProducts);
   const cart = useSelector((state) => state.shoppingCart.products);
 
-  useEffect(() => {
-    if (favoritList) {
-      if (favoritList.some((el) => el.id === props.id)) {
-        setLiked(true);
-      } else {
-        setLiked(false);
-      }
-    }
-  }, [favoritList, props.id]);
-
-  useEffect(() => {
-    
-  
-    return () => {
-      console.log(favoritList)
-    }
-  }, [])
-  
-
   const handleFavorite = () => {
     const { id, name, price, count, preview, weight, ingredients } = props;
     if (favoritList.some((el) => el.id === id)) {
       dispatch(removeFromFavorit({ id }));
-      console.log(favoritList)
-      // try {
-      //   const response = axios.post(`${url}/api/favourites`, );
-      // } catch (error) {
-        
-      // }
-
     } else {
       dispatch(setActions({ action: "addToFavorit" }));
-      console.log(favoritList)
       setTimeout(() => {
         dispatch(setActions({ action: "" }));
       }, 2000);
@@ -72,14 +44,38 @@ const ProductCard = (props) => {
       );
     }
   };
-  
+
+  const addToCart = () => {
+    dispatch(
+      addProduct({
+        name: props.name,
+        price: props.price,
+        count: count,
+        preview: props.preview,
+        weight: props.weight,
+        id: props.id,
+        ingredients: props.ingredients,
+        category: props.category,
+      })
+    );
+    dispatch(setActions({ action: "addToCard" }));
+    setInCart(true);
+
+    add_to_cart(props.name, props.id, props.price, props.category, count);
+    setTimeout(() => {
+      setInCart(false);
+
+      dispatch(setActions({ action: "" }));
+    }, 2000);
+  };
 
   return (
     <div className="product">
       <div className="product__cta">
         <div
           className={`product__like ${
-            liked === true && "product__like-active"
+            favoritList.some((el) => el.id === props.id) &&
+            "product__like-active"
           }`}
           onClick={() => handleFavorite()}
         >
@@ -101,30 +97,13 @@ const ProductCard = (props) => {
       </div>
       <div className="product__preview">
         <img
+          loading="lazy"
           src={props.preview}
           alt={props.name}
           onClick={() => navigate(`/product/${props.id}`)}
         />
         {inCart === true ? (
-          <button
-            className="product__inCart"
-            // onClick={() => {
-            //   dispatch(
-            //     addProduct({
-            //       name: props.name,
-            //       price: props.price,
-            //       count: count,
-            //       preview: props.preview,
-            //       weight: props.weight,
-            //       id: props.id,
-            //     })
-            //   );
-            //   dispatch(setActions({ action: 'addToCard' }));
-            //   setTimeout(() => {
-            //     dispatch(setActions({ action: '' }));
-            //   }, 2000);
-            // }}
-          >
+          <button>
             <svg
               width="16"
               height="16"
@@ -140,38 +119,7 @@ const ProductCard = (props) => {
             <p> Додано до кошику</p>
           </button>
         ) : (
-          <button
-            className="product__addToCard"
-            onClick={() => {
-              dispatch(
-                addProduct({
-                  name: props.name,
-                  price: props.price,
-                  count: count,
-                  preview: props.preview,
-                  weight: props.weight,
-                  id: props.id,
-                  ingredients: props.ingredients,
-                  category: props.category,
-                })
-              );
-              dispatch(setActions({ action: "addToCard" }));
-              setInCart(true);
-
-              add_to_cart(
-                props.name,
-                props.id,
-                props.price,
-                props.category,
-                count
-              );
-              setTimeout(() => {
-                setInCart(false);
-
-                dispatch(setActions({ action: "" }));
-              }, 2000);
-            }}
-          >
+          <button className="product__addToCard" onClick={() => addToCart()}>
             В кошик
           </button>
         )}
