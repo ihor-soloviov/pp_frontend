@@ -11,6 +11,7 @@ import { addProduct } from "../../store/shoppingCartSlice";
 import { addToFavorit, removeFromFavorit } from "../../store/userSlice";
 import { setActions } from "../../store/popupActionsSlice";
 import { add_to_cart, view_item } from "../../gm4";
+import { sendFavsToServer } from "../../utils/favorites";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -19,8 +20,16 @@ const ProductCard = (props) => {
   const [count, setCount] = useState(1);
   const [inCart, setInCart] = useState(false);
 
+  const token = useSelector((state) => state.user.token);
   const favoritList = useSelector((state) => state.user.favoritProducts);
-  const cart = useSelector((state) => state.shoppingCart.products);
+
+  // useEffect(() => {
+  //   console.log("я є");
+
+  //   return () => {
+  //     sendFavsToServer(token, favoritList);
+  //   };
+  // }, []);
 
   const handleFavorite = () => {
     const { id, name, price, count, preview, weight, ingredients } = props;

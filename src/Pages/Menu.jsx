@@ -15,6 +15,7 @@ import Slider from '../components/Slider/Slider';
 import { useSelector } from 'react-redux';
 import { url } from '../api';
 import Loader from '../components/Loader/Loader';
+import { sendFavsToServer } from '../utils/favorites';
 const token = '436783:670964579c5655f22513de1218a29b4d';
 
 const proxy_url = `https://pelmeni-proxy.work-set.eu`;
@@ -117,34 +118,40 @@ const Menu = () => {
   };
 
   // //Завантаження улюблених страв
-  // useEffect(() => {
-  //   const fetchFavoritesFromServer = async () => {
-  //     if (userToken) {
-  //       try {
-  //         const response = await axios.post(
-  //           'https://polarpelmeni-api.work-set.eu/api/favourites',
-  //           JSON.stringify({ token: userToken }),
-  //           {
-  //             headers: {
-  //               'Access-Control-Allow-Origin': '*',
-  //               'Content-Type': 'application/json',
-  //             },
-  //           }
-  //         );
-  //         if (response.status === 200) {
-  //           const data = response.data;
-  //           localStorage.setItem('favorites', JSON.stringify(data));
-  //         } else {
-  //           console.error('Failed to fetch favorites from server');
-  //         }
-  //       } catch (error) {
-  //         console.error('Error fetching favorites:', error);
-  //       }
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchFavoritesFromServer = async () => {
+      if (userToken) {
+        try {
+          const response = await axios.post(
+            'https://polarpelmeni-api.work-set.eu/api/favorites',
+            JSON.stringify({ token: userToken }),
+            {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          if (response.status === 200) {
+            const data = response.data;
+            localStorage.setItem('favorites', JSON.stringify(data));
+          } else {
+            console.error('Failed to fetch favorites from server');
+          }
+        } catch (error) {
+          console.error('Error fetching favorites:', error);
+        }
+      }
+    };
 
-  //   fetchFavoritesFromServer();
-  // }, [userToken]);
+    fetchFavoritesFromServer();
+    const favorites = JSON.parse(data)
+
+    return () => {
+      sendFavsToServer(userToken, favorites)
+      console.log('baing')
+    }
+  }, [data, userToken]);
 
   useEffect(() => {
     getCategories();
