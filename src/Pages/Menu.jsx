@@ -134,7 +134,7 @@ const Menu = () => {
           );
           if (response.status === 200) {
             const data = response.data;
-            localStorage.setItem('favorites', JSON.stringify(data));
+            localStorage.setItem('favoritProducts', JSON.stringify(data));
           } else {
             console.error('Failed to fetch favorites from server');
           }
