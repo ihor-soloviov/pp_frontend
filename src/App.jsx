@@ -7,6 +7,10 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 //Import Redux
 import { useDispatch, useSelector } from "react-redux";
 
+import modalsStore from "./store/modal-store";
+import userStore from "./store/user-store";
+import shoppingCartStore from "./store/shoping-cart-store";
+
 //Import pages
 import Profile from "./Pages/Profile/Profile";
 import ProductPage from "./Pages/ProductPage/ProductPage";
@@ -26,6 +30,7 @@ import {
   userLogin,
   userLogout,
 } from "./store/userSlice";
+
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Order from "./Pages/Order/Order";
 
@@ -42,6 +47,7 @@ import Loader from "./components/Loader/Loader";
 
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
+import { observer } from "mobx-react-lite";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -51,8 +57,17 @@ TagManager.initialize(tagManagerArgs);
 
 firebase.initializeApp(firebaseConfig);
 
-const App = () => {
+const App = observer(() => {
   //State
+
+  const {
+    updateCity,
+    loadFromLocalStorageAdress,
+    loadFromLocalStorage,
+    userLogout,
+  } = userStore;
+  const { authModal, cityModal, thanksModal, cityModalHandler } = modalsStore;
+  const { getFromLocalStorage } = shoppingCartStore;
 
   const modals = useSelector((state) => state.modals);
   const user = useSelector((state) => state.user);
@@ -68,25 +83,22 @@ const App = () => {
 
   const loadUserDataFromLocalStorage = () => {
     const data = localStorage.getItem("userData");
-
     const dataParse = JSON.parse(data);
 
     if (data) {
-      dispatch(getFromLocalStorage());
-
-      // dispatch(updateCity({ city: dataParse.city }));
+      getFromLocalStorage();
 
       if (dataParse.isAuthenticated === true) {
-        dispatch(updateCity({ city: dataParse.city }));
-        dispatch(userLogin(dataParse));
+        updateCity(dataParse.city);
+        userLogin(dataParse);
       }
     }
   };
 
   useEffect(() => {
     loadUserDataFromLocalStorage();
-    dispatch(loadFromLocalStorage());
-    dispatch(loadFromLocalStorageAdress());
+    loadFromLocalStorage();
+    loadFromLocalStorageAdress();
   }, []);
 
   useEffect(() => {
@@ -94,16 +106,16 @@ const App = () => {
     const dataParse = JSON.parse(favoritProducts);
 
     if (dataParse) {
-      dispatch(loadFromLocalStorage());
+      loadFromLocalStorage();
     }
   }, [user.isAuthenticated]);
 
   useEffect(() => {
     if (location.pathname === "/profile/signout") {
-      dispatch(userLogout());
+      userLogout();
       navigate("/");
     }
-  }, [location]);
+  }, [location.pathname]);
 
   useEffect(() => {
     // Функція яка скриває хедер в профілі на мобілках та таблетах
@@ -158,10 +170,7 @@ const App = () => {
       {cta(action)}
 
       {modals.cityModal && (
-        <Popup
-          small={true}
-          closeModal={() => dispatch(cityModalUpdateState({ isOpen: false }))}
-        >
+        <Popup small={true} closeModal={() => cityModalHandler(false)}>
           <SelectCity />
         </Popup>
       )}
@@ -191,6 +200,6 @@ const App = () => {
       <Footer />
     </>
   );
-};
+});
 
 export default App;

@@ -8,7 +8,7 @@ class ShoppingCartStore {
     makeAutoObservable(this);
   }
 
-  addProduct({ preview, name, price, count, weight, id, ingredients, category }) {
+  addProduct = ({ preview, name, price, count, weight, id, ingredients, category }) => {
     const existingProduct = this.products.find(p => p.id === id);
     if (existingProduct) {
       existingProduct.count += count;
@@ -21,12 +21,12 @@ class ShoppingCartStore {
     localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   }
 
-  removeProduct(productId) {
+  removeProduct = (productId) => {
     this.products = this.products.filter(product => product.id !== productId);
     localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   }
 
-  updateCount(cartIndex, count) {
+  updateCount = (cartIndex, count) => {
     const product = this.products[cartIndex];
     if (product) {
       product.count = count;
@@ -35,14 +35,14 @@ class ShoppingCartStore {
     }
   }
 
-  getFromLocalStorage() {
+  getFromLocalStorage = () => {
     const data = localStorage.getItem("shoppingCart");
     if (data) {
       this.products = JSON.parse(data);
     }
   }
 
-  cartPromocode() {
+  cartPromocode = () => {
     this.promocode = true;
   }
 

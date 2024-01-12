@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable } from "mobx";
 
 class ModalsStore {
   authModal = false;
@@ -9,17 +9,17 @@ class ModalsStore {
     makeAutoObservable(this);
   }
 
-  authModalHandler(isOpen) {
+  authModalHandler = (isOpen) => {
     this.authModal = isOpen;
-  }
+  };
 
-  cityModalHandler(isOpen) {
+  cityModalHandler = (isOpen) => {
     this.cityModal = isOpen;
-  }
+  };
 
-  thanksModalHandler(isOpen) {
+  thanksModalHandler = (isOpen) => {
     this.thanksModal = isOpen;
-  }
+  };
 }
 
 const modalsStore = new ModalsStore();
