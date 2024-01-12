@@ -1,15 +1,15 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable } from "mobx";
 
 class PopupActionsStore {
-  currentAction = '';
+  currentAction = "";
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setActions(action) {
+  setActions = (action) => {
     this.currentAction = action;
-  }
+  };
 }
 
 const popupActionsStore = new PopupActionsStore();

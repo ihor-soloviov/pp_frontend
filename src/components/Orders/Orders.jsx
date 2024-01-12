@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
-import "./Orders.scss";
 import OrderModal from "../OrderModal/OrderModal";
 import ProfileLink from "../ProfileLink/ProfileLink";
+import "./Orders.scss";
 
 const Orders = ({handleSidebar}) => {
   const [isMainModalOpen, setMainModalOpen] = useState(false);

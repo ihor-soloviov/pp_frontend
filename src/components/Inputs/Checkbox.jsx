@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Checkbox.scss'; // Подключаем файл со стилями
 
 const Checkbox = ({ isChecked, onCheckboxChange, label }) => {

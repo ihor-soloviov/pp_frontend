@@ -1,43 +1,48 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Popup from '../Popup/Popup';
-import './AddressModal.scss';
-import hover from '../../../src/assets/radiobuttons/hover.svg';
-import selected from '../../../src/assets/radiobuttons/selected.svg';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { addToAdresses } from '../../store/userSlice';
-import { url } from '../../api';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+
+import Popup from "../Popup/Popup";
+
+import hover from "../../../src/assets/radiobuttons/hover.svg";
+import selected from "../../../src/assets/radiobuttons/selected.svg";
+
+import userStore from "../../store/user-store";
+
+import axios from "axios";
+import { url } from "../../api";
+
+import "./AddressModal.scss";
 
 const AddressModal = ({ closeModal, isModalOpen, setIsAdressesUpdating }) => {
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user);
-  const [selectedOption, setSelectedOption] = useState('');
+  const {token, addToAdresses} = userStore;
+
+  const [selectedOption, setSelectedOption] = useState("");
+
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
     reset,
-  } = useForm({ mode: 'onBlur' });
+  } = useForm({ mode: "onBlur" });
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
   const onSubmit = (data, e) => {
-    dispatch(addToAdresses({ adress: data }));
+    addToAdresses({ adress: data });
     formSubmit(data, e);
   };
 
   const formSubmit = async (data, e) => {
     e.preventDefault();
     try {
-      const JSONdata = JSON.stringify({ token: userData.token, data });
+      const JSONdata = JSON.stringify({ token: token, data });
 
       await axios.post(`${url}/api/addresses`, JSONdata, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
         },
       });
 
@@ -46,7 +51,7 @@ const AddressModal = ({ closeModal, isModalOpen, setIsAdressesUpdating }) => {
       console.log(error);
     } finally {
       reset();
-      setSelectedOption('');
+      setSelectedOption("");
       closeModal();
     }
   };
@@ -55,30 +60,30 @@ const AddressModal = ({ closeModal, isModalOpen, setIsAdressesUpdating }) => {
     <>
       {isModalOpen && (
         <Popup closeModal={closeModal}>
-          <div className='modal-content'>
-            <h2 className='modal-content--title'>Додати адресу</h2>
+          <div className="modal-content">
+            <h2 className="modal-content--title">Додати адресу</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className='modal-grid'>
-                <div className='modal-grid--item-0 grid-item'>
-                  <p className='grid-item__text'>Назва адреси</p>
-                  <label className='form_item--label'>
+              <div className="modal-grid">
+                <div className="modal-grid--item-0 grid-item">
+                  <p className="grid-item__text">Назва адреси</p>
+                  <label className="form_item--label">
                     <input
-                      type='text'
-                      placeholder='Назва адреси'
-                      {...register('adressName', {
+                      type="text"
+                      placeholder="Назва адреси"
+                      {...register("adressName", {
                         required: true,
                       })}
                     />
                   </label>
                   {errors?.address && <p>Error!</p>}
                 </div>
-                <div className='modal-grid--item-1 grid-item'>
-                  <p className='grid-item__text'>Вулиця</p>
-                  <label className='form_item--label'>
+                <div className="modal-grid--item-1 grid-item">
+                  <p className="grid-item__text">Вулиця</p>
+                  <label className="form_item--label">
                     <input
-                      type='text'
-                      placeholder='Вулиця'
-                      {...register('streetName', {
+                      type="text"
+                      placeholder="Вулиця"
+                      {...register("streetName", {
                         required: true,
                         pattern: /^[a-zA-Zа-яА-ЯїЇіІєЄёЁґҐ\s]*$/,
                       })}
@@ -86,97 +91,97 @@ const AddressModal = ({ closeModal, isModalOpen, setIsAdressesUpdating }) => {
                   </label>
                   <div height={40}>{errors?.street && <p>Error!</p>}</div>
                 </div>
-                <div className='modal-grid--item-2 grid-item'>
-                  <p className='grid-item__text'>№ Будинку</p>
-                  <label className='form_item--label'>
+                <div className="modal-grid--item-2 grid-item">
+                  <p className="grid-item__text">№ Будинку</p>
+                  <label className="form_item--label">
                     <input
-                      type='text'
-                      placeholder='№ Будинку'
-                      {...register('homeNumber', {
+                      type="text"
+                      placeholder="№ Будинку"
+                      {...register("homeNumber", {
                         required: true,
                       })}
                     />
                   </label>
                 </div>
-                <div className='modal-grid--item-3 grid-item grid-radio'>
-                  <label className='radio'>
+                <div className="modal-grid--item-3 grid-item grid-radio">
+                  <label className="radio">
                     <div
-                      className='radio-button'
+                      className="radio-button"
                       onClick={() =>
-                        handleOptionChange({ target: { value: 'flat' } })
+                        handleOptionChange({ target: { value: "flat" } })
                       }
                     >
-                      {selectedOption === 'flat' ? (
-                        <img src={selected} alt='flat' />
+                      {selectedOption === "flat" ? (
+                        <img src={selected} alt="flat" />
                       ) : (
-                        <img src={hover} alt='house' />
+                        <img src={hover} alt="house" />
                       )}
                     </div>
                     <p>Квартира</p>
                   </label>
                 </div>
-                <div className='modal-grid--item-4 grid-item grid-radio'>
-                  <label className='radio'>
+                <div className="modal-grid--item-4 grid-item grid-radio">
+                  <label className="radio">
                     <div
-                      className='radio-button'
+                      className="radio-button"
                       onClick={() =>
-                        handleOptionChange({ target: { value: 'house' } })
+                        handleOptionChange({ target: { value: "house" } })
                       }
                     >
-                      {selectedOption === 'house' ? (
-                        <img src={selected} alt='flat' />
+                      {selectedOption === "house" ? (
+                        <img src={selected} alt="flat" />
                       ) : (
-                        <img src={hover} alt='house' />
+                        <img src={hover} alt="house" />
                       )}
                     </div>
                     <p>Приватний будинок</p>
                   </label>
                 </div>
-                {selectedOption === 'flat' && (
-                  <div className='modal-grid--item-5 flat-grid'>
-                    <div className='flat-grid--item-0 grid-item'>
-                      <p className='grid-item__text'>Квартира</p>
-                      <label className='form_item--label'>
+                {selectedOption === "flat" && (
+                  <div className="modal-grid--item-5 flat-grid">
+                    <div className="flat-grid--item-0 grid-item">
+                      <p className="grid-item__text">Квартира</p>
+                      <label className="form_item--label">
                         <input
-                          type='text'
-                          placeholder='Квартира'
-                          {...register('flatNumber', {
+                          type="text"
+                          placeholder="Квартира"
+                          {...register("flatNumber", {
                             required: true,
                           })}
                         />
                       </label>
                     </div>
-                    <div className='flat-grid--item-1 grid-item'>
-                      <p className='grid-item__text'>Парадна</p>
-                      <label className='form_item--label'>
+                    <div className="flat-grid--item-1 grid-item">
+                      <p className="grid-item__text">Парадна</p>
+                      <label className="form_item--label">
                         <input
-                          type='text'
-                          placeholder='Парадна'
-                          {...register('entranceNumber', {
+                          type="text"
+                          placeholder="Парадна"
+                          {...register("entranceNumber", {
                             required: true,
                           })}
                         />
                       </label>
                     </div>
-                    <div className='flat-grid--item-2 grid-item'>
-                      <p className='grid-item__text'>Код</p>
-                      <label className='form_item--label'>
+                    <div className="flat-grid--item-2 grid-item">
+                      <p className="grid-item__text">Код</p>
+                      <label className="form_item--label">
                         <input
-                          type='text'
-                          placeholder='Код'
-                          {...register('entranceCode', {
+                          type="text"
+                          placeholder="Код"
+                          {...register("entranceCode", {
                             required: true,
                           })}
                         />
                       </label>
                     </div>
-                    <div className='flat-grid--item-3 grid-item'>
-                      <p className='grid-item__text'>Поверх</p>
-                      <label className='form_item--label'>
+                    <div className="flat-grid--item-3 grid-item">
+                      <p className="grid-item__text">Поверх</p>
+                      <label className="form_item--label">
                         <input
-                          type='text'
-                          placeholder='Поверх'
-                          {...register('floar', {
+                          type="text"
+                          placeholder="Поверх"
+                          {...register("floar", {
                             required: true,
                           })}
                         />
@@ -184,19 +189,19 @@ const AddressModal = ({ closeModal, isModalOpen, setIsAdressesUpdating }) => {
                     </div>
                   </div>
                 )}
-                <div className='modal-grid--item-9 grid-item'>
-                  <p className='grid-item__text'>Коментар</p>
-                  <label className='form_item--label'>
+                <div className="modal-grid--item-9 grid-item">
+                  <p className="grid-item__text">Коментар</p>
+                  <label className="form_item--label">
                     <textarea
-                      placeholder='Можете тут написати будь-що:)'
+                      placeholder="Можете тут написати будь-що:)"
                       rows={1}
-                      {...register('comment')}
+                      {...register("comment")}
                     />
                   </label>
                 </div>
               </div>
-              <div className='form-button'>
-                <button className='btn-main ' type='submit' disabled={!isValid}>
+              <div className="form-button">
+                <button className="btn-main " type="submit" disabled={!isValid}>
                   Зберегти зміни
                 </button>
               </div>

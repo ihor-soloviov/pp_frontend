@@ -1,27 +1,24 @@
 //Import React
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { url } from "../../api";
+import React, { useState } from "react";
 
 //Import Styles
 import "./productCard.scss";
+
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../store/shoppingCartSlice";
-import { addToFavorit, removeFromFavorit } from "../../store/userSlice";
-import { setActions } from "../../store/popupActionsSlice";
-import { add_to_cart, view_item } from "../../gm4";
-import { sendFavsToServer } from "../../utils/favorites";
+
+import { add_to_cart } from "../../gm4";
+import userStore from "../../store/user-store";
+import popupActionsStore from "../../store/popup-action-store";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [count, setCount] = useState(1);
   const [inCart, setInCart] = useState(false);
 
-  const token = useSelector((state) => state.user.token);
-  const favoritList = useSelector((state) => state.user.favoritProducts);
+  const { favoritProducts, removeFromFavorit, addToFavorit } = userStore;
+  const { setActions } = popupActionsStore;
 
   // useEffect(() => {
   //   console.log("я є");
@@ -33,48 +30,45 @@ const ProductCard = (props) => {
 
   const handleFavorite = () => {
     const { id, name, price, count, preview, weight, ingredients } = props;
-    if (favoritList.some((el) => el.id === id)) {
-      dispatch(removeFromFavorit({ id }));
+    if (favoritProducts.some((el) => el.id === id)) {
+      removeFromFavorit({ id });
     } else {
-      dispatch(setActions({ action: "addToFavorit" }));
+      setActions({ action: "addToFavorit" });
       setTimeout(() => {
-        dispatch(setActions({ action: "" }));
+        setActions({ action: "" });
       }, 2000);
-      dispatch(
-        addToFavorit({
-          name,
-          price,
-          count,
-          preview,
-          weight,
-          id,
-          ingredients,
-        })
-      );
+
+      addToFavorit({
+        name,
+        price,
+        count,
+        preview,
+        weight,
+        id,
+        ingredients,
+      });
     }
   };
 
   const addToCart = () => {
-    dispatch(
-      addProduct({
-        name: props.name,
-        price: props.price,
-        count: count,
-        preview: props.preview,
-        weight: props.weight,
-        id: props.id,
-        ingredients: props.ingredients,
-        category: props.category,
-      })
-    );
-    dispatch(setActions({ action: "addToCard" }));
+    addProduct({
+      name: props.name,
+      price: props.price,
+      count: count,
+      preview: props.preview,
+      weight: props.weight,
+      id: props.id,
+      ingredients: props.ingredients,
+      category: props.category,
+    });
+    setActions({ action: "addToCard" });
     setInCart(true);
 
     add_to_cart(props.name, props.id, props.price, props.category, count);
     setTimeout(() => {
       setInCart(false);
 
-      dispatch(setActions({ action: "" }));
+      setActions({ action: "" });
     }, 2000);
   };
 
@@ -83,7 +77,7 @@ const ProductCard = (props) => {
       <div className="product__cta">
         <div
           className={`product__like ${
-            favoritList.some((el) => el.id === props.id) &&
+            favoritProducts.some((el) => el.id === props.id) &&
             "product__like-active"
           }`}
           onClick={() => handleFavorite()}

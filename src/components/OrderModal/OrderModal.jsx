@@ -1,7 +1,7 @@
 import React from "react";
 import Popup from "../Popup/Popup";
-import "./OrderModal.scss";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import "./OrderModal.scss";
 
 const OrderModal = ({
   isMainModalOpen,

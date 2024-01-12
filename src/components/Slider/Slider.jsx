@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import { useInView, InView } from 'react-intersection-observer';
+import { InView } from 'react-intersection-observer';
 
 import Banner from '../Banner/Banner';
 import './Slider.scss';

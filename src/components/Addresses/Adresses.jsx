@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
-import "../ProfileGrid/ProfileGrid.scss";
-import "./Addresses.scss";
+import userStore from "../../store/user-store";
+
 import AddressModal from "../AddressModal/AddressModal";
 import NewAddress from "../NewAddress/NewAddress";
 import CreatedAddress from "../CreatedAddress/CreatedAddress";
 import ProfileLink from "../ProfileLink/ProfileLink";
+
 import axios from "axios";
-import { useSelector } from "react-redux";
 import { url } from "../../api";
 
-const Addresses = ({ handleSidebar }) => {
-  const userData = useSelector((state) => state.user);
+import "../ProfileGrid/ProfileGrid.scss";
+import "./Addresses.scss";
+import { observer } from "mobx-react-lite";
+
+const Addresses = observer(({ handleSidebar }) => {
+  const { token, adresses, addToAdresses } = userStore;
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [adresses, setAdresses] = useState([]);
+  // const [addresses, setAddresses] = useState([]);
   const [isAdressesUpdating, setIsAdressesUpdating] = useState(false);
 
   useEffect(() => {
     const fetchAdresses = async () => {
       try {
-        const JSONtoken = JSON.stringify({ token: userData.token });
+        const JSONtoken = JSON.stringify({ token: token });
         const response = await axios.post(`${url}/api/auth`, JSONtoken, {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -27,7 +31,7 @@ const Addresses = ({ handleSidebar }) => {
           },
         });
 
-        setAdresses(response.data.addresses);
+        addToAdresses(response.data.addresses);
       } catch (error) {
         console.log(error);
       } finally {
@@ -36,7 +40,7 @@ const Addresses = ({ handleSidebar }) => {
     };
 
     fetchAdresses();
-  }, [userData.token, isAdressesUpdating]);
+  }, [token, isAdressesUpdating, addToAdresses]);
 
   const handleModal = () => {
     setModalOpen((prev) => !prev);
@@ -51,8 +55,8 @@ const Addresses = ({ handleSidebar }) => {
           isModalOpen={isModalOpen}
           setIsAdressesUpdating={setIsAdressesUpdating}
         />
-        {userData.adresses !== null &&
-          userData.adresses.map((adress) => (
+        {adresses !== null &&
+          adresses.map((adress) => (
             <CreatedAddress
               key={adress.addressName}
               adress={adress}
@@ -63,6 +67,6 @@ const Addresses = ({ handleSidebar }) => {
       </div>
     </section>
   );
-};
+});
 
 export default Addresses;

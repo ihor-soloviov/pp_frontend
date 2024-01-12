@@ -17,13 +17,13 @@ import "./header.scss";
 
 //Import logo
 import logo from "../../assets/logo/logo.svg";
-import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
 import SingUp from "../SingUp/SingUp";
 import axios from "axios";
 
 import userStore from "../../store/user-store";
 import { url } from "../../api";
+import Cart from "../Cart/Cart";
 
 const Header = observer(() => {
 
@@ -169,7 +169,7 @@ const Header = observer(() => {
                 {/* <Link to={'/profile/info'}>Кабінет</Link> */}
               </nav>
               <div className="header__right">
-                <Card />
+                <Cart />
                 {isAuthenticated ? (
                   <div
                     className="header__profile-btn"
@@ -358,7 +358,7 @@ const Header = observer(() => {
                 {/* <Link to={'/profile/info'}>Кабінет</Link> */}
               </nav>
               <div className="header__right">
-                <Card />
+                <Cart />
                 {isAuthenticated ? (
                   <div
                     className="header__profile-btn"

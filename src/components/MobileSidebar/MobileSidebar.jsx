@@ -1,12 +1,14 @@
 import React from "react";
-import SidebarLink from "../SidebarLink/SidebarLink";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import userStore from "../../store/user-store";
+
+import SidebarLink from "../SidebarLink/SidebarLink";
 import cross from "../../../src/assets/Vector.svg";
+import { observer } from "mobx-react-lite";
 
-const MobileSidebar = ({ handleSidebar }) => {
+const MobileSidebar = observer(({ handleSidebar }) => {
+  const { name, phone } = userStore;
 
-  const userData = useSelector((state) => state.user);
   const sidebarLinks = [
     "Інформація",
     "Улюблені блюда",
@@ -26,8 +28,8 @@ const MobileSidebar = ({ handleSidebar }) => {
               className="profile_info--head__photo"
             />
             <div className="contacts">
-              <div className="contacts_name">{userData.name}</div>
-              <div className="contacts_phone mobile">{userData.phone}</div>
+              <div className="contacts_name">{name}</div>
+              <div className="contacts_phone mobile">{phone}</div>
               <div className="contacts_bonuses">
                 <p>Доступно 23 бонуси</p>
               </div>
@@ -66,6 +68,6 @@ const MobileSidebar = ({ handleSidebar }) => {
       </section>
     </>
   );
-};
+});
 
 export default MobileSidebar;
