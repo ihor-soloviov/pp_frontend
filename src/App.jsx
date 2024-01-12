@@ -61,6 +61,8 @@ const App = observer(() => {
   //State
 
   const {
+    isAuthenticated,
+    city,
     updateCity,
     loadFromLocalStorageAdress,
     loadFromLocalStorage,
@@ -85,6 +87,8 @@ const App = observer(() => {
     const data = localStorage.getItem("userData");
     const dataParse = JSON.parse(data);
 
+    console.log("dataParse", dataParse);
+
     if (data) {
       getFromLocalStorage();
 
@@ -108,7 +112,7 @@ const App = observer(() => {
     if (dataParse) {
       loadFromLocalStorage();
     }
-  }, [user.isAuthenticated]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (location.pathname === "/profile/signout") {
@@ -158,18 +162,18 @@ const App = observer(() => {
   };
 
   useEffect(() => {
-    if (user.city !== null) {
-      dispatch(cityModalUpdateState({ isOpen: false }));
+    if (city !== null) {
+      cityModalHandler(false);
     } else {
-      dispatch(cityModalUpdateState({ isOpen: true }));
+      cityModalHandler(true);
     }
-  }, [user]);
+  }, [city, cityModalHandler]);
 
   return (
     <>
       {cta(action)}
 
-      {modals.cityModal && (
+      {cityModal && (
         <Popup small={true} closeModal={() => cityModalHandler(false)}>
           <SelectCity />
         </Popup>

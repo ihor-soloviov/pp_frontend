@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 //Import Routes
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-//Import Redux
-import { useSelector } from "react-redux";
+//Import Mobx
 
 import { observer } from "mobx-react-lite";
 import modalStore from "../../store/modal-store";
@@ -22,18 +21,23 @@ import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
 import SingUp from "../SingUp/SingUp";
 import axios from "axios";
+
+import userStore from "../../store/user-store";
 import { url } from "../../api";
 
 const Header = observer(() => {
-  const location = useLocation();
-  const { authModalHandler, authModal } = modalStore;
 
+  const { authModalHandler, authModal } = modalStore;
+  const { city, isAuthenticated, name, phone } = userStore;
+  
   const [hamburger, setHamburger] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [categories, setCategories] = useState([]);
-  const navigate = useNavigate();
 
-  const userData = useSelector((state) => state.user);
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+
 
   useEffect(() => {
     if (location.pathname !== "/") {
@@ -125,7 +129,7 @@ const Header = observer(() => {
                         fill="#12130F"
                       />
                     </svg>
-                    <span>{userData.city}</span>
+                    <span>{city}</span>
                     <svg
                       width="10"
                       height="6"
@@ -166,7 +170,7 @@ const Header = observer(() => {
               </nav>
               <div className="header__right">
                 <Card />
-                {userData.isAuthenticated ? (
+                {isAuthenticated ? (
                   <div
                     className="header__profile-btn"
                     onClick={() => navigate("/profile/info")}
@@ -179,7 +183,7 @@ const Header = observer(() => {
                         alt=""
                       />
                     </div>
-                    <span className="header__username">{userData.name}</span>
+                    <span className="header__username">{name}</span>
                     <svg
                       width="10"
                       height="6"
@@ -205,7 +209,6 @@ const Header = observer(() => {
                   }`}
                   onClick={() => setHamburger(!hamburger)}
                 >
-                  <span></span>
                 </div>
               </div>
             </div>
@@ -213,7 +216,7 @@ const Header = observer(() => {
               <div className="mobile-menu">
                 <nav className="mobile-menu__navigation">
                   <div className="mobile-menu__auth">
-                    {userData.isAuthenticated === true ? (
+                    {isAuthenticated === true ? (
                       <div
                         className="mobile-menu__profile-btn mobile-menu__profile-btn--profile"
                         onClick={() => navigate("/profile/info")}
@@ -228,9 +231,9 @@ const Header = observer(() => {
                         </div>
                         <div>
                           <span className="mobile-menu__username">
-                            {userData.name}
+                            {name}
                           </span>
-                          <p className="mobile-menu__phone">{userData.phone}</p>
+                          <p className="mobile-menu__phone">{phone}</p>
                           <p className="mobile-menu__bonus">
                             Доступно 23 бонуси
                           </p>
@@ -315,7 +318,7 @@ const Header = observer(() => {
                         fill="#12130F"
                       />
                     </svg>
-                    <span>{userData.city}</span>
+                    <span>{city}</span>
                     <svg
                       width="10"
                       height="6"
@@ -356,7 +359,7 @@ const Header = observer(() => {
               </nav>
               <div className="header__right">
                 <Card />
-                {userData.isAuthenticated ? (
+                {isAuthenticated ? (
                   <div
                     className="header__profile-btn"
                     onClick={() => navigate("/profile/info")}
@@ -369,7 +372,7 @@ const Header = observer(() => {
                         alt=""
                       />
                     </div>
-                    <span className="header__username">{userData.name}</span>
+                    <span className="header__username">{name}</span>
                     <svg
                       width="10"
                       height="6"
@@ -452,7 +455,7 @@ const Header = observer(() => {
                   </ul>
 
                   <div className="mobile-menu__auth">
-                    {userData.isAuthenticated ? (
+                    {isAuthenticated ? (
                       <div
                         className="mobile-menu__profile-btn"
                         onClick={() => navigate("/profile/info")}
@@ -467,7 +470,7 @@ const Header = observer(() => {
                         </div>
                         <div>
                           <span className="mobile-menu__username">
-                            {userData.name}
+                            {name}
                           </span>
                           <div className="mobile-menu__goto">
                             Перейти в профіль

@@ -57,7 +57,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
     }
   };
 
-  console.log("isSidebarClosed", isSidebarClosed);
+  // console.log("isSidebarClosed", isSidebarClosed);
 
   if (!isSidebarClosed) {
     return (
