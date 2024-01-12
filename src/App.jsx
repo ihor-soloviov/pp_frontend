@@ -9,14 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 //Import pages
 import Profile from "./Pages/Profile/Profile";
-import Menu from "./Pages/Menu";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 
 //Import components
 import Header from "./components/Header/Header";
 import Popup from "./components/Popup/Popup";
-
-import SingUp from "./components/SingUp/SingUp";
 
 //Import Firebase
 import { firebaseConfig } from "./firebaseConfig";
@@ -34,10 +31,7 @@ import Order from "./Pages/Order/Order";
 
 import Footer from "./components/Footer/Footer";
 import SelectCity from "./components/SelectCity/SelectCity";
-import {
-  cityModalUpdateState,
-  thanksModalUpdateState,
-} from "./store/modalsSlice";
+import { cityModalUpdateState } from "./store/modalsSlice";
 import PopupActions from "./components/PopupActions/PopupActions";
 import Main from "./Pages/Main/Main";
 import MenuPage from "./Pages/MenuPage/MenuPage";
@@ -48,8 +42,6 @@ import Loader from "./components/Loader/Loader";
 
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
-import axios from "axios";
-import { url } from "./api";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -160,7 +152,6 @@ const App = () => {
       dispatch(cityModalUpdateState({ isOpen: true }));
     }
   }, [user]);
-
 
   return (
     <>

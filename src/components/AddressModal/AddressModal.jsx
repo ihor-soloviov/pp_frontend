@@ -65,7 +65,7 @@ const AddressModal = ({ closeModal, isModalOpen, setIsAdressesUpdating }) => {
                     <input
                       type='text'
                       placeholder='Назва адреси'
-                      {...register('addressName', {
+                      {...register('adressName', {
                         required: true,
                       })}
                     />

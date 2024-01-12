@@ -118,40 +118,40 @@ const Menu = () => {
   };
 
   // //Завантаження улюблених страв
-  useEffect(() => {
-    const fetchFavoritesFromServer = async () => {
-      if (userToken) {
-        try {
-          const response = await axios.post(
-            'https://polarpelmeni-api.work-set.eu/api/favorites',
-            JSON.stringify({ token: userToken }),
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-          if (response.status === 200) {
-            const data = response.data;
-            localStorage.setItem('favoritProducts', JSON.stringify(data));
-          } else {
-            console.error('Failed to fetch favorites from server');
-          }
-        } catch (error) {
-          console.error('Error fetching favorites:', error);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const fetchFavoritesFromServer = async () => {
+  //     if (userToken) {
+  //       try {
+  //         const response = await axios.post(
+  //           'https://polarpelmeni-api.work-set.eu/api/favorites',
+  //           JSON.stringify({ token: userToken }),
+  //           {
+  //             headers: {
+  //               'Access-Control-Allow-Origin': '*',
+  //               'Content-Type': 'application/json',
+  //             },
+  //           }
+  //         );
+  //         if (response.status === 200) {
+  //           const data = response.data;
+  //           localStorage.setItem('favoritProducts', JSON.stringify(data));
+  //         } else {
+  //           console.error('Failed to fetch favorites from server');
+  //         }
+  //       } catch (error) {
+  //         console.error('Error fetching favorites:', error);
+  //       }
+  //     }
+  //   };
 
-    fetchFavoritesFromServer();
-    const favorites = JSON.parse(data)
+  //   fetchFavoritesFromServer();
+  //   const favorites = JSON.parse(data)
 
-    return () => {
-      sendFavsToServer(userToken, favorites)
-      console.log('baing')
-    }
-  }, [data, userToken]);
+  //   return () => {
+  //     sendFavsToServer(userToken, favorites)
+  //     console.log('baing')
+  //   }
+  // }, [data, userToken]);
 
   useEffect(() => {
     getCategories();
