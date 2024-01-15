@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { sendFavsToServer } from "../utils/favorites";
 
 class UserStore {
   isAuthenticated = false;
@@ -48,6 +49,10 @@ class UserStore {
         "favoritProducts",
         JSON.stringify(this.favoritProducts)
       );
+      sendFavsToServer({
+        token: this.token,
+        favorites: JSON.parse(JSON.stringify(this.favoritProducts)),
+      });
     }
   };
 
