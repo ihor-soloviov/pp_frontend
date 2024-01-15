@@ -10,8 +10,9 @@ import { add_to_cart } from "../../gm4";
 import userStore from "../../store/user-store";
 import popupActionsStore from "../../store/popup-action-store";
 import shoppingCartStore from "../../store/shoping-cart-store";
+import { observer } from "mobx-react-lite";
 
-const ProductCard = (props) => {
+const ProductCard = observer((props) => {
   const navigate = useNavigate();
 
   const [count, setCount] = useState(1);
@@ -31,7 +32,7 @@ const ProductCard = (props) => {
 
   const handleFavorite = () => {
     const { id, name, price, count, preview, weight, ingredients } = props;
-    
+
     if (favoritProducts.some((el) => el.id === id)) {
       removeFromFavorit({ id });
     } else {
@@ -53,7 +54,7 @@ const ProductCard = (props) => {
   };
 
   const addToCart = () => {
-    console.log("asd");
+    console.log("addToCart");
     setActions("addToCard");
     addProduct({
       name: props.name,
@@ -159,6 +160,6 @@ const ProductCard = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default ProductCard;

@@ -36,6 +36,7 @@ import { cartPromocode, clearCart } from "../../store/shoppingCartSlice";
 
 import { url } from "../../api";
 import { purchase } from "../../gm4";
+import userStore from "../../store/user-store";
 
 //Time
 
@@ -183,6 +184,7 @@ const OrderForm = () => {
   });
   const modals = useSelector((state) => state.modals);
   const user = useSelector((state) => state.user);
+  const {token} = userStore
   const order = useSelector((state) => state.order);
 
   useEffect(() => {
@@ -194,6 +196,7 @@ const OrderForm = () => {
           id: 0,
         },
       ];
+
       const adressMap = user.adresses.map((data, index) => {
         return {
           id: index + 1,
@@ -239,6 +242,7 @@ const OrderForm = () => {
     comment: "",
     doNotCall: false,
   });
+
   const orderData = {
     spot_id: 1,
     first_name: formData.name,
@@ -282,6 +286,7 @@ const OrderForm = () => {
       isPromotion && "СКИДКА 40%"
     }`,
   };
+
   //Update fomdata state
   const handleChange = (field, value) => {
     setFormData((prevFormData) => ({
@@ -305,7 +310,7 @@ const OrderForm = () => {
     axios
       .post(
         `${url}/api/auth`,
-        { token: user.token },
+        { token: token },
         {
           headers: {
             "Content-Type": "application/json",
@@ -329,6 +334,7 @@ const OrderForm = () => {
   useEffect(() => {
     checkCurrentUserPromo();
   }, [user.isAuthenticated]);
+
   const createTransaction = (amount) => {
     const data = { amount: amount };
     axios
@@ -444,6 +450,7 @@ const OrderForm = () => {
       }
     }
   };
+
   useEffect(() => {
     if (isPromotion) {
       setPromotionPopup(true);

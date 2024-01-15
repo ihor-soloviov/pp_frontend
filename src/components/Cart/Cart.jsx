@@ -1,5 +1,5 @@
 //Import React
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import shoppingCartStore from "../../store/shoping-cart-store";
@@ -15,18 +15,19 @@ import "./card.scss";
 import { observer } from "mobx-react-lite";
 
 const Cart = observer(() => {
-  const { products } = shoppingCartStore;
-  //   const products_List = useSelector((state) => state.shoppingCart.products);
-
   const navigate = useNavigate();
+
+  const { products } = shoppingCartStore;
 
   const [isOpen, setIsOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [error, setError] = useState(false);
+  const [countChanging, setCountChanging] = useState(false);
 
   useEffect(() => {
+    console.log('updating Total price')
     setTotalPrice(products.reduce((a, b) => a + b.totalPrice, 0));
-  }, [products]);
+  }, [products, countChanging, isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -43,7 +44,7 @@ const Cart = observer(() => {
     };
   }, [isOpen]);
 
-  const popupError = (err) => {
+  const popupError = useCallback((err) => {
     if (err) {
       return (
         <PopupActions action={"Мінімальна сумма замовлення 200 ₴"} error />
@@ -51,7 +52,7 @@ const Cart = observer(() => {
     } else {
       return null;
     }
-  };
+  }, []);
 
   return (
     <>
@@ -169,12 +170,13 @@ const Cart = observer(() => {
                         key={item.id}
                         preview={item.preview}
                         name={item.name}
-                        price={item.totalPrice}
+                        totalPrice={item.totalPrice}
                         weight={item.weight}
                         count={item.count}
                         id={item.id}
                         cart_index={item.cart_index}
                         category={item.category}
+                        setCountChanging={setCountChanging}
                       />
                     );
                   })}

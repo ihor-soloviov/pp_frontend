@@ -1,5 +1,5 @@
 //Import React
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 //Import Routing
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
@@ -72,7 +72,7 @@ const App = observer(() => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const loadUserDataFromLocalStorage = () => {
+  const loadUserDataFromLocalStorage = useCallback(() => {
     const data = localStorage.getItem("userData");
     const dataParse = JSON.parse(data);
 
@@ -86,13 +86,17 @@ const App = observer(() => {
         userLogin(dataParse);
       }
     }
-  };
+  }, [getFromLocalStorage, updateCity]);
 
   useEffect(() => {
     loadUserDataFromLocalStorage();
     loadFromLocalStorage();
     loadFromLocalStorageAdress();
-  }, []);
+  }, [
+    loadFromLocalStorage,
+    loadFromLocalStorageAdress,
+    loadUserDataFromLocalStorage,
+  ]);
 
   useEffect(() => {
     const favoritProducts = localStorage.getItem("favoritProducts");
@@ -139,22 +143,16 @@ const App = observer(() => {
     }, 1500);
   }, [location]);
 
-  // const cta = (state) => {
-  //   console.log(state);
-  //   if (state === "addToCard") {
-  //     return <PopupActions action={"Блюдо додано у кошик"} />;
-  //   }
-  //   if (state === "addToFavorit") {
-  //     return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
-  useEffect(() => {
-    console.log(currentAction)
-  }, [currentAction])
-  
+  const cta = useCallback(() => {
+    if (currentAction === "addToCard") {
+      return <PopupActions action={"Блюдо додано у кошик"} />;
+    }
+    if (currentAction === "addToFavorit") {
+      return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
+    } else {
+      return null;
+    }
+  }, [currentAction]);
 
   useEffect(() => {
     if (city !== null) {
@@ -166,9 +164,7 @@ const App = observer(() => {
 
   return (
     <>
-      {currentAction === "addToCard" && (
-        <PopupActions action={"Блюдо додано у кошик"} />
-      )}
+      {cta()}
 
       {cityModal && (
         <Popup small={true} closeModal={() => cityModalHandler(false)}>

@@ -4,14 +4,25 @@ import shoppingCartStore from "../../store/shoping-cart-store";
 import { observer } from "mobx-react-lite";
 
 const ShoppingCartItem = observer(
-  ({ preview, name, weight, price, count, id, cart_index, category }) => {
+  ({
+    preview,
+    name,
+    weight,
+    totalPrice,
+    count,
+    id,
+    cart_index,
+    category,
+    setCountChanging,
+  }) => {
     const [currentCount, setCurrentCount] = useState(count);
 
     const { updateCount, removeProduct } = shoppingCartStore;
 
     useEffect(() => {
-      updateCount(cart_index, currentCount);
-    }, [cart_index, currentCount, updateCount]);
+      setCountChanging(prev => !prev);
+      updateCount(id, currentCount);
+    }, [id, currentCount, updateCount, setCountChanging]);
 
     return (
       <li className="shopping-cart__item">
@@ -42,23 +53,23 @@ const ShoppingCartItem = observer(
 
           <p className="shopping-cart__weight">{weight} г</p>
           <div className="shopping-cart__row">
-            <p className="shopping-cart__price">{price} ₴</p>
+            <p className="shopping-cart__price">{totalPrice} ₴</p>
             <div className="counter">
               <div
                 className="counter__btn counter__btn--light"
                 onClick={() => {
-                  if (count > 1) {
-                    setCurrentCount(count - 1);
+                  if (currentCount > 1) {
+                    setCurrentCount((prev) => prev - 1);
                   }
                 }}
               >
                 -
               </div>
-              <div className="counter__value">{count}</div>
+              <div className="counter__value">{currentCount}</div>
               <div
                 className="counter__btn counter__btn--light"
                 onClick={() => {
-                  setCurrentCount(count + 1);
+                  setCurrentCount((prev) => prev + 1);
                 }}
               >
                 +
