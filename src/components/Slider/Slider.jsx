@@ -109,17 +109,17 @@ const Slider = () => {
         <div className='slider__dots'>
           <div
             className={`slider__dot ${
-              currentSlide == 0 && 'slider__dot-active'
+              currentSlide === 0 && 'slider__dot-active'
             }`}
           ></div>
           <div
             className={`slider__dot ${
-              currentSlide == 1 && 'slider__dot-active'
+              currentSlide === 1 && 'slider__dot-active'
             }`}
           ></div>
           <div
             className={`slider__dot ${
-              currentSlide == 2 && 'slider__dot-active'
+              currentSlide === 2 && 'slider__dot-active'
             }`}
           ></div>
         </div>

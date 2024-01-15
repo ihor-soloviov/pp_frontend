@@ -4,9 +4,7 @@ import React, { useEffect, useState } from "react";
 //Import Routing
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-//Import Redux
-import { useDispatch, useSelector } from "react-redux";
-
+//Import MOBX
 import modalsStore from "./store/modal-store";
 import userStore from "./store/user-store";
 import shoppingCartStore from "./store/shoping-cart-store";
@@ -23,31 +21,24 @@ import Popup from "./components/Popup/Popup";
 import { firebaseConfig } from "./firebaseConfig";
 import firebase from "firebase/compat/app";
 
-import {
-  loadFromLocalStorage,
-  loadFromLocalStorageAdress,
-  updateCity,
-  userLogin,
-  userLogout,
-} from "./store/userSlice";
+import { userLogin } from "./store/userSlice";
+import { observer } from "mobx-react-lite";
+import popupActionsStore from "./store/popup-action-store";
 
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Order from "./Pages/Order/Order";
 
 import Footer from "./components/Footer/Footer";
 import SelectCity from "./components/SelectCity/SelectCity";
-import { cityModalUpdateState } from "./store/modalsSlice";
 import PopupActions from "./components/PopupActions/PopupActions";
 import Main from "./Pages/Main/Main";
 import MenuPage from "./Pages/MenuPage/MenuPage";
 
 import Contact from "./Pages/Contact/Contact";
-import { getFromLocalStorage } from "./store/shoppingCartSlice";
 import Loader from "./components/Loader/Loader";
 
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
-import { observer } from "mobx-react-lite";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -68,20 +59,18 @@ const App = observer(() => {
     loadFromLocalStorage,
     userLogout,
   } = userStore;
-  const { authModal, cityModal, thanksModal, cityModalHandler } = modalsStore;
-  const { getFromLocalStorage } = shoppingCartStore;
 
-  const modals = useSelector((state) => state.modals);
-  const user = useSelector((state) => state.user);
-  const [isLoader, setIsLoader] = useState(false);
+  const { cityModal, cityModalHandler } = modalsStore;
+  const { getFromLocalStorage } = shoppingCartStore;
+  const { currentAction } = popupActionsStore;
+
   //Usestate
+  const [isLoader, setIsLoader] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
 
   //Tools
-  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const action = useSelector((state) => state.popupActions.currentAction);
 
   const loadUserDataFromLocalStorage = () => {
     const data = localStorage.getItem("userData");
@@ -112,14 +101,14 @@ const App = observer(() => {
     if (dataParse) {
       loadFromLocalStorage();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loadFromLocalStorage]);
 
   useEffect(() => {
     if (location.pathname === "/profile/signout") {
       userLogout();
       navigate("/");
     }
-  }, [location.pathname]);
+  }, [location.pathname, userLogout, navigate]);
 
   useEffect(() => {
     // Функція яка скриває хедер в профілі на мобілках та таблетах
@@ -150,16 +139,22 @@ const App = observer(() => {
     }, 1500);
   }, [location]);
 
-  const cta = (state) => {
-    if (state === "addToCard") {
-      return <PopupActions action={"Блюдо додано у кошик"} />;
-    }
-    if (state === "addToFavorit") {
-      return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
-    } else {
-      return null;
-    }
-  };
+  // const cta = (state) => {
+  //   console.log(state);
+  //   if (state === "addToCard") {
+  //     return <PopupActions action={"Блюдо додано у кошик"} />;
+  //   }
+  //   if (state === "addToFavorit") {
+  //     return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
+  //   } else {
+  //     return null;
+  //   }
+  // };
+
+  useEffect(() => {
+    console.log(currentAction)
+  }, [currentAction])
+  
 
   useEffect(() => {
     if (city !== null) {
@@ -171,7 +166,9 @@ const App = observer(() => {
 
   return (
     <>
-      {cta(action)}
+      {currentAction === "addToCard" && (
+        <PopupActions action={"Блюдо додано у кошик"} />
+      )}
 
       {cityModal && (
         <Popup small={true} closeModal={() => cityModalHandler(false)}>

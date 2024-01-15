@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import "./productCard.scss";
 
 import { useNavigate } from "react-router-dom";
-import { addProduct } from "../../store/shoppingCartSlice";
 
 import { add_to_cart } from "../../gm4";
 import userStore from "../../store/user-store";
 import popupActionsStore from "../../store/popup-action-store";
+import shoppingCartStore from "../../store/shoping-cart-store";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const ProductCard = (props) => {
   const [inCart, setInCart] = useState(false);
 
   const { favoritProducts, removeFromFavorit, addToFavorit } = userStore;
+  const { addProduct } = shoppingCartStore;
   const { setActions } = popupActionsStore;
 
   // useEffect(() => {
@@ -30,12 +31,13 @@ const ProductCard = (props) => {
 
   const handleFavorite = () => {
     const { id, name, price, count, preview, weight, ingredients } = props;
+    
     if (favoritProducts.some((el) => el.id === id)) {
       removeFromFavorit({ id });
     } else {
-      setActions({ action: "addToFavorit" });
+      setActions("addToFavorit");
       setTimeout(() => {
-        setActions({ action: "" });
+        setActions("");
       }, 2000);
 
       addToFavorit({
@@ -51,6 +53,8 @@ const ProductCard = (props) => {
   };
 
   const addToCart = () => {
+    console.log("asd");
+    setActions("addToCard");
     addProduct({
       name: props.name,
       price: props.price,
@@ -61,14 +65,14 @@ const ProductCard = (props) => {
       ingredients: props.ingredients,
       category: props.category,
     });
-    setActions({ action: "addToCard" });
+
     setInCart(true);
 
     add_to_cart(props.name, props.id, props.price, props.category, count);
     setTimeout(() => {
       setInCart(false);
 
-      setActions({ action: "" });
+      setActions("");
     }, 2000);
   };
 

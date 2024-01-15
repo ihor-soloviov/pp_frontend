@@ -26,18 +26,15 @@ import { url } from "../../api";
 import Cart from "../Cart/Cart";
 
 const Header = observer(() => {
-
-  const { authModalHandler, authModal } = modalStore;
+  const { authModalHandler, authModal, cityModalHandler } = modalStore;
   const { city, isAuthenticated, name, phone } = userStore;
-  
+
   const [hamburger, setHamburger] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [categories, setCategories] = useState([]);
 
-  
   const navigate = useNavigate();
   const location = useLocation();
-
 
   useEffect(() => {
     if (location.pathname !== "/") {
@@ -208,8 +205,7 @@ const Header = observer(() => {
                     hamburger && "header__hamburger--active"
                   }`}
                   onClick={() => setHamburger(!hamburger)}
-                >
-                </div>
+                ></div>
               </div>
             </div>
             {hamburger && (
@@ -230,9 +226,7 @@ const Header = observer(() => {
                           />
                         </div>
                         <div>
-                          <span className="mobile-menu__username">
-                            {name}
-                          </span>
+                          <span className="mobile-menu__username">{name}</span>
                           <p className="mobile-menu__phone">{phone}</p>
                           <p className="mobile-menu__bonus">
                             Доступно 23 бонуси
@@ -305,7 +299,10 @@ const Header = observer(() => {
                   <img src={logo} alt="Polar Pelmeni – авторські пельмені" />
                 </Link>
                 <div className="header__selectors">
-                  <div className="header__selector header__selector-city">
+                  <div
+                    className="header__selector header__selector-city"
+                    onClick={() => cityModalHandler(true)}
+                  >
                     <svg
                       width="12"
                       height="15"
@@ -469,9 +466,7 @@ const Header = observer(() => {
                           />
                         </div>
                         <div>
-                          <span className="mobile-menu__username">
-                            {name}
-                          </span>
+                          <span className="mobile-menu__username">{name}</span>
                           <div className="mobile-menu__goto">
                             Перейти в профіль
                           </div>

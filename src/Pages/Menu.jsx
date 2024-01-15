@@ -1,55 +1,55 @@
 //Import React
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 //Impost styles
-import './menu.scss';
+import "./menu.scss";
 
 //Import Components
-import ProductCard from '../components/ProductCard/ProductCard';
+import ProductCard from "../components/ProductCard/ProductCard";
 
 //Import plug
-import axios from 'axios';
-import Container from '../components/Container/Container';
-import { useParams } from 'react-router-dom';
+import axios from "axios";
+import Container from "../components/Container/Container";
+import { useParams } from "react-router-dom";
 
-import Slider from '../components/Slider/Slider';
-import { useSelector } from 'react-redux';
-import { url } from '../api';
-import Loader from '../components/Loader/Loader';
-import { sendFavsToServer } from '../utils/favorites';
-const token = '436783:670964579c5655f22513de1218a29b4d';
+import Slider from "../components/Slider/Slider";
+import { useSelector } from "react-redux";
+import { url } from "../api";
+import Loader from "../components/Loader/Loader";
+import { sendFavsToServer } from "../utils/favorites";
+import userStore from "../store/user-store";
+const token = "436783:670964579c5655f22513de1218a29b4d";
 
 const proxy_url = `https://pelmeni-proxy.work-set.eu`;
 // eslint-disable-next-line
-const poster_url = 'https://polar-pelmeni-odessa.joinposter.com';
+const poster_url = "https://polar-pelmeni-odessa.joinposter.com";
 
 const Menu = () => {
   const { id } = useParams();
-  const userToken = useSelector((state) => state.user).token;
 
   const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState(null);
   const [favorites, setFavorites] = useState([]);
 
-  const data = localStorage.getItem('favoritProducts');
+  const data = localStorage.getItem("favoritProducts");
 
   const getCategories = () => {
     axios
       .get(`${url}/api/menu`, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
         const data = res.data.response;
 
         const filteredCat = data.filter((obj) =>
-          obj.category_name.startsWith('onlineOrder:')
+          obj.category_name.startsWith("onlineOrder:")
         );
         const mapCat = filteredCat.map((el, index) => {
           return {
-            category_name: el.category_name.replace(/onlineOrder: /, ''),
+            category_name: el.category_name.replace(/onlineOrder: /, ""),
             category_id: el.category_id,
             category_position_index: index,
           };
@@ -85,8 +85,8 @@ const Menu = () => {
     axios
       .post(`${url}/api/products`, data, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
@@ -107,8 +107,11 @@ const Menu = () => {
             price: item.price,
             out: item.out,
             product_id: item.product_id,
-            ingredients: item.product_production_description.split('.')[0].split(", ").join(', '),
-            category: item.category_name
+            ingredients: item.product_production_description
+              .split(".")[0]
+              .split(", ")
+              .join(", "),
+            category: item.category_name,
           };
         });
 
@@ -177,18 +180,18 @@ const Menu = () => {
 
   return (
     <>
-      <div className='categories' id='menu'>
-        <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
+      <div className="categories" id="menu">
+        <h1 className="title__h1">Куштуй тільки найсмачніше</h1>
         {products && (
-          <div className='categories__list'>
+          <div className="categories__list">
             {categories.map((cat) => {
               return (
                 <button
                   key={cat.category_id}
                   className={`categories__btn ${
                     currentCatId === cat.category_id
-                      ? 'categories__btn-active'
-                      : ''
+                      ? "categories__btn-active"
+                      : ""
                   }`}
                   onClick={() => setCurrentCatId(cat.category_id)}
                 >
@@ -200,7 +203,7 @@ const Menu = () => {
         )}
       </div>
       {products && (
-        <div className='menu__products'>
+        <div className="menu__products">
           {products.map((product) => {
             return (
               <ProductCard

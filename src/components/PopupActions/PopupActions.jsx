@@ -62,7 +62,7 @@ const PopupActions = observer(({ action, error, onClick }) => {
         <p>{action}</p>
         <div
           className="popup-actions__close"
-          onClick={() => setActions({ action: "" })}
+          onClick={() => setActions("")}
         >
           <svg
             width="10"

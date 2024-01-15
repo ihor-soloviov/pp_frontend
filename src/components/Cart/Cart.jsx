@@ -12,8 +12,9 @@ import { begin_checkout } from "../../gm4";
 
 //Import Styles
 import "./card.scss";
+import { observer } from "mobx-react-lite";
 
-const Cart = () => {
+const Cart = observer(() => {
   const { products } = shoppingCartStore;
   //   const products_List = useSelector((state) => state.shoppingCart.products);
 
@@ -218,6 +219,6 @@ const Cart = () => {
       )}
     </>
   );
-};
+});
 
 export default Cart;

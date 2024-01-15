@@ -1,28 +1,31 @@
 //Import React
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+
+import shoppingCartStore from "../../store/shoping-cart-store";
+import popupActionsStore from "../../store/popup-action-store";
 
 //Import components
 import Container from "../../components/Container/Container";
 import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
+
 //Import styles
 import "./ProductPage.scss";
 
-import { addProduct } from "../../store/shoppingCartSlice";
-import { setActions } from "../../store/popupActionsSlice";
 import { url } from "../../api";
 import { add_to_cart, view_item } from "../../gm4";
+import { observer } from "mobx-react-lite";
 
-const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
+// const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
 // const token = "436783:670964579c5655f22513de1218a29b4d";
 
-const ProductPage = () => {
+const ProductPage = observer(() => {
   const { id } = useParams();
-  const dispatch = useDispatch();
+  const { addProduct, products } = shoppingCartStore;
+  const { setActions } = popupActionsStore;
 
   const [count, setCount] = useState(1);
   const [inCart, setInCart] = useState(false);
@@ -38,6 +41,7 @@ const ProductPage = () => {
       setProductIngredients(arr);
     }
   }, [product]);
+  
   useEffect(() => {
     const data = {
       productId: id,
@@ -88,17 +92,15 @@ const ProductPage = () => {
       .catch((err) => console.error(err));
   }, [id]);
 
-  const cart = useSelector((state) => state.shoppingCart.products);
-
   useEffect(() => {
-    if (cart) {
-      if (cart.some((el) => el.id === id)) {
+    if (products) {
+      if (products.some((el) => el.id === id)) {
         setInCart(true);
       } else {
         setInCart(false);
       }
     }
-  }, [cart, id]);
+  }, [products, id]);
 
   if (product !== null && product !== false) {
     view_item(
@@ -169,17 +171,15 @@ const ProductPage = () => {
                     <button
                       className="btn btn-main"
                       onClick={() => {
-                        dispatch(
-                          addProduct({
-                            name: product.product_name,
-                            price: parseInt(product.price[1].slice(0, -2)),
-                            count: count,
-                            preview: url + product.product_id,
-                            weight: product.cost,
-                            category: product.category_name,
-                            id: id,
-                          })
-                        );
+                        addProduct({
+                          name: product.product_name,
+                          price: parseInt(product.price[1].slice(0, -2)),
+                          count: count,
+                          preview: url + product.product_id,
+                          weight: product.cost,
+                          category: product.category_name,
+                          id: id,
+                        });
                         add_to_cart(
                           product.product_name,
                           product.product_id,
@@ -187,9 +187,9 @@ const ProductPage = () => {
                           product.category_name,
                           count
                         );
-                        dispatch(setActions({ action: "addToCard" }));
+                        setActions("addToCard");
                         setTimeout(() => {
-                          dispatch(setActions({ action: "" }));
+                          setActions("");
                         }, 2000);
                       }}
                     >
@@ -222,7 +222,7 @@ const ProductPage = () => {
                 </div>
 
                 {product.product_production_description && (
-                  <>
+                  <React.Fragment>
                     <h6 className="product-page__compile-title title__h6 text__color--secondary">
                       Склад
                     </h6>
@@ -234,7 +234,7 @@ const ProductPage = () => {
                           );
                         })}
                     </ul>
-                  </>
+                  </React.Fragment>
                 )}
               </div>
             </div>
@@ -254,7 +254,10 @@ const ProductPage = () => {
                       // console.log(product);
                       return (
                         <ProductCard
-                          preview={'https://polarpelmeni-api.work-set.eu/api/sendImage/' + product.product_id}
+                          preview={
+                            "https://polarpelmeni-api.work-set.eu/api/sendImage/" +
+                            product.product_id
+                          }
                           name={product.product_name}
                           price={parseInt(product.price[1].slice(0, -2))}
                           ingredients={product.ingredients}
@@ -280,6 +283,6 @@ const ProductPage = () => {
       </div>
     );
   }
-};
+})
 
 export default ProductPage;
