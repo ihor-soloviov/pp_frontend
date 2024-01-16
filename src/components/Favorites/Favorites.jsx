@@ -1,27 +1,21 @@
 import React from "react";
-import { useEffect } from "react";
 import ProfileLink from "../ProfileLink/ProfileLink";
-import { useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
+import { observer } from "mobx-react-lite";
+import userStore from "../../store/user-store";
 import "./Favorites.scss";
 
-const Favorites = ({ handleSidebar }) => {
-  const [favorites, setFavorites] = useState([]);
-  const data = localStorage.getItem("favoritProducts");
+const Favorites = observer(({ handleSidebar }) => {
+  // const [favorites, setFavorites] = useState([]);
+  // const data = localStorage.getItem("favoritProducts");
 
-  useEffect(() => {
-    const getFav = () => {
-      setFavorites(JSON.parse(data));
-    };
-
-    getFav();
-  }, [data]);
+  const { favoritProducts } = userStore;
 
   return (
     <section className="grid_layout--main favorites">
       <ProfileLink handleSidebar={handleSidebar}>Улюблені блюда</ProfileLink>
-      {favorites &&
-        favorites.map((favorite) => (
+      {favoritProducts &&
+        favoritProducts.map((favorite) => (
           <ProductCard
             preview={favorite.preview}
             name={favorite.name}
@@ -30,11 +24,10 @@ const Favorites = ({ handleSidebar }) => {
             key={favorite.id}
             id={favorite.id}
             ingredients={favorite.ingredients}
-            // liked={false}
           />
         ))}
     </section>
   );
-};
+});
 
 export default Favorites;

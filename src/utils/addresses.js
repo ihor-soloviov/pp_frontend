@@ -13,7 +13,7 @@ export const deleteAddress = async (token, adress, setIsAdressesUpdating) => {
         "Content-Type": "application/json",
       },
     });
-    setIsAdressesUpdating(true);
+    setIsAdressesUpdating(prev => !prev);
   } catch (error) {
     console.log(error);
   }

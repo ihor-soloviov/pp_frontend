@@ -5,21 +5,21 @@ import { deleteAddress } from "../../utils/addresses";
 import { observer } from "mobx-react-lite";
 
 const CreatedAddress = observer(
-  ({ adress, openModal, setIsAdressesUpdating }) => {
+  ({ key, adress, openModal, setIsAdressesUpdating }) => {
     const { token, removeAdresses } = userStore;
 
     const flat = adress?.flatNumber ? ` , кв. ${adress?.flatNumber}` : "";
     const street = `${adress.streetName}, ${adress.homeNumber + flat}`;
 
     return (
-      <div className="addresses_created">
+      <div className="addresses_created" key={key}>
         <div className="addresses_created__container">
           <div className="addresses_created__container--top">
             <div className="top-name">
-              <h4>{adress.addressName}</h4>
+              <h4>{adress.adressName}</h4>
               <button
                 onClick={() => {
-                  removeAdresses(adress.addressName);
+                  removeAdresses(adress.adressName);
                   deleteAddress(token, adress, setIsAdressesUpdating);
                 }}
               >

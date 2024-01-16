@@ -17,7 +17,6 @@ const Addresses = observer(({ handleSidebar }) => {
   const { token, adresses, addToAdresses } = userStore;
 
   const [isModalOpen, setModalOpen] = useState(false);
-  // const [addresses, setAddresses] = useState([]);
   const [isAdressesUpdating, setIsAdressesUpdating] = useState(false);
 
   useEffect(() => {
@@ -30,7 +29,10 @@ const Addresses = observer(({ handleSidebar }) => {
             "Content-Type": "application/json",
           },
         });
-
+        if (response?.data?.addresses === null) {
+          return
+        }
+        console.log(response.data.addresses)
         addToAdresses(response.data.addresses);
       } catch (error) {
         console.log(error);

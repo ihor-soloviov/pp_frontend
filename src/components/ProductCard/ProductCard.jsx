@@ -12,13 +12,15 @@ import popupActionsStore from "../../store/popup-action-store";
 import shoppingCartStore from "../../store/shoping-cart-store";
 import { observer } from "mobx-react-lite";
 
+import { sendFavsToServer } from "../../utils/favorites";
+
 const ProductCard = observer((props) => {
   const navigate = useNavigate();
 
   const [count, setCount] = useState(1);
   const [inCart, setInCart] = useState(false);
 
-  const { favoritProducts, removeFromFavorit, addToFavorit } = userStore;
+  const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
   const { addProduct } = shoppingCartStore;
   const { setActions } = popupActionsStore;
 
@@ -34,7 +36,7 @@ const ProductCard = observer((props) => {
     const { id, name, price, count, preview, weight, ingredients } = props;
 
     if (favoritProducts.some((el) => el.id === id)) {
-      removeFromFavorit({ id });
+      removeFromFavorit(id);
     } else {
       setActions("addToFavorit");
       setTimeout(() => {
@@ -50,6 +52,8 @@ const ProductCard = observer((props) => {
         id,
         ingredients,
       });
+
+      sendFavsToServer(token, favoritProducts);
     }
   };
 
@@ -91,7 +95,8 @@ const ProductCard = observer((props) => {
             width="16"
             height="16"
             viewBox="0 0 16 16"
-            fill="transparent"
+            // fill="transparent"
+            fill="black"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path

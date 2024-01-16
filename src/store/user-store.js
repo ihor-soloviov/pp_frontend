@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { sendFavsToServer } from "../utils/favorites";
 
 class UserStore {
   isAuthenticated = false;
@@ -49,14 +48,11 @@ class UserStore {
         "favoritProducts",
         JSON.stringify(this.favoritProducts)
       );
-      sendFavsToServer({
-        token: this.token,
-        favorites: JSON.parse(JSON.stringify(this.favoritProducts)),
-      });
     }
   };
 
   removeFromFavorit = (productId) => {
+    console.log("a");
     this.favoritProducts = this.favoritProducts.filter(
       (product) => product.id !== productId
     );
@@ -83,8 +79,10 @@ class UserStore {
     }
   };
 
-  addToAdresses = (adress) => {
-    this.adresses.push(adress);
+  addToAdresses = (addresses) => {
+    if (addresses.length > 0) {
+      this.adresses = addresses;
+    }
     if (this.isAuthenticated) {
       localStorage.setItem("user_adresses", JSON.stringify(this.adresses));
     }
@@ -92,7 +90,7 @@ class UserStore {
 
   removeAdresses = (addressName) => {
     this.adresses = this.adresses.filter(
-      (adress) => adress.addressName !== addressName
+      (adress) => adress.adressName !== addressName
     );
     if (this.isAuthenticated) {
       localStorage.setItem("user_adresses", JSON.stringify(this.adresses));
