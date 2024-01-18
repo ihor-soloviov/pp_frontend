@@ -2,13 +2,12 @@ import React, { useEffect } from "react";
 import Container from "../../components/Container/Container";
 import "./Order.scss";
 
+//Import Mobx
 import shoppingCartStore from "../../store/shoping-cart-store";
 import userStore from "../../store/user-store";
 
 //Import components
 
-
-import { setPaymentData } from "../../store/orderSlice";
 import OrderForm from "./OrderForm";
 
 

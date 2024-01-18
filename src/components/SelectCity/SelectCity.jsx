@@ -1,8 +1,8 @@
 import React from "react";
 
+import { observer } from "mobx-react-lite";
 import userStore from "../../store/user-store";
 import modalsStore from "../../store/modal-store";
-import { observer } from "mobx-react-lite";
 
 import "./SelectCity.scss";
 

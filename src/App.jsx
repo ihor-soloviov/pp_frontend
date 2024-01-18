@@ -5,9 +5,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 //Import MOBX
+import { observer } from "mobx-react-lite";
 import modalsStore from "./store/modal-store";
 import userStore from "./store/user-store";
 import shoppingCartStore from "./store/shoping-cart-store";
+import popupActionsStore from "./store/popup-action-store";
 
 //Import pages
 import Profile from "./Pages/Profile/Profile";
@@ -20,10 +22,6 @@ import Popup from "./components/Popup/Popup";
 //Import Firebase
 import { firebaseConfig } from "./firebaseConfig";
 import firebase from "firebase/compat/app";
-
-import { userLogin } from "./store/userSlice";
-import { observer } from "mobx-react-lite";
-import popupActionsStore from "./store/popup-action-store";
 
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Order from "./Pages/Order/Order";
@@ -54,10 +52,10 @@ const App = observer(() => {
   const {
     isAuthenticated,
     city,
-    updateCity,
     loadFromLocalStorageAdress,
     loadFromLocalStorage,
     userLogout,
+    userLogin,
   } = userStore;
 
   const { cityModal, cityModalHandler } = modalsStore;
@@ -82,21 +80,27 @@ const App = observer(() => {
       getFromLocalStorage();
 
       if (dataParse.isAuthenticated === true) {
-        updateCity(dataParse.city);
         userLogin(dataParse);
       }
     }
-  }, [getFromLocalStorage, updateCity]);
+  }, [getFromLocalStorage, userLogin]);
 
   useEffect(() => {
     loadUserDataFromLocalStorage();
     loadFromLocalStorage();
     loadFromLocalStorageAdress();
-  }, [
-    loadFromLocalStorage,
-    loadFromLocalStorageAdress,
-    loadUserDataFromLocalStorage,
-  ]);
+  }, []);
+
+  const cta = useCallback(() => {
+    if (currentAction === "addToCard") {
+      return <PopupActions action={"Блюдо додано у кошик"} />;
+    }
+    if (currentAction === "addToFavorit") {
+      return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
+    } else {
+      return null;
+    }
+  }, [currentAction]);
 
   useEffect(() => {
     const favoritProducts = localStorage.getItem("favoritProducts");
@@ -143,17 +147,6 @@ const App = observer(() => {
     }, 1500);
   }, [location]);
 
-  const cta = useCallback(() => {
-    if (currentAction === "addToCard") {
-      return <PopupActions action={"Блюдо додано у кошик"} />;
-    }
-    if (currentAction === "addToFavorit") {
-      return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
-    } else {
-      return null;
-    }
-  }, [currentAction]);
-
   useEffect(() => {
     if (city !== null) {
       cityModalHandler(false);
@@ -163,7 +156,7 @@ const App = observer(() => {
   }, [city, cityModalHandler]);
 
   return (
-    <>
+    <React.Fragment>
       {cta()}
 
       {cityModal && (
@@ -195,7 +188,7 @@ const App = observer(() => {
         </Route>
       </Routes>
       <Footer />
-    </>
+    </React.Fragment>
   );
 });
 

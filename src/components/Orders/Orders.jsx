@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OrderModal from "../OrderModal/OrderModal";
 import ProfileLink from "../ProfileLink/ProfileLink";
 import "./Orders.scss";
@@ -7,6 +7,11 @@ import "./Orders.scss";
 const Orders = ({handleSidebar}) => {
   const [isMainModalOpen, setMainModalOpen] = useState(false);
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+
+  useEffect(() => {
+    
+  }, [])
+  
 
   const openMainModal = () => {
     setMainModalOpen(true);
@@ -23,6 +28,8 @@ const Orders = ({handleSidebar}) => {
   const closeConfirmModal = () => {
     setConfirmModalOpen(false);
   };
+
+
   return (
     <>
       <section className="grid_layout--main orders">

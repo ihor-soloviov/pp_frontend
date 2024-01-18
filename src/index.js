@@ -7,21 +7,15 @@ import reportWebVitals from './reportWebVitals';
 //Import Roure
 import { BrowserRouter } from 'react-router-dom';
 
-//Import Redux
-import { Provider } from 'react-redux';
-import store from './store/store';
-
 //Import styles
 import './style/index.scss'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
   </React.StrictMode>
 );
 

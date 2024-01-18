@@ -1,4 +1,4 @@
 const prod = `http://185.65.245.231:1158`;
-const dev = `https://polarpelmeni-api.work-set.eu`;
+const dev = `https://api.polarpelmeni.com.ua`;
 
-export const url = prod;
+export const url = dev;

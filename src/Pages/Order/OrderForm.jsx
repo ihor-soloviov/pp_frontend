@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 import "./Order.scss";
@@ -19,24 +19,25 @@ import RadioButton from "../../components/RadioButton/RadioButton";
 import BtnMain from "../../components/Buttons/BtnMain";
 import InputTextArea from "../../components/Inputs/InputTextArea";
 import Checkbox from "../../components/Inputs/Checkbox";
-import { useDispatch, useSelector } from "react-redux";
 
-import { thanksModalUpdateState } from "../../store/modalsSlice";
 import Popup from "../../components/Popup/Popup";
 import Thanks from "../../components/Thanks/Thanks";
 import { useLocation, useNavigate } from "react-router-dom";
 import PopupActions from "../../components/PopupActions/PopupActions";
-import {
-  setOrderData,
-  setPaymentData,
-  setPosterResponsea,
-} from "../../store/orderSlice";
-import { userPromocode, userPromocodeNotUse } from "../../store/userSlice";
-import { cartPromocode, clearCart } from "../../store/shoppingCartSlice";
+
+// import {
+//   setOrderData,
+//   setPaymentData,
+//   setPosterResponsea,
+// } from "../../store/orderSlice";
+import orderStore from "../../store/order-store";
+import modalsStore from "../../store/modal-store";
+import shoppingCartStore from "../../store/shoping-cart-store";
+import userStore from "../../store/user-store";
 
 import { url } from "../../api";
 import { purchase } from "../../gm4";
-import userStore from "../../store/user-store";
+import { observer } from "mobx-react-lite";
 
 //Time
 
@@ -147,17 +148,20 @@ const getCurrentDate = () => {
   return formattedDate;
 };
 
-const OrderForm = () => {
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Content-Type": "application/json",
-  };
+const OrderForm = observer(() => {
+  const headers = useMemo(
+    () => ({
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    }),
+    []
+  );
   //State
-  const [isPromotion, setIsPromotion] = useState(false);
+  const [isPromotion, setIsPromotion] = useState(true);
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
-  const [adresses, setAdresses] = useState([
+  const [selectAddresses, setSelectAddresses] = useState([
     {
       label: "Немає",
       value: null,
@@ -170,25 +174,36 @@ const OrderForm = () => {
 
   //Tools
   const location = useLocation();
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   //Redux
-  const shoppingCart = useSelector((state) => state.shoppingCart.products);
-  const shoppingCartMap = shoppingCart.map((item) => {
+  // const shoppingCart = useSelector((state) => state.shoppingCart.products);
+  const { setOrderData, setPaymentData, setPosterResponsea } = orderStore;
+  const { products, clearCart } = shoppingCartStore;
+  const {
+    token,
+    name,
+    phone,
+    adresses,
+    isAuthenticated,
+    promocode40,
+    userPromocode,
+    userPromocodeNotUse,
+  } = userStore;
+
+  const { thanksModal, thanksModalHandler } = modalsStore;
+
+  const shoppingCartMap = products.map((item) => {
     return { product_id: item.id, count: item.count };
   });
 
-  const shoppingCartMapPromo = shoppingCart.map((item) => {
+  const shoppingCartMapPromo = products.map((item) => {
     return { id: "2", involved_products: [{ id: item.id, count: item.count }] };
   });
-  const modals = useSelector((state) => state.modals);
-  const user = useSelector((state) => state.user);
-  const {token} = userStore
-  const order = useSelector((state) => state.order);
 
   useEffect(() => {
-    if (user.adresses !== null) {
+    if (adresses !== null) {
       const selected = [
         {
           label: "Виберіть адресу",
@@ -197,7 +212,7 @@ const OrderForm = () => {
         },
       ];
 
-      const adressMap = user.adresses.map((data, index) => {
+      const adressMap = adresses.map((data, index) => {
         return {
           id: index + 1,
           label: data.addressName,
@@ -211,14 +226,12 @@ const OrderForm = () => {
         };
       });
 
-      setAdresses([...selected, ...adressMap]);
+      setSelectAddresses([...selected, ...adressMap]);
     }
-  }, [user]);
+  }, [adresses]);
 
   const time = filterTimeArray(timeArray);
-  // Bad idea need make time function
 
-  //Order
   const [formData, setFormData] = useState({
     spot_id: 1,
     name: "",
@@ -269,7 +282,7 @@ const OrderForm = () => {
     }`,
     payment: {
       type: formData.paymentMethod === "Готівка" ? 0 : 1,
-      sum: isPromotion ? 0 : calculateTotalPrice(shoppingCart),
+      sum: isPromotion ? 0 : calculateTotalPrice(products),
       currency: "UAH",
     },
     promotion: isPromotion ? shoppingCartMapPromo : "",
@@ -295,18 +308,18 @@ const OrderForm = () => {
     }));
   };
 
-  const usagePromotion = () => {
+  const usagePromotion = useCallback(() => {
     axios
-      .post(url + "/api/promocode", { token: user.token }, { headers: headers })
+      .post(url + "/api/promocode", { token: token }, { headers: headers })
       .then((res) => {
         const data = res.data;
 
         console.log("usagePromotion:", data);
       })
       .catch((err) => console.error(err));
-  };
+  }, [headers, token]);
 
-  const checkCurrentUserPromo = () => {
+  const checkCurrentUserPromo = useCallback(() => {
     axios
       .post(
         `${url}/api/auth`,
@@ -323,17 +336,18 @@ const OrderForm = () => {
         if (response.status === 200) {
           console.log("checkCurrentUserPromo", data.promocode40);
           if (data.promocode40 === true) {
-            dispatch(userPromocodeNotUse());
+            userPromocodeNotUse();
           } else {
-            dispatch(userPromocode());
+            userPromocode();
           }
         }
       })
       .catch((err) => console.error(err));
-  };
+  }, [token, userPromocode, userPromocodeNotUse]);
+
   useEffect(() => {
     checkCurrentUserPromo();
-  }, [user.isAuthenticated]);
+  }, [checkCurrentUserPromo, isAuthenticated]);
 
   const createTransaction = (amount) => {
     const data = { amount: amount };
@@ -343,7 +357,7 @@ const OrderForm = () => {
         const data = res.data;
         const payment_url = `https://liqpay.ua/api/3/checkout?data=${data.data}&signature=${data.signature}`;
 
-        dispatch(setPaymentData({ paymentData: data }));
+        setPaymentData(data);
 
         console.log("createTransaction:", data, payment_url);
 
@@ -352,7 +366,7 @@ const OrderForm = () => {
       .catch((err) => console.error(err));
   };
 
-  const checkTransactionStatus = () => {
+  const checkTransactionStatus = useCallback(() => {
     const user_payment_data = JSON.parse(
       localStorage.getItem("user_payment_data")
     );
@@ -367,7 +381,7 @@ const OrderForm = () => {
         if (data === "success") {
           setTransactionStatus(true);
         } else if (data === "unpaid") {
-          dispatch(userPromocodeNotUse());
+          userPromocodeNotUse();
           setError({
             status: true,
             currentError: "Оплата не вдала",
@@ -382,9 +396,9 @@ const OrderForm = () => {
         }
       })
       .catch((err) => console.error(err));
-  };
+  }, [headers, navigate, userPromocodeNotUse]);
 
-  const createOrder = () => {
+  const createOrder = useCallback(() => {
     const user_payment_data = JSON.parse(
       localStorage.getItem("user_payment_data")
     );
@@ -401,7 +415,7 @@ const OrderForm = () => {
         const data = res.data;
         if (!data.error) {
           console.log("createOrder:", data);
-          dispatch(setPosterResponsea({ posterOrder: data.response }));
+          setPosterResponsea({ posterOrder: data.response });
           setIsOrderCreate(true);
 
           if (isPromotion || data.promotion !== "") {
@@ -410,7 +424,7 @@ const OrderForm = () => {
         }
       })
       .catch((err) => console.error(err));
-  };
+  }, [headers, isPromotion, setPosterResponsea, usagePromotion]);
 
   const onSubmit = () => {
     if (orderData.phone === "") {
@@ -423,7 +437,7 @@ const OrderForm = () => {
         status: true,
         currentError: "Будь ласка, оберіть спосіб отримання замовлення",
       });
-    } else if (calculateTotalPrice(shoppingCart) <= 200) {
+    } else if (calculateTotalPrice(products) <= 200) {
       setError({
         status: true,
         currentError: "Мінімальна сумма замовлення 200 ₴",
@@ -435,13 +449,13 @@ const OrderForm = () => {
         });
       }, 3000);
     } else {
-      dispatch(setOrderData({ orderData: orderData }));
+      setOrderData({ orderData: orderData });
 
       if (orderData.payment.type === 1) {
         createTransaction(
           isPromotion
-            ? calculateTotalPrice(shoppingCart) * (60 / 100)
-            : calculateTotalPrice(shoppingCart)
+            ? calculateTotalPrice(products) * (60 / 100)
+            : calculateTotalPrice(products)
         );
       }
       if (orderData.payment.type === 0) {
@@ -467,13 +481,13 @@ const OrderForm = () => {
     if (paramValue === "checkout") {
       checkTransactionStatus();
     }
-  }, []);
+  }, [checkTransactionStatus, location.search]);
 
   useEffect(() => {
     if (transactionStatus) {
       createOrder();
     }
-  }, [transactionStatus]);
+  }, [createOrder, transactionStatus]);
 
   useEffect(() => {
     if (isOrderCreate) {
@@ -494,28 +508,28 @@ const OrderForm = () => {
         localStorage.removeItem("poster_order");
         localStorage.removeItem("user_payment_data");
         localStorage.removeItem("user_order_data");
-        dispatch(clearCart());
-        dispatch(thanksModalUpdateState({ isOpen: false }));
+        clearCart();
+        thanksModalHandler(false);
         // navigate('/');
       }, 5000);
     }
-  }, [isOrderCreate]);
+  }, [clearCart, isOrderCreate, thanksModalHandler]);
 
   useEffect(() => {
     if (posterOrder !== null) {
       console.log("posterOrder", posterOrder);
-      dispatch(thanksModalUpdateState({ isOpen: true }));
+      thanksModalHandler(true);
     }
-  }, [posterOrder]);
+  }, [posterOrder, thanksModalHandler]);
 
   useEffect(() => {
-    if (user.isAuthenticated) {
-      handleChange("name", user.name);
-      handleChange("number", user.phone);
-      formData.name = user.name;
-      formData.number = user.phone;
+    if (isAuthenticated) {
+      handleChange("name", name);
+      handleChange("number", phone);
+      formData.name = name;
+      formData.number = phone;
     }
-  }, [user]);
+  }, [isAuthenticated, name, phone]);
 
   useEffect(() => {
     console.log(formData);
@@ -523,10 +537,10 @@ const OrderForm = () => {
 
   return (
     <>
-      {modals.thanksModal && (
+      {thanksModal && (
         <Popup
           closeModal={() => {
-            dispatch(thanksModalUpdateState({ isOpen: false }));
+            thanksModalHandler(false);
           }}
         >
           <Thanks
@@ -579,7 +593,7 @@ const OrderForm = () => {
           <section className="order-page__section-inputs">
             <InputSelector
               name={"Збережені адреси"}
-              data={adresses}
+              data={selectAddresses}
               placeholder={"Оберіть адресу"}
               value={formData.selectedAddress}
               onChange={(value) => handleChange("selectedAddress", value)}
@@ -688,7 +702,7 @@ const OrderForm = () => {
               name={"Промокод"}
               placeholder={"Промокод"}
               data={
-                user.isAuthenticated && user.promocode40
+                isAuthenticated && promocode40
                   ? [
                       {
                         id: 0,
@@ -704,7 +718,7 @@ const OrderForm = () => {
             <BtnMain
               name={"Застосувати"}
               onClick={() => {
-                if (calculateTotalPrice(shoppingCart) * (60 / 100) <= 200) {
+                if (calculateTotalPrice(products) * (60 / 100) <= 200) {
                   setError({
                     status: true,
                     currentError: "Мінімальна сумма замовлення 200 ₴",
@@ -717,16 +731,16 @@ const OrderForm = () => {
                   }, 2000);
                 } else {
                   console.log("usage");
-                  dispatch(userPromocode());
+                  // userPromocode();
                   setIsPromotion(true);
                 }
               }}
-              disabled={user.promocode40 ? false : true}
+              disabled={promocode40 ? false : true}
             />
           </section>
-          {user.isAuthenticated && user.promocode40 && (
+          {isAuthenticated && promocode40 && isPromotion && (
             <div className={`order-page__have-promocode`}>
-              <span>У ВАС Е ПРОМОКОД НА СКИДКУ 40%</span>
+              <span>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
               <div className="order-page__arrow">
                 <svg
                   width="17"
@@ -839,5 +853,5 @@ const OrderForm = () => {
       </section>
     </>
   );
-};
+});
 export default OrderForm;

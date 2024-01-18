@@ -37,7 +37,12 @@ class UserStore {
 
   updateCity = (city) => {
     this.city = city;
-    localStorage.setItem("userData", JSON.stringify(this));
+    const userDataFromStorage = JSON.parse(localStorage.getItem("userData"));
+    if (userDataFromStorage.isAuthenticated) {
+      const updatedDataWithCity = { ...userDataFromStorage, city: city };
+
+      localStorage.setItem("userData", JSON.stringify(updatedDataWithCity));
+    }
   };
 
   addToFavorit = ({ preview, name, price, weight, id, ingredients }) => {
@@ -97,10 +102,10 @@ class UserStore {
     }
   };
 
-  userPromocode = () => {
-    this.promocode40 = false;
-    localStorage.setItem("userData", JSON.stringify(this));
-  };
+  // userPromocode = () => {
+  //   this.promocode40 = false;
+  //   localStorage.setItem("userData", JSON.stringify(this));
+  // };
 
   userPromocodeNotUse = () => {
     this.promocode40 = true;
