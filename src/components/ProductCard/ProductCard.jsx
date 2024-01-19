@@ -1,36 +1,37 @@
 //Import React
 import React, { useState } from "react";
 
-//Import Styles
-import "./productCard.scss";
-
 import { useNavigate } from "react-router-dom";
 
 import { add_to_cart } from "../../gm4";
+
 import userStore from "../../store/user-store";
 import popupActionsStore from "../../store/popup-action-store";
 import shoppingCartStore from "../../store/shoping-cart-store";
-import { observer } from "mobx-react-lite";
 
+import { observer } from "mobx-react-lite";
 import { sendFavsToServer } from "../../utils/favorites";
 
+//Import Styles
+import "./productCard.scss";
+import classNames from "classnames";
+
 const ProductCard = observer((props) => {
-  const navigate = useNavigate();
-
-  const [count, setCount] = useState(1);
-  const [inCart, setInCart] = useState(false);
-
   const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
   const { addProduct } = shoppingCartStore;
   const { setActions } = popupActionsStore;
 
-  // useEffect(() => {
-  //   console.log("я є");
+  const [count, setCount] = useState(1);
+  const [inCart, setInCart] = useState(false);
 
-  //   return () => {
-  //     sendFavsToServer(token, favoritList);
-  //   };
-  // }, []);
+  const navigate = useNavigate();
+
+  const isItemFavourite = () => {
+    if (!favoritProducts) {
+      return false;
+    }
+    return favoritProducts.some((el) => el.id === props.id);
+  };
 
   const handleFavorite = () => {
     const { id, name, price, count, preview, weight, ingredients } = props;
@@ -85,10 +86,9 @@ const ProductCard = observer((props) => {
     <div className="product">
       <div className="product__cta">
         <div
-          className={`product__like ${
-            favoritProducts.some((el) => el.id === props.id) &&
-            "product__like-active"
-          }`}
+          className={classNames("product__like", {
+            "product__like-active": isItemFavourite(),
+          })}
           onClick={() => handleFavorite()}
         >
           <svg

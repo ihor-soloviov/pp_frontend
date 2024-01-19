@@ -15,13 +15,23 @@ class UserStore {
     makeAutoObservable(this);
   }
 
-  userLogin = ({ name, phone, email, token, promocode40 }) => {
+  setUserDataToStore = ({
+    name,
+    phone,
+    email,
+    token,
+    promocode40,
+    favorites,
+    addresses,
+  }) => {
     this.isAuthenticated = true;
     this.name = name;
     this.phone = phone;
     this.email = email;
     this.token = token;
     this.promocode40 = promocode40;
+    this.adresses = addresses;
+    this.favoritProducts = favorites;
     localStorage.setItem("userData", JSON.stringify(this));
   };
 
@@ -38,11 +48,12 @@ class UserStore {
   updateCity = (city) => {
     this.city = city;
     const userDataFromStorage = JSON.parse(localStorage.getItem("userData"));
-    if (userDataFromStorage.isAuthenticated) {
-      const updatedDataWithCity = { ...userDataFromStorage, city: city };
 
-      localStorage.setItem("userData", JSON.stringify(updatedDataWithCity));
+    if (!userDataFromStorage?.isAuthenticated) {
+      return;
     }
+    const updatedDataWithCity = { ...userDataFromStorage, city: city };
+    localStorage.setItem("userData", JSON.stringify(updatedDataWithCity));
   };
 
   addToFavorit = ({ preview, name, price, weight, id, ingredients }) => {
@@ -69,7 +80,7 @@ class UserStore {
     }
   };
 
-  loadFromLocalStorage = () => {
+  getFavoritesFromLS = () => {
     const data = localStorage.getItem("favoritProducts");
     if (data) {
       this.favoritProducts = JSON.parse(data);

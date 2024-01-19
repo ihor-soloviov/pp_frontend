@@ -5,10 +5,8 @@ import { observer } from "mobx-react-lite";
 import userStore from "../../store/user-store";
 import "./Favorites.scss";
 
-const Favorites = observer(({ handleSidebar }) => {
-  // const [favorites, setFavorites] = useState([]);
-  // const data = localStorage.getItem("favoritProducts");
 
+const Favorites = observer(({ handleSidebar }) => {
   const { favoritProducts } = userStore;
 
   return (

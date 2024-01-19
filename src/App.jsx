@@ -14,27 +14,25 @@ import popupActionsStore from "./store/popup-action-store";
 //Import pages
 import Profile from "./Pages/Profile/Profile";
 import ProductPage from "./Pages/ProductPage/ProductPage";
+import AboutUs from "./Pages/AboutUs/AboutUs";
+import Order from "./Pages/Order/Order";
+import Main from "./Pages/Main/Main";
+import MenuPage from "./Pages/MenuPage/MenuPage";
+import Contact from "./Pages/Contact/Contact";
 
 //Import components
 import Header from "./components/Header/Header";
 import Popup from "./components/Popup/Popup";
+import Footer from "./components/Footer/Footer";
+import SelectCity from "./components/SelectCity/SelectCity";
+import PopupActions from "./components/PopupActions/PopupActions";
+import Loader from "./components/Loader/Loader";
 
 //Import Firebase
 import { firebaseConfig } from "./firebaseConfig";
 import firebase from "firebase/compat/app";
 
-import AboutUs from "./Pages/AboutUs/AboutUs";
-import Order from "./Pages/Order/Order";
-
-import Footer from "./components/Footer/Footer";
-import SelectCity from "./components/SelectCity/SelectCity";
-import PopupActions from "./components/PopupActions/PopupActions";
-import Main from "./Pages/Main/Main";
-import MenuPage from "./Pages/MenuPage/MenuPage";
-
-import Contact from "./Pages/Contact/Contact";
-import Loader from "./components/Loader/Loader";
-
+//Import Utils
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
 
@@ -47,19 +45,18 @@ TagManager.initialize(tagManagerArgs);
 firebase.initializeApp(firebaseConfig);
 
 const App = observer(() => {
-  //State
-
+  //Store
   const {
     isAuthenticated,
     city,
     loadFromLocalStorageAdress,
-    loadFromLocalStorage,
+    getFavoritesFromLS,
     userLogout,
-    userLogin,
+    setUserDataToStore,
   } = userStore;
 
   const { cityModal, cityModalHandler } = modalsStore;
-  const { getFromLocalStorage } = shoppingCartStore;
+  const { getCartProductsFromLS } = shoppingCartStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
@@ -71,23 +68,23 @@ const App = observer(() => {
   const navigate = useNavigate();
 
   const loadUserDataFromLocalStorage = useCallback(() => {
-    const data = localStorage.getItem("userData");
-    const dataParse = JSON.parse(data);
+    const userData = localStorage.getItem("userData");
+    const dataParse = JSON.parse(userData);
 
-    console.log("dataParse", dataParse);
-
-    if (data) {
-      getFromLocalStorage();
-
-      if (dataParse.isAuthenticated === true) {
-        userLogin(dataParse);
-      }
+    if (!userData) {
+      return;
     }
-  }, [getFromLocalStorage, userLogin]);
+
+    getCartProductsFromLS();
+
+    if (dataParse.isAuthenticated === true) {
+      setUserDataToStore(dataParse);
+    }
+  }, [getCartProductsFromLS, setUserDataToStore]);
 
   useEffect(() => {
     loadUserDataFromLocalStorage();
-    loadFromLocalStorage();
+    getFavoritesFromLS();
     loadFromLocalStorageAdress();
   }, []);
 
@@ -101,15 +98,6 @@ const App = observer(() => {
       return null;
     }
   }, [currentAction]);
-
-  useEffect(() => {
-    const favoritProducts = localStorage.getItem("favoritProducts");
-    const dataParse = JSON.parse(favoritProducts);
-
-    if (dataParse) {
-      loadFromLocalStorage();
-    }
-  }, [isAuthenticated, loadFromLocalStorage]);
 
   useEffect(() => {
     if (location.pathname === "/profile/signout") {
@@ -172,6 +160,7 @@ const App = observer(() => {
           <Loader />
         </div>
       )}
+      
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/menu" element={<MenuPage />}>

@@ -14,8 +14,6 @@ const Profile = () => {
     setIsSidebarClosed((prev => !prev));
   };
 
-  console.log(isSidebarClosed)
-
   return (
     <>
       <Container>

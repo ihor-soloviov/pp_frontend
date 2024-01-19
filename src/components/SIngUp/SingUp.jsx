@@ -31,7 +31,7 @@ import { observer } from "mobx-react-lite";
 const SingUp = observer(() => {
   //Tools
   const { authModalHandler } = modalsStore;
-  const { userLogin } = userStore;
+  const { setUserDataToStore } = userStore;
   const navigate = useNavigate();
 
   //User data state
@@ -153,7 +153,7 @@ const SingUp = observer(() => {
             email: userEmail,
             token: token,
           });
-          userLogin({
+          setUserDataToStore({
             name: userName,
             phone: phoneNumber,
             email: userEmail,
@@ -184,12 +184,14 @@ const SingUp = observer(() => {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          userLogin({
+          setUserDataToStore({
             name: response.data.name,
             phone: response.data.phone,
             email: response.data.email,
             token: response.data.token,
             promocode40: response.data.promocode40,
+            favorites: response.data.favorites,
+            addresses: response.data.addresses
           });
           authModalHandler(false);
           navigate("/profile/info");

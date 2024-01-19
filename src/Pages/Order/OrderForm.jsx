@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { observer } from "mobx-react-lite";
 
 import "./Order.scss";
 
@@ -25,11 +26,6 @@ import Thanks from "../../components/Thanks/Thanks";
 import { useLocation, useNavigate } from "react-router-dom";
 import PopupActions from "../../components/PopupActions/PopupActions";
 
-// import {
-//   setOrderData,
-//   setPaymentData,
-//   setPosterResponsea,
-// } from "../../store/orderSlice";
 import orderStore from "../../store/order-store";
 import modalsStore from "../../store/modal-store";
 import shoppingCartStore from "../../store/shoping-cart-store";
@@ -37,7 +33,6 @@ import userStore from "../../store/user-store";
 
 import { url } from "../../api";
 import { purchase } from "../../gm4";
-import { observer } from "mobx-react-lite";
 
 //Time
 
@@ -203,32 +198,34 @@ const OrderForm = observer(() => {
   });
 
   useEffect(() => {
-    if (adresses !== null) {
-      const selected = [
-        {
-          label: "Виберіть адресу",
-          value: null,
-          id: 0,
-        },
-      ];
-
-      const adressMap = adresses.map((data, index) => {
-        return {
-          id: index + 1,
-          label: data.addressName,
-          value: `Вулица: ${data.streetName}, ${data.homeNumber}, ${
-            data.entranceNumber ? `парадна: ${data.entranceNumber}` : ""
-          } ${data.entranceCode ? `код: ${data.entranceCode} ` : ""} ${
-            data.floar ? `этаж: ${data.floar} ` : ""
-          } ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ""} ${
-            data.comment ? `коментарий: ${data.comment} ` : ""
-          } `,
-        };
-      });
-
-      setSelectAddresses([...selected, ...adressMap]);
+    if (!adresses) {
+      return;
     }
-  }, [adresses]);
+
+    const selected = [
+      {
+        label: "Виберіть адресу",
+        value: null,
+        id: 0,
+      },
+    ];
+
+    const adressMap = adresses.map((data, index) => {
+      return {
+        id: index + 1,
+        label: data.addressName,
+        value: `Вулиця: ${data.streetName}, ${data.homeNumber}, ${
+          data.entranceNumber ? `парадна: ${data.entranceNumber}` : ""
+        } ${data.entranceCode ? `код: ${data.entranceCode} ` : ""} ${
+          data.floar ? `поверх: ${data.floar} ` : ""
+        } ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ""} ${
+          data.comment ? `коментар: ${data.comment} ` : ""
+        } `,
+      };
+    });
+
+    setSelectAddresses([...selected, ...adressMap]);
+  }, []);
 
   const time = filterTimeArray(timeArray);
 
@@ -300,7 +297,7 @@ const OrderForm = observer(() => {
     }`,
   };
 
-  //Update fomdata state
+  //Update formdata state
   const handleChange = (field, value) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -319,6 +316,7 @@ const OrderForm = observer(() => {
       .catch((err) => console.error(err));
   }, [headers, token]);
 
+  // Сумнівна хуйня яку варто виправити при тестуваннях промокоду
   const checkCurrentUserPromo = useCallback(() => {
     axios
       .post(
@@ -326,7 +324,7 @@ const OrderForm = observer(() => {
         { token: token },
         {
           headers: {
-            "Content-Type": "application/json",
+            headers,
           },
         }
       )

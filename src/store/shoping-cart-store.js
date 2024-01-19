@@ -55,7 +55,7 @@ class ShoppingCartStore {
     }
   };
 
-  getFromLocalStorage = () => {
+  getCartProductsFromLS = () => {
     const data = localStorage.getItem("shoppingCart");
     if (data) {
       this.products = JSON.parse(data);

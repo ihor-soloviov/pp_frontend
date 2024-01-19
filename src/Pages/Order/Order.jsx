@@ -55,7 +55,7 @@ const Order = () => {
                 <ul className="checkout__list">
                   {products.map((item) => {
                     return (
-                      <li className="checkout__item">
+                      <li className="checkout__item" key={item.name}>
                         <div className="checkout__row">
                           <p className="checkout__item-name"> {item.name}</p>
                           <p className="checkout__item-count"> x{item.count}</p>
