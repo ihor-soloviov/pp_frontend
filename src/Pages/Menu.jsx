@@ -44,6 +44,7 @@ const Menu = () => {
       .then((res) => {
         const data = res.data.response;
 
+
         const filteredCat = data.filter((obj) =>
           obj.category_name.startsWith("onlineOrder:")
         );
@@ -54,7 +55,6 @@ const Menu = () => {
             category_position_index: index,
           };
         });
-        mapCat[13].category_position_index = 0;
         mapCat[12].category_position_index = 1;
         mapCat[11].category_position_index = 2;
         mapCat[8].category_position_index = 3;

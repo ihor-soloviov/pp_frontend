@@ -10,9 +10,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { url } from "../../api";
 
-import mastercardIco from '../../assets/logo/mastercard.svg'
-import visaIco from '../../assets/logo/visa.svg'
-import liqpayIco from '../../assets/logo/liqpay.svg'
+import mastercardIco from "../../assets/logo/mastercard.svg";
+import visaIco from "../../assets/logo/visa.svg";
+import liqpayIco from "../../assets/logo/liqpay.svg";
 
 const Footer = () => {
   const [currentCatId, setCurrentCatId] = useState(null);
@@ -27,6 +27,7 @@ const Footer = () => {
       })
       .then((res) => {
         const data = res.data.response;
+        console.log("categories, ", data);
 
         const filteredCat = data.filter((obj) =>
           obj.category_name.startsWith("onlineOrder:")
@@ -39,7 +40,6 @@ const Footer = () => {
             category_position_index: index,
           };
         });
-        mapCat[13].category_position_index = 0;
         mapCat[12].category_position_index = 1;
         mapCat[11].category_position_index = 2;
         mapCat[8].category_position_index = 3;
@@ -115,16 +115,16 @@ const Footer = () => {
                 <Link>© 2023 Polar Pelmeni</Link>
               </li>
               <li>
-                <Link to={'/about-us'}>Про нас</Link>
+                <Link to={"/about-us"}>Про нас</Link>
               </li>
               <li>
-                <Link to={'/contact'}>Контакти</Link>
+                <Link to={"/contact"}>Контакти</Link>
               </li>
               <li>
                 <Link>Політика конфіденційності</Link>
               </li>
               <li>
-                <Link to={'/payment-and-delivery'}>Оплата і доставка</Link>
+                <Link to={"/payment-and-delivery"}>Оплата і доставка</Link>
               </li>
             </ul>
             <div className="footer__bottom-contacts">
