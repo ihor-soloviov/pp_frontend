@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { add_to_cart } from "../../gm4";
 import shoppingCartStore from "../../store/shoping-cart-store";
 import { observer } from "mobx-react-lite";
 
@@ -11,8 +10,6 @@ const ShoppingCartItem = observer(
     totalPrice,
     count,
     id,
-    cart_index,
-    category,
     setCountChanging,
   }) => {
     const [currentCount, setCurrentCount] = useState(count);

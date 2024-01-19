@@ -46,9 +46,9 @@ const Footer = () => {
               <p className="footer__title">Меню:</p>
               <ul className="footer__menu">
                 {categories &&
-                  categories.map((item, index) => {
+                  categories.map((item) => {
                     return (
-                      <li className="footer__link" key={index}>
+                      <li className="footer__link" key={item.category_id}>
                         <Link to={`/menu/${item.category_id}`}>
                           {item.category_name}
                         </Link>
@@ -59,7 +59,7 @@ const Footer = () => {
             </nav>
             <div className="footer__column">
               {contacts.map((contact) => (
-                <div className="footer__contact">
+                <div className="footer__contact" key={contact.city}>
                   <p className="footer__title">{contact.city} :</p>
                   <ul className="footer__contacts">
                     <a href={contact.href}>{contact.telephoneNumber}</a>
@@ -84,7 +84,7 @@ const Footer = () => {
                 <Link>Політика конфіденційності</Link>
               </li>
               <li>
-                <Link to={"/payment-and-delivery"}>Оплата і доставка</Link>
+                <Link to={"/payment-and-delivery"}>Оплата i доставка</Link>
               </li>
             </ul>
             <div className="footer__bottom-contacts">

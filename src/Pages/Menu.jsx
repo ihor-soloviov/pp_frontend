@@ -60,7 +60,7 @@ const Menu = () => {
           {products.map((product) => {
             return (
               <ProductCard
-                preview={`https://polarpelmeni-api.work-set.eu/api/sendImage/${product.product_id}`}
+                preview={`https://api.polarpelmeni.com.ua/api/sendImage/${product.product_id}`}
                 name={product.product_name}
                 price={parseInt(product.price[1].slice(0, -2))}
                 ingredients={product.ingredients}

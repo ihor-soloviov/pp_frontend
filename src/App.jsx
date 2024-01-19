@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //Import React
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -47,7 +48,6 @@ firebase.initializeApp(firebaseConfig);
 const App = observer(() => {
   //Store
   const {
-    isAuthenticated,
     city,
     loadFromLocalStorageAdress,
     getFavoritesFromLS,

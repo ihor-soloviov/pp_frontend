@@ -1,79 +1,104 @@
 import axios from "axios";
 import { url } from "../api";
 
-export const getCategories = (setCategories) => {
-  axios
-    .get(`${url}/api/menu`, {
+export const getCategories = async (setCategories, setCurrentCatId) => {
+  try {
+    const response = await axios.get(`${url}/api/menu`, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
-    })
-    .then((res) => {
-      const categories = res.data.response;
+    });
 
-      const filteredCat = categories.filter((obj) =>
-        obj.category_name.startsWith("onlineOrder:")
-      );
-      const mapCat = filteredCat.map((el, index) => {
-        return {
-          category_name: el.category_name.replace(/onlineOrder: /, ""),
-          category_id: el.category_id,
-          category_position_index: index,
-        };
-      });
-      mapCat[12].category_position_index = 1;
-      mapCat[11].category_position_index = 2;
-      mapCat[8].category_position_index = 3;
-      mapCat[10].category_position_index = 4;
-      mapCat[9].category_position_index = 5;
-      mapCat[2].category_position_index = 6;
-      mapCat[3].category_position_index = 7;
-      mapCat[0].category_position_index = 8;
-      mapCat[6].category_position_index = 9;
-      mapCat[4].category_position_index = 10;
-      mapCat[7].category_position_index = 11;
-      mapCat[1].category_position_index = 12;
-      mapCat[5].category_position_index = 13;
+    const categories = response.data.response;
 
-      mapCat.sort(
-        (a, b) => a.category_position_index - b.category_position_index
-      );
+    // Фільтруємо та перетворюємо категорії
+    const processedCategories = categories
+      .filter((category) => category.category_name.startsWith("onlineOrder:"))
+      .map((category, index) => ({
+        ...category,
+        category_name: category.category_name.replace("onlineOrder: ", ""),
+        category_position_index: index,
+      }));
 
-      setCategories(mapCat);
-    })
-    .catch((err) => console.error(err));
+    // Створюємо мапу для кастомних індексів позицій для відображення категорій у потрібному порядку
+    const customIndexMap = {
+      12: 1,
+      11: 2,
+      8: 3,
+      10: 4,
+      9: 5,
+      2: 6,
+      3: 7,
+      0: 8,
+      6: 9,
+      4: 10,
+      7: 11,
+      1: 12,
+      5: 13,
+    };
+
+    // Переназначаємо індекси згідно з мапою
+    processedCategories.forEach((category) => {
+      category.category_position_index =
+        customIndexMap[category.category_position_index] ||
+        category.category_position_index;
+    });
+
+    // Сортуємо категорії за індексом позиції
+    processedCategories.sort(
+      (a, b) => a.category_position_index - b.category_position_index
+    );
+
+    // Оновлюємо стан
+    setCategories(processedCategories);
+    if (setCurrentCatId && processedCategories.length > 0) {
+      setCurrentCatId(processedCategories[0].category_id);
+    }
+  } catch (error) {
+    console.error("Помилка при отриманні категорій:", error);
+  }
 };
 
-export const getProducts = (id, setProducts) => {
-  const data = JSON.stringify({ categoryId: id });
+export const getProducts = async (id, setProducts) => {
+  try {
+    const data = JSON.stringify({ categoryId: id });
 
-  axios
-    .post(`${url}/api/products`, data, {
+    const response = await axios.post(`${url}/api/products`, data, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
-    })
-    .then((res) => {
-      const data = res.data.response;
+    });
 
-      const dataMap = data.map((item) => {
-        return {
-          photo: item.photo_origin,
-          product_name: item.product_name,
-          price: item.price,
-          out: item.out,
-          product_id: item.product_id,
-          ingredients: item.product_production_description
-            .split(".")[0]
-            .split(", ")
-            .join(", "),
-          category: item.category_name,
-        };
-      });
+    const productsData = response.data.response;
 
-      setProducts(dataMap);
-    })
-    .catch((err) => console.error(err));
+    // Перетворюємо дані продуктів
+    const processedProducts = productsData.map(
+      ({
+        photo_origin,
+        product_name,
+        price,
+        out,
+        product_id,
+        product_production_description,
+        category_name,
+      }) => ({
+        photo: photo_origin,
+        product_name: product_name,
+        price: price,
+        out: out,
+        product_id: product_id,
+        ingredients: product_production_description
+          .split(".")[0]
+          .split(", ")
+          .join(", "),
+        category: category_name,
+      })
+    );
+
+    setProducts(processedProducts);
+  } catch (error) {
+    console.error("Помилка при отриманні продуктів:", error);
+  }
 };

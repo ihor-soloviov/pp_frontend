@@ -5,7 +5,6 @@ import Menu from '../Menu';
 import img01 from '../../../src/assets/images/about/about-1-desc.png';
 import img02 from '../../../src/assets/images/about/about-2-desc.png';
 import img03 from '../../../src/assets/images/about/about-3-desc.png';
-import hero from '../../../src/assets/images/hero_preview.png';
 import svg1 from '../AboutUs/sprite.svg'
 
 const Main = () => {

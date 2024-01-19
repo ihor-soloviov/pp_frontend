@@ -19,9 +19,6 @@ import { url } from "../../api";
 import { add_to_cart, view_item } from "../../gm4";
 import { observer } from "mobx-react-lite";
 
-// const proxy_url = `https://polar-pelmeni-odessa.joinposter.com`;
-// const token = "436783:670964579c5655f22513de1218a29b4d";
-
 const ProductPage = observer(() => {
   const { id } = useParams();
   const { addProduct, products } = shoppingCartStore;
@@ -41,7 +38,7 @@ const ProductPage = observer(() => {
       setProductIngredients(arr);
     }
   }, [product]);
-  
+
   useEffect(() => {
     const data = {
       productId: id,
@@ -60,6 +57,7 @@ const ProductPage = observer(() => {
         const menu_category_id = JSON.stringify({
           categoryId: res.data.menu_category_id,
         });
+
         axios
           .post(`${url}/api/products`, menu_category_id, {
             headers: {
@@ -85,7 +83,6 @@ const ProductPage = observer(() => {
                 category_name: item.category_name,
               };
             });
-            // console.log(resData);
             setRecommendationsProducts(dataMap);
           });
       })
@@ -93,12 +90,13 @@ const ProductPage = observer(() => {
   }, [id]);
 
   useEffect(() => {
-    if (products) {
-      if (products.some((el) => el.id === id)) {
-        setInCart(true);
-      } else {
-        setInCart(false);
-      }
+    if (!products) {
+      return;
+    }
+    if (products.some((el) => el.id === id)) {
+      setInCart(true);
+    } else {
+      setInCart(false);
     }
   }, [products, id]);
 
@@ -117,8 +115,7 @@ const ProductPage = observer(() => {
             <div className="product-page__content">
               <div className="product-page__preview">
                 <img
-                  src={`https://polarpelmeni-api.work-set.eu/api/sendImage/${id}`}
-                  // src={proxy_url + product.photo_origin}
+                  src={`https://api.polarpelmeni.com.ua/api/sendImage/${id}`}
                   alt={product.product_name}
                 />
               </div>
@@ -283,6 +280,6 @@ const ProductPage = observer(() => {
       </div>
     );
   }
-})
+});
 
 export default ProductPage;

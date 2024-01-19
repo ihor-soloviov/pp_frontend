@@ -33,23 +33,23 @@ export const calculateTotalPrice = (items) => {
   return totalPrice;
 };
 
-export function modifyDateString(dateString) {
-  // Разделяем строку по пробелу на дату и время
-  var parts = dateString.split(' ');
-  var date = parts[0]; // "гггг-мм-дд"
-  var time = parts[1]; // "чч:мм:сс"
+// export function modifyDateString(dateString) {
+//   // Разделяем строку по пробелу на дату и время
+//   var parts = dateString.split(' ');
+//   var date = parts[0]; // "гггг-мм-дд"
+//   var time = parts[1]; // "чч:мм:сс"
 
-  // Увеличиваем время на один час
-  var newTime = time.split(':');
-  var hours = parseInt(newTime[0]);
-  hours += 1;
-  newTime[0] = hours.toString().padStart(2, '0');
+//   // Увеличиваем время на один час
+//   var newTime = time.split(':');
+//   var hours = parseInt(newTime[0]);
+//   hours += 1;
+//   newTime[0] = hours.toString().padStart(2, '0');
 
-  // Объединяем новую дату и время
-  var newDateString = newTime.join(':'); // "чч:мм:сс"
+//   // Объединяем новую дату и время
+//   var newDateString = newTime.join(':'); // "чч:мм:сс"
 
-  return newDateString;
-}
+//   return newDateString;
+// }
 
 export function filterTimeArray(array) {
   const currentTime = new Date();

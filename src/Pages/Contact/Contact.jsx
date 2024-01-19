@@ -3,7 +3,6 @@ import Container from '../../components/Container/Container';
 
 import {GoogleMap, LoadScript, MarkerF} from '@react-google-maps/api';
 import './Contact.scss';
-import BtnSecondary from '../../components/Buttons/BtnSecondary';
 
 const Contact = () => {
     const containerStyle = {
