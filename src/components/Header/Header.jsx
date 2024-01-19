@@ -5,25 +5,24 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 //Import Mobx
-
 import { observer } from "mobx-react-lite";
 import modalStore from "../../store/modal-store";
+import userStore from "../../store/user-store";
+
+import { getCategories } from "../../utils/menu";
+
 //Import components
 import Container from "../Container/Container";
 import BtnMain from "../Buttons/BtnMain";
-
-//Import style
-import "./header.scss";
+import Popup from "../Popup/Popup";
+import SignUp from "../SignUp/SignUp";
+import Cart from "../Cart/Cart";
 
 //Import logo
 import logo from "../../assets/logo/logo.svg";
-import Popup from "../Popup/Popup";
-import SingUp from "../SingUp/SingUp";
-import axios from "axios";
 
-import userStore from "../../store/user-store";
-import { url } from "../../api";
-import Cart from "../Cart/Cart";
+//Import style
+import "./header.scss";
 
 const Header = observer(() => {
   const { authModalHandler, authModal, cityModalHandler } = modalStore;
@@ -43,56 +42,8 @@ const Header = observer(() => {
     }
   }, [location]);
 
-  const getCategories = () => {
-    axios
-      .get(`${url}/api/menu`, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const data = res.data.response;
-
-        const filteredCat = data.filter((obj) =>
-          obj.category_name.startsWith("onlineOrder:")
-        );
-        const mapCat = filteredCat.map((el, index) => {
-          return {
-            category_name: el.category_name.replace(/onlineOrder: /, ""),
-            category_id: el.category_id,
-            category_position_index: index,
-          };
-        });
-        mapCat[12].category_position_index = 1;
-        mapCat[11].category_position_index = 2;
-        mapCat[8].category_position_index = 3;
-        mapCat[10].category_position_index = 4;
-        mapCat[9].category_position_index = 5;
-        mapCat[2].category_position_index = 6;
-        mapCat[3].category_position_index = 7;
-        mapCat[0].category_position_index = 8;
-        mapCat[6].category_position_index = 9;
-        mapCat[4].category_position_index = 10;
-        mapCat[7].category_position_index = 11;
-        mapCat[1].category_position_index = 12;
-        mapCat[5].category_position_index = 13;
-
-        mapCat.sort(
-          (a, b) => a.category_position_index - b.category_position_index
-        );
-
-        setCategories(mapCat);
-      })
-      .catch((err) => console.error(err));
-  };
-
   useEffect(() => {
-    console.log(authModal);
-  }, [authModal]);
-
-  useEffect(() => {
-    getCategories();
+    getCategories(setCategories);
   }, []);
 
   if (location.pathname === "/profile/info") {
@@ -100,7 +51,7 @@ const Header = observer(() => {
       <React.Fragment>
         {authModal && (
           <Popup closeModal={() => authModalHandler(false)}>
-            <SingUp />
+            <SignUp />
           </Popup>
         )}
 
@@ -286,7 +237,7 @@ const Header = observer(() => {
       <React.Fragment>
         {authModal && (
           <Popup closeModal={() => authModalHandler(false)}>
-            <SingUp />
+            <SignUp />
           </Popup>
         )}
 

@@ -1,70 +1,37 @@
 import React, { useEffect, useState } from "react";
-import "../Footer/Footer.scss";
+import { Link } from "react-router-dom";
 
 //Import components
 import Container from "../Container/Container";
 
 //Import Images
 import logo from "../../assets/logo/logo.png";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { url } from "../../api";
-
 import mastercardIco from "../../assets/logo/mastercard.svg";
 import visaIco from "../../assets/logo/visa.svg";
 import liqpayIco from "../../assets/logo/liqpay.svg";
+import { getCategories } from "../../utils/menu";
+
+import "../Footer/Footer.scss";
 
 const Footer = () => {
-  const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
-  const getCategories = () => {
-    axios
-      .get(`${url}/api/menu`, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const data = res.data.response;
-        console.log("categories, ", data);
+  const contacts = [
+    {
+      city: "Одеса",
+      telephoneNumber: "+380 (98) 727-19-91",
+      href: "tel:+380987271991",
+      address: "вул. Маршала Малиновскього 18",
+    },
+    {
+      city: "Ужгород",
+      telephoneNumber: "+380 (67) 714-96-59",
+      href: "tel:+380677149659",
+      address: "вул. Капушанська, 7а",
+    },
+  ];
 
-        const filteredCat = data.filter((obj) =>
-          obj.category_name.startsWith("onlineOrder:")
-        );
-
-        const mapCat = filteredCat.map((el, index) => {
-          return {
-            category_name: el.category_name.replace(/onlineOrder: /, ""),
-            category_id: el.category_id,
-            category_position_index: index,
-          };
-        });
-        mapCat[12].category_position_index = 1;
-        mapCat[11].category_position_index = 2;
-        mapCat[8].category_position_index = 3;
-        mapCat[10].category_position_index = 4;
-        mapCat[9].category_position_index = 5;
-        mapCat[2].category_position_index = 6;
-        mapCat[3].category_position_index = 7;
-        mapCat[0].category_position_index = 8;
-        mapCat[6].category_position_index = 9;
-        mapCat[4].category_position_index = 10;
-        mapCat[7].category_position_index = 11;
-        mapCat[1].category_position_index = 12;
-        mapCat[5].category_position_index = 13;
-
-        mapCat.sort(
-          (a, b) => a.category_position_index - b.category_position_index
-        );
-
-        setCurrentCatId(mapCat[0].category_id);
-        setCategories(mapCat);
-      })
-      .catch((err) => console.error(err));
-  };
   useEffect(() => {
-    getCategories();
+    getCategories(setCategories);
   }, []);
 
   return (
@@ -91,22 +58,15 @@ const Footer = () => {
               </ul>
             </nav>
             <div className="footer__column">
-              <div className="footer__contact">
-                <p className="footer__title">Одеса:</p>
-                <ul className="footer__contacts">
-                  <a href="tel:+380987271991">+380 (98) 727-19-91</a>
-                  <p>вул. Маршала Малиновскього 18</p>
-                </ul>
-              </div>
-              <div className="footer__contact">
-                <p className="footer__title">Ужгород:</p>
-                <ul className="footer__contacts">
-                  <a href="tel:+380677149659">+380 (67) 714-96-59</a>
-                  <p>вул. Капушанська, 7а</p>
-                </ul>
-              </div>
-
-              <p className="footer__title"></p>
+              {contacts.map((contact) => (
+                <div className="footer__contact">
+                  <p className="footer__title">{contact.city} :</p>
+                  <ul className="footer__contacts">
+                    <a href={contact.href}>{contact.telephoneNumber}</a>
+                    <p>{contact.address}</p>
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
           <div className="footer__bottom">
@@ -132,7 +92,12 @@ const Footer = () => {
                 support@polarpelmeni.com
               </a>
               <div className="footer__social-icons">
-                <a href="" className="footer__social">
+                <a
+                  className="footer__social"
+                  href="https://www.instagram.com/polarpelmeni/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <svg
                     width="16"
                     height="16"
@@ -158,7 +123,12 @@ const Footer = () => {
                     </defs>
                   </svg>
                 </a>
-                <a href="" className="footer__social">
+                <a
+                  className="footer__social"
+                  href="https://www.facebook.com/polarpelmeni/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <svg
                     width="16"
                     height="16"
