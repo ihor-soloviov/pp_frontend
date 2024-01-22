@@ -32,6 +32,7 @@ import Loader from "./components/Loader/Loader";
 //Import Utils
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
+import Offero from "./Pages/Offero/Offero";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -121,13 +122,13 @@ const App = observer(() => {
     };
   }, [location]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    setIsLoader(true);
-    setTimeout(() => {
-      setIsLoader(false);
-    }, 1500);
-  }, [location]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  //   setIsLoader(true);
+  //   setTimeout(() => {
+  //     setIsLoader(false);
+  //   }, 1500);
+  // }, [location]);
 
   useEffect(() => {
     if (city !== null) {
@@ -164,6 +165,7 @@ const App = observer(() => {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/order" element={<Order />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/offero" element={<Offero />} />
         <Route path="/payment-and-delivery" element={<PaymentAndDelivery />} />
         <Route path="/profile">
           <Route index element={<Profile />} />

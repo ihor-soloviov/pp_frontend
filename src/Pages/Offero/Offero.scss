@@ -1,0 +1,131 @@
+.offero {
+  padding-top: 100px;
+
+  h1 {
+    text-align: center;
+    font-size: 45px;
+    font-weight: 500;
+    line-height: 130%; /* 58.5px */
+    letter-spacing: -0.9px;
+    margin-bottom: 29px;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 150%;
+    color: #353538;
+    padding-bottom: 60px;
+    border-bottom: 1px solid #d9d9de;
+    margin-bottom: 60px;
+  }
+
+  &__container {
+    display: flex;
+    gap: 92px;
+    position: relative;
+
+    section {
+      flex: 1 1 0;
+    }
+  }
+
+  &__navigation {
+    flex: 0 0 356px;
+    position: sticky;
+    top: 80px;
+    height: max-content;
+    font-family: "Golos Text";
+  }
+
+  &__main {
+    font-family: "Golos Text";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 160%;
+    color: #12130f;
+
+    .main-text {
+      margin-bottom: 60px;
+    }
+  }
+
+  &__article {
+    margin-bottom: 60px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+      border-bottom: 1px solid #d9d9de;
+    }
+
+    .black {
+      font-family: "Unbounded";
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 130%;
+      color: #12130f;
+      margin-bottom: 30px;
+    }
+
+    .light {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 160%;
+      margin-bottom: 30px;
+
+      &:last-of-type {
+        margin-bottom: 60px;
+      }
+
+      .orderedList {
+        padding: 20px 0px 0px 20px;
+      }
+    }
+  }
+
+  h3 {
+    padding: 60px 0 20px;
+    font-family: Unbounded;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 130%;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+
+    font-family: "Golos Text";
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 160%;
+  }
+}
+
+.nav__title {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 160%;
+  margin-bottom: 16px;
+}
+
+.nav__list {
+  display: flex;
+  flex-direction: column;
+
+  .nav__item {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 150%;
+
+    width: max-content;
+    padding: 10px 16px 8px;
+    border: 1px solid #d9d9de;
+    border-radius: 10px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
+  }
+}
