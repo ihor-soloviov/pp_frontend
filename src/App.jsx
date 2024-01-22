@@ -29,10 +29,6 @@ import SelectCity from "./components/SelectCity/SelectCity";
 import PopupActions from "./components/PopupActions/PopupActions";
 import Loader from "./components/Loader/Loader";
 
-//Import Firebase
-import { firebaseConfig } from "./firebaseConfig";
-import firebase from "firebase/compat/app";
-
 //Import Utils
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
@@ -42,8 +38,6 @@ const tagManagerArgs = {
 };
 
 TagManager.initialize(tagManagerArgs);
-
-firebase.initializeApp(firebaseConfig);
 
 const App = observer(() => {
   //Store
@@ -160,7 +154,7 @@ const App = observer(() => {
           <Loader />
         </div>
       )}
-      
+
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/menu" element={<MenuPage />}>

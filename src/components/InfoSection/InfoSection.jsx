@@ -12,6 +12,7 @@ import userStore from "../../store/user-store";
 import "../ProfileGrid/ProfileGrid.scss";
 import "./InfoSection.scss";
 import { observer } from "mobx-react-lite";
+import NumberChangeModal from "./NumberChangeModal";
 
 // Позже перенести это в редакс
 const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
@@ -22,7 +23,10 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
     city: "",
   });
 
+  const [isNumberChanging, setIsNumberChanging] = useState(false);
+
   const { name, phone } = userStore;
+  // const { authModal, authModalHandler } = modalsStore;
 
   // Phone formater
   // function formatPhoneNumber(phoneNumber) {
@@ -74,9 +78,12 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
             <div className="contacts_phone">{phone}</div>
           </div>
           <div className="profile_info--head__button button">
-            <a href="#" className="button_link">
+            <button
+              className="button_link"
+              onClick={() => setIsNumberChanging(true)}
+            >
               Змінити номер
-            </a>
+            </button>
           </div>
           <div className="profile_info--head__button button">
             <a href="#" className="button_link">
@@ -177,9 +184,10 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
             </div>
           </form>
         </div>
+        {isNumberChanging && <NumberChangeModal setIsNumberChanging={setIsNumberChanging} />}
       </section>
     );
   }
-})
+});
 
 export default InfoSection;

@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 //Import Mobx
 
+import { observer } from "mobx-react-lite";
 import modalsStore from "../../store/modal-store";
-import userStore from "../../store/user-store";
 
 //Import Components
 import InputText from "../Inputs/InputText";
@@ -23,15 +23,11 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
-//Import API
-import axios from "axios";
-import { url } from "../../api";
-import { observer } from "mobx-react-lite";
+import { authentication, registration } from "../../utils/firebase";
 
 const SignUp = observer(() => {
   //Tools
   const { authModalHandler } = modalsStore;
-  const { setUserDataToStore } = userStore;
   const navigate = useNavigate();
 
   //User data state
@@ -48,17 +44,23 @@ const SignUp = observer(() => {
   //Next step
   const [btnNext, setBtnNext] = useState(true);
 
-  //STEP 01 Validation
-  useEffect(() => {
-    const cleaned = phoneNumber.replace(/\s|[()]/g, "");
+  const handleVerificationCodeSubmit = () => {
+    confirmationResult
+      .confirm(verificationCode)
+      .then((result) => {
+        console.log("handleVerificationCodeSubmit:", result.user);
 
-    if (!cleaned.includes("_")) {
-      setBtnNext(false);
-    } else {
-      setBtnNext(true);
-    }
-    setPhoneNumber(cleaned);
-  }, [phoneNumber]);
+        const accessToken = result.user.multiFactor.user.uid;
+
+        console.log("accessToken:", accessToken);
+
+        setToken(accessToken);
+        authentication(accessToken, navigate, setStep, authModalHandler);
+      })
+      .catch((error) => {
+        console.error("ERROR:", error);
+      });
+  };
 
   const handlePhoneNumberSubmit = (event) => {
     const appVerifier = new firebase.auth.RecaptchaVerifier(
@@ -67,6 +69,7 @@ const SignUp = observer(() => {
         size: "invisible",
         callback: () => {
           // reCAPTCHA solved, continue with phone authentication
+          setStep("STEP_02");
         },
       }
     );
@@ -82,6 +85,18 @@ const SignUp = observer(() => {
         console.log(error);
       });
   };
+
+  //STEP 01 Validation
+  useEffect(() => {
+    const cleaned = phoneNumber.replace(/\s|[()]/g, "");
+
+    if (!cleaned.includes("_")) {
+      setBtnNext(false);
+    } else {
+      setBtnNext(true);
+    }
+    setPhoneNumber(cleaned);
+  }, [phoneNumber]);
 
   //STEP 02 Validation
   useEffect(() => {
@@ -106,103 +121,6 @@ const SignUp = observer(() => {
       }
     }
   }, [verificationCode, step]);
-
-  const handleVerificationCodeSubmit = () => {
-    confirmationResult
-      .confirm(verificationCode)
-      .then((result) => {
-        console.log("handleVerificationCodeSubmit:", result.user);
-
-        const accessToken = result.user.multiFactor.user.uid;
-
-        console.log("accessToken:", accessToken);
-
-        // setToken();
-        setToken(accessToken);
-        authentication(accessToken);
-      })
-      .catch((error) => {
-        console.error("ERROR:", error);
-      });
-  };
-  const registration = () => {
-    const userData = {
-      name: userName,
-      email: userEmail,
-      token: token,
-      phone: phoneNumber,
-    };
-
-    const userDataJSON = JSON.stringify(userData);
-    console.log(userDataJSON);
-
-    axios
-      .post(`${url}/api/registrate`, userDataJSON, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        const data = response.data;
-
-        if (response.status === 200) {
-          console.log(data);
-          console.log("user data", {
-            name: userName,
-            phone: phoneNumber,
-            email: userEmail,
-            token: token,
-          });
-          setUserDataToStore({
-            name: userName,
-            phone: phoneNumber,
-            email: userEmail,
-            token: token,
-            promocode40: data.promocode40,
-          });
-          authModalHandler(false);
-          navigate("/profile/info");
-        }
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const authentication = (accessToken) => {
-    const data = {
-      token: accessToken,
-    };
-
-    console.log("AUTH TOKEN in AUTH:", data);
-    const tokenJSON = JSON.stringify(data);
-    console.log("tokenJSON:", tokenJSON);
-    axios
-      .post(`${url}/api/auth`, tokenJSON, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setUserDataToStore({
-            name: response.data.name,
-            phone: response.data.phone,
-            email: response.data.email,
-            token: response.data.token,
-            promocode40: response.data.promocode40,
-            favorites: response.data.favorites,
-            addresses: response.data.addresses,
-          });
-          authModalHandler(false);
-          navigate("/profile/info");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setStep("STEP_03");
-        // registration(accessToken);
-      });
-  };
 
   //STEP 03 Validation
   useEffect(() => {
@@ -288,7 +206,16 @@ const SignUp = observer(() => {
           <BtnMain
             name={"Зареєструватися"}
             disabled={btnNext}
-            onClick={() => registration()}
+            onClick={() =>
+              registration(
+                userName,
+                userEmail,
+                token,
+                phoneNumber,
+                authModalHandler,
+                navigate
+              )
+            }
           />
         </React.Fragment>
       );
