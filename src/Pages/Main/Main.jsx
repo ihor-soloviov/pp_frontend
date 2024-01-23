@@ -9,9 +9,9 @@ import svg1 from "../AboutUs/sprite.svg";
 const Main = () => {
   return (
     <>
-      <div className="slider__container">
-
-      </div>
+      <Container>
+        <div className="banner" />
+      </Container>
 
       <Container>
         <Menu />
