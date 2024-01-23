@@ -1,6 +1,7 @@
-import React from 'react';
-import Menu from '../Menu';
-import Container from '../../components/Container/Container';
+import React from "react";
+import Menu from "../Menu";
+import Container from "../../components/Container/Container";
+
 
 const MenuPage = () => {
   return (
@@ -8,6 +9,6 @@ const MenuPage = () => {
       <Menu />
     </Container>
   );
-};
+}
 
 export default MenuPage;

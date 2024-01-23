@@ -16,16 +16,19 @@ import NumberChangeModal from "./NumberChangeModal";
 
 // Позже перенести это в редакс
 const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
+  const { name, email, phone, dateOfBirth, token, city, setUserDataToStore } =
+    userStore;
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    birth_date: "",
-    city: "",
+    name: name,
+    email: email,
+    dateOfBirth: dateOfBirth,
+    city: city,
+    token: token,
   });
 
   const [isNumberChanging, setIsNumberChanging] = useState(false);
 
-  const { name, phone } = userStore;
   // const { authModal, authModalHandler } = modalsStore;
 
   // Phone formater
@@ -55,7 +58,14 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
     e.preventDefault();
 
     try {
-      await axios.put(`${url}/api/upload/`, formData);
+      const response = await axios.put(`${url}/api/updateInfo/`, formData);
+
+      if (response.status === 200) {
+        console.log(response.data);
+        setUserDataToStore({ ...response.data });
+      }
+
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -113,7 +123,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
             </div>
           </div>
         </div>
-        <div className="profile_info--bonuses__mobile"></div>
+        <div className="profile_info--bonuses__mobile" />
         <div className="profile_info--form">
           <form onSubmit={handleSubmit}>
             <div className="form">
@@ -147,10 +157,11 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 <p>Дата народження</p>
                 <label className="form_item--label">
                   <input
+                    title="формат дд.мм.рррр"
                     type="text"
                     placeholder="Дата народження"
-                    name="birth_date"
-                    value={formData.birth_date}
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
                     onChange={handleChange}
                   />
                 </label>
@@ -168,7 +179,9 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                       Оберіть місто
                     </option>
                     <option value="Одеса">Одеса</option>
-                    <option value="Ужгород">Ужгород</option>
+                    <option disabled value="Ужгород">
+                      Ужгород
+                    </option>
                   </select>
                 </label>
               </div>
@@ -184,7 +197,9 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
             </div>
           </form>
         </div>
-        {isNumberChanging && <NumberChangeModal setIsNumberChanging={setIsNumberChanging} />}
+        {isNumberChanging && (
+          <NumberChangeModal setIsNumberChanging={setIsNumberChanging} />
+        )}
       </section>
     );
   }

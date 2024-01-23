@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 
 import InputNumber from "../Inputs/InputNumber";
 import Popup from "../Popup/Popup";
@@ -11,21 +12,51 @@ import firebaseStore from "../../store/firebase-store";
 
 const NumberChangeModal = observer(({ setIsNumberChanging }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
-  // const [verificationCode, setVerificationCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
+  const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
   const { token, phone } = userStore;
-  const { app } = firebaseStore;
 
-  // const sendVerificationCode = async () => {
-  //   const appVerifier = new firebase.auth.RecaptchaVerifier(
-  //     "recaptcha-container",
-  //     {
-  //       size: "invisible",
-  //     }
-  //   );
-  //   await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
-  //   // Показати поле для вводу коду підтвердження
-  // };
+  useEffect(() => {
+    setRecaptchaVerifier(
+      new firebase.auth.RecaptchaVerifier("recaptcha-container", {
+        size: "invisible",
+      })
+    );
+  }, []);
+
+  const sendVerificationCode = async (phoneNumber, recaptchaVerifier) => {
+    const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    return phoneProvider.verifyPhoneNumber(phoneNumber, recaptchaVerifier);
+  };
+
+  const handlePhoneNumberSubmit = async () => {
+    try {
+      const verificationId = await sendVerificationCode(
+        phoneNumber,
+        recaptchaVerifier
+      );
+      const result = await firebase
+        .auth()
+        .signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
+      setConfirmationResult(result);
+    } catch (error) {
+      console.error("Error during phone number submission:", error);
+    }
+  };
+
+  const handleVerificationCodeSubmit = async () => {
+    try {
+      if (!confirmationResult)
+        throw new Error("No confirmationResult available");
+      const result = await confirmationResult.confirm(verificationCode);
+      console.log("Phone number is verified, user:", result.user);
+      // Additional actions after phone number verification
+    } catch (error) {
+      console.error("Error during verification code submission:", error);
+    }
+  };
 
   // const handlePhoneNumberChange = async () => {
   //   try {
@@ -91,7 +122,7 @@ const NumberChangeModal = observer(({ setIsNumberChanging }) => {
         </div>
         <InputNumber onChange={(value) => setPhoneNumber(value)} />
 
-        <BtnMain name={"Продовжити"} onClick={save} />
+        <BtnMain name={"Продовжити"} onClick={sendVerificationCode} />
       </div>
     </Popup>
   );

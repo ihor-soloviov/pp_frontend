@@ -35,6 +35,7 @@ export const authentication = (
           promocode40: response.data.promocode40,
           favorites: response.data.favorites,
           addresses: response.data.addresses,
+          dateOfBirth: response.data.dateOfBirth,
         });
         authModalHandler(false);
         navigate("/profile/info");
@@ -88,6 +89,7 @@ export const registration = (
           email: userEmail,
           token: token,
           promocode40: data.promocode40,
+          dateOfBirth: data.date_of_birth
         });
         authModalHandler(false);
         navigate("/profile/info");

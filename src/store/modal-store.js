@@ -4,6 +4,7 @@ class ModalsStore {
   authModal = false;
   cityModal = true;
   thanksModal = false;
+  isLoader = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,6 +20,10 @@ class ModalsStore {
 
   thanksModalHandler = (isOpen) => {
     this.thanksModal = isOpen;
+  };
+
+  isLoaderHandler = (isOpen) => {
+    this.isLoader = isOpen;
   };
 }
 

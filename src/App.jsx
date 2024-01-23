@@ -33,6 +33,7 @@ import Loader from "./components/Loader/Loader";
 import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
 import Offero from "./Pages/Offero/Offero";
+import NotFound from "./Pages/NotFound/NotFound";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -50,12 +51,12 @@ const App = observer(() => {
     setUserDataToStore,
   } = userStore;
 
-  const { cityModal, cityModalHandler } = modalsStore;
+  const { cityModal, cityModalHandler, isLoader, isLoaderHandler } =
+    modalsStore;
   const { getCartProductsFromLS } = shoppingCartStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
-  const [isLoader, setIsLoader] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
 
   //Tools
@@ -90,7 +91,7 @@ const App = observer(() => {
     if (currentAction === "addToFavorit") {
       return <PopupActions action={"Блюдо додано в «Улюблене»"} />;
     } else {
-      return null;
+      return false;
     }
   }, [currentAction]);
 
@@ -102,7 +103,12 @@ const App = observer(() => {
   }, [location.pathname, userLogout, navigate]);
 
   useEffect(() => {
-    // Функція яка скриває хедер в профілі на мобілках та таблетах
+    window.scrollTo(0, 0);
+    isLoaderHandler(true);
+    setTimeout(() => {
+      isLoaderHandler(false);
+    }, 1500);
+
     const handleWindowResize = () => {
       const maxWidth = 768;
       const isProfileItemPage = location.pathname.includes("/profile");
@@ -114,21 +120,13 @@ const App = observer(() => {
       }
     };
 
-    handleWindowResize(); // Check initial state
-
+    handleWindowResize(location, setShowHeader);
     window.addEventListener("resize", handleWindowResize);
+
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, [location]);
-
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  //   setIsLoader(true);
-  //   setTimeout(() => {
-  //     setIsLoader(false);
-  //   }, 1500);
-  // }, [location]);
 
   useEffect(() => {
     if (city !== null) {
@@ -150,11 +148,7 @@ const App = observer(() => {
 
       {showHeader && <Header />}
 
-      {isLoader && (
-        <div className="loader__wrapper">
-          <Loader />
-        </div>
-      )}
+      {isLoader && <Loader />}
 
       <Routes>
         <Route path="/" element={<Main />} />
@@ -171,6 +165,7 @@ const App = observer(() => {
           <Route index element={<Profile />} />
           <Route path=":item" element={<Profile />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </React.Fragment>

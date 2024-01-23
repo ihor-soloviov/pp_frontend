@@ -10,6 +10,7 @@ class UserStore {
   promocode40 = true;
   favoritProducts = [];
   adresses = [];
+  dateOfBirth = null
 
   constructor() {
     makeAutoObservable(this);
@@ -23,11 +24,13 @@ class UserStore {
     promocode40,
     favorites,
     addresses,
+    dateOfBirth
   }) => {
     this.isAuthenticated = true;
     this.name = name;
     this.phone = phone;
     this.email = email;
+    this.dateOfBirth = dateOfBirth
     this.token = token;
     this.promocode40 = promocode40;
     this.adresses = addresses;
@@ -42,6 +45,7 @@ class UserStore {
     this.email = null;
     this.token = null;
     this.promocode40 = false;
+    this.dateOfBirth = null
     localStorage.removeItem("userData");
   };
 
@@ -113,10 +117,10 @@ class UserStore {
     }
   };
 
-  // userPromocode = () => {
-  //   this.promocode40 = false;
-  //   localStorage.setItem("userData", JSON.stringify(this));
-  // };
+  userPromocode = () => {
+    this.promocode40 = false;
+    localStorage.setItem("userData", JSON.stringify(this));
+  };
 
   userPromocodeNotUse = () => {
     this.promocode40 = true;
