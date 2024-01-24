@@ -15,7 +15,7 @@ const NumberChangeModal = observer(({ setIsNumberChanging }) => {
   const [verificationCode, setVerificationCode] = useState("")
 
 
-  const { phone } = userStore;
+  const { phone, token } = userStore;
 
   useEffect(() => {
     setUpRecaptcha();
@@ -58,7 +58,7 @@ const NumberChangeModal = observer(({ setIsNumberChanging }) => {
 
           <BtnMain
             name={"Продовжити"}
-            onClick={() => onVerifNewNumber(verifId, verificationCode, setIsNumberChanging, phoneNumber)}
+            onClick={() => onVerifNewNumber(verifId, verificationCode, setIsNumberChanging, phoneNumber, token)}
           />
         </React.Fragment>
       );

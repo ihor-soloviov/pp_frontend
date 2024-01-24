@@ -1,3 +1,4 @@
+import axios from "axios";
 import { makeAutoObservable } from "mobx";
 
 class UserStore {
@@ -40,7 +41,6 @@ class UserStore {
 
   changePhoneNumber = (newNumber) => {
     this.phone = newNumber;
-
     localStorage.setItem("userData", JSON.stringify(this))
   }
 

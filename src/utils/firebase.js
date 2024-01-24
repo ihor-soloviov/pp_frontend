@@ -93,8 +93,9 @@ const onSetNewPhone = async (phoneNumber, setVerifId, setStep) => {
   }
 }
 
-const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberChanging, phoneNumber) => {
+const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberChanging, phoneNumber, token) => {
   const user = auth.currentUser;
+  const formatedPhone = phoneNumber.replace(/[\s()]/g, '');
 
   if (!user) {
     console.log("шото нахуй не так")
@@ -105,6 +106,14 @@ const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberCha
     await updatePhoneNumber(user, phoneCredential);
 
     changePhoneNumber(phoneNumber)
+
+    try {
+      const response = await axios.put(`${url}/api/updatePhone`, { token: token, phone: formatedPhone })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+
 
     setIsNumberChanging(false)
   } catch (error) {
