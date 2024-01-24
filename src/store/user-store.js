@@ -38,6 +38,12 @@ class UserStore {
     localStorage.setItem("userData", JSON.stringify(this));
   };
 
+  changePhoneNumber = (newNumber) => {
+    this.phone = newNumber;
+
+    localStorage.setItem("userData", JSON.stringify(this))
+  }
+
   userLogout = () => {
     this.isAuthenticated = false;
     this.name = null;

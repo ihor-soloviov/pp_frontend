@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 //Import React
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileLink from "../ProfileLink/ProfileLink";
 import axios from "axios";
 import { url } from "../../api";
@@ -30,28 +30,24 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
 
   const [isNumberChanging, setIsNumberChanging] = useState(false);
 
+  useEffect(() => {
+    const loadUserDataFromLocalStorage = () => {
+      const userData = localStorage.getItem("userData");
+      const dataParse = JSON.parse(userData);
+
+      if (!userData) {
+        return;
+      }
 
 
-  // const { authModal, authModalHandler } = modalsStore;
+      if (dataParse.isAuthenticated === true) {
+        setUserDataToStore(dataParse);
+      }
+    };
 
-  // Phone formater
-  // function formatPhoneNumber(phoneNumber) {
-  //   const digitsOnly = phoneNumber.replace(/\D/g, '');
+    loadUserDataFromLocalStorage()
+  }, [])
 
-  //   if (digitsOnly.length !== 12) {
-  //     return phoneNumber;
-  //   }
-
-  //   const countryCode = digitsOnly.substr(0, 3);
-  //   const areaCode = digitsOnly.substr(3, 2);
-  //   const firstPart = digitsOnly.substr(5, 3);
-  //   const secondPart = digitsOnly.substr(8, 2);
-  //   const thirdPart = digitsOnly.substr(10, 2);
-
-  //   const formattedNumber = `+${countryCode} (${areaCode}) ${firstPart}-${secondPart}-${thirdPart}`;
-
-  //   return formattedNumber;
-  // }
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,8 +73,6 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   const openModal = () => {
     setIsNumberChanging(true)
   };
-
-  // console.log("isSidebarClosed", isSidebarClosed);
 
   if (!isSidebarClosed) {
     return (

@@ -7,11 +7,10 @@ import {
   RecaptchaVerifier,
   signInWithCredential,
   signInWithPhoneNumber,
+  updatePhoneNumber,
 } from "firebase/auth";
 
-
-
-const { setUserDataToStore } = userStore;
+const { setUserDataToStore, changePhoneNumber } = userStore;
 
 const setUpRecaptcha = () => {
   window.recaptchaVerifier = new RecaptchaVerifier(
@@ -39,7 +38,7 @@ const onSendOtp = async (phoneNumber, setVerifId, setStep) => {
       phoneNumber,
       window.recaptchaVerifier
     );
-    console.log(result.verificationId)
+    console.log(result)
     console.log("OTP sent successfully");
     setVerifId(result.verificationId);
     setStep("STEP_02")
@@ -56,10 +55,10 @@ const onVerify = async (verifId, verificationCode, setStep, setToken, navigate, 
 
   try {
     const credential = PhoneAuthProvider.credential(verifId, verificationCode);
-    const userCredentioals = await signInWithCredential(auth, credential);
-    console.log("Successfully signed in with OTP", userCredentioals);
+    const userCredentials = await signInWithCredential(auth, credential);
+    console.log("Successfully signed in with OTP", userCredentials);
 
-    const accessToken = userCredentioals.user.uid;
+    const accessToken = userCredentials.user.uid;
     console.log(accessToken)
 
     setToken(accessToken);
@@ -70,6 +69,49 @@ const onVerify = async (verifId, verificationCode, setStep, setToken, navigate, 
     setStep("STEP_03")
   }
 };
+
+const onSetNewPhone = async (phoneNumber, setVerifId, setStep) => {
+  if (!phoneNumber) {
+    console.error("Invalid phone number");
+    return
+  }
+
+  if (!window.recaptchaVerifier) {
+    setUpRecaptcha();
+  }
+
+  try {
+    const provider = new PhoneAuthProvider(auth);
+    const verificationId = await provider.verifyPhoneNumber(phoneNumber, window.recaptchaVerifier);
+    if (verificationId) {
+      setVerifId(verificationId)
+      setStep("STEP_02")
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberChanging, phoneNumber) => {
+  const user = auth.currentUser;
+
+  if (!user) {
+    console.log("шото нахуй не так")
+  }
+
+  try {
+    const phoneCredential = PhoneAuthProvider.credential(verificationId, verificationCode);
+    await updatePhoneNumber(user, phoneCredential);
+
+    changePhoneNumber(phoneNumber)
+
+    setIsNumberChanging(false)
+  } catch (error) {
+    console.error(error)
+  }
+
+}
 
 const authentication = (
   accessToken,
@@ -164,4 +206,4 @@ const registration = (
     .catch((err) => console.error(err));
 };
 
-export { setUpRecaptcha, onSendOtp, onVerify, registration, authentication }
+export { setUpRecaptcha, onSendOtp, onVerify, registration, authentication, onSetNewPhone, onVerifNewNumber }
