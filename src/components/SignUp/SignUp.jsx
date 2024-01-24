@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //Import Mobx
-
 import { observer } from "mobx-react-lite";
 import modalsStore from "../../store/modal-store";
 
@@ -18,17 +17,7 @@ import BtnMain from "../Buttons/BtnMain";
 //Import Style
 import "./singup.scss";
 
-//Import Firebase
-import {
-  PhoneAuthProvider,
-  signInWithCredential,
-} from "firebase/auth";
-// import firebase from "firebase/compat/app";
-// import "firebase/compat/auth";
-// import "firebase/compat/firestore";
-
-import { onSendOtp, registration, setUpRecaptcha } from "../../utils/firebase";
-import { auth } from "../../firebaseConfig";
+import { onSendOtp, onVerify, registration, setUpRecaptcha } from "../../utils/firebase";
 
 const SignUp = observer(() => {
   //Tools
@@ -49,72 +38,9 @@ const SignUp = observer(() => {
   //Next step
   const [btnNext, setBtnNext] = useState(true);
 
-
-
   useEffect(() => {
     setUpRecaptcha()
   }, [])
-
-
-
-  const onVerify = async () => {
-    if (!verifId || !verificationCode) {
-      console.error("Invalid verification ID or OTP");
-      return;
-    }
-
-    try {
-      const credential = PhoneAuthProvider.credential(verifId, verificationCode);
-      await signInWithCredential(auth, credential);
-      console.log("Successfully signed in with OTP");
-
-    } catch (error) {
-      console.error("Error signing in with OTP:", error);
-      setStep("STEP_03")
-    }
-  };
-
-
-  const handleVerificationCodeSubmit = () => {
-    // confirmationResult
-    //   .confirm(verificationCode)
-    //   .then((result) => {
-    //     console.log("handleVerificationCodeSubmit:", result.user);
-
-    //     const accessToken = result.user.multiFactor.user.uid;
-
-    //     console.log("accessToken:", accessToken);
-
-    //     setToken(accessToken);
-    //     authentication(accessToken, navigate, setStep, authModalHandler);
-    //   })
-    //   .catch((error) => {
-    //     console.error("ERROR:", error);
-    //   });
-  };
-
-  const handlePhoneNumberSubmit = (event) => {
-    // const appVerifier = new firebase.auth.RecaptchaVerifier(
-    //   "recaptcha-container",
-    //   {
-    //     size: "invisible",
-    //     callback: () => {
-    //       // reCAPTCHA solved, continue with phone authentication
-    //     },
-    //   }
-    // );
-
-    // firebase
-    //   .auth()
-    //   .signInWithPhoneNumber(phoneNumber, appVerifier)
-    //   .then((confirmationResult) => {
-    //     setStep("STEP_02");
-    //     setConfirmationResult(confirmationResult);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  };
 
   //STEP 01 Validation
   useEffect(() => {
@@ -168,7 +94,7 @@ const SignUp = observer(() => {
           <BtnMain
             name={"Продовжити"}
             disabled={btnNext}
-            onClick={onSendOtp(phoneNumber, setVerifId, setStep)}
+            onClick={() => onSendOtp(phoneNumber, setVerifId, setStep)}
           />
         </React.Fragment>
       );
@@ -196,7 +122,7 @@ const SignUp = observer(() => {
           <BtnMain
             name={"Продовжити"}
             disabled={btnNext}
-            onClick={onVerify}
+            onClick={() => onVerify(verifId, verificationCode, setStep, setToken, navigate, authModalHandler)}
           />
         </React.Fragment>
       );

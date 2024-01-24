@@ -48,6 +48,29 @@ const onSendOtp = async (phoneNumber, setVerifId, setStep) => {
   }
 };
 
+const onVerify = async (verifId, verificationCode, setStep, setToken, navigate, authModalHandler) => {
+  if (!verifId || !verificationCode) {
+    console.error("Invalid verification ID or OTP");
+    return;
+  }
+
+  try {
+    const credential = PhoneAuthProvider.credential(verifId, verificationCode);
+    const userCredentioals = await signInWithCredential(auth, credential);
+    console.log("Successfully signed in with OTP", userCredentioals);
+
+    const accessToken = userCredentioals.user.uid;
+    console.log(accessToken)
+
+    setToken(accessToken);
+    authentication(accessToken, navigate, setStep, authModalHandler);
+
+  } catch (error) {
+    console.error("Error signing in with OTP:", error);
+    setStep("STEP_03")
+  }
+};
+
 const authentication = (
   accessToken,
   authModalHandler,
@@ -141,4 +164,4 @@ const registration = (
     .catch((err) => console.error(err));
 };
 
-export { setUpRecaptcha, onSendOtp, registration, authentication }
+export { setUpRecaptcha, onSendOtp, onVerify, registration, authentication }
