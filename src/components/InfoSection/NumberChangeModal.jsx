@@ -8,7 +8,6 @@ import Popup from "../Popup/Popup";
 import BtnMain from "../Buttons/BtnMain";
 import { observer } from "mobx-react-lite";
 import userStore from "../../store/user-store";
-import firebaseStore from "../../store/firebase-store";
 
 const NumberChangeModal = observer(({ setIsNumberChanging }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -19,12 +18,17 @@ const NumberChangeModal = observer(({ setIsNumberChanging }) => {
   const { token, phone } = userStore;
 
   useEffect(() => {
-    setRecaptchaVerifier(
-      new firebase.auth.RecaptchaVerifier("recaptcha-container", {
+    // Переконайтесь, що елемент 'recaptcha-container' існує в DOM
+    if (document.getElementById('recaptcha-container')) {
+      const verifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
         size: "invisible",
-      })
-    );
+      });
+      verifier.render().then(() => {
+        setRecaptchaVerifier(verifier);
+      });
+    }
   }, []);
+
 
   const sendVerificationCode = async (phoneNumber, recaptchaVerifier) => {
     const phoneProvider = new firebase.auth.PhoneAuthProvider();
@@ -32,17 +36,15 @@ const NumberChangeModal = observer(({ setIsNumberChanging }) => {
   };
 
   const handlePhoneNumberSubmit = async () => {
+    if (!recaptchaVerifier) {
+      console.error('RecaptchaVerifier is not initialized');
+      return;
+    }
     try {
-      const verificationId = await sendVerificationCode(
-        phoneNumber,
-        recaptchaVerifier
-      );
-      const result = await firebase
-        .auth()
-        .signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
+      const result = await firebase.auth().signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
       setConfirmationResult(result);
     } catch (error) {
-      console.error("Error during phone number submission:", error);
+      console.error('Error during phone number submission:', error);
     }
   };
 
@@ -87,35 +89,35 @@ const NumberChangeModal = observer(({ setIsNumberChanging }) => {
   //   }
   // };
 
-  async function save(phoneNumber) {
-    const { currentUser } = firebase.auth();
-    if (currentUser && currentUser.phoneNumber !== phoneNumber) {
-      try {
-        const verifier = new firebase.auth.RecaptchaVerifier(
-          "recaptcha-container",
-          {
-            callback: (response) => console.log("callback", response),
-            size: "invisible",
-          }
-        );
-        const phoneProvider = new firebase.auth.PhoneAuthProvider();
-        const id = await phoneProvider.verifyPhoneNumber(phoneNumber, verifier);
-        const code = window.prompt("Bitte zugeschickten Code eingeben");
-        const cred = firebase.auth.PhoneAuthProvider.credential(id, code);
-        await currentUser.updatePhoneNumber(cred);
-        console.log("phone number changed", id, cred, currentUser);
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      console.log(currentUser);
-    }
-  }
+  // async function save(phoneNumber) {
+  //   const { currentUser } = firebase.auth();
+  //   if (currentUser && currentUser.phoneNumber !== phoneNumber) {
+  //     try {
+  //       const verifier = new firebase.auth.RecaptchaVerifier(
+  //         "recaptcha-container",
+  //         {
+  //           callback: (response) => console.log("callback", response),
+  //           size: "invisible",
+  //         }
+  //       );
+  //       const phoneProvider = new firebase.auth.PhoneAuthProvider();
+  //       const id = await phoneProvider.verifyPhoneNumber(phoneNumber, verifier);
+  //       const code = window.prompt("Bitte zugeschickten Code eingeben");
+  //       const cred = firebase.auth.PhoneAuthProvider.credential(id, code);
+  //       await currentUser.updatePhoneNumber(cred);
+  //       console.log("phone number changed", id, cred, currentUser);
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   } else {
+  //     console.log(currentUser);
+  //   }
+  // }
 
   return (
     <Popup closeModal={() => setIsNumberChanging(false)}>
       <div className="singup">
-        <div id="recaptcha-container"></div>
+        <div id="recaptcha-container" />
         <div className="singup__description">
           <h3 className="singup__title">Змінити номер</h3>
           <p className="singup__text">Вкажіть свій новий номер телефону</p>

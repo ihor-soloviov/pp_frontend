@@ -1,11 +1,54 @@
 import axios from "axios";
 import { url } from "../api";
-
 import userStore from "../store/user-store";
+import { auth } from "../firebaseConfig";
+import {
+  PhoneAuthProvider,
+  RecaptchaVerifier,
+  signInWithCredential,
+  signInWithPhoneNumber,
+} from "firebase/auth";
+
+
 
 const { setUserDataToStore } = userStore;
 
-export const authentication = (
+const setUpRecaptcha = () => {
+  window.recaptchaVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    {
+      size: "invisible"
+    }, auth
+  );
+};
+
+const onSendOtp = async (phoneNumber, setVerifId, setStep) => {
+  // Ensure that the phone number is valid before sending OTP
+  if (!phoneNumber) {
+    console.error("Invalid phone number");
+    return;
+  }
+
+  if (!window.recaptchaVerifier) {
+    setUpRecaptcha();
+  }
+
+  try {
+    const result = await signInWithPhoneNumber(
+      auth,
+      phoneNumber,
+      window.recaptchaVerifier
+    );
+    console.log(result.verificationId)
+    console.log("OTP sent successfully");
+    setVerifId(result.verificationId);
+    setStep("STEP_02")
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+  }
+};
+
+const authentication = (
   accessToken,
   authModalHandler,
   navigate,
@@ -48,7 +91,7 @@ export const authentication = (
     });
 };
 
-export const registration = (
+const registration = (
   userName,
   userEmail,
   token,
@@ -97,3 +140,5 @@ export const registration = (
     })
     .catch((err) => console.error(err));
 };
+
+export { setUpRecaptcha, onSendOtp, registration, authentication }

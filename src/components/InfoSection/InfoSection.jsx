@@ -5,6 +5,7 @@ import ProfileLink from "../ProfileLink/ProfileLink";
 import axios from "axios";
 import { url } from "../../api";
 
+
 //Import Mobx
 import userStore from "../../store/user-store";
 
@@ -28,6 +29,8 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   });
 
   const [isNumberChanging, setIsNumberChanging] = useState(false);
+
+
 
   // const { authModal, authModalHandler } = modalsStore;
 
@@ -71,11 +74,16 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
     }
   };
 
+  const openModal = () => {
+    setIsNumberChanging(true)
+  };
+
   // console.log("isSidebarClosed", isSidebarClosed);
 
   if (!isSidebarClosed) {
     return (
       <section className="grid_layout--main profile_info">
+
         <div className="profile_info--head">
           <img
             src="https://cdn-icons-png.flaticon.com/512/552/552721.png"
@@ -90,7 +98,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
           <div className="profile_info--head__button button">
             <button
               className="button_link"
-              onClick={() => setIsNumberChanging(true)}
+              onClick={openModal}
             >
               Змінити номер
             </button>
