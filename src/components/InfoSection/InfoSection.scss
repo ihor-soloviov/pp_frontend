@@ -137,6 +137,7 @@
     text-decoration: underline;
     font-weight: 500;
     flex: 1;
+    cursor: pointer;
 
     @media (max-width: 768px) {
       font-size: 14px;
@@ -231,10 +232,9 @@
 }
 
 .mobile {
-  color:#000
+  color: #000;
 }
 
 .mobile-inner {
   display: flex;
 }
-

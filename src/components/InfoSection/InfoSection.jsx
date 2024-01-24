@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 //Import React
 import React, { useEffect, useState } from "react";
@@ -14,6 +15,9 @@ import "../ProfileGrid/ProfileGrid.scss";
 import "./InfoSection.scss";
 import { observer } from "mobx-react-lite";
 import NumberChangeModal from "./NumberChangeModal";
+import { storage } from "../../firebaseConfig";
+import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid"
 
 // Позже перенести это в редакс
 const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
@@ -29,6 +33,9 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   });
 
   const [isNumberChanging, setIsNumberChanging] = useState(false);
+  const [file, setFile] = useState(null);
+
+  const imageListRef = ref(storage, "avatars/")
 
   useEffect(() => {
     const loadUserDataFromLocalStorage = () => {
@@ -47,6 +54,27 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
 
     loadUserDataFromLocalStorage()
   }, [])
+
+  useEffect(() => {
+    listAll(imageListRef).then((res) => {
+      res.items.forEach(item => {
+        getDownloadURL(item).then((url) => )
+      })
+    })
+  }, [])
+  
+
+  const uploadImage = () => {
+    if (!file) {
+      return
+    }
+    const imageRef = ref(storage, `avatars/${file.name + v4()}`)
+
+    uploadBytes(imageRef, file).then(() => {
+
+    })
+
+  }
 
 
   const handleChange = (e) => {
@@ -98,9 +126,16 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
             </button>
           </div>
           <div className="profile_info--head__button button">
-            <a href="#" className="button_link">
-              Завантажити фото
-            </a>
+            <input
+              disabled={file}
+              type="file"
+              id="fileInput"
+              style={{ display: "none" }}
+              onChange={(e) => setFile(e.target.files[0])}
+              accept="image/png, image/jpeg, image/jpg, image/webp"
+            />
+            <label for="fileInput" className="button_link">Завантажити фото</label>
+            {file && <button onClick={uploadImage}>send</button>}
           </div>
         </div>
         <ProfileLink handleSidebar={handleSidebar}>Інформація</ProfileLink>
