@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //Import React
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import ProfileLink from "../ProfileLink/ProfileLink";
 import NumberChangeModal from "./NumberChangeModal";
@@ -8,6 +8,9 @@ import NumberChangeModal from "./NumberChangeModal";
 import axios from "axios";
 import { url } from "../../api";
 import { uploadImage } from "../../utils/firebase";
+
+import { m } from "framer-motion"
+import { animationLinks } from "../../animations/profile";
 
 
 //Import Mobx
@@ -28,7 +31,6 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
     city,
     setUserDataToStore,
     avatar,
-    setUserAvatar
   } =
     userStore;
 
@@ -42,27 +44,6 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
 
   const [isNumberChanging, setIsNumberChanging] = useState(false);
   const [file, setFile] = useState(null);
-
-  useEffect(() => {
-    const loadUserDataFromLocalStorage = () => {
-      const userData = localStorage.getItem("userData");
-      const userAvatar = localStorage.getItem('userPhoto')
-      const parsedUserData = JSON.parse(userData);
-
-      if (!userData && !userAvatar) {
-        return;
-      }
-
-
-      if (parsedUserData.isAuthenticated === true) {
-        setUserDataToStore(parsedUserData);
-        setUserAvatar(userAvatar)
-
-      }
-    };
-
-    loadUserDataFromLocalStorage()
-  }, [])
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -91,7 +72,13 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
 
   if (!isSidebarClosed) {
     return (
-      <section className="grid_layout--main profile_info">
+      <m.section
+        initial="hidden"
+        animate="visible"
+        variants={animationLinks}
+        transition={{ type: 'linear' }}
+        className="grid_layout--main profile_info"
+      >
 
         <div className="profile_info--head">
           <img
@@ -140,7 +127,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 className="button_link"
                 onClick={openModal}
               >
-                Змінити номер
+                Змінити
               </button>
             </div>
             <div className="">
@@ -234,7 +221,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
         {isNumberChanging && (
           <NumberChangeModal setIsNumberChanging={setIsNumberChanging} />
         )}
-      </section>
+      </m.section>
     );
   }
 });

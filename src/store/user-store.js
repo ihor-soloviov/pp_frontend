@@ -2,7 +2,6 @@ import { makeAutoObservable } from "mobx";
 
 class UserStore {
   isAuthenticated = false;
-  city = null;
   name = null;
   phone = null;
   email = null;
@@ -11,10 +10,24 @@ class UserStore {
   favoritProducts = [];
   adresses = [];
   dateOfBirth = null
-  avatar = 'https://cdn-icons-png.flaticon.com/512/552/552721.png'
+  avatar = "https://cdn-icons-png.flaticon.com/512/552/552721.png"
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setUserAvatar = (avatarUrl) => {
+    if (!avatarUrl) {
+      return;
+    }
+    this.avatar = avatarUrl;
+
+    localStorage.setItem('userPhoto', avatarUrl)
+  }
+
+  changePhoneNumber = (newNumber) => {
+    this.phone = newNumber;
+    localStorage.setItem("userData", JSON.stringify(this))
   }
 
   setUserDataToStore = ({
@@ -27,6 +40,7 @@ class UserStore {
     addresses,
     dateOfBirth
   }) => {
+    console.log('aas')
     this.isAuthenticated = true;
     this.name = name;
     this.phone = phone;
@@ -39,17 +53,6 @@ class UserStore {
     localStorage.setItem("userData", JSON.stringify(this));
   };
 
-  setUserAvatar = (avatarUrl) => {
-    this.avatar = avatarUrl;
-
-    localStorage.setItem('userPhoto', avatarUrl)
-  }
-
-  changePhoneNumber = (newNumber) => {
-    this.phone = newNumber;
-    localStorage.setItem("userData", JSON.stringify(this))
-  }
-
   userLogout = () => {
     this.isAuthenticated = false;
     this.name = null;
@@ -61,16 +64,16 @@ class UserStore {
     localStorage.removeItem("userData");
   };
 
-  updateCity = (city) => {
-    this.city = city;
-    const userDataFromStorage = JSON.parse(localStorage.getItem("userData"));
+  // updateCity = (city) => {
+  //   this.city = city;
+  //   const userDataFromStorage = JSON.parse(localStorage.getItem("userData"));
 
-    if (!userDataFromStorage?.isAuthenticated) {
-      return;
-    }
-    const updatedDataWithCity = { ...userDataFromStorage, city: city };
-    localStorage.setItem("userData", JSON.stringify(updatedDataWithCity));
-  };
+  //   if (!userDataFromStorage?.isAuthenticated) {
+  //     return;
+  //   }
+  //   const updatedDataWithCity = { ...userDataFromStorage, city: city };
+  //   localStorage.setItem("userData", JSON.stringify(updatedDataWithCity));
+  // };
 
   addToFavorit = ({ preview, name, price, weight, id, ingredients }) => {
     const product = { preview, name, price, count: 1, weight, id, ingredients };

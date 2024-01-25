@@ -11,6 +11,7 @@ import userStore from "../../store/user-store";
 
 import { getCategories } from "../../utils/menu";
 
+
 //Import components
 import Container from "../Container/Container";
 import BtnMain from "../Buttons/BtnMain";
@@ -23,10 +24,12 @@ import logo from "../../assets/logo/logo.svg";
 
 //Import style
 import "./header.scss";
+import { LazyMotion, domAnimation } from "framer-motion";
+import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 
 const Header = observer(() => {
-  const { authModalHandler, authModal, cityModalHandler } = modalStore;
-  const { city, isAuthenticated, name, phone } = userStore;
+  const { authModalHandler, authModal } = modalStore;
+  const { isAuthenticated, name, phone, avatar } = userStore;
 
   const [hamburger, setHamburger] = useState(false);
   const [dropdown, setDropdown] = useState(false);
@@ -76,7 +79,7 @@ const Header = observer(() => {
                         fill="#12130F"
                       />
                     </svg>
-                    <span>{city}</span>
+                    <span>Одеса</span>
                     <svg
                       width="10"
                       height="6"
@@ -124,10 +127,8 @@ const Header = observer(() => {
                   >
                     <div className="header__avatar">
                       <img
-                        src={
-                          "https://cdn-icons-png.flaticon.com/512/552/552721.png"
-                        }
-                        alt=""
+                        src={avatar}
+                        alt="avatar"
                       />
                     </div>
                     <span className="header__username">{name}</span>
@@ -151,82 +152,16 @@ const Header = observer(() => {
                   />
                 )}
                 <div
-                  className={`header__hamburger ${
-                    hamburger && "header__hamburger--active"
-                  }`}
+                  className={`header__hamburger ${hamburger && "header__hamburger--active"
+                    }`}
                   onClick={() => setHamburger(!hamburger)}
                 ></div>
               </div>
             </div>
             {hamburger && (
-              <div className="mobile-menu">
-                <nav className="mobile-menu__navigation">
-                  <div className="mobile-menu__auth">
-                    {isAuthenticated === true ? (
-                      <div
-                        className="mobile-menu__profile-btn mobile-menu__profile-btn--profile"
-                        onClick={() => navigate("/profile/info")}
-                      >
-                        <div className="mobile-menu__avatar">
-                          <img
-                            src={
-                              "https://cdn-icons-png.flaticon.com/512/552/552721.png"
-                            }
-                            alt="avatar"
-                          />
-                        </div>
-                        <div>
-                          <span className="mobile-menu__username">{name}</span>
-                          <p className="mobile-menu__phone">{phone}</p>
-                          <p className="mobile-menu__bonus">
-                            Доступно 23 бонуси
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <BtnMain
-                        name={"Увійти в особистий кабінет"}
-                        onClick={() => authModalHandler(true)}
-                      />
-                    )}
-                  </div>
-                  <ul className="mobile-menu__menu">
-                    <li className="mobile-menu__link">
-                      <Link>Інформація</Link>
-                    </li>
-                    <li className="mobile-menu__link">
-                      <Link>Улюблені блюда</Link>
-                    </li>
-                    <li className="mobile-menu__link">
-                      <Link>Збережені адреси</Link>
-                    </li>
-                    <li className="mobile-menu__link">
-                      <Link>Історія замовлень</Link>
-                    </li>
-                    <li className="mobile-menu__link">
-                      <Link>Бонуси</Link>
-                    </li>
-                    <li className="mobile-menu__link mobile-menu__link--exit">
-                      <Link>Вихід</Link>
-                    </li>
-                  </ul>
-
-                  <ul className="mobile-menu__nav">
-                    <li>
-                      <Link to={"/"}>Головна</Link>
-                    </li>
-                    <li>
-                      <Link to={"/menu"}>Меню</Link>
-                    </li>
-                    <li>
-                      <Link to={"/about-us"}>Про нас</Link>
-                    </li>
-                    <li>
-                      <Link to={"/contact"}>Контакти</Link>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
+              <LazyMotion features={domAnimation}>
+                <HamburgerMenu setDropdown={setDropdown} dropdown={dropdown} categories={categories} />
+              </LazyMotion>
             )}
           </Container>
         </header>
@@ -251,7 +186,6 @@ const Header = observer(() => {
                 <div className="header__selectors">
                   <div
                     className="header__selector header__selector-city"
-                    onClick={() => cityModalHandler(true)}
                   >
                     <svg
                       width="12"
@@ -265,7 +199,7 @@ const Header = observer(() => {
                         fill="#12130F"
                       />
                     </svg>
-                    <span>{city}</span>
+                    <span>Одеса</span>
                     <svg
                       width="10"
                       height="6"
@@ -340,9 +274,8 @@ const Header = observer(() => {
                   />
                 )}
                 <div
-                  className={`header__hamburger ${
-                    hamburger && "header__hamburger--active"
-                  }`}
+                  className={`header__hamburger ${hamburger && "header__hamburger--active"
+                    }`}
                   onClick={() => setHamburger(!hamburger)}
                 >
                   <span></span>

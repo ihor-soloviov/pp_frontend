@@ -1,10 +1,18 @@
 import React from "react";
 import ProfileLink from "../ProfileLink/ProfileLink";
+import { m } from "framer-motion"
+import { animationLinks } from "../../animations/profile";
 
 const Bonus = ({ handleSidebar }) => {
   return (
     <>
-      <section className="grid_layout--main orders">
+      <m.section
+        initial="hidden"
+        animate="visible"
+        variants={animationLinks}
+        transition={{ type: 'linear' }}
+        className="grid_layout--main orders"
+      >
         <ProfileLink handleSidebar={handleSidebar}>Бонуси</ProfileLink>
         <div className="order">
           <div className="order-container">
@@ -16,7 +24,7 @@ const Bonus = ({ handleSidebar }) => {
             </div>
           </div>
         </div>
-      </section>
+      </m.section>
     </>
   );
 };

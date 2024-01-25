@@ -14,8 +14,10 @@ import { v4 } from "uuid"
 
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebaseConfig";
+import modalsStore from "../store/modal-store";
 
 const { setUserDataToStore, changePhoneNumber, setUserAvatar } = userStore;
+const { authModalHandler } = modalsStore
 
 const imageListRef = ref(storage, "avatars/")
 
@@ -131,7 +133,6 @@ const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberCha
 
 const authentication = (
   accessToken,
-  authModalHandler,
   navigate,
   setStep
 ) => {
@@ -177,7 +178,6 @@ const registration = (
   userEmail,
   token,
   phoneNumber,
-  authModalHandler,
   navigate
 ) => {
   const userData = {

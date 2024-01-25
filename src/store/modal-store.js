@@ -25,6 +25,13 @@ class ModalsStore {
   isLoaderHandler = (isOpen) => {
     this.isLoader = isOpen;
   };
+
+  setLoader = () => {
+    this.isLoader = true
+    setTimeout(() => {
+      this.isLoader = false;
+    }, 1500);
+  }
 }
 
 const modalsStore = new ModalsStore();

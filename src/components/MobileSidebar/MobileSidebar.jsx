@@ -2,12 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import userStore from "../../store/user-store";
 
+import { m } from "framer-motion"
+import { animationSidebar } from "../../animations/profile";
+
 import SidebarLink from "../SidebarLink/SidebarLink";
 import cross from "../../../src/assets/Vector.svg";
 import { observer } from "mobx-react-lite";
 
 const MobileSidebar = observer(({ handleSidebar }) => {
-  const { name, phone } = userStore;
+  const { name, phone, avatar } = userStore;
 
   const sidebarLinks = [
     "Інформація",
@@ -19,11 +22,16 @@ const MobileSidebar = observer(({ handleSidebar }) => {
   ];
   return (
     <>
-      <section className="sidebar-mobile animate">
+      <m.section
+        initial="hidden"
+        animate="visible"
+        variants={animationSidebar}
+        transition={{ type: 'linear' }}
+        className="sidebar-mobile animate">
         <div className="profile_info--head__mobile sidebar-mobile__header">
           <div className="mobile-inner">
             <img
-              src="https://via.placeholder.com/70x70"
+              src={avatar}
               alt="profile"
               className="profile_info--head__photo"
             />
@@ -31,7 +39,7 @@ const MobileSidebar = observer(({ handleSidebar }) => {
               <div className="contacts_name">{name}</div>
               <div className="contacts_phone mobile">{phone}</div>
               <div className="contacts_bonuses">
-                <p>Доступно 23 бонуси</p>
+
               </div>
             </div>
           </div>
@@ -65,9 +73,9 @@ const MobileSidebar = observer(({ handleSidebar }) => {
             <Link to={"/contact"}>Контакти</Link>
           </ul>
         </div>
-      </section>
+      </m.section>
     </>
-  );
+  )
 });
 
 export default MobileSidebar;

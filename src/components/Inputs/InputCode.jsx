@@ -44,7 +44,8 @@ const InputCode = React.memo(({ onData }) => {
           autoСomplete="one-time-code"
           key={index}
           ref={(el) => (inputRefs.current[index] = el)}
-          type="text"
+          type="tel"
+          pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
           value={code[index] || ""}
           maxLength={1}
           className="inputCode__item"

@@ -8,6 +8,8 @@ import ProfileLink from "../ProfileLink/ProfileLink";
 
 import axios from "axios";
 import { url } from "../../api";
+import { m } from "framer-motion"
+import { animationLinks } from "../../animations/profile";
 
 import "../ProfileGrid/ProfileGrid.scss";
 import "./Addresses.scss";
@@ -48,7 +50,12 @@ const Addresses = observer(({ handleSidebar }) => {
     setModalOpen((prev) => !prev);
   };
   return (
-    <section className="grid_layout--main addresses">
+    <m.section
+      initial="hidden"
+      animate="visible"
+      variants={animationLinks}
+      transition={{ type: 'linear' }}
+      className="grid_layout--main addresses">
       <ProfileLink handleSidebar={handleSidebar}>Збережені адреси</ProfileLink>
       <div className="addresses_inner">
         <NewAddress openModal={handleModal} />
@@ -67,7 +74,7 @@ const Addresses = observer(({ handleSidebar }) => {
             />
           ))}
       </div>
-    </section>
+    </m.section>
   );
 });
 

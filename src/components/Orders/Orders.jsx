@@ -1,17 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
+import { m } from "framer-motion"
 import OrderModal from "../OrderModal/OrderModal";
 import ProfileLink from "../ProfileLink/ProfileLink";
 import "./Orders.scss";
+import { animationLinks } from "../../animations/profile";
 
-const Orders = ({handleSidebar}) => {
+const Orders = ({ handleSidebar }) => {
   const [isMainModalOpen, setMainModalOpen] = useState(false);
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
   useEffect(() => {
-    
+
   }, [])
-  
+
 
   const openMainModal = () => {
     setMainModalOpen(true);
@@ -32,10 +34,15 @@ const Orders = ({handleSidebar}) => {
 
   return (
     <>
-      <section className="grid_layout--main orders">
-      <ProfileLink handleSidebar={handleSidebar}>
-        Історія замовлень
-      </ProfileLink>
+      <m.section
+        initial="hidden"
+        animate="visible"
+        variants={animationLinks}
+        transition={{ type: 'linear' }}
+        className="grid_layout--main orders">
+        <ProfileLink handleSidebar={handleSidebar}>
+          Історія замовлень
+        </ProfileLink>
         <div className="order">
           <div className="order-container">
             <div className="order-info">
@@ -63,7 +70,7 @@ const Orders = ({handleSidebar}) => {
           closeMainModal={closeMainModal}
           isMainModalOpen={isMainModalOpen}
         />
-      </section>
+      </m.section>
     </>
   );
 };

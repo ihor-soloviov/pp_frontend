@@ -23,9 +23,7 @@ import Contact from "./Pages/Contact/Contact";
 
 //Import components
 import Header from "./components/Header/Header";
-import Popup from "./components/Popup/Popup";
 import Footer from "./components/Footer/Footer";
-import SelectCity from "./components/SelectCity/SelectCity";
 import PopupActions from "./components/PopupActions/PopupActions";
 import Loader from "./components/Loader/Loader";
 
@@ -44,20 +42,19 @@ TagManager.initialize(tagManagerArgs);
 const App = observer(() => {
   //Store
   const {
-    city,
     loadFromLocalStorageAdress,
     getFavoritesFromLS,
     userLogout,
     setUserDataToStore,
   } = userStore;
 
-  const { cityModal, cityModalHandler, isLoader, isLoaderHandler } =
-    modalsStore;
+  const { isLoader, setLoader } = modalsStore;
   const { getCartProductsFromLS } = shoppingCartStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
   const [showHeader, setShowHeader] = useState(true);
+  const [prevPath, setPrevPath] = useState('');
 
   //Tools
   const location = useLocation();
@@ -96,6 +93,19 @@ const App = observer(() => {
   }, [currentAction]);
 
   useEffect(() => {
+    const currentPath = location.pathname;
+    const prevPathFirstPart = prevPath.split('/')[1];
+    const currentPathFirstPart = currentPath.split('/')[1];
+
+    if (prevPathFirstPart !== currentPathFirstPart) {
+      setLoader()
+      console.log('Шлях змінився!');
+    }
+
+    setPrevPath(currentPath);
+  }, [location]);
+
+  useEffect(() => {
     if (location.pathname === "/profile/signout") {
       userLogout();
       navigate("/");
@@ -104,10 +114,6 @@ const App = observer(() => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    isLoaderHandler(true);
-    setTimeout(() => {
-      isLoaderHandler(false);
-    }, 1500);
 
     const handleWindowResize = () => {
       const maxWidth = 768;
@@ -128,23 +134,9 @@ const App = observer(() => {
     };
   }, [location]);
 
-  useEffect(() => {
-    if (city !== null) {
-      cityModalHandler(false);
-    } else {
-      cityModalHandler(true);
-    }
-  }, [city, cityModalHandler]);
-
   return (
     <React.Fragment>
       {cta()}
-
-      {cityModal && (
-        <Popup small={true} closeModal={() => cityModalHandler(false)}>
-          <SelectCity />
-        </Popup>
-      )}
 
       {showHeader && <Header />}
 

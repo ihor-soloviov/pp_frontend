@@ -9,10 +9,11 @@ import ShoppingCartItem from "./ShoppingCartItem";
 import PopupActions from "../PopupActions/PopupActions";
 
 import { begin_checkout } from "../../gm4";
-
+import { motion } from "framer-motion"
 //Import Styles
 import "./card.scss";
 import { observer } from "mobx-react-lite";
+import { animationLinks } from "../../animations/profile";
 
 const Cart = observer(() => {
   const navigate = useNavigate();
@@ -58,7 +59,8 @@ const Cart = observer(() => {
     <>
       {popupError(error)}
       <button className="card" onClick={() => setIsOpen(true)}>
-        <div className={`card__ico`}>
+        <div
+          className={`card__ico`}>
           <svg
             width="16"
             height="16"
@@ -87,7 +89,13 @@ const Cart = observer(() => {
         <span className="card__text">Кошик</span>
       </button>
       {isOpen && (
-        <div className="shopping-cart">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={animationLinks}
+          transition={{ type: 'linear' }}
+          className="shopping-cart"
+        >
           <div
             className="shopping-cart__close"
             onClick={() => setIsOpen(false)}
@@ -217,7 +225,7 @@ const Cart = observer(() => {
               />
             </div>
           )}
-        </div>
+        </motion.div>
       )}
     </>
   );
