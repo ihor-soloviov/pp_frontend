@@ -10,7 +10,14 @@ import {
   updatePhoneNumber,
 } from "firebase/auth";
 
-const { setUserDataToStore, changePhoneNumber } = userStore;
+import { v4 } from "uuid"
+
+import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebaseConfig";
+
+const { setUserDataToStore, changePhoneNumber, setUserAvatar } = userStore;
+
+const imageListRef = ref(storage, "avatars/")
 
 const setUpRecaptcha = () => {
   window.recaptchaVerifier = new RecaptchaVerifier(
@@ -215,4 +222,47 @@ const registration = (
     .catch((err) => console.error(err));
 };
 
-export { setUpRecaptcha, onSendOtp, onVerify, registration, authentication, onSetNewPhone, onVerifNewNumber }
+const downloadURLs = async (imageListRef, fileName) => {
+  try {
+    const res = await listAll(imageListRef);
+    const avatarLinksArray = [];
+    for (const el of res.items) {
+      const url = await getDownloadURL(el);
+      avatarLinksArray.push(url);
+    }
+    const usersAvatar = avatarLinksArray.find(el => el.includes(fileName));
+
+    localStorage.setItem('userPhoto', usersAvatar)
+    setUserAvatar(usersAvatar)
+  } catch (error) {
+    console.error('Помилка при отриманні URL:', error);
+  }
+}
+
+const uploadImage = async (file) => {
+  if (!file) {
+    return;
+  }
+  const newName = `${file.name + v4()}`;
+  const imageRef = ref(storage, `avatars/${newName}`);
+
+  try {
+    await uploadBytes(imageRef, file);
+    alert("Фото успішно завантажено");
+    downloadURLs(imageListRef, newName);
+  } catch (error) {
+    console.error('Помилка при завантаженні фото:', error);
+  }
+}
+
+export {
+  setUpRecaptcha,
+  onSendOtp,
+  onVerify,
+  registration,
+  authentication,
+  onSetNewPhone,
+  onVerifNewNumber,
+  downloadURLs,
+  uploadImage
+}

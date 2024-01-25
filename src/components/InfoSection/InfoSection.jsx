@@ -1,27 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 //Import React
 import React, { useEffect, useState } from "react";
+
 import ProfileLink from "../ProfileLink/ProfileLink";
+import NumberChangeModal from "./NumberChangeModal";
+
 import axios from "axios";
 import { url } from "../../api";
+import { uploadImage } from "../../utils/firebase";
 
 
 //Import Mobx
+import { observer } from "mobx-react-lite";
 import userStore from "../../store/user-store";
 
 //Import styles
 import "../ProfileGrid/ProfileGrid.scss";
 import "./InfoSection.scss";
-import { observer } from "mobx-react-lite";
-import NumberChangeModal from "./NumberChangeModal";
-import { storage } from "../../firebaseConfig";
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid"
 
-// Позже перенести это в редакс
 const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
-  const { name, email, phone, dateOfBirth, token, city, setUserDataToStore } =
+  const {
+    name,
+    email,
+    phone,
+    dateOfBirth,
+    token,
+    city,
+    setUserDataToStore,
+    avatar,
+    setUserAvatar
+  } =
     userStore;
 
   const [formData, setFormData] = useState({
@@ -35,47 +43,26 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   const [isNumberChanging, setIsNumberChanging] = useState(false);
   const [file, setFile] = useState(null);
 
-  const imageListRef = ref(storage, "avatars/")
-
   useEffect(() => {
     const loadUserDataFromLocalStorage = () => {
       const userData = localStorage.getItem("userData");
-      const dataParse = JSON.parse(userData);
+      const userAvatar = localStorage.getItem('userPhoto')
+      const parsedUserData = JSON.parse(userData);
 
-      if (!userData) {
+      if (!userData && !userAvatar) {
         return;
       }
 
 
-      if (dataParse.isAuthenticated === true) {
-        setUserDataToStore(dataParse);
+      if (parsedUserData.isAuthenticated === true) {
+        setUserDataToStore(parsedUserData);
+        setUserAvatar(userAvatar)
+
       }
     };
 
     loadUserDataFromLocalStorage()
   }, [])
-
-  useEffect(() => {
-    listAll(imageListRef).then((res) => {
-      res.items.forEach(item => {
-        getDownloadURL(item).then((url) => )
-      })
-    })
-  }, [])
-  
-
-  const uploadImage = () => {
-    if (!file) {
-      return
-    }
-    const imageRef = ref(storage, `avatars/${file.name + v4()}`)
-
-    uploadBytes(imageRef, file).then(() => {
-
-    })
-
-  }
-
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -108,7 +95,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
 
         <div className="profile_info--head">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/552/552721.png"
+            src={avatar}
             alt="profile"
             className="mobile-menu__avatar"
             width={70}
@@ -135,7 +122,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
               accept="image/png, image/jpeg, image/jpg, image/webp"
             />
             <label for="fileInput" className="button_link">Завантажити фото</label>
-            {file && <button onClick={uploadImage}>send</button>}
+            {file && <button onClick={() => uploadImage(file)}>send</button>}
           </div>
         </div>
         <ProfileLink handleSidebar={handleSidebar}>Інформація</ProfileLink>
@@ -149,14 +136,24 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
             <div className="contacts_name">{name}</div>
             <div className="contacts_phone">
               {phone}{" "}
-              <a href="#" className="button_link" disabled>
-                Змінити
-              </a>
+              <button
+                className="button_link"
+                onClick={openModal}
+              >
+                Змінити номер
+              </button>
             </div>
             <div className="">
-              <a href="#" className="button_link" disabled>
-                Завантажити фото
-              </a>
+              <input
+                disabled={file}
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={(e) => setFile(e.target.files[0])}
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+              />
+              <label for="fileInput" className="button_link">Завантажити фото</label>
+              {file && <button onClick={() => uploadImage(file)}>send</button>}
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ class UserStore {
   favoritProducts = [];
   adresses = [];
   dateOfBirth = null
+  avatar = 'https://cdn-icons-png.flaticon.com/512/552/552721.png'
 
   constructor() {
     makeAutoObservable(this);
@@ -37,6 +38,12 @@ class UserStore {
     this.favoritProducts = favorites;
     localStorage.setItem("userData", JSON.stringify(this));
   };
+
+  setUserAvatar = (avatarUrl) => {
+    this.avatar = avatarUrl;
+
+    localStorage.setItem('userPhoto', avatarUrl)
+  }
 
   changePhoneNumber = (newNumber) => {
     this.phone = newNumber;
