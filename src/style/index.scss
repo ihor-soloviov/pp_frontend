@@ -2,15 +2,4 @@
 @import "./reset.scss";
 @import "./typography.scss";
 
-.banner {
-  background-image: url("https://via.placeholder.com/1320x600");
-  max-width: 1320px;
-  height: 600px;
-  margin: 0 auto;
 
-  border-radius: 20px;
-
-  @include onMobile {
-    height: 550px;
-  }
-}

@@ -66,12 +66,13 @@ const Addresses = observer(({ handleSidebar }) => {
         />
         {adresses !== null &&
           adresses.map((adress) => (
-            <CreatedAddress
-              key={adress.addressName}
-              adress={adress}
-              openModal={handleModal}
-              setIsAdressesUpdating={setIsAdressesUpdating}
-            />
+            <React.Fragment key={adress.addressName}>
+              <CreatedAddress
+                adress={adress}
+                openModal={handleModal}
+                setIsAdressesUpdating={setIsAdressesUpdating}
+              />
+            </React.Fragment>
           ))}
       </div>
     </m.section>

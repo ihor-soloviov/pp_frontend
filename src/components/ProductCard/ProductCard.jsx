@@ -15,6 +15,7 @@ import { sendFavsToServer } from "../../utils/favorites";
 //Import Styles
 import "./productCard.scss";
 import classNames from "classnames";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const ProductCard = observer((props) => {
   const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
@@ -95,8 +96,7 @@ const ProductCard = observer((props) => {
             width="16"
             height="16"
             viewBox="0 0 16 16"
-            // fill="transparent"
-            fill="black"
+            fill="transparent"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -109,8 +109,8 @@ const ProductCard = observer((props) => {
         </div>
       </div>
       <div className="product__preview">
-        <img
-          loading="lazy"
+        <LazyLoadImage
+          effect="blur"
           src={props.preview}
           alt={props.name}
           onClick={() => navigate(`/product/${props.id}`)}

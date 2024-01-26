@@ -3,16 +3,17 @@ import cross from "../../../src/assets/Vector.svg";
 import userStore from "../../store/user-store";
 import { deleteAddress } from "../../utils/addresses";
 import { observer } from "mobx-react-lite";
+import { getFlat, getStreet } from "./utils";
 
 const CreatedAddress = observer(
-  ({ key, adress, openModal, setIsAdressesUpdating }) => {
+  ({ adress, openModal, setIsAdressesUpdating }) => {
     const { token, removeAdresses } = userStore;
 
-    const flat = adress?.flatNumber ? ` , кв. ${adress?.flatNumber}` : "";
-    const street = `${adress.streetName}, ${adress.homeNumber + flat}`;
+    const flat = getFlat(adress);
+    const street = getStreet(adress.streetName = "", adress.homeNumber = "", flat);
 
     return (
-      <div className="addresses_created" key={key}>
+      <div className="addresses_created">
         <div className="addresses_created__container">
           <div className="addresses_created__container--top">
             <div className="top-name">

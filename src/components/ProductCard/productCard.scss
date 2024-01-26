@@ -9,8 +9,11 @@
       opacity: 0.9;
     }
     .counter {
-      .counter__btn:last-child {
-        color: rgba(18, 19, 15, 1);
+      .counter__btn {
+        user-select: none;
+        &:last-child {
+          color: rgba(18, 19, 15, 1);
+        }
       }
     }
   }
@@ -118,7 +121,6 @@
   }
   &__name {
     font-family: 'Unbounded';
-    ;
     font-weight: 500;
     font-size: 16px;
     line-height: 130%;
@@ -177,6 +179,7 @@
       color: rgba(18, 19, 15, 1);
     }
     &--transperent {
+      user-select: none;
       background: rgba(255, 255, 255, 0.2);
       opacity: 0.8;
       &:hover {

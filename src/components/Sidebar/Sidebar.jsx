@@ -3,7 +3,7 @@ import React from 'react';
 import './Sidebar.scss';
 import SidebarLink from '../SidebarLink/SidebarLink';
 
-const Sidebar = ({ pathlink }) => {
+const Sidebar = React.memo(({ pathlink }) => {
   const sidebar = [
     'Інформація',
     'Улюблені блюда',
@@ -24,6 +24,6 @@ const Sidebar = ({ pathlink }) => {
       </ul>
     </aside>
   );
-};
+});
 
 export default Sidebar;

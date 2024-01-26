@@ -1,14 +1,14 @@
 import axios from "axios";
 import { url } from "../api";
 
+const headers = {
+  "Access-Control-Allow-Origin": "*",
+  "Content-Type": "application/json",
+};
+
 export const getCategories = async (setCategories, setCurrentCatId) => {
   try {
-    const response = await axios.get(`${url}/api/menu`, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.get(`${url}/api/menu`, { headers });
 
     const categories = response.data.response;
 
@@ -60,16 +60,11 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
   }
 };
 
-export const getProducts = async (id, setProducts) => {
+export const getProducts = async (id, setProducts, setRecommendationsProducts) => {
   try {
     const data = JSON.stringify({ categoryId: id });
 
-    const response = await axios.post(`${url}/api/products`, data, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.post(`${url}/api/products`, data, { headers });
 
     const productsData = response.data.response;
 
@@ -100,5 +95,32 @@ export const getProducts = async (id, setProducts) => {
     setProducts(processedProducts);
   } catch (error) {
     console.error("Помилка при отриманні продуктів:", error);
+  }
+};
+
+export const productPageGetter = async (id, setProduct, setRecommendationsProducts) => {
+  try {
+    // Перший запит
+    const productResponse = await axios.post(`${url}/api/product`, JSON.stringify({ productId: id }), { headers });
+    setProduct(productResponse.data);
+
+    // Другий запит
+    const menuCategoryId = JSON.stringify({ categoryId: productResponse.data.menu_category_id });
+    const recommendationsResponse = await axios.post(`${url}/api/products`, menuCategoryId, { headers });
+
+    const recommendationsData = recommendationsResponse.data.response.map(item => ({
+      key: item.product_id,
+      photo: item.photo_origin,
+      product_name: item.product_name,
+      price: item.price,
+      out: item.out,
+      product_id: item.product_id,
+      ingredients: item.product_production_description.split(".")[0].split(", ").join(", "),
+      category_name: item.category_name,
+    }));
+    setRecommendationsProducts(recommendationsData);
+
+  } catch (error) {
+    console.error(error);
   }
 };

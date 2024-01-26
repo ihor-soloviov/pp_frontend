@@ -5,19 +5,14 @@ import img01 from "../../../src/assets/images/about/about-1-desc.png";
 import img02 from "../../../src/assets/images/about/about-2-desc.png";
 import img03 from "../../../src/assets/images/about/about-3-desc.png";
 import svg1 from "../AboutUs/sprite.svg";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Main = () => {
   return (
     <>
       <Container>
         <div className="banner" />
-      </Container>
-
-      <Container>
         <Menu />
-      </Container>
-
-      <Container>
         <section className="about-section" style={{ marginTop: 120 }}>
           <div className="about-container container">
             <div className="about-top-wrap">
@@ -31,7 +26,7 @@ const Main = () => {
                 <li className="about-top-item">
                   <p className="about-top-text text">
                     Засновник Polar — європеєць з українським корінням — кілька
-                    років тому відвідав Україну. А Одесу, його жителів і колорит
+                    років тому відвідав Україну. А в Одесу, його жителів і колорит,
                     ви знаєте — не закохатися неможливо.
                   </p>
                 </li>
@@ -56,7 +51,7 @@ const Main = () => {
                   </p>
                 </li>
               </ul>
-              <img src={img01} alt="women" className="about-top-img first" />
+              <LazyLoadImage effect="opacity" src={img01} alt="women" className="about-top-img first" />
             </div>
             <svg className="about-icon first">
               <use href={`${svg1}#icon-arrow-1`}></use>
@@ -101,7 +96,7 @@ const Main = () => {
                   </p>
                 </li>
               </ul>
-              <img src={img02} alt="dishes" className="about-img second" />
+              <LazyLoadImage effect="opacity" src={img02} alt="dishes" className="about-img second" />
             </div>
             <svg className="about-icon second">
               <use href={`${svg1}#icon-arrow-2`}></use>
@@ -142,7 +137,7 @@ const Main = () => {
                 </li>
               </ul>
 
-              <img src={img03} alt="women" className="about-bottom-img" />
+              <LazyLoadImage effect="opacity" src={img03} alt="women" className="about-bottom-img" />
             </div>
           </div>
         </section>
@@ -207,7 +202,7 @@ const Main = () => {
             </div>
           </div>
         </section>
-        <section className="gallery-section">
+        {/*<section className="gallery-section">
           <div className="gallery-container container">
             <picture>
               <source
@@ -215,7 +210,8 @@ const Main = () => {
                 type="image/jpeg"
                 media="(min-width:768px)"
               />
-              <img
+              <LazyLoadImage
+                effect="opacity"
                 src="./images/about/about-8-mobile.jpg"
                 alt=""
                 className="gallery-img"
@@ -229,7 +225,7 @@ const Main = () => {
                   type="image/jpeg"
                   media="(min-width:768px)"
                 />
-                <img
+                <LazyLoadImage effect="opacity"
                   src="./images/about/about-7-mobile.jpg"
                   alt=""
                   className="gallery-img"
@@ -242,7 +238,7 @@ const Main = () => {
                   type="image/jpeg"
                   media="(min-width:768px)"
                 />
-                <img
+                <LazyLoadImage effect="opacity"
                   src="./images/about/about-13-mobile.jpg"
                   alt=""
                   className="gallery-img"
@@ -333,7 +329,7 @@ const Main = () => {
               </picture>
             </div>
           </div>
-        </section>
+                    </section>*/}
       </Container>
     </>
   );

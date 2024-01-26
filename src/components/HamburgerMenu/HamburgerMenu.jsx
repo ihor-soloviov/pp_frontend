@@ -2,29 +2,23 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import BtnMain from '../Buttons/BtnMain'
 
-import { m } from "framer-motion"
-import { animationMenu } from "../../animations/profile";
 import userStore from '../../store/user-store';
 import modalsStore from '../../store/modal-store';
 import { useNavigate } from 'react-router-dom';
 
-const HamburgerMenu = (setDropdown, dropdown, categories) => {
+const HamburgerMenu = (setHamburger, setDropdown, dropdown, categories) => {
   const { isAuthenticated, name, avatar } = userStore;
   const { authModalHandler } = modalsStore
   const navigate = useNavigate();
 
   return (
-    <m.div
-      initial="hidden"
-      active="visible"
-      variants={animationMenu}
-      transition={{ type: 'linear' }}
+    <div
       className="mobile-menu"
     >
       <nav className="mobile-menu__navigation">
         <ul className="mobile-menu__menu">
           <li className="mobile-menu__link">
-            <Link to={"/"}>Головна</Link>
+            <Link to={"/"} onClick={() => setHamburger(false)}>Головна</Link>
           </li>
           <li className="mobile-menu__link ">
             <div
@@ -98,7 +92,7 @@ const HamburgerMenu = (setDropdown, dropdown, categories) => {
           )}
         </div>
       </nav>
-    </m.div>
+    </div>
   )
 }
 

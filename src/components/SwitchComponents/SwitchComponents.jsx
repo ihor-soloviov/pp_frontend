@@ -8,7 +8,7 @@ import Favorites from "../Favorites/Favorites";
 import Bonus from "../Bonus/Bonus";
 import { LazyMotion, domAnimation } from "framer-motion";
 
-export const SwitchComponents = ({
+export const SwitchComponents = React.memo(({
   pathlink,
   handleSidebar,
   isSidebarClosed,
@@ -60,5 +60,5 @@ export const SwitchComponents = ({
     }
   };
 
-  return <>{renderComponent()}</>;
-};
+  return <React.Fragment>{renderComponent()}</React.Fragment>
+});

@@ -24,12 +24,11 @@ import logo from "../../assets/logo/logo.svg";
 
 //Import style
 import "./header.scss";
-import { LazyMotion, domAnimation } from "framer-motion";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 
 const Header = observer(() => {
   const { authModalHandler, authModal } = modalStore;
-  const { isAuthenticated, name, phone, avatar } = userStore;
+  const { isAuthenticated, name, avatar } = userStore;
 
   const [hamburger, setHamburger] = useState(false);
   const [dropdown, setDropdown] = useState(false);
@@ -159,9 +158,7 @@ const Header = observer(() => {
               </div>
             </div>
             {hamburger && (
-              <LazyMotion features={domAnimation}>
-                <HamburgerMenu setDropdown={setDropdown} dropdown={dropdown} categories={categories} />
-              </LazyMotion>
+              <HamburgerMenu setDropdown={setDropdown} dropdown={dropdown} categories={categories} />
             )}
           </Container>
         </header>
@@ -287,7 +284,7 @@ const Header = observer(() => {
                 <nav className="mobile-menu__navigation">
                   <ul className="mobile-menu__menu">
                     <li className="mobile-menu__link">
-                      <Link to={"/"}>Головна</Link>
+                      <Link to={"/"} onClick={() => setHamburger(false)}>Головна</Link>
                     </li>
                     <li className="mobile-menu__link ">
                       <div

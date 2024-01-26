@@ -9,6 +9,7 @@ import img02 from '../../../src/assets/images/about/about-2-desc.png';
 import img03 from '../../../src/assets/images/about/about-3-desc.png';
 import hero from '../../../src/assets/images/hero_preview.png';
 import svg1 from './sprite.svg';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const AboutUs = () => {
   return (
@@ -21,7 +22,7 @@ const AboutUs = () => {
               Коли людям хочеться швидко і смачно, вони обирають Polar
             </p>
             <div className='about__hero-preview'>
-              <img src={hero} alt='' />
+              <LazyLoadImage effect="opacity" src={hero} alt='girll' />
             </div>
           </div>
         </div>
@@ -172,7 +173,7 @@ const AboutUs = () => {
               <li className='facts-item'>
                 <div className='facts-icon-wrap'>
                   <svg className='facts-icon'>
-                  <use href={`${svg1}#icon-facts-2`}></use>
+                    <use href={`${svg1}#icon-facts-2`}></use>
                   </svg>
                 </div>
 
@@ -187,7 +188,7 @@ const AboutUs = () => {
               <li className='facts-item'>
                 <div className='facts-icon-wrap'>
                   <svg className='facts-icon'>
-                  <use href={`${svg1}#icon-facts-3`}></use>
+                    <use href={`${svg1}#icon-facts-3`}></use>
                   </svg>
                 </div>
                 <h3 className='facts-title'>4 хвилини</h3>
@@ -199,7 +200,7 @@ const AboutUs = () => {
               <li className='facts-item'>
                 <div className='facts-icon-wrap'>
                   <svg className='facts-icon'>
-                  <use href={`${svg1}#icon-facts-4`}></use>
+                    <use href={`${svg1}#icon-facts-4`}></use>
                   </svg>
                 </div>
                 <h3 className='facts-title'>Polar з екологією</h3>
@@ -212,7 +213,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-      <section className='gallery-section'>
+      {/*<section className='gallery-section'>
         <div className='gallery-container container'>
           <picture>
             <source
@@ -338,7 +339,7 @@ const AboutUs = () => {
             </picture>
           </div>
         </div>
-      </section>
+                  </section>*/}
     </Container>
   );
 };

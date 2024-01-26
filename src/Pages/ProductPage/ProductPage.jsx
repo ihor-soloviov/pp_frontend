@@ -1,23 +1,24 @@
 //Import React
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
+import { observer } from "mobx-react-lite";
 import shoppingCartStore from "../../store/shoping-cart-store";
 import popupActionsStore from "../../store/popup-action-store";
+
 
 //Import components
 import Container from "../../components/Container/Container";
 import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
+// import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
 
 //Import styles
 import "./ProductPage.scss";
 
 import { url } from "../../api";
 import { add_to_cart, view_item } from "../../gm4";
-import { observer } from "mobx-react-lite";
+import { productPageGetter } from "../../utils/menu";
 
 const ProductPage = observer(() => {
   const { id } = useParams();
@@ -40,54 +41,9 @@ const ProductPage = observer(() => {
   }, [product]);
 
   useEffect(() => {
-    const data = {
-      productId: id,
-    };
-
-    const dataJSON = JSON.stringify(data);
-    axios
-      .post(`${url}/api/product`, dataJSON, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        setProduct(res.data);
-        const menu_category_id = JSON.stringify({
-          categoryId: res.data.menu_category_id,
-        });
-
-        axios
-          .post(`${url}/api/products`, menu_category_id, {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            const resData = res.data.response;
-            // console.log(resData);
-            const dataMap = resData.map((item) => {
-              return {
-                key: item.product_id,
-                photo: item.photo_origin,
-                product_name: item.product_name,
-                price: item.price,
-                out: item.out,
-                product_id: item.product_id,
-                ingredients: item.product_production_description
-                  .split(".")[0]
-                  .split(", ")
-                  .join(", "),
-                category_name: item.category_name,
-              };
-            });
-            setRecommendationsProducts(dataMap);
-          });
-      })
-      .catch((err) => console.error(err));
+    productPageGetter(id, setProduct, setRecommendationsProducts)
   }, [id]);
+
 
   useEffect(() => {
     if (!products) {
@@ -146,7 +102,6 @@ const ProductPage = observer(() => {
                   {inCart === true ? (
                     <button
                       className="btn btn-main"
-                      onClick={() => {}}
                       disabled
                     >
                       <svg
@@ -238,21 +193,20 @@ const ProductPage = observer(() => {
             <div className="product-page__recommendations">
               <div className="product-page__recommendations-head">
                 <h3 className="title__h3">Рекомендуємо спробувати</h3>
-                <div className="product-page__recommendations-arrows">
+                {/*<div className="product-page__recommendations-arrows">
                   <ArrowBtn direction={"left"} />
                   <ArrowBtn direction={"right"} />
-                </div>
+                      </div>*/}
               </div>
 
               {recommendationsProducts !== null && (
                 <div className="product-page__recommendations-track">
                   <div className="product-page__recommendations-list">
                     {recommendationsProducts.map((product) => {
-                      // console.log(product);
                       return (
                         <ProductCard
                           preview={
-                            "https://polarpelmeni-api.work-set.eu/api/sendImage/" +
+                            "https://api.polarpelmeni.com.ua/api/sendImage/" +
                             product.product_id
                           }
                           name={product.product_name}

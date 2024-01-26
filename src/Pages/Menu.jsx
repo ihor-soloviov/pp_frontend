@@ -12,7 +12,7 @@ import classNames from "classnames";
 //Impost styles
 import "./menu.scss";
 
-const Menu = () => {
+const Menu = React.memo(() => {
   const { id } = useParams();
 
   const [currentCatId, setCurrentCatId] = useState(null);
@@ -75,6 +75,6 @@ const Menu = () => {
       )}
     </>
   );
-};
+});
 
 export default Menu;
