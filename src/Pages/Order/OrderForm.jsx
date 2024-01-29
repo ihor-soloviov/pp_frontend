@@ -63,7 +63,7 @@ const OrderForm = observer(() => {
     comment: "",
     doNotCall: false,
   });
-  const [isPromotion, setIsPromotion] = useState(true);
+  const [isPromotion, setIsPromotion] = useState(false);
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
@@ -78,7 +78,7 @@ const OrderForm = observer(() => {
   const [isOrderCreate, setIsOrderCreate] = useState(false);
 
   //stores
-  const { setOrderData, setPaymentData, setPosterResponsea } = orderStore;
+  const { setOrderData, setPaymentData, setPosterResponse, usedPromocode } = orderStore;
   const { products, clearCart } = shoppingCartStore;
   const {
     name,
@@ -176,14 +176,14 @@ const OrderForm = observer(() => {
     checkCurrentUserPromo();
   }, [checkCurrentUserPromo, isAuthenticated]);
 
-  useEffect(() => {
-    if (isPromotion) {
-      setPromotionPopup(true);
-      setTimeout(() => {
-        setPromotionPopup(false);
-      }, 3000);
-    }
-  }, [isPromotion]);
+  // useEffect(() => {
+  //   if (isPromotion) {
+  //     setPromotionPopup(true);
+  //     setTimeout(() => {
+  //       setPromotionPopup(false);
+  //     }, 3000);
+  //   }
+  // }, [isPromotion]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -196,7 +196,7 @@ const OrderForm = observer(() => {
 
   useEffect(() => {
     if (transactionStatus) {
-      createOrder(setPosterResponsea, setIsOrderCreate, isPromotion);
+      createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
     }
   }, [createOrder, transactionStatus]);
 
@@ -277,7 +277,7 @@ const OrderForm = observer(() => {
         });
       }, 3000);
     } else {
-      setOrderData({ orderData: orderData });
+      setOrderData(orderData);
 
       if (orderData.payment.type === 1) {
         const amount = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
@@ -289,7 +289,6 @@ const OrderForm = observer(() => {
       }
     }
   }, [orderData, formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
-
 
 
   return (
@@ -306,6 +305,7 @@ const OrderForm = observer(() => {
           />
         </Popup>
       )}
+
       {error.status === true && (
         <PopupActions
           action={error.currentError}
@@ -318,7 +318,8 @@ const OrderForm = observer(() => {
           error
         />
       )}
-      {promotionPopup === true && (
+
+      {promotionPopup && (
         <PopupActions
           action={"Ваш промокод застосован"}
           onClick={() => {
@@ -459,7 +460,7 @@ const OrderForm = observer(() => {
               name={"Промокод"}
               placeholder={"Промокод"}
               data={
-                isAuthenticated && promocode40
+                promocode40
                   ? [
                     {
                       id: 0,
@@ -487,15 +488,18 @@ const OrderForm = observer(() => {
                     });
                   }, 2000);
                 } else {
-                  console.log("usage");
-                  // userPromocode();
+                  setPromotionPopup(true)
+                  setTimeout(() => {
+                    setPromotionPopup(false)
+                  }, 2500);
                   setIsPromotion(true);
                 }
               }}
-              disabled={promocode40 ? false : true}
+              disabled={!isPromotion ? false : true}
             />
+
           </section>
-          {isAuthenticated && promocode40 && isPromotion && (
+          {promocode40 && (
             <div className={`order-page__have-promocode`}>
               <span>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
               <div className="order-page__arrow">
@@ -513,6 +517,7 @@ const OrderForm = observer(() => {
               </div>
             </div>
           )}
+
         </section>
         <section className="order-page__section">
           <h3>Спосіб оплати</h3>
@@ -520,6 +525,7 @@ const OrderForm = observer(() => {
             <InputText
               name={"Використати бонуси"}
               placeholder={"0"}
+              disabled
               value={formData.bonus}
               onChange={(value) => handleFormValueChange("bonus", value)}
             />
@@ -605,7 +611,7 @@ const OrderForm = observer(() => {
         <BtnMain
           name={"Оформити замовлення"}
           fullWide
-          onClick={() => onSubmit()}
+          onClick={onSubmit}
         />
       </section>
     </React.Fragment>
