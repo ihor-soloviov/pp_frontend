@@ -4,9 +4,8 @@ import ProfileGrid from '../../components/ProfileGrid/ProfileGrid';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { useLocation } from 'react-router-dom';
 import { SwitchComponents } from '../../components/SwitchComponents/SwitchComponents';
-import { observer } from 'mobx-react-lite';
 
-const Profile = observer(() => {
+const Profile = React.memo(() => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const location = useLocation();
   const pathlink = location.pathname.replace('/profile/', '');

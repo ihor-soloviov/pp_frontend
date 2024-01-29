@@ -9,11 +9,9 @@ import ShoppingCartItem from "./ShoppingCartItem";
 import PopupActions from "../PopupActions/PopupActions";
 
 import { begin_checkout } from "../../gm4";
-import { motion } from "framer-motion"
 //Import Styles
 import "./card.scss";
 import { observer } from "mobx-react-lite";
-import { animationLinks } from "../../animations/profile";
 
 const Cart = observer(() => {
   const navigate = useNavigate();
@@ -89,11 +87,8 @@ const Cart = observer(() => {
         <span className="card__text">Кошик</span>
       </button>
       {isOpen && (
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={animationLinks}
-          transition={{ type: 'linear' }}
+        <div
+
           className="shopping-cart"
         >
           <div
@@ -225,7 +220,7 @@ const Cart = observer(() => {
               />
             </div>
           )}
-        </motion.div>
+        </div>
       )}
     </>
   );

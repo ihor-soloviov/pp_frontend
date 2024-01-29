@@ -11,9 +11,11 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
     const response = await axios.get(`${url}/api/menu`, { headers });
 
     const categories = response.data.response;
+    const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Комбо ", "onlineOrder: Чик-чирик"]
 
     // Фільтруємо та перетворюємо категорії
     const processedCategories = categories
+      .filter(category => !filtr.includes(category.category_name))
       .filter((category) => category.category_name.startsWith("onlineOrder:"))
       .map((category, index) => ({
         ...category,

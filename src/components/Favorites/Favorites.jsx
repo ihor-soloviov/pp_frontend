@@ -5,19 +5,14 @@ import { observer } from "mobx-react-lite";
 import userStore from "../../store/user-store";
 import "./Favorites.scss";
 
-import { m } from "framer-motion"
-import { animationLinks } from "../../animations/profile";
 
 
 const Favorites = observer(({ handleSidebar }) => {
   const { favoritProducts } = userStore;
 
   return (
-    <m.section
-      initial="hidden"
-      animate="visible"
-      variants={animationLinks}
-      transition={{ type: 'linear' }}
+    <section
+
       className="grid_layout--main favorites"
     >
       <ProfileLink handleSidebar={handleSidebar}>Улюблені блюда</ProfileLink>
@@ -33,7 +28,7 @@ const Favorites = observer(({ handleSidebar }) => {
             ingredients={favorite.ingredients}
           />
         ))}
-    </m.section>
+    </section>
   );
 });
 

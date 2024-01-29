@@ -204,21 +204,14 @@
 
     &__preview {
       max-width: 100%;
-
-      aspect-ratio: 1 / 1;
-
       border-radius: 15px;
       overflow: hidden;
       position: relative;
-      line-height: 0;
-
+      aspect-ratio: 1 / 1;
       &:hover {
         .product__addToCard {
           bottom: 0;
         }
-      }
-      img {
-        height: 100%;
       }
     }
     &__addToCard {

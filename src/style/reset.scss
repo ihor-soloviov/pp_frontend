@@ -32,7 +32,10 @@ li {
 }
 
 .banner {
-  background-image: url('https://via.placeholder.com/1320x600');
+  background-image: url('../assets/banner.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+
   max-width: 1320px;
   height: 600px;
   margin: 0 auto;
@@ -40,6 +43,7 @@ li {
   border-radius: 20px;
 
   @include onMobile {
+    background-image: url('../assets/bannerMob.webp');
     height: 550px;
   }
 }

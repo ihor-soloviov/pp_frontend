@@ -6,7 +6,6 @@ import MobileSidebar from "../MobileSidebar/MobileSidebar";
 import ComingSoon from "../ComingSoon/ComingSoon";
 import Favorites from "../Favorites/Favorites";
 import Bonus from "../Bonus/Bonus";
-import { LazyMotion, domAnimation } from "framer-motion";
 
 export const SwitchComponents = React.memo(({
   pathlink,
@@ -17,43 +16,31 @@ export const SwitchComponents = React.memo(({
     switch (pathlink) {
       case "info":
         return (
-          <LazyMotion features={domAnimation}>
-            <InfoSection
-              handleSidebar={handleSidebar}
-              isSidebarClosed={isSidebarClosed}
-            />
-          </LazyMotion>
+          <InfoSection
+            handleSidebar={handleSidebar}
+            isSidebarClosed={isSidebarClosed}
+          />
         );
       case "addresses":
         return (
-          <LazyMotion features={domAnimation}>
-            <Addresses handleSidebar={handleSidebar} />
-          </LazyMotion>
+          <Addresses handleSidebar={handleSidebar} />
         )
       case "history":
         return (
-          <LazyMotion features={domAnimation}>
-            <Orders handleSidebar={handleSidebar} />
-          </LazyMotion>
+          <Orders handleSidebar={handleSidebar} />
         )
       case "":
         return (
-          <LazyMotion features={domAnimation}>
-            <MobileSidebar handleSidebar={handleSidebar} />
-          </LazyMotion>
+          <MobileSidebar handleSidebar={handleSidebar} />
         )
       case "favourite":
         return (
-          <LazyMotion features={domAnimation}>
-            <Favorites handleSidebar={handleSidebar} />
-          </LazyMotion>
+          <Favorites handleSidebar={handleSidebar} />
         )
 
       case "bonuses":
         return (
-          <LazyMotion features={domAnimation}>
-            <Bonus handleSidebar={handleSidebar} />
-          </LazyMotion>
+          <Bonus handleSidebar={handleSidebar} />
         )
       default:
         return <ComingSoon handleSidebar={handleSidebar} />;

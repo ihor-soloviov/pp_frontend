@@ -2,9 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import userStore from "../../store/user-store";
 
-import { m } from "framer-motion"
-import { animationSidebar } from "../../animations/profile";
-
 import SidebarLink from "../SidebarLink/SidebarLink";
 import cross from "../../../src/assets/Vector.svg";
 import { observer } from "mobx-react-lite";
@@ -22,11 +19,7 @@ const MobileSidebar = observer(({ handleSidebar }) => {
   ];
   return (
     <>
-      <m.section
-        initial="hidden"
-        animate="visible"
-        variants={animationSidebar}
-        transition={{ type: 'linear' }}
+      <section
         className="sidebar-mobile animate">
         <div className="profile_info--head__mobile sidebar-mobile__header">
           <div className="mobile-inner">
@@ -73,7 +66,7 @@ const MobileSidebar = observer(({ handleSidebar }) => {
             <Link to={"/contact"}>Контакти</Link>
           </ul>
         </div>
-      </m.section>
+      </section>
     </>
   )
 });
