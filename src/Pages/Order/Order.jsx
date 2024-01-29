@@ -87,7 +87,7 @@ const Order = () => {
                         : "Безкоштовна"}
                     </p>
                   </div>
-                  {!promocode40 && (
+                  {promocode40 && (
                     <div className="checkout__row">
                       <p className="checkout__text">Скидка:</p>
                       <p className="checkout__text">

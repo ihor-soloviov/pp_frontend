@@ -78,7 +78,7 @@ const OrderForm = observer(() => {
   const [isOrderCreate, setIsOrderCreate] = useState(false);
 
   //stores
-  const { setOrderData, setPaymentData, setPosterResponse, usedPromocode } = orderStore;
+  const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
   const { products, clearCart } = shoppingCartStore;
   const {
     name,
@@ -145,6 +145,8 @@ const OrderForm = observer(() => {
 
   //Effects
 
+  //addresses shit
+
   useEffect(() => {
     if (!adresses) {
       return;
@@ -172,19 +174,13 @@ const OrderForm = observer(() => {
     setSelectAddresses([...selected, ...adressMap]);
   }, []);
 
+  //перевірка промокоду 
+
   useEffect(() => {
     checkCurrentUserPromo();
   }, [checkCurrentUserPromo, isAuthenticated]);
 
-  // useEffect(() => {
-  //   if (isPromotion) {
-  //     setPromotionPopup(true);
-  //     setTimeout(() => {
-  //       setPromotionPopup(false);
-  //     }, 3000);
-  //   }
-  // }, [isPromotion]);
-
+  //перевірка статусу транзації
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const paramValue = searchParams.get("status");
@@ -194,6 +190,8 @@ const OrderForm = observer(() => {
     }
   }, [checkTransactionStatus, location.search]);
 
+
+  //створення замовлення в постер
   useEffect(() => {
     if (transactionStatus) {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
@@ -221,7 +219,6 @@ const OrderForm = observer(() => {
         localStorage.removeItem("user_order_data");
         clearCart();
         thanksModalHandler(false);
-        // navigate('/');
       }, 5000);
     }
   }, [clearCart, isOrderCreate, thanksModalHandler]);
@@ -473,33 +470,32 @@ const OrderForm = observer(() => {
               value={formData.paymentMethod}
               onChange={(value) => handleFormValueChange("promoCode", value)}
             />
-            <BtnMain
-              name={"Застосувати"}
-              onClick={() => {
-                if (calculateTotalPrice(products) * (60 / 100) <= 200) {
-                  setError({
-                    status: true,
-                    currentError: "Мінімальна сумма замовлення 200 ₴",
-                  });
-                  setTimeout(() => {
+            {promocode40 && (
+              <BtnMain
+                name={"Застосувати"}
+                onClick={() => {
+                  if (calculateTotalPrice(products) * (60 / 100) <= 200) {
                     setError({
-                      status: false,
-                      currentError: "",
+                      status: true,
+                      currentError: "Мінімальна сумма замовлення 200 ₴",
                     });
-                  }, 2000);
-                } else {
-                  setPromotionPopup(true)
-                  setTimeout(() => {
-                    setPromotionPopup(false)
-                  }, 2500);
-                  setIsPromotion(true);
-                }
-              }}
-              disabled={!isPromotion ? false : true}
-            />
-
-          </section>
-          {promocode40 && (
+                    setTimeout(() => {
+                      setError({
+                        status: false,
+                        currentError: "",
+                      });
+                    }, 2000);
+                  } else {
+                    setPromotionPopup(true)
+                    setTimeout(() => {
+                      setPromotionPopup(false)
+                    }, 2500);
+                    setIsPromotion(true);
+                  }
+                }}
+                disabled={!isPromotion ? false : true}
+              />
+            )}
             <div className={`order-page__have-promocode`}>
               <span>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
               <div className="order-page__arrow">
@@ -516,7 +512,7 @@ const OrderForm = observer(() => {
                 </svg>
               </div>
             </div>
-          )}
+          </section>
 
         </section>
         <section className="order-page__section">

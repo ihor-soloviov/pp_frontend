@@ -93,116 +93,119 @@ export function filterTimeArray(array) {
   return filteredArray;
 }
 
-export const checkCurrentUserPromo = () => {
-  axios
-    .post(
+export const checkCurrentUserPromo = async () => {
+  try {
+    const response = await axios.post(
       `${url}/api/auth`,
       { token: token },
       {
-        headers: {
-          headers,
-        },
+        headers: headers,
       }
-    )
-    .then((response) => {
-      const data = response.data;
+    );
 
-      if (response.status === 200) {
-        console.log("checkCurrentUserPromo", data.promocode40);
-        if (data.promocode40 === true) {
-          userPromocodeNotUse();
-        } else {
-          userPromocode();
-        }
-      }
-    })
-    .catch((err) => console.error(err));
-};
+    const data = response.data;
 
-export const usagePromotion = () => {
-  axios
-    .post(url + "/api/promocode", { token: token }, { headers: headers })
-    .then((res) => {
-      const data = res.data;
-
-      console.log("usagePromotion:", data);
-    })
-    .catch((err) => console.error(err));
-};
-
-export const createOrder = (setPosterResponsea, setIsOrderCreate, isPromotion) => {
-  const user_payment_data = JSON.parse(
-    localStorage.getItem("user_payment_data")
-  );
-  const data = JSON.parse(localStorage.getItem("user_order_data"));
-  const orderId = user_payment_data ? user_payment_data.order_id : null;
-
-  axios
-    .post(
-      url + "/api/createOrder",
-      { order_id: orderId, data: data },
-      { headers: headers }
-    )
-    .then((res) => {
-      const data = res.data;
-      if (!data.error) {
-        console.log("createOrder:", data);
-        setPosterResponsea({ posterOrder: data.response });
-        setIsOrderCreate(true);
-
-        if (isPromotion || data.promotion !== "") {
-          usagePromotion(token, headers);
-        }
-      }
-    })
-    .catch((err) => console.error(err));
-};
-
-export const createTransaction = (amount, setPaymentData) => {
-  const data = { amount: amount };
-  axios
-    .post(url + "/api/pay", data, { headers: headers })
-    .then((res) => {
-      const data = res.data;
-      const payment_url = `https://liqpay.ua/api/3/checkout?data=${data.data}&signature=${data.signature}`;
-
-      setPaymentData(data);
-
-      console.log("createTransaction:", data, payment_url);
-
-      window.location.replace(payment_url);
-    })
-    .catch((err) => console.error(err));
-};
-
-export const checkTransactionStatus = (setTransactionStatus, setError, navigate) => {
-  const user_payment_data = JSON.parse(
-    localStorage.getItem("user_payment_data")
-  );
-
-  const data = { order_id: user_payment_data.order_id };
-  axios
-    .post(url + "/api/getStatus", data, { headers: headers })
-    .then((res) => {
-      const data = res.data;
-      console.log("checkTransactionStatus:", data);
-
-      if (data === "success") {
-        setTransactionStatus(true);
-      } else if (data === "unpaid") {
+    if (response.status === 200) {
+      console.log("checkCurrentUserPromo", data.promocode40);
+      if (data.promocode40 === true) {
         userPromocodeNotUse();
-        setError({
-          status: true,
-          currentError: "Оплата не вдала",
-        });
-
-        localStorage.removeItem("posterOrder");
-        localStorage.removeItem("user_payment_data");
-        localStorage.removeItem("user_order_data");
-        setTimeout(() => {
-          navigate("/order");
-        }, 2000);
+      } else {
+        userPromocode();
       }
-    })
-    .catch((err) => console.error(err));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const usagePromotion = async () => {
+  try {
+    const res = await axios.post(url + "/api/promocode", { token: token }, { headers: headers });
+    const data = res.data;
+
+    console.log("usagePromotion:", data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion) => {
+  try {
+    const user_payment_data = JSON.parse(localStorage.getItem("user_payment_data"));
+    const data = JSON.parse(localStorage.getItem("user_order_data"));
+    const orderId = user_payment_data ? user_payment_data.order_id : null;
+
+    const res = await axios.post(url + "/api/createOrder", { order_id: orderId, data: data }, { headers: headers });
+    const responseData = res.data;
+    if (!responseData.error) {
+      console.log("createOrder:", responseData);
+      setPosterResponse({ posterOrder: responseData.response });
+      setIsOrderCreate(true);
+
+      if (isPromotion || responseData.promotion !== "") {
+        usagePromotion(token);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const createTransaction = async (amount, setPaymentData) => {
+  try {
+    const data = { amount: amount };
+    const res = await axios.post(url + "/api/pay", data, { headers: headers });
+    const responseData = res.data;
+    const payment_url = `https://liqpay.ua/api/3/checkout?data=${responseData.data}&signature=${responseData.signature}`;
+
+    setPaymentData(responseData);
+
+    console.log("createTransaction:", responseData, payment_url);
+
+    window.location.replace(payment_url);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const checkTransactionStatus = async (setTransactionStatus, setError, navigate) => {
+  try {
+    const user_payment_data = JSON.parse(
+      localStorage.getItem("user_payment_data")
+    );
+
+    if (!user_payment_data) {
+      setError({
+        status: true,
+        currentError: "Оплата не вдала",
+      });
+      return
+    }
+
+    const data = { order_id: user_payment_data.order_id };
+    const response = await axios.post(url + "/api/getStatus", data, { headers: headers });
+
+    const responseData = response.data;
+    console.log("checkTransactionStatus:", responseData);
+
+    if (responseData === "unpaid") {
+      userPromocodeNotUse();
+      setError({
+        status: true,
+        currentError: "Оплата не вдала",
+      });
+      return
+    }
+
+    if (responseData === "success") {
+      setTransactionStatus(true);
+
+      // setTimeout(() => {
+      //   navigate("/order");
+      // }, 2000);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
