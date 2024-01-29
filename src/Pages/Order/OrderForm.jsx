@@ -1,16 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-import "./Order.scss";
+import orderStore from "../../store/order-store";
+import modalsStore from "../../store/modal-store";
+import shoppingCartStore from "../../store/shoping-cart-store";
+import userStore from "../../store/user-store";
 
 //Import Functios
 import {
   dateFormatter,
   calculateTotalPrice,
   filterTimeArray,
+  createOrder,
+  checkTransactionStatus,
+  createTransaction,
+  checkCurrentUserPromo,
+  getCurrentDate,
 } from "./OrderTools";
+
+import { purchase } from "../../gm4";
+import { timeArray } from "./time";
 
 //Import components
 import InputText from "../../components/Inputs/InputText";
@@ -23,119 +34,12 @@ import Checkbox from "../../components/Inputs/Checkbox";
 
 import Popup from "../../components/Popup/Popup";
 import Thanks from "../../components/Thanks/Thanks";
-import { useLocation, useNavigate } from "react-router-dom";
 import PopupActions from "../../components/PopupActions/PopupActions";
 
-import orderStore from "../../store/order-store";
-import modalsStore from "../../store/modal-store";
-import shoppingCartStore from "../../store/shoping-cart-store";
-import userStore from "../../store/user-store";
-
-import { url } from "../../api";
-import { purchase } from "../../gm4";
-import { timeArray } from "./time";
-
-
-const getCurrentDate = () => {
-  const currentDate = new Date();
-
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const day = String(currentDate.getDate()).padStart(2, "0");
-  const hours = String(currentDate.getHours()).padStart(2, "0");
-  const minutes = String(currentDate.getMinutes() + 5).padStart(2, "0");
-  const seconds = String(currentDate.getSeconds()).padStart(2, "0");
-
-  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  return formattedDate;
-};
+import "./Order.scss";
 
 const OrderForm = observer(() => {
-  const headers = useMemo(
-    () => ({
-      "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    }),
-    []
-  );
   //State
-  const [isPromotion, setIsPromotion] = useState(true);
-  const [promotionPopup, setPromotionPopup] = useState(false);
-  const [transactionStatus, setTransactionStatus] = useState(false);
-  const [posterOrder, setPosterOrder] = useState(null);
-  const [selectAddresses, setSelectAddresses] = useState([
-    {
-      label: "Немає",
-      value: null,
-      id: 0,
-    },
-  ]);
-  const [error, setError] = useState({ status: false, currentError: "" });
-
-  const [isOrderCreate, setIsOrderCreate] = useState(false);
-
-  //Tools
-  const location = useLocation();
-
-  const navigate = useNavigate();
-
-  //Redux
-  // const shoppingCart = useSelector((state) => state.shoppingCart.products);
-  const { setOrderData, setPaymentData, setPosterResponsea } = orderStore;
-  const { products, clearCart } = shoppingCartStore;
-  const {
-    token,
-    name,
-    phone,
-    adresses,
-    isAuthenticated,
-    promocode40,
-    userPromocode,
-    userPromocodeNotUse,
-  } = userStore;
-
-  const { thanksModal, thanksModalHandler } = modalsStore;
-
-  const shoppingCartMap = products.map((item) => {
-    return { product_id: item.id, count: item.count };
-  });
-
-  const shoppingCartMapPromo = products.map((item) => {
-    return { id: "2", involved_products: [{ id: item.id, count: item.count }] };
-  });
-
-  useEffect(() => {
-    if (!adresses) {
-      return;
-    }
-
-    const selected = [
-      {
-        label: "Виберіть адресу",
-        value: null,
-        id: 0,
-      },
-    ];
-
-    const adressMap = adresses.map((data, index) => {
-      return {
-        id: index + 1,
-        label: data.addressName,
-        value: `Вулиця: ${data.streetName}, ${data.homeNumber}, ${
-          data.entranceNumber ? `парадна: ${data.entranceNumber}` : ""
-        } ${data.entranceCode ? `код: ${data.entranceCode} ` : ""} ${
-          data.floar ? `поверх: ${data.floar} ` : ""
-        } ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ""} ${
-          data.comment ? `коментар: ${data.comment} ` : ""
-        } `,
-      };
-    });
-
-    setSelectAddresses([...selected, ...adressMap]);
-  }, []);
-
-  const time = filterTimeArray(timeArray);
-
   const [formData, setFormData] = useState({
     spot_id: 1,
     name: "",
@@ -159,6 +63,42 @@ const OrderForm = observer(() => {
     comment: "",
     doNotCall: false,
   });
+  const [isPromotion, setIsPromotion] = useState(true);
+  const [promotionPopup, setPromotionPopup] = useState(false);
+  const [transactionStatus, setTransactionStatus] = useState(false);
+  const [posterOrder, setPosterOrder] = useState(null);
+  const [selectAddresses, setSelectAddresses] = useState([
+    {
+      label: "Немає",
+      value: null,
+      id: 0,
+    },
+  ]);
+  const [error, setError] = useState({ status: false, currentError: "" });
+  const [isOrderCreate, setIsOrderCreate] = useState(false);
+
+  //stores
+  const { setOrderData, setPaymentData, setPosterResponsea } = orderStore;
+  const { products, clearCart } = shoppingCartStore;
+  const {
+    name,
+    phone,
+    adresses,
+    isAuthenticated,
+    promocode40,
+  } = userStore;
+
+  const { thanksModal, thanksModalHandler } = modalsStore;
+
+  const shoppingCartMap = products.map((item) => {
+    return { product_id: item.id, count: item.count };
+  });
+
+  const shoppingCartMapPromo = products.map((item) => {
+    return { id: "2", involved_products: [{ id: item.id, count: item.count }] };
+  });
+
+  const time = filterTimeArray(timeArray);
 
   const orderData = {
     spot_id: 1,
@@ -166,12 +106,11 @@ const OrderForm = observer(() => {
     phone: formData.number,
     products: shoppingCartMap,
     client_address: {
-      address1: `${
-        formData.selectedAddress !== "Виберіть адресу"
-          ? formData.selectedAddress
-          : ` Вулиця: ${formData.street} ,  Вулиця: ${formData.street},
+      address1: `${formData.selectedAddress !== "Виберіть адресу"
+        ? formData.selectedAddress
+        : ` Вулиця: ${formData.street} ,  Вулиця: ${formData.street},
                 Дім: ${formData.houseNumber}`
-      }`,
+        }`,
       address2: `
                 Парадная: ${formData.entrance},
                 Квартира: ${formData.apartment},
@@ -179,11 +118,10 @@ const OrderForm = observer(() => {
                 Поверх: ${formData.floor},`,
     },
     service_mode: formData.howToReciveOrder === "Самовивіз" ? 2 : 3,
-    delivery_time: `${
-      formData.deliveryTime === "На зараз"
-        ? getCurrentDate()
-        : dateFormatter(formData.selectedTime)
-    }`,
+    delivery_time: `${formData.deliveryTime === "На зараз"
+      ? getCurrentDate()
+      : dateFormatter(formData.selectedTime)
+      }`,
     payment: {
       type: formData.paymentMethod === "Готівка" ? 0 : 1,
       sum: isPromotion ? 0 : calculateTotalPrice(products),
@@ -193,182 +131,50 @@ const OrderForm = observer(() => {
     comment: `
             Кол - во
             персон: ${formData.personCount},
-            ${
-              formData.comment &&
-              ` ${formData.comment}
+            ${formData.comment &&
+      ` ${formData.comment}
             `
-            }, ${formData.withoutDevices && "Без приборов"},${
-      formData.doNotCall && "Не перезванивать"
-    }, ${formData.howToReciveOrder === 2 && "САМОВЫВОЗ"} ${
-      isPromotion && "СКИДКА 40%"
-    }`,
+      }, ${formData.withoutDevices && "Без приборов"},${formData.doNotCall && "Не перезванивать"
+      }, ${formData.howToReciveOrder === 2 && "САМОВЫВОЗ"} ${isPromotion && "СКИДКА 40%"
+      }`,
   };
 
-  //Update formdata state
-  const handleChange = (field, value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [field]: value,
-    }));
-  };
+  //Tools
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const usagePromotion = useCallback(() => {
-    axios
-      .post(url + "/api/promocode", { token: token }, { headers: headers })
-      .then((res) => {
-        const data = res.data;
+  //Effects
 
-        console.log("usagePromotion:", data);
-      })
-      .catch((err) => console.error(err));
-  }, [headers, token]);
+  useEffect(() => {
+    if (!adresses) {
+      return;
+    }
 
-  // Сумнівна хуйня яку варто виправити при тестуваннях промокоду
-  const checkCurrentUserPromo = useCallback(() => {
-    axios
-      .post(
-        `${url}/api/auth`,
-        { token: token },
-        {
-          headers: {
-            headers,
-          },
-        }
-      )
-      .then((response) => {
-        const data = response.data;
+    const selected = [
+      {
+        label: "Виберіть адресу",
+        value: null,
+        id: 0,
+      },
+    ];
 
-        if (response.status === 200) {
-          console.log("checkCurrentUserPromo", data.promocode40);
-          if (data.promocode40 === true) {
-            userPromocodeNotUse();
-          } else {
-            userPromocode();
-          }
-        }
-      })
-      .catch((err) => console.error(err));
-  }, [token, userPromocode, userPromocodeNotUse]);
+    const adressMap = adresses.map((data, index) => {
+      return {
+        id: index + 1,
+        label: data.addressName,
+        value: `Вулиця: ${data.streetName}, ${data.homeNumber}, ${data.entranceNumber ? `парадна: ${data.entranceNumber}` : ""
+          } ${data.entranceCode ? `код: ${data.entranceCode} ` : ""} ${data.floar ? `поверх: ${data.floar} ` : ""
+          } ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ""} ${data.comment ? `коментар: ${data.comment} ` : ""
+          } `,
+      };
+    });
+
+    setSelectAddresses([...selected, ...adressMap]);
+  }, []);
 
   useEffect(() => {
     checkCurrentUserPromo();
   }, [checkCurrentUserPromo, isAuthenticated]);
-
-  const createTransaction = (amount) => {
-    const data = { amount: amount };
-    axios
-      .post(url + "/api/pay", data, { headers: headers })
-      .then((res) => {
-        const data = res.data;
-        const payment_url = `https://liqpay.ua/api/3/checkout?data=${data.data}&signature=${data.signature}`;
-
-        setPaymentData(data);
-
-        console.log("createTransaction:", data, payment_url);
-
-        window.location.replace(payment_url);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const checkTransactionStatus = useCallback(() => {
-    const user_payment_data = JSON.parse(
-      localStorage.getItem("user_payment_data")
-    );
-
-    const data = { order_id: user_payment_data.order_id };
-    axios
-      .post(url + "/api/getStatus", data, { headers: headers })
-      .then((res) => {
-        const data = res.data;
-        console.log("checkTransactionStatus:", data);
-
-        if (data === "success") {
-          setTransactionStatus(true);
-        } else if (data === "unpaid") {
-          userPromocodeNotUse();
-          setError({
-            status: true,
-            currentError: "Оплата не вдала",
-          });
-
-          localStorage.removeItem("posterOrder");
-          localStorage.removeItem("user_payment_data");
-          localStorage.removeItem("user_order_data");
-          setTimeout(() => {
-            navigate("/order");
-          }, 2000);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, [headers, navigate, userPromocodeNotUse]);
-
-  const createOrder = useCallback(() => {
-    const user_payment_data = JSON.parse(
-      localStorage.getItem("user_payment_data")
-    );
-    const data = JSON.parse(localStorage.getItem("user_order_data"));
-    const orderId = user_payment_data ? user_payment_data.order_id : null;
-
-    axios
-      .post(
-        url + "/api/createOrder",
-        { order_id: orderId, data },
-        { headers: headers }
-      )
-      .then((res) => {
-        const data = res.data;
-        if (!data.error) {
-          console.log("createOrder:", data);
-          setPosterResponsea({ posterOrder: data.response });
-          setIsOrderCreate(true);
-
-          if (isPromotion || data.promotion !== "") {
-            usagePromotion();
-          }
-        }
-      })
-      .catch((err) => console.error(err));
-  }, [headers, isPromotion, setPosterResponsea, usagePromotion]);
-
-  const onSubmit = () => {
-    if (orderData.phone === "") {
-      setError({
-        status: true,
-        currentError: "Будь ласка, заповніть поле номеру телефону",
-      });
-    } else if (formData.howToReciveOrder === "") {
-      setError({
-        status: true,
-        currentError: "Будь ласка, оберіть спосіб отримання замовлення",
-      });
-    } else if (calculateTotalPrice(products) <= 200) {
-      setError({
-        status: true,
-        currentError: "Мінімальна сумма замовлення 200 ₴",
-      });
-      setTimeout(() => {
-        setError({
-          status: false,
-          currentError: "",
-        });
-      }, 3000);
-    } else {
-      setOrderData({ orderData: orderData });
-
-      if (orderData.payment.type === 1) {
-        createTransaction(
-          isPromotion
-            ? calculateTotalPrice(products) * (60 / 100)
-            : calculateTotalPrice(products)
-        );
-      }
-      if (orderData.payment.type === 0) {
-        createOrder();
-        console.log("cash");
-      }
-    }
-  };
 
   useEffect(() => {
     if (isPromotion) {
@@ -384,13 +190,13 @@ const OrderForm = observer(() => {
     const paramValue = searchParams.get("status");
 
     if (paramValue === "checkout") {
-      checkTransactionStatus();
+      checkTransactionStatus(setTransactionStatus, setError, navigate);
     }
   }, [checkTransactionStatus, location.search]);
 
   useEffect(() => {
     if (transactionStatus) {
-      createOrder();
+      createOrder(setPosterResponsea, setIsOrderCreate, isPromotion);
     }
   }, [createOrder, transactionStatus]);
 
@@ -429,8 +235,8 @@ const OrderForm = observer(() => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      handleChange("name", name);
-      handleChange("number", phone);
+      handleFormValueChange("name", name);
+      handleFormValueChange("number", phone);
       formData.name = name;
       formData.number = phone;
     }
@@ -439,6 +245,52 @@ const OrderForm = observer(() => {
   useEffect(() => {
     console.log(formData);
   }, [formData]);
+
+  //Update formdata state
+  const handleFormValueChange = (field, value) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
+  };
+
+  const onSubmit = useCallback(() => {
+    if (orderData.phone === "") {
+      setError({
+        status: true,
+        currentError: "Будь ласка, заповніть поле номеру телефону",
+      });
+    } else if (formData.howToReciveOrder === "") {
+      setError({
+        status: true,
+        currentError: "Будь ласка, оберіть спосіб отримання замовлення",
+      });
+    } else if (calculateTotalPrice(products) <= 200) {
+      setError({
+        status: true,
+        currentError: "Мінімальна сумма замовлення 200 ₴",
+      });
+      setTimeout(() => {
+        setError({
+          status: false,
+          currentError: "",
+        });
+      }, 3000);
+    } else {
+      setOrderData({ orderData: orderData });
+
+      if (orderData.payment.type === 1) {
+        const amount = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
+        createTransaction(amount, setPaymentData);
+      }
+      if (orderData.payment.type === 0) {
+        createOrder();
+        console.log("cash");
+      }
+    }
+  }, [orderData, formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
+
+
 
   return (
     <React.Fragment>
@@ -484,12 +336,12 @@ const OrderForm = observer(() => {
               placeholder={"Ваше ім’я"}
               inputValue={formData.name}
               value={formData.name}
-              onChange={(value) => handleChange("name", value)}
+              onChange={(value) => handleFormValueChange("name", value)}
             />
             <InputNumber
               value={formData.number}
               inputValue={formData.number}
-              onChange={(value) => handleChange("number", value)}
+              onChange={(value) => handleFormValueChange("number", value)}
             />
           </div>
         </section>
@@ -501,7 +353,7 @@ const OrderForm = observer(() => {
               data={selectAddresses}
               placeholder={"Оберіть адресу"}
               value={formData.selectedAddress}
-              onChange={(value) => handleChange("selectedAddress", value)}
+              onChange={(value) => handleFormValueChange("selectedAddress", value)}
             />
           </section>
           <section className="order-page__section-inputs order-page__section-inputs-row">
@@ -509,13 +361,13 @@ const OrderForm = observer(() => {
               name={"Вулиця"}
               placeholder={"Вулиця"}
               value={formData.street}
-              onChange={(value) => handleChange("street", value)}
+              onChange={(value) => handleFormValueChange("street", value)}
             />
             <InputText
               name={"№ Будинку"}
               placeholder={"№ Будинку"}
               value={formData.houseNumber}
-              onChange={(value) => handleChange("houseNumber", value)}
+              onChange={(value) => handleFormValueChange("houseNumber", value)}
             />
           </section>
           <section className="order-page__section-inputs">
@@ -537,7 +389,7 @@ const OrderForm = observer(() => {
               ]}
               selectedOption={formData.howToReciveOrder}
               onOptionChange={(event) =>
-                handleChange("howToReciveOrder", event.target.value)
+                handleFormValueChange("howToReciveOrder", event.target.value)
               }
             />
           </section>
@@ -547,26 +399,26 @@ const OrderForm = observer(() => {
                 name={"Квартира"}
                 placeholder={"№ Квартири"}
                 value={formData.apartment}
-                onChange={(value) => handleChange("apartment", value)}
+                onChange={(value) => handleFormValueChange("apartment", value)}
               />
 
               <InputText
                 name={"Парадна"}
                 placeholder={"№ Парадної"}
                 value={formData.entrance}
-                onChange={(value) => handleChange("entrance", value)}
+                onChange={(value) => handleFormValueChange("entrance", value)}
               />
               <InputText
                 name={"Код"}
                 placeholder={"Код"}
                 value={formData.buildingCode}
-                onChange={(value) => handleChange("buildingCode", value)}
+                onChange={(value) => handleFormValueChange("buildingCode", value)}
               />
               <InputText
                 name={"Поверх"}
                 placeholder={"Поверх"}
                 value={formData.floor}
-                onChange={(value) => handleChange("floor", value)}
+                onChange={(value) => handleFormValueChange("floor", value)}
               />
             </section>
           )}
@@ -585,7 +437,7 @@ const OrderForm = observer(() => {
               ]}
               selectedOption={formData.deliveryTime}
               onOptionChange={(event) =>
-                handleChange("deliveryTime", event.target.value)
+                handleFormValueChange("deliveryTime", event.target.value)
               }
               column
             />
@@ -595,7 +447,7 @@ const OrderForm = observer(() => {
                 placeholder={"Час"}
                 data={time}
                 value={formData.selectedTime}
-                onChange={(value) => handleChange("selectedTime", value)}
+                onChange={(value) => handleFormValueChange("selectedTime", value)}
               />
             )}
           </section>
@@ -609,16 +461,16 @@ const OrderForm = observer(() => {
               data={
                 isAuthenticated && promocode40
                   ? [
-                      {
-                        id: 0,
-                        label: "40%",
-                        value: "40%",
-                      },
-                    ]
+                    {
+                      id: 0,
+                      label: "40%",
+                      value: "40%",
+                    },
+                  ]
                   : []
               }
               value={formData.paymentMethod}
-              onChange={(value) => handleChange("promoCode", value)}
+              onChange={(value) => handleFormValueChange("promoCode", value)}
             />
             <BtnMain
               name={"Застосувати"}
@@ -669,7 +521,7 @@ const OrderForm = observer(() => {
               name={"Використати бонуси"}
               placeholder={"0"}
               value={formData.bonus}
-              onChange={(value) => handleChange("bonus", value)}
+              onChange={(value) => handleFormValueChange("bonus", value)}
             />
           </div>
           <div className="order-page__section-inputs order-page__section-inputs-row">
@@ -681,13 +533,13 @@ const OrderForm = observer(() => {
                 { id: 1, label: "Готівка", value: "Готівка" },
               ]}
               value={formData.paymentMethod}
-              onChange={(value) => handleChange("paymentMethod", value)}
+              onChange={(value) => handleFormValueChange("paymentMethod", value)}
             />
             <InputText
               name={"Сдача с"}
               placeholder={"500"}
               value={formData.change}
-              onChange={(value) => handleChange("change", value)}
+              onChange={(value) => handleFormValueChange("change", value)}
             />
           </div>
         </section>
@@ -699,7 +551,7 @@ const OrderForm = observer(() => {
               <Checkbox
                 isChecked={formData.withoutDevices}
                 onCheckboxChange={() =>
-                  handleChange("withoutDevices", !formData.withoutDevices)
+                  handleFormValueChange("withoutDevices", !formData.withoutDevices)
                 }
                 label={"Без приборів"}
               />
@@ -711,7 +563,7 @@ const OrderForm = observer(() => {
                   className="counter__btn"
                   onClick={() => {
                     if (formData.personCount > 1) {
-                      handleChange("personCount", formData.personCount - 1);
+                      handleFormValueChange("personCount", formData.personCount - 1);
                     }
                   }}
                 >
@@ -721,7 +573,7 @@ const OrderForm = observer(() => {
                 <div
                   className="counter__btn"
                   onClick={() =>
-                    handleChange("personCount", formData.personCount + 1)
+                    handleFormValueChange("personCount", formData.personCount + 1)
                   }
                 >
                   +
@@ -734,7 +586,7 @@ const OrderForm = observer(() => {
               name={"Коментар до замовлення"}
               placeholder={"Можете тут написати будь-що:)"}
               value={formData.comment}
-              onChange={(value) => handleChange("comment", value)}
+              onChange={(value) => handleFormValueChange("comment", value)}
             />
           </section>
           <section className="order-page__section-inputs">
@@ -742,7 +594,7 @@ const OrderForm = observer(() => {
               <Checkbox
                 isChecked={formData.doNotCall}
                 onCheckboxChange={() =>
-                  handleChange("doNotCall", !formData.doNotCall)
+                  handleFormValueChange("doNotCall", !formData.doNotCall)
                 }
                 label={"Не передзвонювати мені"}
               />

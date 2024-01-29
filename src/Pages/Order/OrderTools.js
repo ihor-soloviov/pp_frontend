@@ -1,3 +1,29 @@
+import axios from "axios";
+import { url } from "../../api";
+
+import userStore from "../../store/user-store";
+
+const { token, userPromocodeNotUse, userPromocode } = userStore
+
+export const headers = {
+  "Access-Control-Allow-Origin": "*",
+  "Content-Type": "application/json",
+}
+
+export const getCurrentDate = () => {
+  const currentDate = new Date();
+
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const hours = String(currentDate.getHours()).padStart(2, "0");
+  const minutes = String(currentDate.getMinutes() + 5).padStart(2, "0");
+  const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  return formattedDate;
+};
+
 export const dateFormatter = (timeRange) => {
   // Получение текущей даты
   var currentDate = new Date();
@@ -66,3 +92,117 @@ export function filterTimeArray(array) {
 
   return filteredArray;
 }
+
+export const checkCurrentUserPromo = () => {
+  axios
+    .post(
+      `${url}/api/auth`,
+      { token: token },
+      {
+        headers: {
+          headers,
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+
+      if (response.status === 200) {
+        console.log("checkCurrentUserPromo", data.promocode40);
+        if (data.promocode40 === true) {
+          userPromocodeNotUse();
+        } else {
+          userPromocode();
+        }
+      }
+    })
+    .catch((err) => console.error(err));
+};
+
+export const usagePromotion = () => {
+  axios
+    .post(url + "/api/promocode", { token: token }, { headers: headers })
+    .then((res) => {
+      const data = res.data;
+
+      console.log("usagePromotion:", data);
+    })
+    .catch((err) => console.error(err));
+};
+
+export const createOrder = (setPosterResponsea, setIsOrderCreate, isPromotion) => {
+  const user_payment_data = JSON.parse(
+    localStorage.getItem("user_payment_data")
+  );
+  const data = JSON.parse(localStorage.getItem("user_order_data"));
+  const orderId = user_payment_data ? user_payment_data.order_id : null;
+
+  axios
+    .post(
+      url + "/api/createOrder",
+      { order_id: orderId, data: data },
+      { headers: headers }
+    )
+    .then((res) => {
+      const data = res.data;
+      if (!data.error) {
+        console.log("createOrder:", data);
+        setPosterResponsea({ posterOrder: data.response });
+        setIsOrderCreate(true);
+
+        if (isPromotion || data.promotion !== "") {
+          usagePromotion(token, headers);
+        }
+      }
+    })
+    .catch((err) => console.error(err));
+};
+
+export const createTransaction = (amount, setPaymentData) => {
+  const data = { amount: amount };
+  axios
+    .post(url + "/api/pay", data, { headers: headers })
+    .then((res) => {
+      const data = res.data;
+      const payment_url = `https://liqpay.ua/api/3/checkout?data=${data.data}&signature=${data.signature}`;
+
+      setPaymentData(data);
+
+      console.log("createTransaction:", data, payment_url);
+
+      window.location.replace(payment_url);
+    })
+    .catch((err) => console.error(err));
+};
+
+export const checkTransactionStatus = (setTransactionStatus, setError, navigate) => {
+  const user_payment_data = JSON.parse(
+    localStorage.getItem("user_payment_data")
+  );
+
+  const data = { order_id: user_payment_data.order_id };
+  axios
+    .post(url + "/api/getStatus", data, { headers: headers })
+    .then((res) => {
+      const data = res.data;
+      console.log("checkTransactionStatus:", data);
+
+      if (data === "success") {
+        setTransactionStatus(true);
+      } else if (data === "unpaid") {
+        userPromocodeNotUse();
+        setError({
+          status: true,
+          currentError: "Оплата не вдала",
+        });
+
+        localStorage.removeItem("posterOrder");
+        localStorage.removeItem("user_payment_data");
+        localStorage.removeItem("user_order_data");
+        setTimeout(() => {
+          navigate("/order");
+        }, 2000);
+      }
+    })
+    .catch((err) => console.error(err));
+};
