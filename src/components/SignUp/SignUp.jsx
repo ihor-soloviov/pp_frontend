@@ -156,8 +156,8 @@ const SignUp = observer(() => {
                 userEmail,
                 token,
                 phoneNumber,
-                authModalHandler,
-                navigate
+                navigate,
+                authModalHandler
               )
             }
           />

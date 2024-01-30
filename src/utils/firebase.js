@@ -14,10 +14,8 @@ import { v4 } from "uuid"
 
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebaseConfig";
-import modalsStore from "../store/modal-store";
 
 const { setUserDataToStore, changePhoneNumber, setUserAvatar } = userStore;
-const { authModalHandler } = modalsStore
 
 const imageListRef = ref(storage, "avatars/")
 
@@ -71,7 +69,7 @@ const onVerify = async (verifId, verificationCode, setStep, setToken, navigate, 
     console.log(accessToken)
 
     setToken(accessToken);
-    authentication(accessToken, navigate, setStep, authModalHandler);
+    authentication(accessToken, navigate, authModalHandler);
 
   } catch (error) {
     console.error("Error signing in with OTP:", error);
@@ -134,7 +132,7 @@ const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberCha
 const authentication = (
   accessToken,
   navigate,
-  setStep
+  authModalHandler
 ) => {
   const data = {
     token: accessToken,
@@ -168,8 +166,6 @@ const authentication = (
     })
     .catch((error) => {
       console.error(error);
-      setStep("STEP_03");
-      // registration(accessToken);
     });
 };
 
@@ -178,7 +174,8 @@ const registration = (
   userEmail,
   token,
   phoneNumber,
-  navigate
+  navigate,
+  authModalHandler
 ) => {
   const userData = {
     name: userName,

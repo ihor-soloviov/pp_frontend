@@ -45,6 +45,8 @@ const Addresses = observer(({ handleSidebar }) => {
     fetchAdresses();
   }, [token, isAdressesUpdating, addToAdresses]);
 
+  const addressCondition = adresses !== null && adresses.length > 0
+
   const handleModal = () => {
     setModalOpen((prev) => !prev);
   };
@@ -59,7 +61,7 @@ const Addresses = observer(({ handleSidebar }) => {
           isModalOpen={isModalOpen}
           setIsAdressesUpdating={setIsAdressesUpdating}
         />
-        {adresses !== null &&
+        {addressCondition &&
           adresses.map((adress) => (
             <React.Fragment key={adress.addressName}>
               <CreatedAddress

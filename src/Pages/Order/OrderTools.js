@@ -5,7 +5,13 @@ import userStore from "../../store/user-store";
 
 const { userPromocodeNotUse, userPromocode } = userStore
 
-const token = JSON.parse(localStorage.getItem("userData")).token
+// const token = JSON.parse(localStorage.getItem("userData")).token
+const userDataFromLS = localStorage.getItem("userData");
+let token;
+
+if (userDataFromLS) {
+  token = JSON.parse(userDataFromLS)
+}
 
 export const headers = {
   "Content-Type": "application/json",
