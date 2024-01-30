@@ -193,6 +193,10 @@ const OrderForm = observer(() => {
 
   //створення замовлення в постер
   useEffect(() => {
+
+    //if !
+
+    //
     if (transactionStatus) {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
     }
