@@ -66,7 +66,7 @@ class ShoppingCartStore {
     this.promocode = true;
   };
 
-  clearCart() {
+  clearCart = () => {
     this.products = [];
     localStorage.removeItem("shoppingCart");
   }

@@ -10,7 +10,6 @@ import userStore from "../../store/user-store";
 
 //Import Functios
 import {
-  dateFormatter,
   calculateTotalPrice,
   filterTimeArray,
   createOrder,
@@ -37,8 +36,9 @@ import Thanks from "../../components/Thanks/Thanks";
 import PopupActions from "../../components/PopupActions/PopupActions";
 
 import "./Order.scss";
+import { getOrderData } from "./orderData";
 
-const OrderForm = observer(() => {
+const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //State
   const [formData, setFormData] = useState({
     spot_id: 1,
@@ -63,7 +63,7 @@ const OrderForm = observer(() => {
     comment: "",
     doNotCall: false,
   });
-  const [isPromotion, setIsPromotion] = useState(false);
+
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
@@ -99,45 +99,6 @@ const OrderForm = observer(() => {
   });
 
   const time = filterTimeArray(timeArray);
-
-  const orderData = {
-    spot_id: 1,
-    first_name: formData.name,
-    phone: formData.number,
-    products: shoppingCartMap,
-    client_address: {
-      address1: `${formData.selectedAddress !== "Виберіть адресу"
-        ? formData.selectedAddress
-        : ` Вулиця: ${formData.street} ,  Вулиця: ${formData.street},
-                Дім: ${formData.houseNumber}`
-        }`,
-      address2: `
-                Парадная: ${formData.entrance},
-                Квартира: ${formData.apartment},
-                Код: ${formData.buildingCode},
-                Поверх: ${formData.floor},`,
-    },
-    service_mode: formData.howToReciveOrder === "Самовивіз" ? 2 : 3,
-    delivery_time: `${formData.deliveryTime === "На зараз"
-      ? getCurrentDate()
-      : dateFormatter(formData.selectedTime)
-      }`,
-    payment: {
-      type: formData.paymentMethod === "Готівка" ? 0 : 1,
-      sum: isPromotion ? 0 : calculateTotalPrice(products),
-      currency: "UAH",
-    },
-    promotion: isPromotion ? shoppingCartMapPromo : "",
-    comment: `
-            Кол - во
-            персон: ${formData.personCount},
-            ${formData.comment &&
-      ` ${formData.comment}
-            `
-      }, ${formData.withoutDevices && "Без приборов"},${formData.doNotCall && "Не перезванивать"
-      }, ${formData.howToReciveOrder === 2 && "САМОВЫВОЗ"} ${isPromotion && "СКИДКА 40%"
-      }`,
-  };
 
   //Tools
   const location = useLocation();
@@ -207,10 +168,6 @@ const OrderForm = observer(() => {
       const data = JSON.parse(localStorage.getItem("user_order_data"));
       const shoppingCart = JSON.parse(localStorage.getItem("shoppingCart"));
       setPosterOrder(JSON.parse(localStorage.getItem("poster_order")));
-      console.log(
-        "order data",
-        JSON.parse(localStorage.getItem("poster_order"))
-      );
       purchase(
         JSON.parse(localStorage.getItem("poster_order")).incoming_order_id,
         data.payment.sum,
@@ -221,9 +178,10 @@ const OrderForm = observer(() => {
         localStorage.removeItem("poster_order");
         localStorage.removeItem("user_payment_data");
         localStorage.removeItem("user_order_data");
-        clearCart();
-        thanksModalHandler(false);
       }, 5000);
+      clearCart();
+      thanksModalHandler(false);
+      navigate("/")
     }
   }, [clearCart, isOrderCreate, thanksModalHandler]);
 
@@ -256,6 +214,8 @@ const OrderForm = observer(() => {
   };
 
   const onSubmit = useCallback(() => {
+    const orderData = getOrderData(formData, shoppingCartMap, shoppingCartMapPromo, products, isPromotion)
+    console.log(orderData)
     if (orderData.phone === "") {
       setError({
         status: true,
@@ -289,7 +249,7 @@ const OrderForm = observer(() => {
         console.log("cash");
       }
     }
-  }, [orderData, formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
+  }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 
 
   return (
@@ -349,7 +309,7 @@ const OrderForm = observer(() => {
         </section>
         <section className="order-page__section">
           <h3>Спосіб отримання замовлення</h3>
-          <section className="order-page__section-inputs">
+          { /*         <section className="order-page__section-inputs">
             <InputSelector
               name={"Збережені адреси"}
               data={selectAddresses}
@@ -357,7 +317,7 @@ const OrderForm = observer(() => {
               value={formData.selectedAddress}
               onChange={(value) => handleFormValueChange("selectedAddress", value)}
             />
-          </section>
+        </section>*/}
           <section className="order-page__section-inputs order-page__section-inputs-row">
             <InputText
               name={"Вулиця"}
@@ -497,26 +457,26 @@ const OrderForm = observer(() => {
                     setIsPromotion(true);
                   }
                 }}
-                disabled={!isPromotion ? false : true}
+                disabled={isPromotion}
               />
             )}
-            <div className={`order-page__have-promocode`}>
-              <span>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
-              <div className="order-page__arrow">
-                <svg
-                  width="17"
-                  height="20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9.16645 11.7814L12.7425 8.20535L13.6851 9.14802L8.49979 14.3334L3.31445 9.14802L4.25712 8.20535L7.83312 11.7814V3.66669H9.16645V11.7814Z"
-                    fill="#12130F"
-                  />
-                </svg>
-              </div>
-            </div>
           </section>
+          <div className='order-page__have-promocode'>
+            <span>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
+            <div className="order-page__arrow">
+              <svg
+                width="17"
+                height="20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9.16645 11.7814L12.7425 8.20535L13.6851 9.14802L8.49979 14.3334L3.31445 9.14802L4.25712 8.20535L7.83312 11.7814V3.66669H9.16645V11.7814Z"
+                  fill="#12130F"
+                />
+              </svg>
+            </div>
+          </div>
 
         </section>
         <section className="order-page__section">

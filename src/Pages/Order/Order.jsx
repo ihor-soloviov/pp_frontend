@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Container from "../../components/Container/Container";
 import "./Order.scss";
 
 //Import Mobx
+import { observer } from "mobx-react-lite";
 import shoppingCartStore from "../../store/shoping-cart-store";
-import userStore from "../../store/user-store";
 
 //Import components
 
 import OrderForm from "./OrderForm";
 
 
-const Order = () => {
-  const { products, promocode } = shoppingCartStore;
-  const { promocode40 } = userStore;
+const Order = observer(() => {
+  const { products } = shoppingCartStore;
+
+  const [isPromotion, setIsPromotion] = useState(false);
 
   const calculateTotalPrice = (items) => {
     let totalPrice = 0;
@@ -24,10 +25,6 @@ const Order = () => {
 
     return totalPrice;
   };
-
-  useEffect(() => {
-    console.log(promocode);
-  }, [promocode]);
 
   //    useEffect(() => {
   //        const user_payment_data_json = localStorage.getItem('user_payment_data');
@@ -46,7 +43,7 @@ const Order = () => {
       <Container>
         <div className="order-page">
           <div className="order-page__content">
-            <OrderForm />
+            <OrderForm setIsPromotion={setIsPromotion} isPromotion={isPromotion} />
             <div className="checkout">
               <div className="checkout__content">
                 <h3 className="title__h3 text__color--secondary">
@@ -87,14 +84,12 @@ const Order = () => {
                         : "Безкоштовна"}
                     </p>
                   </div>
-                  {promocode40 && (
+                  {isPromotion && (
                     <div className="checkout__row">
-                      <p className="checkout__text">Скидка:</p>
+                      <p className="checkout__text">Знижка:</p>
                       <p className="checkout__text">
-                        {(
-                          calculateTotalPrice(products) -
-                          calculateTotalPrice(products) * (60 / 100)
-                        ).toFixed(2)}{" "}
+                        {
+                          (calculateTotalPrice(products) * (40 / 100)).toFixed(2)}{" "}
                         ₴
                       </p>
                     </div>
@@ -105,7 +100,7 @@ const Order = () => {
                       Всього до сплати:
                     </p>
                     <p className="checkout__text-bold">
-                      {!promocode40
+                      {isPromotion
                         ? calculateTotalPrice(products) * (60 / 100)
                         : calculateTotalPrice(products)}{" "}
                       ₴
@@ -120,6 +115,6 @@ const Order = () => {
       </Container>
     </>
   );
-};
+})
 
 export default Order;

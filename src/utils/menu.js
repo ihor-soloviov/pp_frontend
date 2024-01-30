@@ -6,10 +6,31 @@ const headers = {
   "Content-Type": "application/json",
 };
 
+// Створюємо мапу для кастомних індексів позицій для відображення категорій у потрібному порядку
+
+const customIndexMap = {
+  12: 1,
+  11: 2,
+  8: 3,
+  10: 4,
+  9: 5,
+  2: 6,
+  3: 7,
+  0: 8,
+  6: 9,
+  4: 10,
+  7: 11,
+  1: 12,
+  5: 13,
+};
+
 export const getCategories = async (setCategories, setCurrentCatId) => {
   try {
     const response = await axios.get(`${url}/api/menu`, { headers });
 
+    if (!response?.data?.response) {
+      return
+    }
     const categories = response.data.response;
     const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Комбо ", "onlineOrder: Чик-чирик"]
 
@@ -23,22 +44,6 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
         category_position_index: index,
       }));
 
-    // Створюємо мапу для кастомних індексів позицій для відображення категорій у потрібному порядку
-    const customIndexMap = {
-      12: 1,
-      11: 2,
-      8: 3,
-      10: 4,
-      9: 5,
-      2: 6,
-      3: 7,
-      0: 8,
-      6: 9,
-      4: 10,
-      7: 11,
-      1: 12,
-      5: 13,
-    };
 
     // Переназначаємо індекси згідно з мапою
     processedCategories.forEach((category) => {
@@ -62,11 +67,15 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
   }
 };
 
-export const getProducts = async (id, setProducts, setRecommendationsProducts) => {
+export const getProducts = async (id, setProducts) => {
   try {
     const data = JSON.stringify({ categoryId: id });
 
     const response = await axios.post(`${url}/api/products`, data, { headers });
+
+    if (!response?.data?.response) {
+      return
+    }
 
     const productsData = response.data.response;
 

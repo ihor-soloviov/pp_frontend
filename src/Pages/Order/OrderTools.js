@@ -3,10 +3,11 @@ import { url } from "../../api";
 
 import userStore from "../../store/user-store";
 
-const { token, userPromocodeNotUse, userPromocode } = userStore
+const { userPromocodeNotUse, userPromocode } = userStore
+
+const token = JSON.parse(localStorage.getItem("userData")).token
 
 export const headers = {
-  "Access-Control-Allow-Origin": "*",
   "Content-Type": "application/json",
 }
 
@@ -95,8 +96,11 @@ export function filterTimeArray(array) {
 
 export const checkCurrentUserPromo = async () => {
   try {
-    const dataToResponse = { token: token }
-    const JSONdata = JSON.stringify(dataToResponse)
+    if (!token) {
+      console.error('Не знайдено токен в локалСторі')
+      return
+    }
+    const JSONdata = JSON.stringify({ token: token })
     const response = await axios.post(
       `${url}/api/auth`,
       JSONdata,
@@ -108,11 +112,10 @@ export const checkCurrentUserPromo = async () => {
     const data = response.data;
 
     if (response.status === 200) {
-      console.log("checkCurrentUserPromo", data.promocode40);
-      if (data.promocode40 === true) {
-        userPromocodeNotUse();
-      } else {
+      if (!data.promocode40) {
         userPromocode();
+      } else {
+        userPromocodeNotUse();
       }
     }
   } catch (err) {
@@ -122,6 +125,10 @@ export const checkCurrentUserPromo = async () => {
 
 export const usagePromotion = async () => {
   try {
+    if (!token) {
+      console.error('Не знайдено токен в локалСторі')
+      return
+    }
     const res = await axios.post(url + "/api/promocode", { token: token }, { headers: headers });
     const data = res.data;
 
@@ -130,7 +137,6 @@ export const usagePromotion = async () => {
     console.error(err);
   }
 };
-
 
 export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion) => {
   try {
@@ -142,7 +148,7 @@ export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromoti
     const responseData = res.data;
     if (!responseData.error) {
       console.log("createOrder:", responseData);
-      setPosterResponse({ posterOrder: responseData.response });
+      setPosterResponse(responseData.response);
       setIsOrderCreate(true);
 
       if (isPromotion || responseData.promotion !== "") {
@@ -171,7 +177,7 @@ export const createTransaction = async (amount, setPaymentData) => {
   }
 };
 
-export const checkTransactionStatus = async (setTransactionStatus, setError, navigate) => {
+export const checkTransactionStatus = async (setTransactionStatus, setError) => {
   try {
     const user_payment_data = JSON.parse(
       localStorage.getItem("user_payment_data")
@@ -202,10 +208,7 @@ export const checkTransactionStatus = async (setTransactionStatus, setError, nav
 
     if (responseData === "success") {
       setTransactionStatus(true);
-
-      // setTimeout(() => {
-      //   navigate("/order");
-      // }, 2000);
+      userPromocode()
     }
   } catch (error) {
     console.error(error);
