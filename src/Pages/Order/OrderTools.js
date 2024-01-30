@@ -95,9 +95,10 @@ export function filterTimeArray(array) {
 
 export const checkCurrentUserPromo = async () => {
   try {
+    const JSONdata = JSON.stringify({ token: token })
     const response = await axios.post(
       `${url}/api/auth`,
-      { token: token },
+      JSONdata,
       {
         headers: headers,
       }
