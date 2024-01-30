@@ -22,8 +22,9 @@ const Addresses = observer(({ handleSidebar }) => {
   useEffect(() => {
     const fetchAdresses = async () => {
       try {
-        const JSONtoken = JSON.stringify({ token: token });
-        const response = await axios.post(`${url}/api/auth`, JSONtoken, {
+        const dataToResponse = { token: token }
+        const JSONdata = JSON.stringify(dataToResponse)
+        const response = await axios.post(`${url}/api/auth`, JSONdata, {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
