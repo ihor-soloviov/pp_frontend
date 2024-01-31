@@ -10,7 +10,7 @@ const userDataFromLS = localStorage.getItem("userData");
 let token;
 
 if (userDataFromLS) {
-  token = JSON.parse(userDataFromLS)
+  token = JSON.parse(userDataFromLS).token
 }
 
 export const headers = {

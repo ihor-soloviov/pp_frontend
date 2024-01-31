@@ -9,10 +9,11 @@ import { observer } from "mobx-react-lite";
 
 const PopupActions = observer(({ action, error, onClick }) => {
   const { setActions } = popupActionsStore;
+  const href = action === "Блюдо додано у кошик" ? "/order" : action === "Блюдо додано в «Улюблене»" ? "/profile/favourite" : ""
 
   return (
     <Link
-      to={action === "Блюдо додано у кошик" ? "/order" : ""}
+      to={href}
       className="popup-actions"
     >
       <div className="popup-actions__content" onClick={onClick}>

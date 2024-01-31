@@ -461,7 +461,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
               />
             )}
           </section>
-          <div className='order-page__have-promocode'>
+          {promocode40 && <div className='order-page__have-promocode'>
             <span>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
             <div className="order-page__arrow">
               <svg
@@ -476,7 +476,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
                 />
               </svg>
             </div>
-          </div>
+          </div>}
 
         </section>
         <section className="order-page__section">
@@ -485,7 +485,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
             <InputText
               name={"Використати бонуси"}
               placeholder={"0"}
-              disabled
               value={formData.bonus}
               onChange={(value) => handleFormValueChange("bonus", value)}
             />

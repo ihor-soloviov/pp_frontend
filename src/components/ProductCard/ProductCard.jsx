@@ -27,7 +27,7 @@ const ProductCard = observer((props) => {
   const navigate = useNavigate();
 
   const isItemFavourite = () => {
-    if (!favoritProducts) {
+    if (!favoritProducts || favoritProducts === null) {
       return false;
     }
     return favoritProducts.some((el) => el.id === props.id);
@@ -36,7 +36,7 @@ const ProductCard = observer((props) => {
   const handleFavorite = () => {
     const { id, name, price, count, preview, weight, ingredients } = props;
 
-    if (favoritProducts.some((el) => el.id === id)) {
+    if (isItemFavourite()) {
       removeFromFavorit(id);
     } else {
       setActions("addToFavorit");
