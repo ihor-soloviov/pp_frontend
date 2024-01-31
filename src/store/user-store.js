@@ -64,17 +64,6 @@ class UserStore {
     localStorage.removeItem("userData");
   };
 
-  // updateCity = (city) => {
-  //   this.city = city;
-  //   const userDataFromStorage = JSON.parse(localStorage.getItem("userData"));
-
-  //   if (!userDataFromStorage?.isAuthenticated) {
-  //     return;
-  //   }
-  //   const updatedDataWithCity = { ...userDataFromStorage, city: city };
-  //   localStorage.setItem("userData", JSON.stringify(updatedDataWithCity));
-  // };
-
   addToFavorit = ({ preview, name, price, weight, id, ingredients }) => {
     const product = { preview, name, price, count: 1, weight, id, ingredients };
     this.favoritProducts.push(product);

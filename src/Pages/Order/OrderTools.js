@@ -8,11 +8,11 @@ const { userPromocodeNotUse, userPromocode } = userStore
 // const token = JSON.parse(localStorage.getItem("userData")).token
 const getToken = () => {
   const userDataFromLS = localStorage.getItem("userData");
-  console.log("ls data", userDataFromLS)
+  console.log("Отримали userData з LS")
 
   if (userDataFromLS) {
     const uData = JSON.parse(userDataFromLS);
-    console.log("uData", uData)
+    console.log("getToken")
     return uData.token
   }
 
@@ -106,9 +106,10 @@ export function filterTimeArray(array) {
   return filteredArray;
 }
 
-export const checkCurrentUserPromo = async (token) => {
+export const checkCurrentUserPromo = async () => {
   try {
-    console.log("checkCurrentUserPromo", token)
+    const token = getToken()
+    console.log("checkCurrentUserPromo")
     const JSONdata = JSON.stringify({ token: token })
     const response = await axios.post(
       `${url}/api/auth`,
@@ -119,6 +120,7 @@ export const checkCurrentUserPromo = async (token) => {
     );
 
     const data = response.data;
+    console.log(data)
 
     if (response.status === 200) {
       if (!data.promocode40) {
@@ -132,8 +134,9 @@ export const checkCurrentUserPromo = async (token) => {
   }
 };
 
-export const usagePromotion = async (token) => {
+export const usagePromotion = async () => {
   try {
+    const token = getToken()
     console.log("usagePromotion", token)
     if (!token || token === null) {
       console.error('Не знайдено токен в локалСторі')
@@ -148,8 +151,10 @@ export const usagePromotion = async (token) => {
   }
 };
 
-export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion, token) => {
+export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion) => {
   try {
+    const token = getToken()
+    console.log("createOrder", token)
     const user_payment_data = JSON.parse(localStorage.getItem("user_payment_data"));
     const data = JSON.parse(localStorage.getItem("user_order_data"));
     const orderId = user_payment_data ? user_payment_data.order_id : null;
@@ -192,6 +197,7 @@ export const checkTransactionStatus = async (setTransactionStatus, setError) => 
     const user_payment_data = JSON.parse(
       localStorage.getItem("user_payment_data")
     );
+    console.log("checkTransactionStatus", user_payment_data)
 
     if (!user_payment_data) {
       setError({
@@ -205,7 +211,7 @@ export const checkTransactionStatus = async (setTransactionStatus, setError) => 
     const response = await axios.post(url + "/api/getStatus", data, { headers: headers });
 
     const responseData = response.data;
-    console.log("checkTransactionStatus:", responseData);
+    console.log("checkTransactionStatus: response data", responseData);
 
     if (responseData === "unpaid") {
       userPromocodeNotUse();

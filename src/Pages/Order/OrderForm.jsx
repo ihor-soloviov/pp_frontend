@@ -109,38 +109,38 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   //addresses shit
 
-  useEffect(() => {
-    if (!adresses) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!adresses) {
+  //     return;
+  //   }
 
-    const selected = [
-      {
-        label: "Виберіть адресу",
-        value: null,
-        id: 0,
-      },
-    ];
+  //   const selected = [
+  //     {
+  //       label: "Виберіть адресу",
+  //       value: null,
+  //       id: 0,
+  //     },
+  //   ];
 
-    const adressMap = adresses.map((data, index) => {
-      return {
-        id: index + 1,
-        label: data.addressName,
-        value: `Вулиця: ${data.streetName}, ${data.homeNumber}, ${data.entranceNumber ? `парадна: ${data.entranceNumber}` : ""
-          } ${data.entranceCode ? `код: ${data.entranceCode} ` : ""} ${data.floar ? `поверх: ${data.floar} ` : ""
-          } ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ""} ${data.comment ? `коментар: ${data.comment} ` : ""
-          } `,
-      };
-    });
+  //   const adressMap = adresses.map((data, index) => {
+  //     return {
+  //       id: index + 1,
+  //       label: data.addressName,
+  //       value: `Вулиця: ${data.streetName}, ${data.homeNumber}, ${data.entranceNumber ? `парадна: ${data.entranceNumber}` : ""
+  //         } ${data.entranceCode ? `код: ${data.entranceCode} ` : ""} ${data.floar ? `поверх: ${data.floar} ` : ""
+  //         } ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ""} ${data.comment ? `коментар: ${data.comment} ` : ""
+  //         } `,
+  //     };
+  //   });
 
-    setSelectAddresses([...selected, ...adressMap]);
-  }, []);
+  //   setSelectAddresses([...selected, ...adressMap]);
+  // }, []);
 
   //перевірка промокоду 
 
   useEffect(() => {
     checkCurrentUserPromo(token);
-  }, [checkCurrentUserPromo, isAuthenticated]);
+  }, [isAuthenticated]);
 
   //перевірка статусу транзації
   useEffect(() => {
@@ -148,10 +148,10 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     const paramValue = searchParams.get("status");
 
     if (paramValue === "checkout") {
-      checkTransactionStatus(setTransactionStatus, setError, navigate);
+      console.log('checkout')
+      checkTransactionStatus(setTransactionStatus, setError);
     }
-  }, [checkTransactionStatus, location.search]);
-
+  }, [location.search]);
 
   //створення замовлення в постер
   useEffect(() => {
@@ -159,10 +159,10 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     //if !
 
     //
-    if (transactionStatus) {
-      createOrder(setPosterResponse, setIsOrderCreate, isPromotion, token);
+    if (transactionStatus === true) {
+      createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
     }
-  }, [createOrder, transactionStatus]);
+  }, [transactionStatus]);
 
   useEffect(() => {
     if (isOrderCreate) {
@@ -174,6 +174,8 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         data.payment.sum,
         shoppingCart
       );
+
+      thanksModalHandler(false);
       setTimeout(() => {
         localStorage.removeItem("posterOrder");
         localStorage.removeItem("poster_order");
@@ -181,17 +183,15 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         localStorage.removeItem("user_order_data");
       }, 5000);
       clearCart();
-      thanksModalHandler(false);
-      navigate("/")
     }
-  }, [clearCart, isOrderCreate, thanksModalHandler]);
+  }, [isOrderCreate]);
 
   useEffect(() => {
-    if (posterOrder !== null) {
+    if (posterOrder) {
       console.log("posterOrder", posterOrder);
       thanksModalHandler(true);
     }
-  }, [posterOrder, thanksModalHandler]);
+  }, [posterOrder]);
 
   useEffect(() => {
     if (isAuthenticated) {
