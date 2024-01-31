@@ -6,11 +6,17 @@ import userStore from "../../store/user-store";
 const { userPromocodeNotUse, userPromocode } = userStore
 
 // const token = JSON.parse(localStorage.getItem("userData")).token
-const userDataFromLS = localStorage.getItem("userData");
-let token;
+const getToken = () => {
+  const userDataFromLS = localStorage.getItem("userData");
+  console.log("ls data", userDataFromLS)
 
-if (userDataFromLS) {
-  token = JSON.parse(userDataFromLS).token
+  if (userDataFromLS) {
+    const uData = JSON.parse(userDataFromLS);
+    console.log("uData", uData)
+    return uData.token
+  }
+
+  return null
 }
 
 export const headers = {
@@ -100,12 +106,9 @@ export function filterTimeArray(array) {
   return filteredArray;
 }
 
-export const checkCurrentUserPromo = async () => {
+export const checkCurrentUserPromo = async (token) => {
   try {
-    if (!token) {
-      console.error('Не знайдено токен в локалСторі')
-      return
-    }
+    console.log("checkCurrentUserPromo", token)
     const JSONdata = JSON.stringify({ token: token })
     const response = await axios.post(
       `${url}/api/auth`,
@@ -129,9 +132,10 @@ export const checkCurrentUserPromo = async () => {
   }
 };
 
-export const usagePromotion = async () => {
+export const usagePromotion = async (token) => {
   try {
-    if (!token) {
+    console.log("usagePromotion", token)
+    if (!token || token === null) {
       console.error('Не знайдено токен в локалСторі')
       return
     }
@@ -144,7 +148,7 @@ export const usagePromotion = async () => {
   }
 };
 
-export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion) => {
+export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion, token) => {
   try {
     const user_payment_data = JSON.parse(localStorage.getItem("user_payment_data"));
     const data = JSON.parse(localStorage.getItem("user_order_data"));

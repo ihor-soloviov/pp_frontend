@@ -86,6 +86,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     adresses,
     isAuthenticated,
     promocode40,
+    token
   } = userStore;
 
   const { thanksModal, thanksModalHandler } = modalsStore;
@@ -138,7 +139,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //перевірка промокоду 
 
   useEffect(() => {
-    checkCurrentUserPromo();
+    checkCurrentUserPromo(token);
   }, [checkCurrentUserPromo, isAuthenticated]);
 
   //перевірка статусу транзації
@@ -159,7 +160,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
     //
     if (transactionStatus) {
-      createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+      createOrder(setPosterResponse, setIsOrderCreate, isPromotion, token);
     }
   }, [createOrder, transactionStatus]);
 
@@ -245,7 +246,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         createTransaction(amount, setPaymentData);
       }
       if (orderData.payment.type === 0) {
-        createOrder();
+        createOrder(setPosterResponse, setIsOrderCreate, isPromotion, token);
         console.log("cash");
       }
     }
