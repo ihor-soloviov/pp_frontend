@@ -157,9 +157,9 @@ export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromoti
     console.log("createOrder", token)
     const user_payment_data = JSON.parse(localStorage.getItem("user_payment_data"));
     const data = JSON.parse(localStorage.getItem("user_order_data"));
-    const orderId = user_payment_data ? user_payment_data.order_id : null;
+    const transactionOrderId = user_payment_data ? user_payment_data.order_id : null;
 
-    const res = await axios.post(url + "/api/createOrder", { order_id: orderId, data: data }, { headers: headers });
+    const res = await axios.post(url + "/api/createOrder", { transactionOrderId: transactionOrderId, data: data }, { headers: headers });
     const responseData = res.data;
     if (!responseData.error) {
       console.log("createOrder:", responseData);

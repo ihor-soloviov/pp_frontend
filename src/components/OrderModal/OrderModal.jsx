@@ -26,7 +26,7 @@ const OrderModal = ({
               <div className="content-lines">
                 <div className="content-line">
                   <h5>Дата замовлення</h5>
-                  <p className="info">18.03.2023, 18:39</p>
+                  <p className="info">{order.date_close_date}</p>
                 </div>
 
                 <div className="content-line">

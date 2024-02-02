@@ -30,6 +30,7 @@ const ProductPage = observer(() => {
 
   const [product, setProduct] = useState(null);
   const [productIngredients, setProductIngredients] = useState(null);
+  const [productDescription, setProductDescription] = useState(null)
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ const ProductPage = observer(() => {
       const stringOfDescription = product.product_production_description;
       const arr = stringOfDescription.split(".")[0].split(", ");
       setProductIngredients(arr);
+      setProductDescription(stringOfDescription.split(".").splice(1).join(""))
     }
   }, [product]);
 
@@ -84,13 +86,7 @@ const ProductPage = observer(() => {
                 </h1>
                 {product.group_modifications && (
                   <p className="product-page__desc text__color--secondary">
-                    {product.group_modifications.map((el, index) => {
-                      if (product.group_modifications.length === index + 1) {
-                        return `${el.name}`;
-                      } else {
-                        return `${el.name}, `;
-                      }
-                    })}
+                    {productDescription}
                   </p>
                 )}
 

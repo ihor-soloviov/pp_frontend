@@ -6,7 +6,25 @@ import {
 
 export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, products, isPromotion) => {
 
-  const { name, number, selectedAddress, street, houseNumber, entrance, apartment, buildingCode, floor, howToReciveOrder, deliveryTime, selectedTime, paymentMethod, withoutDevices, personCount, comment, NotCall } = formData;
+  const {
+    name,
+    number,
+    selectedAddress,
+    street,
+    houseNumber,
+    entrance,
+    apartment,
+    buildingCode,
+    floor,
+    howToReciveOrder,
+    deliveryTime,
+    selectedTime,
+    paymentMethod,
+    withoutDevices,
+    personCount,
+    comment,
+    NotCall
+  } = formData;
 
   const address1 = selectedAddress === "Виберіть адресу" ? `Вулиця: ${street} , Дім: ${houseNumber}` : selectedAddress;
   const isAddressComment = howToReciveOrder === "Вийду до машини";
@@ -14,11 +32,11 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
   const delivery_time = deliveryTime === "На зараз" ? getCurrentDate() : dateFormatter(selectedTime);
   const paymentType = paymentMethod === "Готівка" ? 0 : 1;
   const paymentSum = isPromotion ? 0 : calculateTotalPrice(products);
-  const devicesComment = withoutDevices ? "Без приборів" : "";
-  const callOrNot = NotCall ? "Не передзвонювати" : "";
-  const orderRecive = howToReciveOrder === 2 ? "Самовивіз" : ""
+  const devicesComment = withoutDevices ? ", Без приборів, " : "";
+  const callOrNot = NotCall ? ", Не передзвонювати, " : "";
+  const orderRecive = howToReciveOrder === 2 ? ", Самовивіз, " : ""
   const isProm = isPromotion ? "Знижка 40%" : ""
-  const com = `Кількість персон: ${personCount}, ${devicesComment},${callOrNot}, ${orderRecive} ${isProm}, Коментар від користувача: ${comment}`
+  const com = `Кількість персон: ${personCount}${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`
 
   return {
     spot_id: 1,

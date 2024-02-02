@@ -79,7 +79,7 @@ const Order = observer(() => {
                   <div className="checkout__row checkout__row-delivery">
                     <p className="checkout__text">Доставка:</p>
                     <p className="checkout__text">
-                      {products.reduce((a, b) => a + b.totalPrice, 0) < 500
+                      {calculateTotalPrice(products) < 500
                         ? "за допомогою таксі (оплачується окремо)"
                         : "Безкоштовна"}
                     </p>
