@@ -69,7 +69,7 @@ const onVerify = async (verifId, verificationCode, setStep, setToken, navigate, 
     console.log(accessToken)
 
     setToken(accessToken);
-    authentication(accessToken, navigate, authModalHandler);
+    authentication(accessToken, navigate, authModalHandler, setStep);
 
   } catch (error) {
     console.error("Error signing in with OTP:", error);
@@ -132,7 +132,8 @@ const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberCha
 const authentication = (
   accessToken,
   navigate,
-  authModalHandler
+  authModalHandler,
+  setStep
 ) => {
   const data = {
     token: accessToken,
@@ -162,10 +163,13 @@ const authentication = (
         });
         authModalHandler(false);
         navigate("/profile/info");
+      } else {
+
       }
     })
     .catch((error) => {
       console.error(error);
+      setStep("STEP_03")
     });
 };
 

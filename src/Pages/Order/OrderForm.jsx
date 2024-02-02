@@ -246,7 +246,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         createTransaction(amount, setPaymentData);
       }
       if (orderData.payment.type === 0) {
-        createOrder(setPosterResponse, setIsOrderCreate, isPromotion, token);
+        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
         console.log("cash");
       }
     }

@@ -4,6 +4,7 @@ import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "./OrderModal.scss";
 
 const OrderModal = ({
+  order,
   isMainModalOpen,
   closeMainModal,
   closeConfirmModal,
@@ -18,7 +19,7 @@ const OrderModal = ({
             <h2 className="modal-content--title">Деталі замовлення</h2>
             <div className="modal-content__info">
               <div className="title-line">
-                <h4>Замовлення №6648</h4>
+                <h4>{`Замовлення №${order.transaction_id}`}</h4>
                 <p className="status">Виконане</p>
               </div>
 
@@ -74,11 +75,11 @@ const OrderModal = ({
             </button>
           </div>
         </Popup>
-        
+
       )}
 
       {isConfirmModalOpen && (
-        <ConfirmModal closeConfirmModal={closeConfirmModal}/>
+        <ConfirmModal closeConfirmModal={closeConfirmModal} />
       )}
     </>
   );

@@ -17,4 +17,5 @@ const InputText = ({ name, placeholder, value, onChange }) => {
     </label>
   );
 };
+
 export default InputText;
