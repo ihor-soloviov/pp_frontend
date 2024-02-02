@@ -26,7 +26,8 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
     NotCall
   } = formData;
 
-  const address1 = selectedAddress === "Виберіть адресу" ? `Вулиця: ${street} , Дім: ${houseNumber}` : selectedAddress;
+  const address1 = `Вулиця: ${street} , Дім: ${houseNumber}`;
+  const address2 = howToReciveOrder === "До дверей" ? `Парадная: ${entrance}, Квартира: ${apartment}, Код: ${buildingCode},Поверх: ${floor}` : "Приватний будинок"
   const isAddressComment = howToReciveOrder === "Вийду до машини";
   const serviceMode = howToReciveOrder === "Самовивіз" ? 2 : 3;
   const delivery_time = deliveryTime === "На зараз" ? getCurrentDate() : dateFormatter(selectedTime);
@@ -45,7 +46,7 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
     products: shoppingCartMap,
     client_address: {
       address1: address1,
-      address2: `Парадная: ${entrance}, Квартира: ${apartment}, Код: ${buildingCode},Поверх: ${floor}`,
+      address2: address2,
       comment: isAddressComment ? "Вийду до машини" : ""
     },
     service_mode: serviceMode,
