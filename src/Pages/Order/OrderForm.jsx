@@ -239,16 +239,16 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         });
       }, 3000);
     } else {
-      setOrderData(orderData);
+      // setOrderData(orderData);
 
-      if (orderData.payment.type === 1) {
-        const amount = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
-        createTransaction(amount, setPaymentData);
-      }
-      if (orderData.payment.type === 0) {
-        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-        console.log("cash");
-      }
+      // if (orderData.payment.type === 1) {
+      //   const amount = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
+      //   createTransaction(amount, setPaymentData);
+      // }
+      // if (orderData.payment.type === 0) {
+      //   createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+      //   console.log("cash");
+      // }
     }
   }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 
