@@ -13,9 +13,7 @@ const Orders = ({ handleSidebar }) => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null)
 
-  const getOrderStatus = (status) => {
-    return status === "60" ? "Виконане" : "Готується"
-  }
+  const getOrderStatus = status => status === "60" ? "Виконане" : "Готується"
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -38,7 +36,7 @@ const Orders = ({ handleSidebar }) => {
   const openMainModal = (order) => {
     setSelectedOrder(order);
 
-      setMainModalOpen(true);
+    setMainModalOpen(true);
 
   };
 
