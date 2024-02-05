@@ -139,8 +139,10 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //перевірка промокоду 
 
   useEffect(() => {
-    checkCurrentUserPromo(token);
-  }, [isAuthenticated]);
+    if (isAuthenticated) {
+      checkCurrentUserPromo(token);
+    }
+  }, []);
 
   //перевірка статусу транзації
   useEffect(() => {
@@ -181,6 +183,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         localStorage.removeItem("poster_order");
         localStorage.removeItem("user_payment_data");
         localStorage.removeItem("user_order_data");
+        navigate('/')
       }, 5000);
       clearCart();
     }
