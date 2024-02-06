@@ -63,15 +63,7 @@ export const dateFormatter = (timeRange) => {
   return startDateTime;
 };
 
-export const calculateTotalPrice = (items) => {
-  let totalPrice = 0;
-
-  items.forEach((item) => {
-    totalPrice += item.totalPrice;
-  });
-
-  return totalPrice;
-};
+export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + item.totalPrice, 0);
 
 // export function modifyDateString(dateString) {
 //   // Разделяем строку по пробелу на дату и время

@@ -92,6 +92,7 @@ const App = observer(() => {
     }
   }, [currentAction]);
 
+  //Функція яка вмикає лоадер тільки коли змінилась корнева директорія
   useEffect(() => {
     const currentPath = location.pathname;
     const prevPathFirstPart = prevPath.split('/')[1];

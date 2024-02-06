@@ -57,9 +57,11 @@ class ShoppingCartStore {
 
   getCartProductsFromLS = () => {
     const data = localStorage.getItem("shoppingCart");
-    if (data) {
-      this.products = JSON.parse(data);
+
+    if (!data) {
+      return
     }
+    this.products = JSON.parse(data);
   };
 
   cartPromocode = () => {

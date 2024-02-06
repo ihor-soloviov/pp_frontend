@@ -9,8 +9,8 @@ class UserStore {
   promocode40 = true;
   favoritProducts = [];
   adresses = [];
-  dateOfBirth = null
-  avatar = "https://cdn-icons-png.flaticon.com/512/552/552721.png"
+  dateOfBirth = null;
+  avatar = "https://cdn-icons-png.flaticon.com/512/552/552721.png";
 
   constructor() {
     makeAutoObservable(this);
@@ -40,7 +40,7 @@ class UserStore {
     addresses,
     dateOfBirth
   }) => {
-    console.log('aas')
+    console.log('setUserDataToStore')
     this.isAuthenticated = true;
     this.name = name;
     this.phone = phone;
@@ -50,6 +50,7 @@ class UserStore {
     this.promocode40 = promocode40;
     this.adresses = addresses;
     this.favoritProducts = favorites;
+
     localStorage.setItem("userData", JSON.stringify(this));
   };
 
@@ -96,8 +97,12 @@ class UserStore {
   };
 
   loadFromLocalStorageAdress = () => {
-    const adresses = localStorage.getItem("user_adresses");
-    const dataParse = JSON.parse(adresses);
+    const dataParse = JSON.parse(localStorage.getItem("user_adresses"));
+
+    if (!dataParse) {
+      return
+    }
+    
     if (dataParse !== null) {
       this.adresses = dataParse;
     }

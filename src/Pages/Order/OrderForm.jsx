@@ -67,13 +67,13 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
-  const [selectAddresses, setSelectAddresses] = useState([
-    {
-      label: "Немає",
-      value: null,
-      id: 0,
-    },
-  ]);
+  // const [selectAddresses, setSelectAddresses] = useState([
+  //   {
+  //     label: "Немає",
+  //     value: null,
+  //     id: 0,
+  //   },
+  // ]);
   const [error, setError] = useState({ status: false, currentError: "" });
   const [isOrderCreate, setIsOrderCreate] = useState(false);
 
@@ -83,7 +83,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const {
     name,
     phone,
-    adresses,
     isAuthenticated,
     promocode40,
     token
