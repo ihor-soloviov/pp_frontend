@@ -5,6 +5,7 @@ import ProfileLink from "../ProfileLink/ProfileLink";
 import "./Orders.scss";
 import axios from "axios";
 import { url } from "../../api"
+import userStore from "../../store/user-store";
 
 
 const Orders = ({ handleSidebar }) => {
@@ -13,12 +14,16 @@ const Orders = ({ handleSidebar }) => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null)
 
+
+
+  const { token } = userStore;
+
   const getOrderStatus = status => status === "60" ? "Виконане" : "Готується"
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${url}/api/getOrders/82`);
+        const response = await axios.get(`${url}/api/getOrdersFromDB/${token}`);
         if (response.data.length > 0) {
           console.log(response.data);
           setOrders(response.data)
@@ -61,17 +66,17 @@ const Orders = ({ handleSidebar }) => {
         </ProfileLink>
         {orders.length > 0 && (
           orders.map(el => (
-            <div key={el.transaction_id} className="order">
+            <div key={el.id} className="order">
               <div className="order-container">
                 <div className="order-info">
                   <div className="order-info__number">
-                    <h4>{`Замовлення №${el.transaction_id}`}</h4>
+                    <h4>{`Замовлення №${el.incoming_order_id}`}</h4>
                     <p className="status">{getOrderStatus(el.processing_status)}</p>
                   </div>
-                  <div className="order-info__datetime">{el.date_close_date}</div>
+                  <div className="order-info__datetime">{el.created_at}</div>
                 </div>
                 <div className="order-details">
-                  <h4>{el.payed_sum.slice(0, -2)} ₴</h4>
+                  <h4>{el.amount} ₴</h4>
                   <button
                     onClick={() => openMainModal(el)}
                     className="order-details__modal-link"
