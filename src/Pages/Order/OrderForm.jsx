@@ -243,13 +243,12 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     } else {
       setOrderData(orderData);
 
-      if (orderData.payment.type === 1) {
-        const amount = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
-        createTransaction(amount, setPaymentData);
-      }
-      if (orderData.payment.type === 0) {
+      if (formData.paymentMethod === 1 || formData.paymentMethod === "Готівка") {
         createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
         console.log("cash");
+      } else {
+        const amount = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
+        createTransaction(amount, setPaymentData);
       }
     }
   }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
