@@ -18,7 +18,6 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
     howToReciveOrder,
     deliveryTime,
     selectedTime,
-    paymentMethod,
     withoutDevices,
     personCount,
     comment,
@@ -30,8 +29,6 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
   const isAddressComment = howToReciveOrder === "Вийду до машини";
   const serviceMode = howToReciveOrder === "Самовивіз" ? 2 : 3;
   const delivery_time = deliveryTime === "На зараз" ? getCurrentDate() : dateFormatter(selectedTime);
-  // const paymentType = paymentMethod === "Готівка" ? 0 : 1;
-  // const paymentSum = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
   const devicesComment = withoutDevices ? ", Без приборів, " : "";
   const callOrNot = NotCall ? ", Не передзвонювати, " : "";
   const orderRecive = howToReciveOrder === 2 ? ", Самовивіз, " : ""

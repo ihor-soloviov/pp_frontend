@@ -7,6 +7,7 @@ import axios from "axios";
 import { url } from "../../api"
 import userStore from "../../store/user-store";
 
+export const getOrderStatus = status => status === "60" ? "Виконане" : "Готується"
 
 const Orders = ({ handleSidebar }) => {
   const [isMainModalOpen, setMainModalOpen] = useState(false);
@@ -18,7 +19,6 @@ const Orders = ({ handleSidebar }) => {
 
   const { token } = userStore;
 
-  const getOrderStatus = status => status === "60" ? "Виконане" : "Готується"
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -35,7 +35,7 @@ const Orders = ({ handleSidebar }) => {
 
     fetchOrders()
 
-  }, [])
+  }, [token])
 
 
   const openMainModal = (order) => {
@@ -88,14 +88,17 @@ const Orders = ({ handleSidebar }) => {
             </div>
           ))
         )}
-        <OrderModal
-          order={selectedOrder}
-          isConfirmModalOpen={isConfirmModalOpen}
-          openConfirmModal={openConfirmModal}
-          closeConfirmModal={closeConfirmModal}
-          closeMainModal={closeMainModal}
-          isMainModalOpen={isMainModalOpen}
-        />
+        {selectedOrder && (
+
+          <OrderModal
+            order={selectedOrder}
+            isConfirmModalOpen={isConfirmModalOpen}
+            openConfirmModal={openConfirmModal}
+            closeConfirmModal={closeConfirmModal}
+            closeMainModal={closeMainModal}
+            isMainModalOpen={isMainModalOpen}
+          />
+        )}
       </section>
     </>
   );
