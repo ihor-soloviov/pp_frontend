@@ -21,6 +21,7 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
     withoutDevices,
     personCount,
     comment,
+    paymentMethod,
     NotCall
   } = formData;
 
@@ -45,6 +46,11 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
       address2: address2,
       comment: isAddressComment ? "Вийду до машини" : ""
     },
+    payment: {
+      type: paymentMethod === "Готівка" ? 0 : 1,
+      sum: isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products),
+      currency: "UAH",
+    }, 
     service_mode: serviceMode,
     delivery_time: delivery_time,
     promotion: isPromotion ? shoppingCartMapPromo : "",

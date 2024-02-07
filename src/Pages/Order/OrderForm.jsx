@@ -243,7 +243,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     } else {
       setOrderData(orderData);
 
-      if (formData.paymentMethod === 1 || formData.paymentMethod === "Готівка") {
+      if (formData.paymentMethod === "Готівка") {
         createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
         console.log("cash");
       } else {
