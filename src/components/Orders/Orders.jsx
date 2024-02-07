@@ -59,7 +59,7 @@ const Orders = ({ handleSidebar }) => {
 
 
   return (
-    <>
+    <React.Fragment>
       <section className="grid_layout--main orders">
         <ProfileLink handleSidebar={handleSidebar}>
           Історія замовлень
@@ -100,7 +100,7 @@ const Orders = ({ handleSidebar }) => {
           />
         )}
       </section>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -12,9 +12,17 @@ const OrderModal = ({
   isConfirmModalOpen,
   openConfirmModal,
 }) => {
-  const { client_address, persone_count, comment, amount, incoming_order_id, processing_status, created_at } = order;
-  const { address1 } = client_address;
+
+  console.log(order)
+  const { client_address, persone_count, comment, incoming_order_id, processing_status, created_at, payment } = order;
+
   const userComment = comment.split("Коментар від користувача: ").reverse()[0] || ""
+
+  const { address1 } = client_address;
+
+  const { sum = 0, type = "Онлайн" } = payment;
+  const orderType = type === 1 ? "Онлайн" : "Готівкою" 
+
   console.log(userComment)
   return (
     <>
@@ -46,7 +54,7 @@ const OrderModal = ({
 
                 <div className="content-line">
                   <h5>Спосіб оплати</h5>
-                  <p className="info">"Онлайн"</p>
+                  <p className="info">{orderType}</p>
                 </div>
 
                 <div className="content-line__comment">
@@ -61,7 +69,7 @@ const OrderModal = ({
               <div className="content-lines">
                 <div className="content-line">
                   <h5>Сума замовлення:</h5>
-                  <h5 className="info">{amount} ₴</h5>
+                  <h5 className="info">{sum} ₴</h5>
                 </div>
 
                 { /*               <div className="content-line">
