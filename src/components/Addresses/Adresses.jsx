@@ -21,6 +21,9 @@ const Addresses = observer(({ handleSidebar }) => {
 
   useEffect(() => {
     const fetchAdresses = async () => {
+      if (!token) {
+        return
+      }
       try {
         const dataToResponse = { token: token }
         const JSONdata = JSON.stringify(dataToResponse)
