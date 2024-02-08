@@ -26,18 +26,6 @@ const Order = observer(() => {
     return totalPrice;
   };
 
-  //    useEffect(() => {
-  //        const user_payment_data_json = localStorage.getItem('user_payment_data');
-  //
-  //        if (user_payment_data_json) {
-  //            const user_payment_data = JSON.parse(user_payment_data_json)
-  //
-  //            dispatch(setPaymentData({payment_data: user_payment_data}))
-  //        }
-  //
-  //
-  //    })
-
   return (
     <>
       <Container>
@@ -106,7 +94,6 @@ const Order = observer(() => {
                       ₴
                     </p>
                   </div>
-                  {/* <BtnMain name={'ОПЛАТИТЬ'} fullWide onClick={() => pay()} /> */}
                 </div>
               </div>
             </div>

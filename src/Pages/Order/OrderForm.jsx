@@ -67,13 +67,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
-  // const [selectAddresses, setSelectAddresses] = useState([
-  //   {
-  //     label: "Немає",
-  //     value: null,
-  //     id: 0,
-  //   },
-  // ]);
   const [error, setError] = useState({ status: false, currentError: "" });
   const [isOrderCreate, setIsOrderCreate] = useState(false);
 
@@ -104,44 +97,14 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  //Effects
-
-  //addresses shit
-
-  // useEffect(() => {
-  //   if (!adresses) {
-  //     return;
-  //   }
-
-  //   const selected = [
-  //     {
-  //       label: "Виберіть адресу",
-  //       value: null,
-  //       id: 0,
-  //     },
-  //   ];
-
-  //   const adressMap = adresses.map((data, index) => {
-  //     return {
-  //       id: index + 1,
-  //       label: data.addressName,
-  //       value: `Вулиця: ${data.streetName}, ${data.homeNumber}, ${data.entranceNumber ? `парадна: ${data.entranceNumber}` : ""
-  //         } ${data.entranceCode ? `код: ${data.entranceCode} ` : ""} ${data.floar ? `поверх: ${data.floar} ` : ""
-  //         } ${data.entranceNumber ? `квартира: ${data.entranceNumber} ` : ""} ${data.comment ? `коментар: ${data.comment} ` : ""
-  //         } `,
-  //     };
-  //   });
-
-  //   setSelectAddresses([...selected, ...adressMap]);
-  // }, []);
-
   //перевірка промокоду 
 
   useEffect(() => {
+    console.log('aaaaaaaa')
     if (isAuthenticated) {
       checkCurrentUserPromo(token);
     }
-  }, []);
+  }, [isAuthenticated, token]);
 
   //перевірка статусу транзації
   useEffect(() => {
@@ -156,11 +119,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   //створення замовлення в постер
   useEffect(() => {
-
-    //if !
-
-    //
-    if (transactionStatus === true) {
+    if (transactionStatus) {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
     }
   }, [transactionStatus]);
@@ -209,12 +168,12 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, [formData]);
 
   //Update formdata state
-  const handleFormValueChange = (field, value) => {
+  const handleFormValueChange = useCallback((field, value) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [field]: value,
     }));
-  };
+  }, []);
 
   const onSubmit = useCallback(() => {
     const orderData = getOrderData(formData, shoppingCartMap, shoppingCartMapPromo, products, isPromotion)
