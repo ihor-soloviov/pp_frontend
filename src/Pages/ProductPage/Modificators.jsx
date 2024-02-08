@@ -1,6 +1,8 @@
 import React from 'react'
 import { CustomSelectors } from './CustomSelectors'
 
+import "./Modificators.scss"
+
 export const Modificators = React.memo(({ groups, onModificatorChange }) => {
   return (
     <div className='modificators'>

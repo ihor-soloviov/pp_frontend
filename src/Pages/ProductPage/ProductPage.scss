@@ -80,5 +80,9 @@
       grid-template-columns: 1fr;
       gap: 20px;
     }
+
+    &__preview {
+      width: 334px;
+    }
   }
 }

@@ -60,7 +60,7 @@ const ProductPage = observer(() => {
 
   useEffect(() => {
     if (product) {
-      // console.log(product)
+      console.log(product)
       const stringOfDescription = product.product_production_description;
       const arr = stringOfDescription.split(".")[0].split(", ");
       setProductIngredients(arr);
