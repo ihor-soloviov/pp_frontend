@@ -109,11 +109,13 @@ export const getProducts = async (id, setProducts) => {
   }
 };
 
-export const productPageGetter = async (id, setProduct, setRecommendationsProducts) => {
+export const productPageGetter = async (id, setProduct, setGroupsOfModificators, setRecommendationsProducts) => {
   try {
     // Перший запит
     const productResponse = await axios.post(`${url}/api/product`, JSON.stringify({ productId: id }), { headers });
     setProduct(productResponse.data);
+    const modificators = productResponse.data.group_modifications;
+    setGroupsOfModificators(modificators)
 
     // Другий запит
     const menuCategoryId = JSON.stringify({ categoryId: productResponse.data.menu_category_id });
@@ -130,6 +132,8 @@ export const productPageGetter = async (id, setProduct, setRecommendationsProduc
       category_name: item.category_name,
     }));
     setRecommendationsProducts(recommendationsData);
+
+
 
   } catch (error) {
     console.error(error);

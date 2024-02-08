@@ -1,5 +1,5 @@
 //Import React
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { observer } from "mobx-react-lite";
@@ -19,6 +19,7 @@ import "./ProductPage.scss";
 import { url } from "../../api";
 import { add_to_cart, view_item } from "../../gm4";
 import { productPageGetter } from "../../utils/menu";
+import { Modificators } from "./Modificators";
 
 const ProductPage = observer(() => {
   const { id } = useParams();
@@ -32,9 +33,34 @@ const ProductPage = observer(() => {
   const [productIngredients, setProductIngredients] = useState(null);
   const [productDescription, setProductDescription] = useState(null)
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
+  const [groupsOfModificators, setGroupsOfModificators] = useState([])
+  const [selectedModificators, setSelectedModificators] = useState([]);
+
+  const handleModificatorChange = useCallback((newModificator) => {
+    setSelectedModificators(prev => {
+      const index = prev.findIndex(modificator => modificator.group === newModificator.group);
+
+      if (index !== -1) {
+        if (newModificator.name.toLowerCase().includes("без")) {
+          return prev.filter((_, idx) => idx !== index);
+        } else {
+          return prev.map((modificator, idx) => idx === index ? newModificator : modificator);
+        }
+      } else {
+        return [...prev, newModificator];
+      }
+    });
+  }, []);
+
+
+  useEffect(() => {
+    console.log(selectedModificators)
+  }, [selectedModificators])
+
 
   useEffect(() => {
     if (product) {
+      // console.log(product)
       const stringOfDescription = product.product_production_description;
       const arr = stringOfDescription.split(".")[0].split(", ");
       setProductIngredients(arr);
@@ -43,11 +69,12 @@ const ProductPage = observer(() => {
   }, [product]);
 
   useEffect(() => {
-    productPageGetter(id, setProduct, setRecommendationsProducts)
+    productPageGetter(id, setProduct, setGroupsOfModificators, setRecommendationsProducts);
   }, [id]);
 
 
   useEffect(() => {
+
     if (!products) {
       return;
     }
@@ -78,16 +105,21 @@ const ProductPage = observer(() => {
                 />
               </div>
               <div className="product-page__info">
+
                 <p className="product-page__weight text text__color--secondary">
                   {product.out} г
                 </p>
                 <h1 className="product-page__title text__color--secondary">
                   {product.product_name}
                 </h1>
-                {product.group_modifications && (
+                {productDescription && (
                   <p className="product-page__desc text__color--secondary">
                     {productDescription}
                   </p>
+                )}
+
+                {groupsOfModificators && (
+                  <Modificators groups={groupsOfModificators} onModificatorChange={handleModificatorChange} />
                 )}
 
                 <p className="product-page__price text-price text__color--secondary">
@@ -178,7 +210,7 @@ const ProductPage = observer(() => {
                       {productIngredients &&
                         productIngredients.map((el) => {
                           return (
-                            <li className="product-page__compile-item">{el}</li>
+                            <li key={el} className="product-page__compile-item">{el}</li>
                           );
                         })}
                     </ul>
