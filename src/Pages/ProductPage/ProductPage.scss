@@ -9,6 +9,7 @@
     background-color: #40abdf;
     width: 100%;
     border-radius: 15px;
+    min-width: 0;
     img {
       object-fit: contain;
     }
@@ -18,6 +19,11 @@
     background-color: #12130f;
     border-radius: 15px;
     padding: 40px;
+
+    .text {
+      width: max-content;
+      margin: 0;
+    }
   }
   &__order {
     display: flex;
@@ -42,6 +48,7 @@
   }
 
   &__title {
+    width: max-content;
     padding: 16px 0;
   }
   &__price {
@@ -81,8 +88,27 @@
       gap: 20px;
     }
 
-    &__preview {
-      width: 334px;
+    &__title {
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 130%;
+    }
+
+    &__info {
+      padding: 20px 30px;
+    }
+
+    &__order {
+      flex-direction: column;
+    }
+
+    &__price__mob {
+      display: flex;
+      gap: 30px;
     }
   }
+}
+
+@media (max-width: 480px) {
 }

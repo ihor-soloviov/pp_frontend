@@ -68,3 +68,14 @@
   display: flex;
   gap: 12px;
 }
+
+
+@media screen and (max-width: 480px) {
+  .modificators {
+    flex-direction: column;
+  }
+
+  .custom-select {
+    max-width: 100%;
+  }
+}

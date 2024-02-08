@@ -122,9 +122,40 @@ const ProductPage = observer(() => {
                   <Modificators groups={groupsOfModificators} onModificatorChange={handleModificatorChange} />
                 )}
 
-                <p className="product-page__price text-price text__color--secondary">
-                  {parseInt(product.price[1].slice(0, -2))} ₴
-                </p>
+                {window.innerWidth > 1000 ? (
+                  <p className="product-page__price text-price text__color--secondary">
+                    {parseInt(product.price[1].slice(0, -2))} ₴
+                  </p>
+                )
+                  : (
+                    <div className="product-page__price__mob">
+                      <p className="product-page__price text-price text__color--secondary">
+                        {parseInt(product.price[1].slice(0, -2))} ₴
+                      </p>
+                      <div className="counter">
+                        <div
+                          className="counter__btn counter__btn--transperent"
+                          onClick={() => {
+                            if (count > 1) {
+                              setCount(count - 1);
+                            }
+                          }}
+                        >
+                          -
+                        </div>
+                        <div className="counter__value text__color--secondary">
+                          {count}
+                        </div>
+                        <div
+                          className="counter__btn counter__btn--transperent"
+                          onClick={() => setCount(count + 1)}
+                        >
+                          +
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
 
                 <div className="product-page__order">
                   {inCart === true ? (
@@ -178,27 +209,29 @@ const ProductPage = observer(() => {
                     </button>
                   )}
 
-                  <div className="counter">
-                    <div
-                      className="counter__btn counter__btn--transperent"
-                      onClick={() => {
-                        if (count > 1) {
-                          setCount(count - 1);
-                        }
-                      }}
-                    >
-                      -
+                  {window.innerWidth > 1000 && (
+                    <div className="counter">
+                      <div
+                        className="counter__btn counter__btn--transperent"
+                        onClick={() => {
+                          if (count > 1) {
+                            setCount(count - 1);
+                          }
+                        }}
+                      >
+                        -
+                      </div>
+                      <div className="counter__value text__color--secondary">
+                        {count}
+                      </div>
+                      <div
+                        className="counter__btn counter__btn--transperent"
+                        onClick={() => setCount(count + 1)}
+                      >
+                        +
+                      </div>
                     </div>
-                    <div className="counter__value text__color--secondary">
-                      {count}
-                    </div>
-                    <div
-                      className="counter__btn counter__btn--transperent"
-                      onClick={() => setCount(count + 1)}
-                    >
-                      +
-                    </div>
-                  </div>
+                  )}
                 </div>
 
                 {product.product_production_description && (
