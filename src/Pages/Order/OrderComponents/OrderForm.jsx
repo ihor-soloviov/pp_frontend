@@ -11,7 +11,6 @@ import userStore from "../../../store/user-store";
 //Import Functios
 import {
   calculateTotalPrice,
-  filterTimeArray,
   createOrder,
   checkTransactionStatus,
   createTransaction,
@@ -20,16 +19,6 @@ import {
 } from "../OrderFunctions/OrderTools";
 
 import { purchase } from "../../../gm4";
-import { timeArray } from "../time";
-
-//Import components
-import InputText from "../../../components/Inputs/InputText";
-import InputNumber from "../../../components/Inputs/InputNumber";
-import InputSelector from "../../../components/Inputs/InputSelector";
-import RadioButton from "../../../components/RadioButton/RadioButton";
-import BtnMain from "../../../components/Buttons/BtnMain";
-import InputTextArea from "../../../components/Inputs/InputTextArea";
-import Checkbox from "../../../components/Inputs/Checkbox";
 
 import Popup from "../../../components/Popup/Popup";
 import Thanks from "../../../components/Thanks/Thanks";
@@ -44,6 +33,7 @@ import { OrderTime } from "./OrderTime";
 import { OrderPromo } from "./OrderPromo";
 import { OrderPaymentType } from "./OrderPaymentType";
 import { OrderComment } from "./OrderComment";
+import BtnMain from "../../../components/Buttons/BtnMain";
 
 const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
@@ -85,7 +75,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     name,
     phone,
     isAuthenticated,
-    promocode40,
     token
   } = userStore;
 
