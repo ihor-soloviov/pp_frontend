@@ -4,6 +4,7 @@ import InputText from '../../../components/Inputs/InputText'
 import InputNumber from '../../../components/Inputs/InputNumber'
 
 export const OrderContacts = React.memo(({ name, number, handleFormValueChange }) => {
+
   return (
     <section className="order-page__section">
       <h3>Контакти</h3>

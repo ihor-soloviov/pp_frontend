@@ -37,7 +37,6 @@ import { OrderComment } from "./OrderComment";
 import BtnMain from "../../../components/Buttons/BtnMain";
 
 const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
-
   //State
   const [formData, setFormData] = useState({
     spot_id: 1,
@@ -85,12 +84,16 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   const handleError = newErrorState => setError(newErrorState)
 
-  //перевірка промокоду 
-
+  //функції які потребують авторизованності
   useEffect(() => {
-    if (isAuthenticated) {
-      checkCurrentUserPromo();
+    if (!isAuthenticated) {
+      return;
     }
+
+    handleFormValueChange("name", name)
+    handleFormValueChange("number", phone)
+    checkCurrentUserPromo();
+
   }, [isAuthenticated]);
 
   //перевірка статусу транзації
@@ -141,15 +144,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     }
   }, [posterOrder]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      handleFormValueChange("name", name);
-      handleFormValueChange("number", phone);
-      formData.name = name;
-      formData.number = phone;
-    }
-  }, [isAuthenticated, name, phone]);
-
   // useEffect(() => {
   //   console.log(formData);
   // }, [formData]);
@@ -163,17 +157,17 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, []);
 
   const onSubmit = useCallback(() => {
-    const orderData = getOrderData(formData, products, isPromotion)
-    console.log(orderData)
-
     // Перевірки умов з раннім поверненням
-    if (!orderData.phone) {
+    if (!formData.phone) {
       return setTemporaryError("Будь ласка, заповніть поле номеру телефону", setError);
     } else if (!formData.howToReciveOrder) {
       return setTemporaryError("Будь ласка, оберіть спосіб отримання замовлення", setError);
     } else if (calculateTotalPrice(products) <= 200) {
       return setTemporaryError("Мінімальна сумма замовлення 200 ₴", setError);
     }
+
+    const orderData = getOrderData(formData, products, isPromotion)
+    console.log(orderData)
 
     setOrderData(orderData);
 
