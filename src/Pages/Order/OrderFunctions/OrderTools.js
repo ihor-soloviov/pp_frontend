@@ -24,6 +24,14 @@ export const headers = {
   "Access-Control-Allow-Origin": "*"
 }
 
+export const setTemporaryError = (error, setError) => {
+  setError({
+    status: true,
+    currentError: error,
+  });
+  setTimeout(() => setError({ status: false, currentError: "" }), 3000);
+};
+
 export const getCurrentDate = () => {
   const currentDate = new Date();
 

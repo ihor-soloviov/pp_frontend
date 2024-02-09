@@ -16,6 +16,7 @@ import {
   createTransaction,
   checkCurrentUserPromo,
   getCurrentDate,
+  setTemporaryError,
 } from "../OrderFunctions/OrderTools";
 
 import { purchase } from "../../../gm4";
@@ -68,33 +69,21 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const [isOrderCreate, setIsOrderCreate] = useState(false);
   const [error, setError] = useState({ status: false, currentError: "" });
 
+  //Tools
+  const location = useLocation();
+  const navigate = useNavigate();
+
   //stores
+  const { thanksModal, thanksModalHandler } = modalsStore;
   const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
   const { products, clearCart } = shoppingCartStore;
   const {
     name,
     phone,
     isAuthenticated,
-    token
   } = userStore;
 
-  const { thanksModal, thanksModalHandler } = modalsStore;
-
-  const shoppingCartMap = products.map((item) => {
-    return { product_id: item.id, count: item.count };
-  });
-
-  const shoppingCartMapPromo = products.map((item) => {
-    return { id: "2", involved_products: [{ id: item.id, count: item.count }] };
-  });
-
   const handleError = newErrorState => setError(newErrorState)
-
-
-
-  //Tools
-  const location = useLocation();
-  const navigate = useNavigate();
 
   //перевірка промокоду 
 
@@ -174,39 +163,27 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, []);
 
   const onSubmit = useCallback(() => {
-    const orderData = getOrderData(formData, shoppingCartMap, shoppingCartMapPromo, products, isPromotion)
+    const orderData = getOrderData(formData, products, isPromotion)
     console.log(orderData)
-    if (orderData.phone === "") {
-      setError({
-        status: true,
-        currentError: "Будь ласка, заповніть поле номеру телефону",
-      });
-    } else if (formData.howToReciveOrder === "") {
-      setError({
-        status: true,
-        currentError: "Будь ласка, оберіть спосіб отримання замовлення",
-      });
-    } else if (calculateTotalPrice(products) <= 200) {
-      setError({
-        status: true,
-        currentError: "Мінімальна сумма замовлення 200 ₴",
-      });
-      setTimeout(() => {
-        setError({
-          status: false,
-          currentError: "",
-        });
-      }, 3000);
-    } else {
-      setOrderData(orderData);
 
-      if (formData.paymentMethod === "Готівка") {
-        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-        console.log("cash");
-      } else {
-        const amount = isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products);
-        createTransaction(amount, setPaymentData);
-      }
+    // Перевірки умов з раннім поверненням
+    if (!orderData.phone) {
+      return setTemporaryError("Будь ласка, заповніть поле номеру телефону", setError);
+    } else if (!formData.howToReciveOrder) {
+      return setTemporaryError("Будь ласка, оберіть спосіб отримання замовлення", setError);
+    } else if (calculateTotalPrice(products) <= 200) {
+      return setTemporaryError("Мінімальна сумма замовлення 200 ₴", setError);
+    }
+
+    setOrderData(orderData);
+
+    if (formData.paymentMethod === "Готівка") {
+      createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+      console.log("cash");
+    } else {
+      const totalPrice = calculateTotalPrice(products);
+      const amount = isPromotion ? totalPrice * 0.6 : totalPrice;
+      createTransaction(amount, setPaymentData);
     }
   }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 

@@ -4,7 +4,11 @@ import {
   calculateTotalPrice
 } from "./OrderTools";
 
-export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, products, isPromotion) => {
+const shoppingCartMap = products => products.map(item => ({ product_id: item.id, count: item.count }));
+
+const shoppingCartMapPromo = products => products.map((item) => ({ id: "2", involved_products: [{ id: item.id, count: item.count }] }));
+
+export const getOrderData = (formData, products, isPromotion) => {
 
   const {
     name,
@@ -40,7 +44,7 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
     spot_id: 1,
     first_name: name,
     phone: number,
-    products: shoppingCartMap,
+    products: shoppingCartMap(products),
     client_address: {
       address1: address1,
       address2: address2,
@@ -50,10 +54,10 @@ export const getOrderData = (formData, shoppingCartMap, shoppingCartMapPromo, pr
       type: paymentMethod === "Готівка" ? 0 : 1,
       sum: isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products),
       currency: "UAH",
-    }, 
+    },
     service_mode: serviceMode,
     delivery_time: delivery_time,
-    promotion: isPromotion ? shoppingCartMapPromo : "",
+    promotion: isPromotion ? shoppingCartMapPromo(products) : "",
     comment: com,
   };
 }

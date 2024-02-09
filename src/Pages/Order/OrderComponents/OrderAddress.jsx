@@ -7,15 +7,6 @@ export const OrderAddress = React.memo(({ formData, handleFormValueChange }) => 
   return (
     <section className="order-page__section">
       <h3>Спосіб отримання замовлення</h3>
-      { /*         <section className="order-page__section-inputs">
-            <InputSelector
-              name={"Збережені адреси"}
-              data={selectAddresses}
-              placeholder={"Оберіть адресу"}
-              value={formData.selectedAddress}
-              onChange={(value) => handleFormValueChange("selectedAddress", value)}
-            />
-        </section>*/}
       <section className="order-page__section-inputs order-page__section-inputs-row">
         <InputText
           name={"Вулиця"}
