@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useCheckTransactionStatus } from "../../../utils/useCheckLiqpay";
 import { observer } from "mobx-react-lite";
 
 import orderStore from "../../../store/order-store";
@@ -12,7 +13,6 @@ import userStore from "../../../store/user-store";
 import {
   calculateTotalPrice,
   createOrder,
-  checkTransactionStatus,
   createTransaction,
   checkCurrentUserPromo,
   getCurrentDate,
@@ -36,8 +36,9 @@ import { OrderPaymentType } from "./OrderPaymentType";
 import { OrderComment } from "./OrderComment";
 import BtnMain from "../../../components/Buttons/BtnMain";
 
+
 const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
-  //State
+  //States
   const [formData, setFormData] = useState({
     spot_id: 1,
     name: "",
@@ -68,9 +69,17 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const [isOrderCreate, setIsOrderCreate] = useState(false);
   const [error, setError] = useState({ status: false, currentError: "" });
 
-  //Tools
-  const location = useLocation();
-  const navigate = useNavigate();
+
+  //handlers
+  const handleError = newErrorState => setError(newErrorState);
+  const handleTemporaryError = message => setTemporaryError(message, setError);
+
+  const handleFormValueChange = useCallback((field, value) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
+  }, []);
 
   //stores
   const { thanksModal, thanksModalHandler } = modalsStore;
@@ -82,7 +91,11 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     isAuthenticated,
   } = userStore;
 
-  const handleError = newErrorState => setError(newErrorState)
+  //Hooks
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useCheckTransactionStatus(location.search, setTransactionStatus);
 
   //функції які потребують авторизованності
   useEffect(() => {
@@ -95,17 +108,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     checkCurrentUserPromo();
 
   }, [isAuthenticated]);
-
-  //перевірка статусу транзації
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const paramValue = searchParams.get("status");
-
-    if (paramValue === "checkout") {
-      console.log('checkout')
-      checkTransactionStatus(setTransactionStatus, setError);
-    }
-  }, [location.search]);
 
   //створення замовлення в постер
   useEffect(() => {
@@ -144,43 +146,43 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     }
   }, [posterOrder]);
 
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
-
-  //Update formdata state
-  const handleFormValueChange = useCallback((field, value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [field]: value,
-    }));
-  }, []);
-
   const onSubmit = useCallback(() => {
-    // Перевірки умов з раннім поверненням
-    if (!formData.phone) {
-      return setTemporaryError("Будь ласка, заповніть поле номеру телефону", setError);
-    } else if (!formData.howToReciveOrder) {
-      return setTemporaryError("Будь ласка, оберіть спосіб отримання замовлення", setError);
-    } else if (calculateTotalPrice(products) <= 200) {
-      return setTemporaryError("Мінімальна сумма замовлення 200 ₴", setError);
+    // Функція для встановлення помилки
+
+    if (products.length === 0) {
+      return handleTemporaryError("Будь ласка, оберіть товари для замовлення");
     }
 
-    const orderData = getOrderData(formData, products, isPromotion)
-    console.log(orderData)
+    if (!formData.number) {
+      return handleTemporaryError("Будь ласка, заповніть поле номеру телефону");
+    }
 
+    if (!formData.howToReciveOrder) {
+      return handleTemporaryError("Будь ласка, оберіть спосіб отримання замовлення");
+    }
+
+    if (!formData.deliveryTime) {
+      return handleTemporaryError("Будь ласка, оберіть час отримання замовлення");
+    }
+
+    if (calculateTotalPrice(products) <= 200) {
+      return handleTemporaryError("Мінімальна сумма замовлення 200 ₴");
+    }
+
+    const orderData = getOrderData(formData, products, isPromotion);
+    console.log(orderData);
     setOrderData(orderData);
 
     if (formData.paymentMethod === "Готівка") {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
       console.log("cash");
-    } else {
-      const totalPrice = calculateTotalPrice(products);
-      const amount = isPromotion ? totalPrice * 0.6 : totalPrice;
-      createTransaction(amount, setPaymentData);
+      return; // Якщо потрібно завершити виконання функції після цього умови
     }
-  }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 
+    const totalPrice = calculateTotalPrice(products);
+    const amount = isPromotion ? totalPrice * 0.6 : totalPrice;
+    createTransaction(amount, setPaymentData);
+  }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 
   return (
     <React.Fragment>

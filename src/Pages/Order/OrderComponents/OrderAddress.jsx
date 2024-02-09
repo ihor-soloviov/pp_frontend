@@ -4,6 +4,7 @@ import RadioButton from '../../../components/RadioButton/RadioButton'
 
 export const OrderAddress = React.memo(({ formData, handleFormValueChange }) => {
   const { floor, buildingCode, entrance, apartment, houseNumber, street, howToReciveOrder } = formData;
+
   return (
     <section className="order-page__section">
       <h3>Спосіб отримання замовлення</h3>
@@ -44,6 +45,7 @@ export const OrderAddress = React.memo(({ formData, handleFormValueChange }) => 
           }
         />
       </section>
+      
       {howToReciveOrder === "До дверей" && (
         <section className="order-page__section-inputs order-page__section-inputs-row">
           <InputText

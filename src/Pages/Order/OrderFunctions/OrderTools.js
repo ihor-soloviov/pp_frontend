@@ -3,9 +3,15 @@ import { url } from "../../../api";
 
 import userStore from "../../../store/user-store";
 
-const { userPromocodeNotUse, userPromocode } = userStore
+const { userPromocodeNotUse, userPromocode } = userStore;
 
-// const token = JSON.parse(localStorage.getItem("userData")).token
+export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + item.totalPrice, 0);
+
+export const headers = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*"
+}
+
 const getToken = () => {
   const userDataFromLS = localStorage.getItem("userData");
   console.log("Отримали userData з LS")
@@ -17,11 +23,6 @@ const getToken = () => {
   }
 
   return null
-}
-
-export const headers = {
-  "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*"
 }
 
 export const setTemporaryError = (error, setError) => {
@@ -70,26 +71,6 @@ export const dateFormatter = (timeRange) => {
 
   return startDateTime;
 };
-
-export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + item.totalPrice, 0);
-
-// export function modifyDateString(dateString) {
-//   // Разделяем строку по пробелу на дату и время
-//   var parts = dateString.split(' ');
-//   var date = parts[0]; // "гггг-мм-дд"
-//   var time = parts[1]; // "чч:мм:сс"
-
-//   // Увеличиваем время на один час
-//   var newTime = time.split(':');
-//   var hours = parseInt(newTime[0]);
-//   hours += 1;
-//   newTime[0] = hours.toString().padStart(2, '0');
-
-//   // Объединяем новую дату и время
-//   var newDateString = newTime.join(':'); // "чч:мм:сс"
-
-//   return newDateString;
-// }
 
 export function filterTimeArray(array) {
   const currentTime = new Date();
@@ -190,41 +171,36 @@ export const createTransaction = async (amount, setPaymentData) => {
   }
 };
 
-export const checkTransactionStatus = async (setTransactionStatus, setError) => {
+export const checkTransactionStatus = async (setTransactionStatus) => {
   try {
-    const user_payment_data = JSON.parse(
-      localStorage.getItem("user_payment_data")
-    );
-    console.log("checkTransactionStatus", user_payment_data)
+    const user_payment_data = JSON.parse(localStorage.getItem("user_payment_data"));
+    console.log("checkTransactionStatus", user_payment_data);
 
     if (!user_payment_data) {
-      setError({
-        status: true,
-        currentError: "Оплата не вдала",
-      });
-      return
+      setTemporaryError("Оплата не вдала");
+      return;
     }
 
     const data = { order_id: user_payment_data.order_id };
-    const response = await axios.post(url + "/api/getStatus", data, { headers: headers });
+    const response = await axios.post(`${url}/api/getStatus`, data, { headers });
 
     const responseData = response.data;
     console.log("checkTransactionStatus: response data", responseData);
 
-    if (responseData === "unpaid") {
-      userPromocodeNotUse();
-      setError({
-        status: true,
-        currentError: "Оплата не вдала",
-      });
-      return
-    }
-
-    if (responseData === "success") {
-      setTransactionStatus(true);
-      userPromocode()
+    switch (responseData) {
+      case "unpaid":
+        userPromocodeNotUse();
+        setTemporaryError("Оплата не вдала");
+        break;
+      case "success":
+        setTransactionStatus(true);
+        userPromocode();
+        break;
+      default:
+        setTemporaryError("Невідомий статус оплати");
     }
   } catch (error) {
     console.error(error);
+    setTemporaryError("Помилка при перевірці статусу транзакції");
   }
 };

@@ -9,7 +9,6 @@ const shoppingCartMap = products => products.map(item => ({ product_id: item.id,
 const shoppingCartMapPromo = products => products.map((item) => ({ id: "2", involved_products: [{ id: item.id, count: item.count }] }));
 
 export const getOrderData = (formData, products, isPromotion) => {
-
   const {
     name,
     number,
@@ -34,11 +33,11 @@ export const getOrderData = (formData, products, isPromotion) => {
   const isAddressComment = howToReciveOrder === "Вийду до машини";
   const serviceMode = howToReciveOrder === "Самовивіз" ? 2 : 3;
   const delivery_time = deliveryTime === "На зараз" ? getCurrentDate() : dateFormatter(selectedTime);
-  const devicesComment = withoutDevices ? ", Без приборів, " : "";
-  const callOrNot = NotCall ? ", Не передзвонювати, " : "";
-  const orderRecive = howToReciveOrder === 2 ? ", Самовивіз, " : ""
-  const isProm = isPromotion ? "Знижка 40%" : ""
-  const com = `Кількість персон: ${personCount}${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`
+  const devicesComment = withoutDevices ? ", Без приборів" : "";
+  const callOrNot = NotCall ? ", Не передзвонювати" : "";
+  const orderRecive = howToReciveOrder === 2 ? ", Самовивіз" : ""
+  const isProm = isPromotion ? " Знижка 40%" : ""
+  const com = `Кількість персон: ${personCount},${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`
 
   return {
     spot_id: 1,
