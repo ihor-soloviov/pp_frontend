@@ -1,7 +1,7 @@
 import axios from "axios";
-import { url } from "../../api";
+import { url } from "../../../api";
 
-import userStore from "../../store/user-store";
+import userStore from "../../../store/user-store";
 
 const { userPromocodeNotUse, userPromocode } = userStore
 

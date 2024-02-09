@@ -8,7 +8,7 @@ import shoppingCartStore from "../../store/shoping-cart-store";
 
 //Import components
 
-import OrderForm from "./OrderForm";
+import OrderForm from "./OrderComponents/OrderForm";
 
 
 const Order = observer(() => {
