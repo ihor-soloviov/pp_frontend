@@ -101,29 +101,26 @@ export function filterTimeArray(array) {
 
 export const checkCurrentUserPromo = async () => {
   try {
-    const token = getToken()
-    console.log("checkCurrentUserPromo")
-    const JSONdata = JSON.stringify({ token: token })
-    const response = await axios.post(
-      `${url}/api/auth`,
-      JSONdata,
-      {
-        headers: headers,
-      }
-    );
+    const token = getToken();
+    if (!token) {
+      console.error("Token is not available.");
+      return;
+    }
 
-    const data = response.data;
-    console.log(data)
+    const JSONdata = JSON.stringify({ token });
+    const response = await axios.post(`${url}/api/auth`, JSONdata, { headers });
 
-    if (response.status === 200) {
-      if (!data.promocode40) {
-        userPromocode();
-      } else {
-        userPromocodeNotUse();
-      }
+    const { promocode40 } = response.data;
+    console.log("checkCurrentUserPromo", promocode40);
+
+    // Використання прямої умови замість !promocode40 для підвищення читабельності
+    if (promocode40) {
+      userPromocodeNotUse();
+    } else {
+      userPromocode();
     }
   } catch (err) {
-    console.error(err);
+    console.error("Error checking current user promo:", err);
   }
 };
 

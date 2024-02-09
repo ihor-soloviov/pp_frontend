@@ -99,11 +99,10 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //перевірка промокоду 
 
   useEffect(() => {
-    console.log('aaaaaaaa')
     if (isAuthenticated) {
-      checkCurrentUserPromo(token);
+      checkCurrentUserPromo();
     }
-  }, [isAuthenticated, token]);
+  }, [isAuthenticated]);
 
   //перевірка статусу транзації
   useEffect(() => {
@@ -162,9 +161,9 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     }
   }, [isAuthenticated, name, phone]);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   //Update formdata state
   const handleFormValueChange = useCallback((field, value) => {
@@ -227,7 +226,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         </Popup>
       )}
 
-      {error.status === true && (
+      {!!error.status && (
         <PopupActions
           action={error.currentError}
           onClick={() =>
