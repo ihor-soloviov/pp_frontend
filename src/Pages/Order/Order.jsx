@@ -68,7 +68,7 @@ const Order = observer(() => {
                     <p className="checkout__text">Доставка:</p>
                     <p className="checkout__text">
                       {calculateTotalPrice(products) < 500
-                        ? "за допомогою таксі (оплачується окремо)"
+                        ? "60 ₴ (оплачується окремо)"
                         : "Безкоштовна"}
                     </p>
                   </div>
