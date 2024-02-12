@@ -25,7 +25,15 @@ const Cart = observer(() => {
   const [countChanging, setCountChanging] = useState(false);
 
   useEffect(() => {
-    setTotalPrice(products.reduce((a, b) => a + b.totalPrice, 0));
+    const total = products.reduce((a, b) => a + b.totalPrice, 0)
+
+    if (total > 500) {
+      setDelivery(0)
+    } else {
+      setDelivery(60)
+    }
+
+    setTotalPrice(total);
   }, [products, countChanging, isOpen]);
 
   useEffect(() => {
