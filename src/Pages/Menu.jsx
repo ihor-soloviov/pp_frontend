@@ -1,5 +1,5 @@
 //Import React
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 //Import Components
@@ -13,6 +13,8 @@ import classNames from "classnames";
 import "./menu.scss";
 
 const Menu = React.memo(() => {
+
+  const btnRefs = useRef({});
   const { id } = useParams();
 
   const [currentCatId, setCurrentCatId] = useState(null);
@@ -32,6 +34,17 @@ const Menu = React.memo(() => {
       setCurrentCatId(id);
     }
   }, [id]);
+
+  useEffect(() => {
+    // Якщо існує активна категорія, прокручуємо до неї
+    if (currentCatId && btnRefs.current[currentCatId]) {
+      btnRefs.current[currentCatId].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'start',
+      });
+    }
+  }, [currentCatId]);
 
   return (
     <>

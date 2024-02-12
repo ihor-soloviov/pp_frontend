@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../../components/Container/Container";
 import "./Order.scss";
 
@@ -15,6 +15,8 @@ const Order = observer(() => {
   const { products } = shoppingCartStore;
 
   const [isPromotion, setIsPromotion] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [delivery, setDelivery] = useState(60)
 
   const calculateTotalPrice = (items) => {
     let totalPrice = 0;
@@ -25,6 +27,25 @@ const Order = observer(() => {
 
     return totalPrice;
   };
+
+  useEffect(() => {
+    let totalPrice = calculateTotalPrice(products);
+
+    if (isPromotion) {
+      totalPrice = totalPrice * 0.6
+    }
+
+    if (totalPrice > 500) {
+      setDelivery(0)
+    } else {
+      setDelivery(60)
+    }
+
+    setTotal(totalPrice)
+  }, [products, isPromotion])
+
+
+
 
   return (
     <>
@@ -61,15 +82,13 @@ const Order = observer(() => {
                   <div className="checkout__row">
                     <p className="checkout__text">Сума замовлення:</p>
                     <p className="checkout__text">
-                      {calculateTotalPrice(products)} ₴
+                      {total} ₴
                     </p>
                   </div>
                   <div className="checkout__row checkout__row-delivery">
                     <p className="checkout__text">Доставка:</p>
                     <p className="checkout__text">
-                      {calculateTotalPrice(products) < 500
-                        ? "60 ₴ (оплачується окремо)"
-                        : "Безкоштовна"}
+                      {delivery} ₴
                     </p>
                   </div>
                   {isPromotion && (
@@ -88,10 +107,7 @@ const Order = observer(() => {
                       Всього до сплати:
                     </p>
                     <p className="checkout__text-bold">
-                      {isPromotion
-                        ? calculateTotalPrice(products) * (60 / 100)
-                        : calculateTotalPrice(products)}{" "}
-                      ₴
+                      {total} ₴
                     </p>
                   </div>
                 </div>

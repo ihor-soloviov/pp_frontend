@@ -10,7 +10,7 @@ export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + 
 export const headers = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*"
-}
+};
 
 const getToken = () => {
   const userDataFromLS = localStorage.getItem("userData");
@@ -23,7 +23,7 @@ const getToken = () => {
   }
 
   return null
-}
+};
 
 export const setTemporaryError = (error, setError) => {
   setError({
@@ -86,7 +86,7 @@ export function filterTimeArray(array) {
   });
 
   return filteredArray;
-}
+};
 
 export const checkCurrentUserPromo = async () => {
   try {

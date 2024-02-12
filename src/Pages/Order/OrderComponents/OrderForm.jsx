@@ -180,7 +180,11 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     }
 
     const totalPrice = calculateTotalPrice(products);
-    const amount = isPromotion ? totalPrice * 0.6 : totalPrice;
+    let amount = isPromotion ? totalPrice * 0.6 : totalPrice;
+    //додаємо вартість таксі
+    if (amount < 500) {
+      amount += 60
+    }
     createTransaction(amount, setPaymentData);
   }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 
