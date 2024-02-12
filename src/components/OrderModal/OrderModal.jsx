@@ -13,7 +13,8 @@ const OrderModal = ({
   openConfirmModal,
 }) => {
 
-  console.log(order)
+  console.log(order);
+  
   const { client_address, persone_count, comment, incoming_order_id, processing_status, created_at, payment } = order;
 
   const userComment = comment.split("Коментар від користувача: ").reverse()[0] || ""

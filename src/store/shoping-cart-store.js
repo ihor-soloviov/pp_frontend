@@ -71,6 +71,10 @@ class ShoppingCartStore {
   clearCart = () => {
     this.products = [];
     localStorage.removeItem("shoppingCart");
+    localStorage.removeItem("posterOrder");
+    localStorage.removeItem("poster_order");
+    localStorage.removeItem("user_payment_data");
+    localStorage.removeItem("user_order_data");
   }
 }
 

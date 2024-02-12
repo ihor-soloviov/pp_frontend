@@ -129,12 +129,9 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
       thanksModalHandler(false);
       setTimeout(() => {
-        localStorage.removeItem("posterOrder");
-        localStorage.removeItem("poster_order");
-        localStorage.removeItem("user_payment_data");
-        localStorage.removeItem("user_order_data");
         navigate('/')
       }, 5000);
+
       clearCart();
     }
   }, [isOrderCreate]);
