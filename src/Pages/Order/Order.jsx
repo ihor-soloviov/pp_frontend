@@ -107,7 +107,7 @@ const Order = observer(() => {
                       Всього до сплати:
                     </p>
                     <p className="checkout__text-bold">
-                      {total} ₴
+                      {total + delivery} ₴
                     </p>
                   </div>
                 </div>

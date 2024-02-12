@@ -20,11 +20,11 @@ const Cart = observer(() => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [delivery, setDelivery] = useState(60)
   const [error, setError] = useState(false);
   const [countChanging, setCountChanging] = useState(false);
 
   useEffect(() => {
-    console.log('updating Total price')
     setTotalPrice(products.reduce((a, b) => a + b.totalPrice, 0));
   }, [products, countChanging, isOpen]);
 
@@ -194,14 +194,12 @@ const Cart = observer(() => {
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text">Доставка:</p>
                   <p className="shopping-cart__text">
-                    {totalPrice < 500
-                      ? "за допомогою таксі (оплачується окремо)"
-                      : "Безкоштовна"}
+                    {delivery} ₴
                   </p>
                 </div>
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text-final">Всього до сплати:</p>
-                  <p className="shopping-cart__text-final">{totalPrice} ₴</p>
+                  <p className="shopping-cart__text-final">{totalPrice + delivery} ₴</p>
                 </div>
               </div>
               <BtnMain
