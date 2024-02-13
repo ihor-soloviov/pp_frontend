@@ -18,8 +18,9 @@ import "./ProductPage.scss";
 
 import { url } from "../../api";
 import { add_to_cart, view_item } from "../../gm4";
-import { productPageGetter } from "../../utils/menu";
-import { Modificators } from "./Modificators";
+import { addToCartHandler, productPageGetter } from "../../utils/menu";
+import Popup from "../../components/Popup/Popup";
+import ModificatorsPopup from "./ModificatorsPopup";
 
 const ProductPage = observer(() => {
   const { id } = useParams();
@@ -27,7 +28,6 @@ const ProductPage = observer(() => {
   const { setActions } = popupActionsStore;
 
   const [count, setCount] = useState(1);
-  const [inCart, setInCart] = useState(false);
 
   const [product, setProduct] = useState(null);
   const [productIngredients, setProductIngredients] = useState(null);
@@ -35,6 +35,8 @@ const ProductPage = observer(() => {
   const [recommendationsProducts, setRecommendationsProducts] = useState(null);
   const [groupsOfModificators, setGroupsOfModificators] = useState([])
   const [selectedModificators, setSelectedModificators] = useState([]);
+
+  const [isPopupOpened, setIsPopupOpened] = useState(false)
 
   const handleModificatorChange = useCallback((newModificator) => {
     setSelectedModificators(prev => {
@@ -52,6 +54,7 @@ const ProductPage = observer(() => {
     });
   }, []);
 
+  const handleModPopup = () => setIsPopupOpened(prev => !prev)
 
   useEffect(() => {
     console.log(selectedModificators)
@@ -72,19 +75,6 @@ const ProductPage = observer(() => {
     productPageGetter(id, setProduct, setGroupsOfModificators, setRecommendationsProducts);
   }, [id]);
 
-
-  useEffect(() => {
-
-    if (!products) {
-      return;
-    }
-    if (products.some((el) => el.id === id)) {
-      setInCart(true);
-    } else {
-      setInCart(false);
-    }
-  }, [products, id]);
-
   if (product !== null && product !== false) {
     view_item(
       product.product_name,
@@ -96,6 +86,11 @@ const ProductPage = observer(() => {
     return (
       <div>
         <div className="product-page">
+          {isPopupOpened && (
+            <Popup closeModal={handleModPopup}>
+              <ModificatorsPopup groups={groupsOfModificators} />
+            </Popup>
+          )}
           <Container>
             <div className="product-page__content">
               <div className="product-page__preview">
@@ -105,7 +100,6 @@ const ProductPage = observer(() => {
                 />
               </div>
               <div className="product-page__info">
-
                 <p className="product-page__weight text text__color--secondary">
                   {product.out} г
                 </p>
@@ -117,11 +111,6 @@ const ProductPage = observer(() => {
                     {productDescription}
                   </p>
                 )}
-
-                {groupsOfModificators && (
-                  <Modificators groups={groupsOfModificators} onModificatorChange={handleModificatorChange} />
-                )}
-
                 {window.innerWidth > 1000 ? (
                   <p className="product-page__price text-price text__color--secondary">
                     {parseInt(product.price[1].slice(0, -2))} ₴
@@ -158,56 +147,12 @@ const ProductPage = observer(() => {
                 }
 
                 <div className="product-page__order">
-                  {inCart === true ? (
-                    <button
-                      className="btn btn-main"
-                      disabled
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        style={{ marginRight: 6 }}
-                      >
-                        <path
-                          d="M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z"
-                          fill="#92939A"
-                        />
-                      </svg>
-                      Додано до кошику
-                    </button>
-                  ) : (
-                    <button
-                      className="btn btn-main"
-                      onClick={() => {
-                        addProduct({
-                          name: product.product_name,
-                          price: parseInt(product.price[1].slice(0, -2)),
-                          count: count,
-                          preview: url + product.product_id,
-                          weight: product.cost,
-                          category: product.category_name,
-                          id: id,
-                        });
-                        add_to_cart(
-                          product.product_name,
-                          product.product_id,
-                          parseInt(product.price[1].slice(0, -2)) * count,
-                          product.category_name,
-                          count
-                        );
-                        setActions("addToCard");
-                        setTimeout(() => {
-                          setActions("");
-                        }, 2000);
-                      }}
-                    >
-                      Додати в кошик (
-                      {parseInt(product.price[1].slice(0, -2)) * count} ₴)
-                    </button>
-                  )}
+                  <button
+                    className="btn btn-main"
+                    onClick={handleModPopup}
+                  >
+                    Додати в кошик
+                  </button>
 
                   {window.innerWidth > 1000 && (
                     <div className="counter">

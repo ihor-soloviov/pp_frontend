@@ -1,12 +1,11 @@
 import axios from "axios";
 import { url } from "../api";
+import { add_to_cart } from "../gm4";
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
   "Content-Type": "application/json",
 };
-
-// Створюємо мапу для кастомних індексів позицій для відображення категорій у потрібному порядку
 
 const customIndexMap = {
   12: 1,
@@ -23,6 +22,30 @@ const customIndexMap = {
   1: 12,
   5: 13,
 };
+
+export const addToCartHandler = (addProduct, product, count, id, setActions) => {
+  addProduct({
+    name: product.product_name,
+    price: parseInt(product.price[1].slice(0, -2)),
+    count: count,
+    preview: url + product.product_id,
+    weight: product.cost,
+    category: product.category_name,
+    id: id,
+  });
+  add_to_cart(
+    product.product_name,
+    product.product_id,
+    parseInt(product.price[1].slice(0, -2)) * count,
+    product.category_name,
+    count
+  );
+  
+  setActions("addToCard");
+  setTimeout(() => {
+    setActions("");
+  }, 2000);
+}
 
 export const getCategories = async (setCategories, setCurrentCatId) => {
   try {

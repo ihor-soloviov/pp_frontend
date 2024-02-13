@@ -18,25 +18,19 @@ class ShoppingCartStore {
     ingredients,
     category,
   }) => {
-    const existingProduct = this.products.find((p) => p.id === id);
-    if (existingProduct) {
-      existingProduct.count += count;
-      existingProduct.totalPrice =
-        existingProduct.price * existingProduct.count;
-    } else {
-      const product = {
-        preview,
-        name,
-        price,
-        count,
-        weight,
-        id,
-        ingredients,
-        category,
-      };
-      product.totalPrice = price * count;
-      this.products.push(product);
-    }
+    const product = {
+      preview,
+      name,
+      price,
+      count,
+      weight,
+      id,
+      ingredients,
+      category,
+    };
+    product.totalPrice = price * count;
+    this.products.push(product);
+
     localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   };
 
