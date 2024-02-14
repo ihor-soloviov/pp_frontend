@@ -26,12 +26,8 @@ const Cart = observer(() => {
 
   useEffect(() => {
     const total = products.reduce((a, b) => a + b.totalPrice, 0)
-
-    if (total > 500) {
-      setDelivery(0)
-    } else {
-      setDelivery(60)
-    }
+    
+    total > 500 ? setDelivery(0) : setDelivery(60)
 
     setTotalPrice(total);
   }, [products, countChanging, isOpen]);
@@ -62,7 +58,7 @@ const Cart = observer(() => {
   }, []);
 
   return (
-    <>
+    <React.Fragment>
       {popupError(error)}
       <button className="card" onClick={() => setIsOpen(true)}>
         <div
@@ -114,7 +110,7 @@ const Cart = observer(() => {
             </svg>
           </div>
           {products.length === 0 ? (
-            <>
+            <React.Fragment>
               <div className="shopping-cart__content shopping-cart__content--empty">
                 <div className="shopping-cart__logo">
                   <svg
@@ -176,7 +172,7 @@ const Cart = observer(() => {
                 }}
                 fullWide
               />
-            </>
+            </React.Fragment>
           ) : (
             <div className="shopping-cart__content">
               <div className="shopping-cart__row">
@@ -241,7 +237,7 @@ const Cart = observer(() => {
           )}
         </div>
       )}
-    </>
+    </React.Fragment>
   );
 });
 

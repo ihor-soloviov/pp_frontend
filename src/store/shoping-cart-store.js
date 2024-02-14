@@ -18,7 +18,8 @@ class ShoppingCartStore {
     ingredients,
     category,
   }) => {
-    const product = {
+
+    this.products.push({
       preview,
       name,
       price,
@@ -27,9 +28,8 @@ class ShoppingCartStore {
       id,
       ingredients,
       category,
-    };
-    product.totalPrice = price * count;
-    this.products.push(product);
+      totalPrice: price * count
+    });
 
     localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   };

@@ -25,7 +25,7 @@ const ShoppingCartItem = observer(
     return (
       <li className="shopping-cart__item">
         <div className="shopping-cart__preview">
-          <img src={`${url}/api/sendImage/${id}`} alt="product" />
+          <img src={preview} alt="product" />
         </div>
         <div className="shopping-cart__info">
           <div className="shopping-cart__row">

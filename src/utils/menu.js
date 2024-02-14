@@ -40,20 +40,22 @@ export const handleModificatorChange = (newModificator, setSelectedModificators)
 };
 
 export const addToCartHandler = (addProduct, product, selectedModificators, count, id, setActions) => {
+  const { product_name, price, out, category_name, product_id } = product
+  console.log(product)
   addProduct({
-    name: product.product_name,
-    price: parseInt(product.price[1].slice(0, -2)),
+    name: product_name,
+    price: parseInt(price[1].slice(0, -2)),
     count: count,
-    preview: url + product.product_id,
-    weight: product.cost,
-    category: product.category_name,
-    id: id,
+    preview: `${url}/api/sendImage/${product.product_id}`,
+    weight: out,
+    category: category_name,
+    id,
   });
   add_to_cart(
-    product.product_name,
-    product.product_id,
-    parseInt(product.price[1].slice(0, -2)) * count,
-    product.category_name,
+    product_name,
+    product_id,
+    parseInt(price[1].slice(0, -2)) * count,
+    category_name,
     count
   );
 
@@ -154,6 +156,7 @@ export const productPageGetter = async (id, setProduct, setGroupsOfModificators,
   try {
     // Перший запит
     const productResponse = await axios.post(`${url}/api/product`, JSON.stringify({ productId: id }), { headers });
+    console.log(productResponse.data)
     setProduct(productResponse.data);
     const modificators = productResponse.data.group_modifications;
     setGroupsOfModificators(modificators)
