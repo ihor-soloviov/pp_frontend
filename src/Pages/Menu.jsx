@@ -1,25 +1,29 @@
 //Import React
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 //Import Components
 import ProductCard from "../components/ProductCard/ProductCard";
 
 //Import Utils
-import { getCategories, getProducts } from "../utils/menu";
+import { addToCartHandler, getCategories, getProducts } from "../utils/menu";
 import classNames from "classnames";
+import { url } from "../api";
 
 //Impost styles
 import "./menu.scss";
+import Popup from "../components/Popup/Popup";
+import ModificatorsPopup from "./ProductPage/ModificatorsPopup";
+import shoppingCartStore from "../store/shoping-cart-store";
 
 const Menu = React.memo(() => {
-
-  const btnRefs = useRef({});
   const { id } = useParams();
 
   const [currentCatId, setCurrentCatId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState(null);
+
+ 
 
   useEffect(() => {
     getCategories(setCategories, setCurrentCatId);
@@ -35,22 +39,11 @@ const Menu = React.memo(() => {
     }
   }, [id]);
 
-  useEffect(() => {
-    // Якщо існує активна категорія, прокручуємо до неї
-    if (currentCatId && btnRefs.current[currentCatId]) {
-      btnRefs.current[currentCatId].scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'start',
-      });
-    }
-  }, [currentCatId]);
-
   return (
     <>
       <div className="categories" id="menu">
         <h1 className="title__h1">Куштуй тільки найсмачніше</h1>
-        {products && (
+        {categories && (
           <div className="categories__list">
             {categories.map((cat) => {
               return (
@@ -73,7 +66,8 @@ const Menu = React.memo(() => {
           {products.map((product) => {
             return (
               <ProductCard
-                preview={`https://api.polarpelmeni.com.ua/api/sendImage/${product.product_id}`}
+                product={product}
+                preview={`${url}/api/sendImage/${product.product_id}`}
                 name={product.product_name}
                 price={parseInt(product.price[1].slice(0, -2))}
                 ingredients={product.ingredients}

@@ -5,26 +5,23 @@ import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import shoppingCartStore from "../../store/shoping-cart-store";
 import popupActionsStore from "../../store/popup-action-store";
-
+import { view_item } from "../../gm4";
+import { addToCartHandler, productPageGetter } from "../../utils/menu";
 
 //Import components
 import Container from "../../components/Container/Container";
 import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/ProductCard/ProductCard";
 // import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
+import Popup from "../../components/Popup/Popup";
+import ModificatorsPopup from "./ModificatorsPopup";
 
 //Import styles
 import "./ProductPage.scss";
 
-import { url } from "../../api";
-import { add_to_cart, view_item } from "../../gm4";
-import { addToCartHandler, productPageGetter } from "../../utils/menu";
-import Popup from "../../components/Popup/Popup";
-import ModificatorsPopup from "./ModificatorsPopup";
-
 const ProductPage = observer(() => {
   const { id } = useParams();
-  const { addProduct, products } = shoppingCartStore;
+  const { addProduct } = shoppingCartStore;
   const { setActions } = popupActionsStore;
 
   const [count, setCount] = useState(1);
@@ -42,22 +39,6 @@ const ProductPage = observer(() => {
     addToCartHandler(addProduct, product, selectedModificators, count, id, setActions);
     setIsPopupOpened(false)
   }
-
-  const handleModificatorChange = useCallback((newModificator) => {
-    setSelectedModificators(prev => {
-      const index = prev.findIndex(modificator => modificator.group === newModificator.group);
-
-      if (index !== -1) {
-        if (newModificator.name.toLowerCase().includes("без")) {
-          return prev.filter((_, idx) => idx !== index);
-        } else {
-          return prev.map((modificator, idx) => idx === index ? newModificator : modificator);
-        }
-      } else {
-        return [...prev, newModificator];
-      }
-    });
-  }, []);
 
   const handleModPopup = () => setIsPopupOpened(prev => !prev)
 
@@ -91,9 +72,9 @@ const ProductPage = observer(() => {
     return (
       <div>
         <div className="product-page">
-          {isPopupOpened && (
+          {isPopupOpened && groupsOfModificators && (
             <Popup closeModal={handleModPopup}>
-              <ModificatorsPopup groups={groupsOfModificators} handleModificatorChange={handleModificatorChange} addProductToCart={addProductToCart} />
+              <ModificatorsPopup groups={groupsOfModificators} setSelectedModificators={setSelectedModificators} addProductToCart={addProductToCart} />
             </Popup>
           )}
           <Container>
@@ -154,7 +135,7 @@ const ProductPage = observer(() => {
                 <div className="product-page__order">
                   <button
                     className="btn btn-main"
-                    onClick={handleModPopup}
+                    onClick={() => groupsOfModificators ? handleModPopup() : addProductToCart()}
                   >
                     Додати в кошик
                   </button>

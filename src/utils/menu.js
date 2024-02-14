@@ -23,6 +23,22 @@ const customIndexMap = {
   5: 13,
 };
 
+export const handleModificatorChange = (newModificator, setSelectedModificators) => {
+  setSelectedModificators(prev => {
+    const index = prev.findIndex(modificator => modificator.group === newModificator.group);
+
+    if (index !== -1) {
+      if (newModificator.name.toLowerCase().includes("без")) {
+        return prev.filter((_, idx) => idx !== index);
+      } else {
+        return prev.map((modificator, idx) => idx === index ? newModificator : modificator);
+      }
+    } else {
+      return [...prev, newModificator];
+    }
+  });
+};
+
 export const addToCartHandler = (addProduct, product, selectedModificators, count, id, setActions) => {
   addProduct({
     name: product.product_name,

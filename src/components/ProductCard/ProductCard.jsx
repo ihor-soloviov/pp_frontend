@@ -1,5 +1,5 @@
 //Import React
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -15,26 +15,40 @@ import { sendFavsToServer } from "../../utils/favorites";
 //Import Styles
 import "./productCard.scss";
 import classNames from "classnames";
+import { addToCartHandler, productPageGetter } from "../../utils/menu";
+import ModificatorsPopup from "../../Pages/ProductPage/ModificatorsPopup";
+import Popup from "../Popup/Popup";
 
-const ProductCard = observer((props) => {
+const ProductCard = observer(({ product, preview, name, price, ingredients, weight, id, category }) => {
   const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
+
   const { addProduct } = shoppingCartStore;
   const { setActions } = popupActionsStore;
 
   const [count, setCount] = useState(1);
   const [inCart, setInCart] = useState(false);
+  const [isPopupOpened, setIsPopupOpened] = useState(false)
+  const [groupsOfModificators, setGroupsOfModificators] = useState([])
+  const [selectedModificators, setSelectedModificators] = useState([]);
 
   const navigate = useNavigate();
+
+
+  const addProductToCart = () => {
+    addToCartHandler(addProduct, product, selectedModificators, count, id, setActions);
+    setIsPopupOpened(false)
+  }
+
+  const handleModPopup = () => setIsPopupOpened(prev => !prev)
 
   const isItemFavourite = () => {
     if (!favoritProducts || favoritProducts === null) {
       return false;
     }
-    return favoritProducts.some((el) => el.id === props.id);
+    return favoritProducts.some((el) => el.id === id);
   };
 
   const handleFavorite = () => {
-    const { id, name, price, count, preview, weight, ingredients } = props;
 
     if (isItemFavourite()) {
       removeFromFavorit(id);
@@ -62,19 +76,19 @@ const ProductCard = observer((props) => {
     console.log("addToCart");
     setActions("addToCard");
     addProduct({
-      name: props.name,
-      price: props.price,
+      name: name,
+      price: price,
       count: count,
-      preview: props.preview,
-      weight: props.weight,
-      id: props.id,
-      ingredients: props.ingredients,
-      category: props.category,
+      preview: preview,
+      weight: weight,
+      id: id,
+      ingredients: ingredients,
+      category: category,
     });
 
     setInCart(true);
 
-    add_to_cart(props.name, props.id, props.price, props.category, count);
+    add_to_cart(name, id, price, category, count);
     setTimeout(() => {
       setInCart(false);
 
@@ -82,7 +96,32 @@ const ProductCard = observer((props) => {
     }, 2000);
   };
 
-  return (
+  const handleModificatorChange = useCallback((newModificator) => {
+    setSelectedModificators(prev => {
+      const index = prev.findIndex(modificator => modificator.group === newModificator.group);
+
+      if (index !== -1) {
+        if (newModificator.name.toLowerCase().includes("без")) {
+          return prev.filter((_, idx) => idx !== index);
+        } else {
+          return prev.map((modificator, idx) => idx === index ? newModificator : modificator);
+        }
+      } else {
+        return [...prev, newModificator];
+      }
+    });
+  }, []);
+
+
+
+
+  return (<>
+    {isPopupOpened && groupsOfModificators && (
+      <Popup closeModal={handleModPopup}>
+        <ModificatorsPopup groups={groupsOfModificators} handleModificatorChange={handleModificatorChange} addProductToCart={addProductToCart} />
+      </Popup>
+    )}
+
     <div className="product">
       <div className="product__cta">
         <div
@@ -109,40 +148,22 @@ const ProductCard = observer((props) => {
       </div>
       <div className="product__preview">
         <img
-          src={props.preview}
-          alt={props.name}
-          onClick={() => navigate(`/product/${props.id}`)}
+          src={preview}
+          alt={name}
+          onClick={() => navigate(`/product/${id}`)}
         />
-        {inCart === true ? (
-          <button>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6.66715 10.1138L12.7954 3.9856L13.7382 4.9284L6.66715 11.9994L2.4245 7.75685L3.36731 6.81405L6.66715 10.1138Z"
-                fill="#92939A"
-              />
-            </svg>
-            <p> Додано до кошику</p>
-          </button>
-        ) : (
-          <button className="product__addToCard" onClick={() => addToCart()}>
-            В кошик
-          </button>
-        )}
+        <button className="product__addToCard" onClick={() => addToCart()}>
+          В кошик
+        </button>
       </div>
       <div className="product__info">
-        <p className="product__weight">{props.weight} г</p>
-        <h4 className="product__name">{props.name}</h4>
-        <p className="product__composition">{props.ingredients}</p>
+        <p className="product__weight">{weight} г</p>
+        <h4 className="product__name">{name}</h4>
+        <p className="product__composition">{ingredients}</p>
       </div>
       <div className="product__order">
         <div className="product__price">
-          <div className="product__total-price">{props.price * count} ₴</div>
+          <div className="product__total-price">{price * count} ₴</div>
         </div>
         <div className="counter">
           <div
@@ -162,6 +183,7 @@ const ProductCard = observer((props) => {
         </div>
       </div>
     </div>
+  </>
   );
 });
 
