@@ -23,7 +23,7 @@ const customIndexMap = {
   5: 13,
 };
 
-export const addToCartHandler = (addProduct, product, count, id, setActions) => {
+export const addToCartHandler = (addProduct, product, selectedModificators, count, id, setActions) => {
   addProduct({
     name: product.product_name,
     price: parseInt(product.price[1].slice(0, -2)),
@@ -40,7 +40,7 @@ export const addToCartHandler = (addProduct, product, count, id, setActions) => 
     product.category_name,
     count
   );
-  
+
   setActions("addToCard");
   setTimeout(() => {
     setActions("");

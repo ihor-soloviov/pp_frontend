@@ -38,6 +38,11 @@ const ProductPage = observer(() => {
 
   const [isPopupOpened, setIsPopupOpened] = useState(false)
 
+  const addProductToCart = () => {
+    addToCartHandler(addProduct, product, selectedModificators, count, id, setActions);
+    setIsPopupOpened(false)
+  }
+
   const handleModificatorChange = useCallback((newModificator) => {
     setSelectedModificators(prev => {
       const index = prev.findIndex(modificator => modificator.group === newModificator.group);
@@ -88,7 +93,7 @@ const ProductPage = observer(() => {
         <div className="product-page">
           {isPopupOpened && (
             <Popup closeModal={handleModPopup}>
-              <ModificatorsPopup groups={groupsOfModificators} />
+              <ModificatorsPopup groups={groupsOfModificators} handleModificatorChange={handleModificatorChange} addProductToCart={addProductToCart} />
             </Popup>
           )}
           <Container>
