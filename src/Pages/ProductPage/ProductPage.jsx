@@ -1,5 +1,5 @@
 //Import React
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { observer } from "mobx-react-lite";
@@ -15,6 +15,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 // import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
 import Popup from "../../components/Popup/Popup";
 import ModificatorsPopup from "./ModificatorsPopup";
+import { url } from "../../api";
 
 //Import styles
 import "./ProductPage.scss";
@@ -81,7 +82,7 @@ const ProductPage = observer(() => {
             <div className="product-page__content">
               <div className="product-page__preview">
                 <img
-                  src={`https://api.polarpelmeni.com.ua/api/sendImage/${id}`}
+                  src={`${url}/api/sendImage/${id}`}
                   alt={product.product_name}
                 />
               </div>

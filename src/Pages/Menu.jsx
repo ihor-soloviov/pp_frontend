@@ -1,20 +1,17 @@
 //Import React
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 //Import Components
 import ProductCard from "../components/ProductCard/ProductCard";
 
 //Import Utils
-import { addToCartHandler, getCategories, getProducts } from "../utils/menu";
+import { getCategories, getProducts } from "../utils/menu";
 import classNames from "classnames";
 import { url } from "../api";
 
 //Impost styles
 import "./menu.scss";
-import Popup from "../components/Popup/Popup";
-import ModificatorsPopup from "./ProductPage/ModificatorsPopup";
-import shoppingCartStore from "../store/shoping-cart-store";
 
 const Menu = React.memo(() => {
   const { id } = useParams();
@@ -23,7 +20,7 @@ const Menu = React.memo(() => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState(null);
 
- 
+
 
   useEffect(() => {
     getCategories(setCategories, setCurrentCatId);
@@ -40,7 +37,7 @@ const Menu = React.memo(() => {
   }, [id]);
 
   return (
-    <>
+    <React.Fragment>
       <div className="categories" id="menu">
         <h1 className="title__h1">Куштуй тільки найсмачніше</h1>
         {categories && (
@@ -80,7 +77,7 @@ const Menu = React.memo(() => {
           })}
         </div>
       )}
-    </>
+    </React.Fragment>
   );
 });
 

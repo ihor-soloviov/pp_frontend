@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import shoppingCartStore from "../../store/shoping-cart-store";
+import { url } from "../../api";
 import { observer } from "mobx-react-lite";
 
 const ShoppingCartItem = observer(
@@ -24,7 +25,7 @@ const ShoppingCartItem = observer(
     return (
       <li className="shopping-cart__item">
         <div className="shopping-cart__preview">
-          <img src={preview} alt="" />
+          <img src={`${url}/api/sendImage/${id}`} alt="product" />
         </div>
         <div className="shopping-cart__info">
           <div className="shopping-cart__row">

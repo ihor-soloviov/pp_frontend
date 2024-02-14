@@ -128,6 +128,7 @@ export const getProducts = async (id, setProducts) => {
         product_id,
         product_production_description,
         category_name,
+        group_modifications
       }) => ({
         photo: photo_origin,
         product_name: product_name,
@@ -139,6 +140,7 @@ export const getProducts = async (id, setProducts) => {
           .split(", ")
           .join(", "),
         category: category_name,
+        group_modifications
       })
     );
 
