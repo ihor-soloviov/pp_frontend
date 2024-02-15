@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 class ModalsStore {
   authModal = false;
@@ -27,9 +27,13 @@ class ModalsStore {
   };
 
   setLoader = () => {
-    this.isLoader = true
+    runInAction(() => {
+      this.isLoader = true;
+    });
     setTimeout(() => {
-      this.isLoader = false;
+      runInAction(() => {
+        this.isLoader = false;
+      });
     }, 1500);
   }
 }

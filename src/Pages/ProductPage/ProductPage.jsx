@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { observer } from "mobx-react-lite";
-import shoppingCartStore from "../../store/shoping-cart-store";
-import popupActionsStore from "../../store/popup-action-store";
 import { view_item } from "../../gm4";
 import { addToCartHandler, productPageGetter } from "../../utils/menu";
 
@@ -12,7 +10,6 @@ import { addToCartHandler, productPageGetter } from "../../utils/menu";
 import Container from "../../components/Container/Container";
 import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/ProductCard/ProductCard";
-// import ArrowBtn from "../../components/ArrowBtn/ArrowBtn";
 import Popup from "../../components/Popup/Popup";
 import ModificatorsPopup from "./ModificatorsPopup";
 import { url } from "../../api";
@@ -22,8 +19,6 @@ import "./ProductPage.scss";
 
 const ProductPage = observer(() => {
   const { id } = useParams();
-  const { addProduct } = shoppingCartStore;
-  const { setActions } = popupActionsStore;
 
   const [count, setCount] = useState(1);
 
@@ -37,20 +32,16 @@ const ProductPage = observer(() => {
   const [isPopupOpened, setIsPopupOpened] = useState(false)
 
   const addProductToCart = () => {
-    addToCartHandler(addProduct, product, selectedModificators, count, id, setActions);
-    setIsPopupOpened(false)
+    const productWithMods = { ...product, mods: selectedModificators }
+    addToCartHandler(productWithMods, count);
+    setIsPopupOpened(false);
+    setSelectedModificators([])
   }
 
-  const handleModPopup = () => setIsPopupOpened(prev => !prev)
-
-  useEffect(() => {
-    console.log(selectedModificators)
-  }, [selectedModificators])
-
+  const handleModPopup = () => { setIsPopupOpened(prev => !prev); setSelectedModificators([]) }
 
   useEffect(() => {
     if (product) {
-      console.log(product)
       const stringOfDescription = product.product_production_description;
       const arr = stringOfDescription.split(".")[0].split(", ");
       setProductIngredients(arr);
@@ -62,7 +53,7 @@ const ProductPage = observer(() => {
     productPageGetter(id, setProduct, setGroupsOfModificators, setRecommendationsProducts);
   }, [id]);
 
-  if (product !== null && product !== false) {
+  if (!!product) {
     view_item(
       product.product_name,
       product.product_id,
@@ -132,7 +123,6 @@ const ProductPage = observer(() => {
                     </div>
                   )
                 }
-
                 <div className="product-page__order">
                   <button
                     className="btn btn-main"
@@ -186,13 +176,9 @@ const ProductPage = observer(() => {
             <div className="product-page__recommendations">
               <div className="product-page__recommendations-head">
                 <h3 className="title__h3">Рекомендуємо спробувати</h3>
-                {/*<div className="product-page__recommendations-arrows">
-                  <ArrowBtn direction={"left"} />
-                  <ArrowBtn direction={"right"} />
-                      </div>*/}
               </div>
 
-              {recommendationsProducts !== null && (
+              {recommendationsProducts && (
                 <div className="product-page__recommendations-track">
                   <div className="product-page__recommendations-list">
                     {recommendationsProducts.map((product) => {

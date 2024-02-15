@@ -1,6 +1,11 @@
 import axios from "axios";
 import { url } from "../api";
 import { add_to_cart } from "../gm4";
+import shoppingCartStore from "../store/shoping-cart-store";
+import popupActionsStore from "../store/popup-action-store";
+
+const { addProduct } = shoppingCartStore
+const { setActions } = popupActionsStore
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -39,17 +44,17 @@ export const handleModificatorChange = (newModificator, setSelectedModificators)
   });
 };
 
-export const addToCartHandler = (addProduct, product, selectedModificators, count, id, setActions) => {
-  const { product_name, price, out, category_name, product_id } = product
-  console.log(product)
+export const addToCartHandler = (product, count) => {
+  const { product_name, price, out, category_name, product_id, mods } = product
   addProduct({
     name: product_name,
     price: parseInt(price[1].slice(0, -2)),
-    count: count,
+    count,
     preview: `${url}/api/sendImage/${product.product_id}`,
     weight: out,
     category: category_name,
-    id,
+    id: product_id,
+    mods
   });
   add_to_cart(
     product_name,

@@ -9,14 +9,15 @@ import ShoppingCartItem from "./ShoppingCartItem";
 import PopupActions from "../PopupActions/PopupActions";
 
 import { begin_checkout } from "../../gm4";
+import { observer } from "mobx-react-lite";
+
 //Import Styles
 import "./card.scss";
-import { observer } from "mobx-react-lite";
 
 const Cart = observer(() => {
   const navigate = useNavigate();
 
-  const { products } = shoppingCartStore;
+  const { products, getCartTotalPrice } = shoppingCartStore;
 
   const [isOpen, setIsOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -25,12 +26,12 @@ const Cart = observer(() => {
   const [countChanging, setCountChanging] = useState(false);
 
   useEffect(() => {
-    const total = products.reduce((a, b) => a + b.totalPrice, 0)
-    
+    const total = getCartTotalPrice()
+
     total > 500 ? setDelivery(0) : setDelivery(60)
 
     setTotalPrice(total);
-  }, [products, countChanging, isOpen]);
+  }, [countChanging, products, isOpen, getCartTotalPrice]);
 
   useEffect(() => {
     if (isOpen) {
@@ -158,20 +159,6 @@ const Cart = observer(() => {
                 <h5 className="title__h5">Нажаль, кошик порожній</h5>
                 <p className="text">Додайте щось смачненьке</p>
               </div>
-              <BtnMain
-                name={"Замовити"}
-                onClick={() => {
-                  if (totalPrice < 200) {
-                    setError(true);
-                    setTimeout(() => setError(false), 3000);
-                  } else {
-                    begin_checkout(products);
-                    setIsOpen(!isOpen);
-                    navigate("/order");
-                  }
-                }}
-                fullWide
-              />
             </React.Fragment>
           ) : (
             <div className="shopping-cart__content">
@@ -188,14 +175,7 @@ const Cart = observer(() => {
                     return (
                       <ShoppingCartItem
                         key={item.id}
-                        preview={item.preview}
-                        name={item.name}
-                        totalPrice={item.totalPrice}
-                        weight={item.weight}
-                        count={item.count}
                         id={item.id}
-                        cart_index={item.cart_index}
-                        category={item.category}
                         setCountChanging={setCountChanging}
                       />
                     );
@@ -221,6 +201,7 @@ const Cart = observer(() => {
               </div>
               <BtnMain
                 name={"Замовити"}
+                fullWide
                 onClick={() => {
                   if (totalPrice < 200) {
                     setError(true);
@@ -231,7 +212,7 @@ const Cart = observer(() => {
                     navigate("/order");
                   }
                 }}
-                fullWide
+
               />
             </div>
           )}

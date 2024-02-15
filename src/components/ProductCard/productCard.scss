@@ -83,8 +83,6 @@
     &:hover {
       background: #12130f;
     }
-    &-active {
-    }
   }
   &__inCart {
     position: absolute;
@@ -108,8 +106,6 @@
     }
     &:hover {
       background: #12130f;
-    }
-    &-active {
     }
   }
   &__weight {
@@ -175,9 +171,8 @@
     font-weight: 400;
     font-size: 16px;
     cursor: pointer;
-    &:hover {
-      color: rgba(18, 19, 15, 1);
-    }
+    user-select: none;
+
     &--transperent {
       user-select: none;
       background: rgba(255, 255, 255, 0.2);
@@ -195,6 +190,18 @@
     font-family: 'Unbounded';
     font-weight: 400;
     font-size: 12px;
+  }
+}
+
+.plus {
+  &:hover {
+    color: rgba(18, 19, 15, 1);
+  }
+}
+
+.minus {
+  &:hover {
+    color: rgba(18, 19, 15, 1);
   }
 }
 

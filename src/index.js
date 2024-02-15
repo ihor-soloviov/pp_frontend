@@ -11,11 +11,12 @@ import { BrowserRouter } from "react-router-dom";
 import "./style/index.scss";
 import "./firebaseConfig";
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+        <App />
     </BrowserRouter>
   </React.StrictMode>
 );

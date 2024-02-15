@@ -1,11 +1,10 @@
 //Import React
 import React, { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import userStore from "../../store/user-store";
 import popupActionsStore from "../../store/popup-action-store";
-import shoppingCartStore from "../../store/shoping-cart-store";
 
 import { observer } from "mobx-react-lite";
 import { sendFavsToServer } from "../../utils/favorites";
@@ -20,19 +19,19 @@ import Popup from "../Popup/Popup";
 const ProductCard = observer(({ product, preview, name, price, ingredients, weight, id }) => {
   const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
 
-  const { addProduct } = shoppingCartStore;
   const { setActions } = popupActionsStore;
 
   const [count, setCount] = useState(1);
   const [isPopupOpened, setIsPopupOpened] = useState(false)
   const [selectedModificators, setSelectedModificators] = useState([]);
 
-  const navigate = useNavigate();
 
 
   const addProductToCart = () => {
-    addToCartHandler(addProduct, product, selectedModificators, count, id, setActions);
-    setIsPopupOpened(false)
+    const productWithMods = { ...product, mods: selectedModificators }
+    addToCartHandler(productWithMods, count);
+    setIsPopupOpened(false);
+    setSelectedModificators([])
   }
 
   const handleModPopup = () => setIsPopupOpened(prev => !prev)
@@ -69,7 +68,7 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
   };
 
   return (
-    <>
+    <React.Fragment>
       {isPopupOpened && product.group_modifications && (
         <Popup closeModal={handleModPopup}>
           <ModificatorsPopup groups={product.group_modifications} setSelectedModificators={setSelectedModificators} addProductToCart={addProductToCart} />
@@ -101,12 +100,13 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
           </div>
         </div>
         <div className="product__preview">
-          <img
-            src={preview}
-            alt={name}
-            onClick={() => navigate(`/product/${id}`)}
-          />
-          <button className="product__addToCard" onClick={() => product?.group_modifications?.length ? handleModPopup : addProductToCart()}>
+          <Link to={`/product/${id}`}>
+            <img
+              src={preview}
+              alt={name}
+            />
+          </Link>
+          <button className="product__addToCard" onClick={() => product?.group_modifications?.length ? handleModPopup() : addProductToCart()}>
             В кошик
           </button>
         </div>
@@ -121,7 +121,7 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
           </div>
           <div className="counter">
             <div
-              className="counter__btn"
+              className="counter__btn minus"
               onClick={() => {
                 if (count > 1) {
                   setCount(count - 1);
@@ -130,14 +130,14 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
             >
               -
             </div>
-            <div className="counter__value">{count}</div>
+            <div className="counter__value plus">{count}</div>
             <div className="counter__btn" onClick={() => setCount(count + 1)}>
               +
             </div>
           </div>
         </div>
       </div>
-    </>
+    </React.Fragment>
   );
 });
 
