@@ -31,7 +31,7 @@ const Cart = observer(() => {
     total > 500 ? setDelivery(0) : setDelivery(60)
 
     setTotalPrice(total);
-  }, [countChanging, products, isOpen, getCartTotalPrice]);
+  }, [countChanging, isOpen, getCartTotalPrice]);
 
   useEffect(() => {
     if (isOpen) {

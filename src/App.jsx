@@ -49,7 +49,7 @@ const App = observer(() => {
   } = userStore;
 
   const { isLoader, setLoader } = modalsStore;
-  const { getCartProductsFromLS } = shoppingCartStore;
+  const { setCartProductsFromLS } = shoppingCartStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
@@ -68,12 +68,12 @@ const App = observer(() => {
       return;
     }
 
-    getCartProductsFromLS();
+    setCartProductsFromLS();
 
     if (dataParse.isAuthenticated === true) {
       setUserDataToStore(dataParse);
     }
-  }, [getCartProductsFromLS, setUserDataToStore]);
+  }, [setCartProductsFromLS, setUserDataToStore]);
 
   useEffect(() => {
     loadUserDataFromLocalStorage();

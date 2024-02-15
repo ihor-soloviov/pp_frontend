@@ -8,10 +8,10 @@ import { addToCartHandler, productPageGetter } from "../../utils/menu";
 
 //Import components
 import Container from "../../components/Container/Container";
-import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Popup from "../../components/Popup/Popup";
 import ModificatorsPopup from "./ModificatorsPopup";
+import NotFound from "../NotFound/NotFound";
 import { url } from "../../api";
 
 //Import styles
@@ -208,9 +208,7 @@ const ProductPage = observer(() => {
     );
   } else {
     return (
-      <div className="loader__wrapper">
-        <Loader />
-      </div>
+      <NotFound />
     );
   }
 });

@@ -3,6 +3,7 @@ import { makeAutoObservable } from "mobx";
 class ShoppingCartStore {
   products = [];
   promocode = false;
+  totalPrice = 0
 
   constructor() {
     makeAutoObservable(this);
@@ -16,12 +17,20 @@ class ShoppingCartStore {
     const newProduct = { ...product, totalPrice };
 
     this.products.push(newProduct);
+    this.totalPrice += totalPrice
 
     localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   };
 
   removeProduct = (productId) => {
-    this.products = this.products.filter((product) => product.id !== productId);
+    const productIndex = this.products.findIndex((product) => product.id === productId);
+    if (productIndex > -1) {
+      // Знайшли продукт, віднімаємо його вартість від загальної суми
+      this.totalPrice -= this.products[productIndex].totalPrice;
+
+      // Видаляємо продукт з масиву
+      this.products.splice(productIndex, 1);
+    }
     localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   };
 
@@ -34,46 +43,42 @@ class ShoppingCartStore {
   }
 
   getCartTotalPrice = () => {
-    if (!this.products.length) {
-      console.log("кошик порожній");
-      return
-    }
-
-    return this.products.reduce((a, b) => {
-      return a + b.totalPrice
-    }, 0)
+    return this.totalPrice
   }
-  
+
   updateCount = (id, count, setCartItem) => {
     if (!this.products.length) {
       return;
     }
-  
+
     const productIndex = this.products.findIndex((el) => el.id === id);
     if (productIndex === -1) {
       console.log('Продукт не знайдено');
       return;
     }
-  
+
     const product = this.products[productIndex];
     const modsPrice = product.mods.reduce((acc, mod) => acc + mod.price, 0);
-  
+
     const updatedItem = { ...product, count, totalPrice: (product.price + modsPrice) * count };
+    this.totalPrice -= updatedItem.totalPrice
     setCartItem(updatedItem);
-  
+
     // Оновлюємо продукт безпосередньо у масиві
     this.products[productIndex] = updatedItem;
-  
+
     localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   };
-  
-  getCartProductsFromLS = () => {
+
+  setCartProductsFromLS = () => {
     const data = localStorage.getItem("shoppingCart");
 
     if (!data) {
       return
     }
-    this.products = JSON.parse(data);
+    const productsFromLS = JSON.parse(data)
+    this.products = productsFromLS;
+    this.totalPrice = productsFromLS.reduce((a, b) => a + b.totalPrice, 0)
   };
 
   cartPromocode = () => {
@@ -82,6 +87,7 @@ class ShoppingCartStore {
 
   clearCart = () => {
     this.products = [];
+    this.totalPrice = 0
     localStorage.removeItem("shoppingCart");
     localStorage.removeItem("posterOrder");
     localStorage.removeItem("poster_order");
