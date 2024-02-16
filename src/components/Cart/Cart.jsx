@@ -17,21 +17,16 @@ import "./card.scss";
 const Cart = observer(() => {
   const navigate = useNavigate();
 
-  const { products, getCartTotalPrice } = shoppingCartStore;
+  const { cartItems, cartTotalPrice, itemCount } = shoppingCartStore
 
   const [isOpen, setIsOpen] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [delivery, setDelivery] = useState(60)
   const [error, setError] = useState(false);
-  const [countChanging, setCountChanging] = useState(false);
 
   useEffect(() => {
-    const total = getCartTotalPrice()
-
-    total > 500 ? setDelivery(0) : setDelivery(60)
-
-    setTotalPrice(total);
-  }, [countChanging, isOpen, getCartTotalPrice]);
+    cartTotalPrice > 500 ? setDelivery(0) : setDelivery(60)
+  }, [cartTotalPrice])
+  
 
   useEffect(() => {
     if (isOpen) {
@@ -83,9 +78,9 @@ const Cart = observer(() => {
               </clipPath>
             </defs>
           </svg>
-          {products.length !== 0 && (
+          {itemCount !== 0 && (
             <div className="card__length">
-              <span>{products.length}</span>
+              <span>{itemCount}</span>
             </div>
           )}
         </div>
@@ -110,7 +105,7 @@ const Cart = observer(() => {
               />
             </svg>
           </div>
-          {products.length === 0 ? (
+          {itemCount === 0 ? (
             <React.Fragment>
               <div className="shopping-cart__content shopping-cart__content--empty">
                 <div className="shopping-cart__logo">
@@ -165,18 +160,17 @@ const Cart = observer(() => {
               <div className="shopping-cart__row">
                 <h5 className="title__h5">Кошик</h5>
                 <p className="shopping-cart__products-count">
-                  {products.length} товарів
+                  {itemCount} товарів
                 </p>
               </div>
 
               <div className="shopping-cart__list-wrapper">
                 <ul className="shopping-cart__list">
-                  {products.map((item) => {
+                  {cartItems.map((item) => {
                     return (
                       <ShoppingCartItem
                         key={item.id}
                         id={item.id}
-                        setCountChanging={setCountChanging}
                       />
                     );
                   })}
@@ -186,7 +180,7 @@ const Cart = observer(() => {
               <div className="shopping-cart__total">
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text">Сума замовлення:</p>
-                  <p className="shopping-cart__text">{totalPrice} ₴</p>
+                  <p className="shopping-cart__text">{cartTotalPrice} ₴</p>
                 </div>
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text">Доставка:</p>
@@ -196,18 +190,18 @@ const Cart = observer(() => {
                 </div>
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text-final">Всього до сплати:</p>
-                  <p className="shopping-cart__text-final">{totalPrice + delivery} ₴</p>
+                  <p className="shopping-cart__text-final">{cartTotalPrice + delivery} ₴</p>
                 </div>
               </div>
               <BtnMain
                 name={"Замовити"}
                 fullWide
                 onClick={() => {
-                  if (totalPrice < 200) {
+                  if (cartTotalPrice < 200) {
                     setError(true);
                     setTimeout(() => setError(false), 3000);
                   } else {
-                    begin_checkout(products);
+                    begin_checkout(cartItems);
                     setIsOpen(!isOpen);
                     navigate("/order");
                   }

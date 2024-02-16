@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 
 class UserStore {
   isAuthenticated = false;
@@ -14,6 +14,58 @@ class UserStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadUserDataFromLocalStorage();
+    this.loadFavoritesFromLocalStorage();
+    this.loadAddressesFromLocalStorage();
+
+    reaction(
+      () => this.userDataForLocalStorage,
+      userData => localStorage.setItem("userData", JSON.stringify(userData))
+    );
+
+    reaction(
+      () => this.favoritProducts.slice(), // Використовуйте .slice() для створення копії масиву, якщо необхідно
+      (favoritProducts) => {
+        if (this.isAuthenticated) {
+          localStorage.setItem("favoritProducts", JSON.stringify(favoritProducts));
+        }
+      }
+    );
+
+    reaction(
+      () => this.adresses,
+      adresses => {
+        if (this.isAuthenticated) {
+          localStorage.setItem("user_adresses", JSON.stringify(adresses));
+        }
+      }
+    );
+  }
+
+  get userDataForLocalStorage() {
+    const { isAuthenticated, name, phone, email, token, promocode40, dateOfBirth, avatar } = this;
+    return { isAuthenticated, name, phone, email, token, promocode40, dateOfBirth, avatar };
+  }
+
+  loadUserDataFromLocalStorage = () => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    if (userData) {
+      Object.assign(this, userData);
+    }
+  }
+
+  loadFavoritesFromLocalStorage() {
+    const favoritProducts = JSON.parse(localStorage.getItem("favoritProducts"));
+    if (favoritProducts) {
+      this.favoritProducts = favoritProducts;
+    }
+  }
+
+  loadAddressesFromLocalStorage() {
+    const adresses = JSON.parse(localStorage.getItem("user_adresses"));
+    if (adresses) {
+      this.adresses = adresses;
+    }
   }
 
   setUserAvatar = (avatarUrl) => {
@@ -21,13 +73,10 @@ class UserStore {
       return;
     }
     this.avatar = avatarUrl;
-
-    localStorage.setItem('userPhoto', avatarUrl)
   }
 
   changePhoneNumber = (newNumber) => {
     this.phone = newNumber;
-    localStorage.setItem("userData", JSON.stringify(this))
   }
 
   setUserDataToStore = ({
@@ -50,8 +99,6 @@ class UserStore {
     this.promocode40 = promocode40;
     this.adresses = addresses;
     this.favoritProducts = favorites;
-
-    localStorage.setItem("userData", JSON.stringify(this));
   };
 
   userLogout = () => {
@@ -62,58 +109,23 @@ class UserStore {
     this.token = null;
     this.promocode40 = false;
     this.dateOfBirth = null
-    localStorage.removeItem("userData");
+
   };
 
   addToFavorit = ({ preview, name, price, weight, id, ingredients }) => {
     const product = { preview, name, price, count: 1, weight, id, ingredients };
     this.favoritProducts.push(product);
-    if (this.isAuthenticated) {
-      localStorage.setItem(
-        "favoritProducts",
-        JSON.stringify(this.favoritProducts)
-      );
-    }
   };
 
   removeFromFavorit = (productId) => {
-    console.log("a");
     this.favoritProducts = this.favoritProducts.filter(
       (product) => product.id !== productId
     );
-    if (this.isAuthenticated) {
-      localStorage.setItem(
-        "favoritProducts",
-        JSON.stringify(this.favoritProducts)
-      );
-    }
-  };
-
-  getFavoritesFromLS = () => {
-    const data = localStorage.getItem("favoritProducts");
-    if (data) {
-      this.favoritProducts = JSON.parse(data);
-    }
-  };
-
-  loadFromLocalStorageAdress = () => {
-    const dataParse = JSON.parse(localStorage.getItem("user_adresses"));
-
-    if (!dataParse) {
-      return
-    }
-    
-    if (dataParse !== null) {
-      this.adresses = dataParse;
-    }
   };
 
   addToAdresses = (addresses) => {
     if (addresses.length > 0) {
       this.adresses = addresses;
-    }
-    if (this.isAuthenticated) {
-      localStorage.setItem("user_adresses", JSON.stringify(this.adresses));
     }
   };
 
@@ -121,19 +133,14 @@ class UserStore {
     this.adresses = this.adresses.filter(
       (adress) => adress.adressName !== addressName
     );
-    if (this.isAuthenticated) {
-      localStorage.setItem("user_adresses", JSON.stringify(this.adresses));
-    }
   };
 
   userPromocode = () => {
     this.promocode40 = false;
-    localStorage.setItem("userData", JSON.stringify(this));
   };
 
   userPromocodeNotUse = () => {
     this.promocode40 = true;
-    localStorage.setItem("userData", JSON.stringify(this));
   };
 }
 

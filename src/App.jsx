@@ -9,7 +9,6 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import modalsStore from "./store/modal-store";
 import userStore from "./store/user-store";
-import shoppingCartStore from "./store/shoping-cart-store";
 import popupActionsStore from "./store/popup-action-store";
 
 //Import pages
@@ -42,14 +41,10 @@ TagManager.initialize(tagManagerArgs);
 const App = observer(() => {
   //Store
   const {
-    loadFromLocalStorageAdress,
-    getFavoritesFromLS,
     userLogout,
-    setUserDataToStore,
   } = userStore;
 
   const { isLoader, setLoader } = modalsStore;
-  const { setCartProductsFromLS } = shoppingCartStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
@@ -59,27 +54,6 @@ const App = observer(() => {
   //Tools
   const location = useLocation();
   const navigate = useNavigate();
-
-  const loadUserDataFromLocalStorage = useCallback(() => {
-    const userData = localStorage.getItem("userData");
-    const dataParse = JSON.parse(userData);
-
-    if (!userData) {
-      return;
-    }
-
-    setCartProductsFromLS();
-
-    if (dataParse.isAuthenticated === true) {
-      setUserDataToStore(dataParse);
-    }
-  }, [setCartProductsFromLS, setUserDataToStore]);
-
-  useEffect(() => {
-    loadUserDataFromLocalStorage();
-    getFavoritesFromLS();
-    loadFromLocalStorageAdress();
-  }, []);
 
   const cta = useCallback(() => {
     if (currentAction === "addToCard") {

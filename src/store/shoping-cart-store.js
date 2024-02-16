@@ -1,97 +1,83 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 
 class ShoppingCartStore {
-  products = [];
+  cartItems = [];
   promocode = false;
   totalPrice = 0
 
   constructor() {
     makeAutoObservable(this);
+    this.loadCartFromLocalStorage();
+    // Автоматично зберігає стан кошика в localStorage при будь-яких змінах
+    reaction(
+      () => [this.cartItems, this.totalPrice],
+      () => {
+        localStorage.setItem('shoppingCart', JSON.stringify(this.cartItems));
+        localStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
+      }
+    );
+  }
+
+  loadCartFromLocalStorage() {
+    const cartItems = JSON.parse(localStorage.getItem('shoppingCart') || '[]');
+    const totalPrice = JSON.parse(localStorage.getItem('totalPrice') || '0');
+    this.cartItems = cartItems;
+    this.totalPrice = totalPrice;
   }
 
   addProduct = (product) => {
-    const { price, count, mods } = product;
+    const { price, count, mods = [] } = product;
 
-    const modsPrice = mods.reduce((acc, mod) => acc + mod.price, 0);
+    const modsPrice = mods.reduce((acc, mod) => acc + (mod.price || 0), 0);
     const totalPrice = count * (price + modsPrice);
     const newProduct = { ...product, totalPrice };
 
-    this.products.push(newProduct);
+    this.cartItems.push(newProduct);
     this.totalPrice += totalPrice
-
-    localStorage.setItem("shoppingCart", JSON.stringify(this.products));
   };
 
-  removeProduct = (productId) => {
-    const productIndex = this.products.findIndex((product) => product.id === productId);
-    if (productIndex > -1) {
-      // Знайшли продукт, віднімаємо його вартість від загальної суми
-      this.totalPrice -= this.products[productIndex].totalPrice;
-
-      // Видаляємо продукт з масиву
-      this.products.splice(productIndex, 1);
+  removeFromCart = (id) => {
+    const itemIndex = this.cartItems.findIndex(item => item.id === id);
+    if (itemIndex > -1) {
+      this.totalPrice -= this.cartItems[itemIndex].totalPrice;
+      this.cartItems.splice(itemIndex, 1);
     }
-    localStorage.setItem("shoppingCart", JSON.stringify(this.products));
-  };
-
-  getCartItem = (productId) => {
-    if (!this.products.length) {
-      return
-    }
-
-    return this.products.find(el => el.id === productId)
   }
 
-  getCartTotalPrice = () => {
+  get itemCount() {
+    return this.cartItems.length;
+  }
+
+  get cartTotalPrice() {
     return this.totalPrice
   }
 
-  updateCount = (id, count, setCartItem) => {
-    if (!this.products.length) {
-      return;
+  getItemById = (id) => {
+    return this.cartItems.find(item => item.id === id);
+  }
+
+  updateItemQuantity = (id, newCount) => {
+    const itemIndex = this.cartItems.findIndex(item => item.id === id);
+    if (itemIndex > -1) {
+      const item = this.cartItems[itemIndex];
+      const modsPrice = item.mods.reduce((acc, mod) => acc + mod.price, 0);
+      const totalPrice = newCount * (item.price + modsPrice);
+
+      this.cartItems[itemIndex] = { ...item, count: newCount, totalPrice };
+      // Перерахунок загальної вартості кошика
+      this.totalPrice = this.cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
     }
-
-    const productIndex = this.products.findIndex((el) => el.id === id);
-    if (productIndex === -1) {
-      console.log('Продукт не знайдено');
-      return;
-    }
-
-    const product = this.products[productIndex];
-    let modsPrice
-    if (product?.mods?.length) {
-      modsPrice = product.mods.reduce((acc, mod) => acc + mod.price, 0) || 0;
-    }
-
-    const updatedItem = { ...product, count, totalPrice: (product.price + modsPrice) * count };
-    this.totalPrice -= updatedItem.totalPrice
-    setCartItem(updatedItem);
-
-    // Оновлюємо продукт безпосередньо у масиві
-    this.products[productIndex] = updatedItem;
-
-    localStorage.setItem("shoppingCart", JSON.stringify(this.products));
-  };
-
-  setCartProductsFromLS = () => {
-    const data = localStorage.getItem("shoppingCart");
-
-    if (!data) {
-      return
-    }
-    const productsFromLS = JSON.parse(data)
-    this.products = productsFromLS;
-    this.totalPrice = productsFromLS.reduce((a, b) => a + b.totalPrice, 0)
-  };
+  }
 
   cartPromocode = () => {
     this.promocode = true;
   };
 
   clearCart = () => {
-    this.products = [];
+    this.cartItems = [];
     this.totalPrice = 0
     localStorage.removeItem("shoppingCart");
+    localStorage.removeItem("totalPrice");
     localStorage.removeItem("posterOrder");
     localStorage.removeItem("poster_order");
     localStorage.removeItem("user_payment_data");
