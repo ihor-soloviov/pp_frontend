@@ -26,18 +26,39 @@ class ShoppingCartStore {
   }
 
   addProduct = (product) => {
-    const { price, count, mods = [] } = product;
+    const { id, price, count, mods = [] } = product;
+
+    // Функція для перевірки еквівалентності модифікаторів
+    const areModifiersEqual = (mods1, mods2) => {
+      if (mods1.length !== mods2.length) return false;
+      return mods1.every(mod1 => {
+        const mod2 = mods2.find(m => m.m === mod1.m);
+        return mod2 && mod1.a === mod2.a;
+      });
+    };
 
     const modsPrice = mods.reduce((acc, mod) => acc + (mod.price || 0), 0);
-    const totalPrice = count * (price + modsPrice);
-    const newProduct = { ...product, totalPrice };
+    const totalPriceForProduct = count * (price + modsPrice);
 
-    this.cartItems.push(newProduct);
-    this.totalPrice += totalPrice
+    // Перевірка наявності товару з такими ж модифікаторами
+    const existingProductIndex = this.cartItems.findIndex(item => item.id === id && areModifiersEqual(item.mods, mods));
+
+    if (existingProductIndex >= 0) {
+      // Якщо товар з такими ж модифікаторами вже є, збільшуємо кількість
+      const existingProduct = this.cartItems[existingProductIndex];
+      existingProduct.count += count;
+      existingProduct.totalPrice += totalPriceForProduct;
+      this.cartItems[existingProductIndex] = existingProduct;
+    } else {
+      // Якщо немає точно такого товару, додаємо як новий
+      const cartItemId = Date.now() + Math.random().toString(16).substring(2);
+      this.cartItems.push({ ...product, totalPrice: totalPriceForProduct, cartItemId });
+    }
+    this.totalPrice += totalPriceForProduct
   };
 
-  removeFromCart = (id) => {
-    const itemIndex = this.cartItems.findIndex(item => item.id === id);
+  removeFromCart = (cartItemId) => {
+    const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
     if (itemIndex > -1) {
       this.totalPrice -= this.cartItems[itemIndex].totalPrice;
       this.cartItems.splice(itemIndex, 1);
@@ -52,12 +73,12 @@ class ShoppingCartStore {
     return this.totalPrice
   }
 
-  getItemById = (id) => {
-    return this.cartItems.find(item => item.id === id);
+  getItemById = (cartItemId) => {
+    return this.cartItems.find(item => item.cartItemId === cartItemId);
   }
 
-  updateItemQuantity = (id, newCount) => {
-    const itemIndex = this.cartItems.findIndex(item => item.id === id);
+  updateItemQuantity = (cartItemId, newCount) => {
+    const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
     if (itemIndex > -1) {
       const item = this.cartItems[itemIndex];
       const modsPrice = item.mods.reduce((acc, mod) => acc + mod.price, 0);

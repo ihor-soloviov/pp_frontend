@@ -84,7 +84,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //stores
   const { thanksModal, thanksModalHandler } = modalsStore;
   const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
-  const { products, clearCart } = shoppingCartStore;
+  const { cartItems, clearCart } = shoppingCartStore;
   const {
     name,
     phone,
@@ -146,7 +146,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const onSubmit = useCallback(() => {
     // Функція для встановлення помилки
 
-    if (products.length === 0) {
+    if (cartItems.length === 0) {
       return handleTemporaryError("Будь ласка, оберіть товари для замовлення");
     }
 
@@ -162,11 +162,11 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
       return handleTemporaryError("Будь ласка, оберіть час отримання замовлення");
     }
 
-    if (calculateTotalPrice(products) <= 200) {
+    if (calculateTotalPrice(cartItems) <= 200) {
       return handleTemporaryError("Мінімальна сумма замовлення 200 ₴");
     }
 
-    const orderData = getOrderData(formData, products, isPromotion);
+    const orderData = getOrderData(formData, cartItems, isPromotion);
     console.log(orderData);
     setOrderData(orderData);
 
@@ -176,14 +176,14 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
       return; // Якщо потрібно завершити виконання функції після цього умови
     }
 
-    const totalPrice = calculateTotalPrice(products);
+    const totalPrice = calculateTotalPrice(cartItems);
     let amount = isPromotion ? totalPrice * 0.6 : totalPrice;
     //додаємо вартість таксі
     if (amount < 500) {
       amount += 60
     }
     createTransaction(amount, setPaymentData);
-  }, [formData, products, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
+  }, [formData, cartItems, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 
   return (
     <React.Fragment>

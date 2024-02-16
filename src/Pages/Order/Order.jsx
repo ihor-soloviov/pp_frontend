@@ -12,7 +12,7 @@ import OrderForm from "./OrderComponents/OrderForm";
 
 
 const Order = observer(() => {
-  const { products } = shoppingCartStore;
+  const { cartItems } = shoppingCartStore;
 
   const [isPromotion, setIsPromotion] = useState(false);
   const [total, setTotal] = useState(0);
@@ -29,7 +29,7 @@ const Order = observer(() => {
   };
 
   useEffect(() => {
-    let totalPrice = calculateTotalPrice(products);
+    let totalPrice = calculateTotalPrice(cartItems);
 
     if (isPromotion) {
       totalPrice = totalPrice * 0.6
@@ -42,13 +42,13 @@ const Order = observer(() => {
     }
 
     setTotal(totalPrice)
-  }, [products, isPromotion])
+  }, [cartItems, isPromotion])
 
 
 
 
   return (
-    <>
+    <React.Fragment>
       <Container>
         <div className="order-page">
           <div className="order-page__content">
@@ -59,9 +59,9 @@ const Order = observer(() => {
                   Ваше замовлення
                 </h3>
                 <ul className="checkout__list">
-                  {products.map((item) => {
+                  {!!cartItems && cartItems.map((item) => {
                     return (
-                      <li className="checkout__item" key={item.name}>
+                      <li className="checkout__item" key={item.cartItemId}>
                         <div className="checkout__row">
                           <p className="checkout__item-name"> {item.name}</p>
                           <p className="checkout__item-count"> x{item.count}</p>
@@ -96,7 +96,7 @@ const Order = observer(() => {
                       <p className="checkout__text">Знижка:</p>
                       <p className="checkout__text">
                         {
-                          (calculateTotalPrice(products) * (40 / 100)).toFixed(2)}{" "}
+                          (calculateTotalPrice(cartItems) * (40 / 100)).toFixed(2)}{" "}
                         ₴
                       </p>
                     </div>
@@ -116,7 +116,7 @@ const Order = observer(() => {
           </div>
         </div>
       </Container>
-    </>
+    </React.Fragment>
   );
 })
 

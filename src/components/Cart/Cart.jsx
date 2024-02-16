@@ -26,7 +26,7 @@ const Cart = observer(() => {
   useEffect(() => {
     cartTotalPrice > 500 ? setDelivery(0) : setDelivery(60)
   }, [cartTotalPrice])
-  
+
 
   useEffect(() => {
     if (isOpen) {
@@ -169,8 +169,8 @@ const Cart = observer(() => {
                   {cartItems.map((item) => {
                     return (
                       <ShoppingCartItem
-                        key={item.id}
-                        id={item.id}
+                        key={item.cartItemId}
+                        id={item.cartItemId}
                       />
                     );
                   })}

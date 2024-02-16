@@ -9,7 +9,7 @@ const ShoppingCartItem = observer(({ id }) => {
 
   if (!cartItem) return null
 
-  const { preview, name, weight, price, count, mods } = cartItem
+  const { preview, name, weight, price, count, mods, cartItemId } = cartItem
 
   return (
     <li className="shopping-cart__item">
@@ -22,7 +22,7 @@ const ShoppingCartItem = observer(({ id }) => {
             <h6 className="title__h8">{name}</h6>
             <div
               className="shopping-cart__remove"
-              onClick={() => removeFromCart(id)}
+              onClick={() => removeFromCart(cartItemId)}
             >
               <svg
                 width="12"
@@ -47,7 +47,7 @@ const ShoppingCartItem = observer(({ id }) => {
                 className="counter__btn counter__btn--light"
                 onClick={() => {
                   if (count > 1) {
-                    updateItemQuantity(id, count - 1)
+                    updateItemQuantity(cartItemId, count - 1)
                   }
                 }}
               >
@@ -56,7 +56,7 @@ const ShoppingCartItem = observer(({ id }) => {
               <div className="counter__value">{count}</div>
               <div
                 className="counter__btn counter__btn--light"
-                onClick={() => updateItemQuantity(id, count + 1)}
+                onClick={() => updateItemQuantity(cartItemId, count + 1)}
               >
                 +
               </div>
@@ -67,7 +67,7 @@ const ShoppingCartItem = observer(({ id }) => {
       {!!mods.length && (
         <ul className="mods-inner">
           {mods.map(mod => (
-            <li className="mods-item">
+            <li className="mods-item" key={mod.m}>
               <p>+{mod.name}</p>
               <p>+{mod.price}₴</p>
             </li>
