@@ -58,7 +58,10 @@ class ShoppingCartStore {
     }
 
     const product = this.products[productIndex];
-    const modsPrice = product.mods.reduce((acc, mod) => acc + mod.price, 0);
+    let modsPrice
+    if (product?.mods?.length) {
+      modsPrice = product.mods.reduce((acc, mod) => acc + mod.price, 0) || 0;
+    }
 
     const updatedItem = { ...product, count, totalPrice: (product.price + modsPrice) * count };
     this.totalPrice -= updatedItem.totalPrice
