@@ -74,6 +74,16 @@ const Order = observer(() => {
                             {item.totalPrice} ₴
                           </p>
                         </div>
+                        {!!item.mods.length && (
+                          <ul className="mods-inner order-mods-inner">
+                            {item.mods.map(mod => (
+                              <li className="mods-item " key={mod.m}>
+                                <p>+{mod.name}</p>
+                                <p>+{mod.price}₴</p>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </li>
                     );
                   })}

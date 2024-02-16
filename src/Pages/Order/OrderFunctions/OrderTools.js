@@ -50,7 +50,6 @@ export const getCurrentDate = () => {
   return formattedDate;
 };
 
-
 export const dateFormatter = (timeRange) => {
   // Получение текущей даты
   var currentDate = new Date();

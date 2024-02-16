@@ -225,7 +225,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
- 
 }
 
 .mods-inner {
@@ -235,17 +234,27 @@
   border-top: 1px solid #ebebee;
   padding-top: 10px;
   margin-top: 10px;
+}
+
+.mods-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  p {
+    color: #757479;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+  }
+}
+
+.order-mods-inner {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 
   .mods-item {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-
     p {
-      color: #757479;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 150%;
+      color: #b4b4bc;
     }
   }
 }

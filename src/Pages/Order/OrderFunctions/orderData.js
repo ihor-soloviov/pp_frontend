@@ -4,9 +4,40 @@ import {
   calculateTotalPrice
 } from "./OrderTools";
 
-const shoppingCartMap = products => products.map(item => ({ product_id: item.id, count: item.count }));
+const shoppingCartMap = products => products.map(item => {
+  // Ініціалізація базового об'єкта для кожного продукту
+  const productMapping = { product_id: item.id, count: item.count };
 
-const shoppingCartMapPromo = products => products.map((item) => ({ id: "2", involved_products: [{ id: item.id, count: item.count }] }));
+  // Перевірка, чи масив mods існує та не пустий
+  if (Array.isArray(item.mods) && item.mods.length > 0) {
+    // Модифікація масиву mods, залишаючи лише потрібні поля m та a
+    const modification = item.mods.map(mod => ({ m: mod.m, a: mod.a }));
+    // Додавання модифікованого масиву mods до результату
+    productMapping.modification = modification;
+  }
+
+  return productMapping;
+});
+
+
+const shoppingCartMapPromo = products => products.map((item) => {
+  // Ініціалізація об'єкта для кожного продукту в involved_products
+  const productMapping = { id: item.id, count: item.count };
+
+  // Перевірка на наявність та непустоту масиву mods
+  if (Array.isArray(item.mods) && item.mods.length > 0) {
+    // Створення modification з вибраними полями m та a
+    const modification = item.mods.map(mod => ({ m: mod.m, a: mod.a }));
+    // Додавання modification до об'єкта продукту
+    productMapping.modification = modification;
+  }
+
+  return {
+    id: "2", //id акції на -40%
+    involved_products: [productMapping]
+  };
+});
+
 
 export const getOrderData = (formData, products, isPromotion) => {
   const {
