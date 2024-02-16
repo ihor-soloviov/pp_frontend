@@ -24,20 +24,21 @@
   }
   &__text {
     padding-left: 4px;
-    ;
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
     color: #12130f;
   }
 }
+
 @media screen and (max-width: 940px) {
-  .shopping-cart{
+  .shopping-cart {
     .btn-main-fw {
       display: block;
     }
   }
 }
+
 @media screen and (max-width: 786px) {
   .card {
     &__ico {
@@ -120,7 +121,6 @@
   }
   &__products-count {
     font-family: 'Golos Text';
-    ;
     font-weight: 400;
     font-size: 12px;
     line-height: 150%;
@@ -131,7 +131,6 @@
     color: #49484d;
   }
   &__list {
-    margin-top: 14px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -143,6 +142,7 @@
     }
     &-wrapper {
       position: relative;
+      padding-top: 14px;
       &::before {
         content: '';
         position: absolute;
@@ -164,11 +164,9 @@
     padding: 12px;
     background: #f3f3f5;
     border-radius: 15px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
     list-style: none;
   }
+
   &__weight {
     font-family: 'Golos Text';
     padding: 8px 0 10px 0;
@@ -206,7 +204,6 @@
   }
   &__text {
     font-family: 'Golos Text';
-    ;
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
@@ -214,7 +211,6 @@
   }
   &__text-final {
     font-family: 'Golos Text';
-    ;
     font-weight: 500;
     font-size: 18px;
     line-height: 150%;
@@ -222,6 +218,35 @@
     text-align: center;
 
     color: #000000;
+  }
+}
+
+.item-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+ 
+}
+
+.mods-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid #ebebee;
+  padding-top: 10px;
+  margin-top: 10px;
+
+  .mods-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    p {
+      color: #757479;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 150%;
+    }
   }
 }
 

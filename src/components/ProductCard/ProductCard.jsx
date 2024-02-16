@@ -1,20 +1,19 @@
 //Import React
 import React, { useState } from "react";
-
 import { Link } from "react-router-dom";
 
+import classNames from "classnames";
+import { addToCartHandler } from "../../utils/menu";
+import { sendFavsToServer } from "../../utils/favorites";
+
+import { observer } from "mobx-react-lite";
 import userStore from "../../store/user-store";
 import popupActionsStore from "../../store/popup-action-store";
 
-import { observer } from "mobx-react-lite";
-import { sendFavsToServer } from "../../utils/favorites";
-
-//Import Styles
-import "./productCard.scss";
-import classNames from "classnames";
-import { addToCartHandler } from "../../utils/menu";
-import ModificatorsPopup from "../../Pages/ProductPage/ModificatorsPopup";
 import Popup from "../Popup/Popup";
+import ModificatorsPopup from "../../Pages/ProductPage/ModificatorsPopup";
+
+import "./productCard.scss";
 
 const ProductCard = observer(({ product, preview, name, price, ingredients, weight, id }) => {
   const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
