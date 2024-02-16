@@ -8,12 +8,15 @@ const ModificatorsPopup = React.memo(({ groups, setSelectedModificators, addProd
   return (
     <div className='modificators'>
       <h3>Додай до страви</h3>
-      {groups.length > 0 && groups.map(group => (
-        <div className='modificators-inner' key={group.dish_modification_group_id}>
-          <GroupOfModificators group={group} setSelectedModificators={setSelectedModificators} />
-        </div>
-      ))}
+      <div className="modificators-container">
+        {groups.length > 0 && groups.map(group => (
+          <div className='modificators-inner' key={group.dish_modification_group_id}>
+            <GroupOfModificators group={group} setSelectedModificators={setSelectedModificators} />
+          </div>
+        ))}
+      </div>
       <button
+        style={window.innerWidth < 1000 && { width: "100%" }}
         className="btn btn-main"
         onClick={addProductToCart}
       >
