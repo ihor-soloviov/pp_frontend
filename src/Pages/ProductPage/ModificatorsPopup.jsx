@@ -16,7 +16,7 @@ const ModificatorsPopup = React.memo(({ groups, setSelectedModificators, addProd
         ))}
       </div>
       <button
-        style={window.innerWidth < 1000 && { width: "100%" }}
+        style={window.innerWidth < 1000 ? { width: "100%" } : {}}
         className="btn btn-main"
         onClick={addProductToCart}
       >

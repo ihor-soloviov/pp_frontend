@@ -4,8 +4,8 @@ import { add_to_cart } from "../gm4";
 import shoppingCartStore from "../store/shoping-cart-store";
 import popupActionsStore from "../store/popup-action-store";
 
-const { addProduct } = shoppingCartStore
-const { setActions } = popupActionsStore
+const { addProduct } = shoppingCartStore;
+const { setActions } = popupActionsStore;
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -78,7 +78,7 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
       return
     }
     const categories = response.data.response;
-    const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Комбо ", "onlineOrder: Чик-чирик"]
+    const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Чик-чирик"]
 
     // Фільтруємо та перетворюємо категорії
     const processedCategories = categories

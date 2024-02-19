@@ -4,7 +4,7 @@ import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "./OrderModal.scss";
 import { getOrderStatus } from "../Orders/Orders";
 
-const OrderModal = ({
+const OrderModal = React.memo(({
   order,
   isMainModalOpen,
   closeMainModal,
@@ -14,7 +14,7 @@ const OrderModal = ({
 }) => {
 
   console.log(order);
-  
+
   const { client_address, persone_count, comment, incoming_order_id, processing_status, created_at, payment } = order;
 
   const userComment = comment.split("Коментар від користувача: ").reverse()[0] || ""
@@ -22,9 +22,8 @@ const OrderModal = ({
   const { address1 } = client_address;
 
   const { sum = 0, type = "Онлайн" } = payment;
-  const orderType = type === 1 ? "Онлайн" : "Готівкою" 
+  const orderType = type === 1 ? "Онлайн" : "Готівкою";
 
-  console.log(userComment)
   return (
     <>
       {isMainModalOpen && (
@@ -93,10 +92,10 @@ const OrderModal = ({
       )}
 
       {isConfirmModalOpen && (
-        <ConfirmModal closeConfirmModal={closeConfirmModal} />
+        <ConfirmModal closeConfirmModal={closeConfirmModal} products={order.products} />
       )}
     </>
   );
-};
+})
 
 export default OrderModal;
