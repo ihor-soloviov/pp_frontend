@@ -92,7 +92,7 @@ const OrderModal = React.memo(({
       )}
 
       {isConfirmModalOpen && (
-        <ConfirmModal closeConfirmModal={closeConfirmModal} products={order.products} />
+        <ConfirmModal closeConfirmModal={closeConfirmModal} orderId={order.incoming_order_id} />
       )}
     </>
   );

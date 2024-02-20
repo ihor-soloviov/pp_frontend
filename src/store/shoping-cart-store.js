@@ -1,7 +1,6 @@
 import axios from "axios";
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { url } from "../api";
-import { headers } from "../Pages/Order/OrderFunctions/OrderTools";
 
 class ShoppingCartStore {
   cartItems = [];
@@ -93,35 +92,21 @@ class ShoppingCartStore {
     }
   }
 
-  repeatTheOrder = async (products) => {
+  repeatTheOrder = async (orderId) => {
     this.cartItems = [];
     this.totalPrice = 0;
 
     try {
-      for (const product of products) {
-        const id = product.product_id;
-        const count = product.count;
+      const response = await axios.get(`${url}/api/getProductsByOrderId/${orderId}`);
 
-        const response = await axios.post(`${url}/api/product`, JSON.stringify({ productId: id }), { headers });
-        const data = response.data;
+      if (!response || !response.data) return;
 
-        const cartItem = {
-          cartItemId: Date.now() + Math.random().toString(16).substring(2),
-          id,
-          preview: `https://api.polarpelmeni.com.ua/api/sendImage/${id}`,
-          name: data.product_name,
-          price: data.spots[0].price.slice(0, -2),
-          count,
-          weight: data.out,
-          totalPrice: count * +data.spots[0].price.slice(0, -2),
-          mods: []
-        };
+      const products = response.data[0].products
 
-        // Додавання об'єкта в масив cartItems
-        runInAction(() => {
-          this.cartItems.push(cartItem);
-        });
-      }
+      runInAction(() => {
+        this.cartItems = products;
+        this.totalPrice = products.reduce((total, item) => total + item.totalPrice, 0)
+      })
     } catch (error) {
       console.error("Не вдалося додати продукти до кошика:", error);
     }

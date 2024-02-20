@@ -2,10 +2,17 @@ import React from "react";
 import Popup from "../Popup/Popup";
 import { observer } from "mobx-react-lite";
 import shoppingCartStore from "../../store/shoping-cart-store";
+import { useNavigate } from "react-router-dom";
 
-const ConfirmModal = observer(({ closeConfirmModal, products }) => {
-  const { repeatTheOrder } = shoppingCartStore
-  console.log(products)
+const ConfirmModal = observer(({ closeConfirmModal, orderId }) => {
+  const navigate = useNavigate();
+  const { repeatTheOrder } = shoppingCartStore;
+  const handleRepeatTheOrder = () => {
+    repeatTheOrder(orderId);
+    navigate("/order")
+  }
+
+
   return (
     <Popup closeModal={closeConfirmModal}>
       <div className="modal-content">
@@ -14,7 +21,7 @@ const ConfirmModal = observer(({ closeConfirmModal, products }) => {
           Ми очистимо кошик і замінимо поточні позиції на позиції з цього
           замовлення
         </p>
-        <button className="modal-button confirm" type="submit" onClick={() => repeatTheOrder(products)}>
+        <button className="modal-button confirm" type="submit" onClick={handleRepeatTheOrder}>
           Підтвердити
         </button>
       </div>

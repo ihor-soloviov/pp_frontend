@@ -144,9 +144,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, [posterOrder]);
 
   const onSubmit = useCallback(() => {
-    // Функція для встановлення помилки
-
-    if (cartItems.length === 0) {
+     if (cartItems.length === 0) {
       return handleTemporaryError("Будь ласка, оберіть товари для замовлення");
     }
 
