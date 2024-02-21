@@ -6,6 +6,24 @@ import Container from '../../components/Container/Container';
 import img01 from '../../../src/assets/images/about/about-1-desc.png';
 import img02 from '../../../src/assets/images/about/about-2-desc.png';
 import img03 from '../../../src/assets/images/about/about-3-desc.png';
+import img07 from '../../assets/images/about/about-7-mobile.jpg';
+import img07desc from '../../assets/images/about/about-7-desc.jpg';
+import img08 from '../../assets/images/about/about-8-mobile.jpg';
+import img08desc from '../../assets/images/about/about-8-desc.jpg';
+import img09 from '../../assets/images/about/about-9-mobile.jpg';
+import img09desc from '../../assets/images/about/about-9-desc.jpg';
+import img10 from '../../assets/images/about/about-10-mobile.jpg';
+import img10desc from '../../assets/images/about/about-10-desc.jpg';
+import img11 from '../../assets/images/about/about-11-mobile.jpg';
+import img11desc from '../../assets/images/about/about-11-desc.jpg';
+import img12 from '../../assets/images/about/about-12-mobile.jpg';
+import img12desc from '../../assets/images/about/about-12-desc.jpg';
+import img13 from '../../assets/images/about/about-13-mobile.jpg';
+import img13desc from '../../assets/images/about/about-13-desc.jpg';
+import img14 from '../../assets/images/about/about-14-mobile.jpg';
+import img14desc from '../../assets/images/about/about-14-desc.jpg';
+import img15 from '../../assets/images/about/about-15-mobile.jpg';
+import img15desc from '../../assets/images/about/about-15-desc.jpg';
 import hero from '../../../src/assets/images/hero_preview.png';
 import svg1 from './sprite.svg';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -17,11 +35,9 @@ const AboutUs = () => {
         <div className='about-container container'>
           <div className='about__hero-content'>
             <h1 className='title__h1'>Наша історія</h1>
-            <p className='text'>
-              Коли людям хочеться швидко і смачно, вони обирають Polar
-            </p>
+            <p className='text'>Коли людям хочеться швидко і смачно, вони обирають Polar</p>
             <div className='about__hero-preview'>
-              <LazyLoadImage effect="opacity" src={hero} alt='girll' />
+              <LazyLoadImage effect='opacity' src={hero} alt='girll' />
             </div>
           </div>
         </div>
@@ -37,29 +53,26 @@ const AboutUs = () => {
               </li>
               <li className='about-top-item'>
                 <p className='about-top-text text'>
-                  Засновник Polar — європеєць з українським корінням — кілька
-                  років тому відвідав Україну. А Одесу, його жителів і колорит
-                  ви знаєте — не закохатися неможливо.
+                  Засновник Polar — європеєць з українським корінням — кілька років тому відвідав
+                  Україну. А Одесу, його жителів і колорит ви знаєте — не закохатися неможливо.
                 </p>
               </li>
               <li className='about-top-item'>
                 <p className='about-top-text text'>
-                  Іскра, буря, божевілля, і от наш Костя вирішив залишитися в
-                  Україні, аби радувати людей вишуканими пельменями й піднімати
-                  економіку нашої країни.
+                  Іскра, буря, божевілля, і от наш Костя вирішив залишитися в Україні, аби радувати
+                  людей вишуканими пельменями й піднімати економіку нашої країни.
                 </p>
               </li>
               <li className='about-top-item'>
                 <p className='about-top-text text'>
-                  Піца, суші, бургери, рамен… А де ж пельмені, які точно
-                  займають окреме місце в сердечку кожного українця?
+                  Піца, суші, бургери, рамен… А де ж пельмені, які точно займають окреме місце в
+                  сердечку кожного українця?
                 </p>
               </li>
               <li className='about-top-item'>
                 <p className='about-top-text text'>
-                  Це питання поставив собі засновник Polar, який не побачив на
-                  ринку доставки цієї страви і смачних соусів до неї. І
-                  понеслася…
+                  Це питання поставив собі засновник Polar, який не побачив на ринку доставки цієї
+                  страви і смачних соусів до неї. І понеслася…
                 </p>
               </li>
             </ul>
@@ -79,9 +92,8 @@ const AboutUs = () => {
               </li>
               <li className='about-item'>
                 <p className='about-text text'>
-                  23 лютого була пре-паті дегустація в Одесі:люди гідно оцінили
-                  наші старання, смак пельменів, різноманітність вибору і
-                  швидкість приготування.
+                  23 лютого була пре-паті дегустація в Одесі:люди гідно оцінили наші старання, смак
+                  пельменів, різноманітність вибору і швидкість приготування.
                 </p>
               </li>
               <li className='about-item'>
@@ -89,20 +101,19 @@ const AboutUs = () => {
               </li>
               <li className='about-item'>
                 <p className='about-text text'>
-                  Ми, як і будь-який бізнес в Україні, не могли працювати як
-                  раніше.
+                  Ми, як і будь-який бізнес в Україні, не могли працювати як раніше.
                 </p>
               </li>
               <li className='about-item'>
                 <p className='about-text text'>
-                  Команда Polar не здалася і прийняла рішення відчинитися в
-                  більш безпечному місті України — Ужгороді.
+                  Команда Polar не здалася і прийняла рішення відчинитися в більш безпечному місті
+                  України — Ужгороді.
                 </p>
               </li>
               <li className='about-item'>
                 <p className='about-text text'>
-                  Створили цех у Закарпатті, поліпшили рецептуру і зробили
-                  пельмені ще кращими з ідеальним тістом і начинками!
+                  Створили цех у Закарпатті, поліпшили рецептуру і зробили пельмені ще кращими з
+                  ідеальним тістом і начинками!
                 </p>
               </li>
             </ul>
@@ -122,27 +133,23 @@ const AboutUs = () => {
               </li>
               <li className='about-bottom-item'>
                 <p className='about-bottom-text text'>
-                  У терміновому порядку (мова ж не просто про їжу, а про
-                  ПЕЛЬМЕНІ) зібралася сильна команда на чолі із шеф-кухарем.
+                  У терміновому порядку (мова ж не просто про їжу, а про ПЕЛЬМЕНІ) зібралася сильна
+                  команда на чолі із шеф-кухарем.
                 </p>
               </li>
               <li className='about-bottom-item'>
                 <p className='about-bottom-text text'>
-                  Днями й ночами ми розробляли стратегію, особливу рецептуру,
-                  концепцію меню з професіоналами, щоби насолоджуватися
-                  пельменями міг кожен.
+                  Днями й ночами ми розробляли стратегію, особливу рецептуру, концепцію меню з
+                  професіоналами, щоби насолоджуватися пельменями міг кожен.
                 </p>
               </li>
               <li className='about-bottom-item'>
-                <p className='about-bottom-text text'>
-                  Не залишили без уваги нікого.
-                </p>
+                <p className='about-bottom-text text'>Не залишили без уваги нікого.</p>
               </li>
               <li className='about-bottom-item'>
                 <p className='about-bottom-text text'>
-                  І вегетаріанці, і вегани, і переконані м’ясоїди, і любителі
-                  рибки, овочів, навіть солодощів точно знайдуть порцію
-                  улюблених пельменів для себе в Polar
+                  І вегетаріанці, і вегани, і переконані м’ясоїди, і любителі рибки, овочів, навіть
+                  солодощів точно знайдуть порцію улюблених пельменів для себе в Polar
                 </p>
               </li>
             </ul>
@@ -164,9 +171,8 @@ const AboutUs = () => {
                 </div>
                 <h3 className='facts-title'>Ми самі виробляємо все</h3>
                 <p className='facts-text'>
-                  фарш, бульйони, соуси. І це з найякісніших продуктів від
-                  перевірених постачальників. Тому що, хороші пельмені
-                  починаються зі свіжих продуктів
+                  фарш, бульйони, соуси. І це з найякісніших продуктів від перевірених
+                  постачальників. Тому що, хороші пельмені починаються зі свіжих продуктів
                 </p>
               </li>
               <li className='facts-item'>
@@ -179,9 +185,8 @@ const AboutUs = () => {
                 <h3 className='facts-title'>10 видів різних пельменів</h3>
 
                 <p className='facts-text'>
-                  І вегетаріанці, і вегани, і переконані м’ясоїди, і любителі
-                  рибки, овочів, навіть солодощів точно знайдуть порцію
-                  улюблених пельменів
+                  І вегетаріанці, і вегани, і переконані м’ясоїди, і любителі рибки, овочів, навіть
+                  солодощів точно знайдуть порцію улюблених пельменів
                 </p>
               </li>
               <li className='facts-item'>
@@ -192,8 +197,8 @@ const AboutUs = () => {
                 </div>
                 <h3 className='facts-title'>4 хвилини</h3>
                 <p className='facts-text'>
-                  Мало що можна встигнути зробити за цей час, але ми точно
-                  знаємо, що пельмені від Polar вже будуть готові
+                  Мало що можна встигнути зробити за цей час, але ми точно знаємо, що пельмені від
+                  Polar вже будуть готові
                 </p>
               </li>
               <li className='facts-item'>
@@ -204,8 +209,8 @@ const AboutUs = () => {
                 </div>
                 <h3 className='facts-title'>Polar з екологією</h3>
                 <p className='facts-text'>
-                  На всіх етапах виробництва й доставки ми намагаємося
-                  мінімізувати використання пластику
+                  На всіх етапах виробництва й доставки ми намагаємося мінімізувати використання
+                  пластику
                 </p>
               </li>
             </ul>
@@ -215,126 +220,54 @@ const AboutUs = () => {
       <section className='gallery-section'>
         <div className='gallery-container container'>
           <picture>
-            <source
-              srcSet='./images/about/about-8-desc.jpg'
-              type='image/jpeg'
-              media='(min-width:768px)'
-            />
-            <img
-              src='./images/about/about-8-mobile.jpg'
-              alt=''
-              className='gallery-img'
-            />
+            <source srcSet={img08desc} type='image/jpeg' media='(min-width:768px)' />
+            <img src={img08} alt='' className='gallery-img' />
           </picture>
 
           <div className='gallery-img-wrap'>
             <picture>
-              <source
-                srcSet='./images/about/about-7-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-7-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img07desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img07} alt='' className='gallery-img' />
             </picture>
 
             <picture>
-              <source
-                srcSet='./images/about/about-13-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-13-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img13desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img13} alt='' className='gallery-img' />
             </picture>
           </div>
 
           <div className='gallery-img-wrap'>
             <picture>
-              <source
-                srcSet='./images/about/about-9-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-9-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img09desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img09} alt='' className='gallery-img' />
             </picture>
 
             <picture>
-              <source
-                srcSet='./images/about/about-15-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-15-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img15desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img15} alt='' className='gallery-img' />
             </picture>
           </div>
 
           <div className='gallery-img-wrap'>
             <picture>
-              <source
-                srcSet='./images/about/about-12-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-12-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img12desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img12} alt='' className='gallery-img' />
             </picture>
 
             <picture>
-              <source
-                srcSet='./images/about/about-14-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-14-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img14desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img14} alt='' className='gallery-img' />
             </picture>
           </div>
 
           <div className='gallery-img-wrap'>
             <picture>
-              <source
-                srcSet='./images/about/about-11-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-11-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img11desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img11} alt='' className='gallery-img' />
             </picture>
             <picture>
-              <source
-                srcSet='./images/about/about-10-desc.jpg'
-                type='image/jpeg'
-                media='(min-width:768px)'
-              />
-              <img
-                src='./images/about/about-10-mobile.jpg'
-                alt=''
-                className='gallery-img'
-              />
+              <source srcSet={img10desc} type='image/jpeg' media='(min-width:768px)' />
+              <img src={img10} alt='' className='gallery-img' />
             </picture>
           </div>
         </div>
