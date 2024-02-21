@@ -221,11 +221,18 @@ body {
 }
 
 @media screen and (max-width: 1200px) {
+
   .about-top-list,
   .about-list,
   .about-bottom-list {
-    text-align: center;
+    text-align: start;
     margin-bottom: 70px;
+    padding: 0 20px;
+  }
+
+
+  .about-top-subtitle {
+    width: max-content;
   }
 
   .title {
@@ -261,10 +268,6 @@ body {
   }
   .facts-item:not(:last-child) {
     margin-bottom: 20px;
-  }
-  .gallery-container,
-  .gallery-img-wrap {
-    gap: 30px;
   }
 }
 
@@ -384,8 +387,7 @@ body {
   .about-bottom-img-list {
     display: flex;
   }
-  .about-bottom-img-item {
-  }
+
   .about-bottom-img {
     border-radius: 24px;
   }

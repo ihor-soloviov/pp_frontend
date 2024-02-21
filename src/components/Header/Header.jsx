@@ -23,8 +23,8 @@ import Cart from "../Cart/Cart";
 import logo from "../../assets/logo/logo.svg";
 
 //Import style
-import "./header.scss";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
+import "./header.scss";
 
 const Header = observer(() => {
   const { authModalHandler, authModal } = modalStore;
@@ -237,7 +237,7 @@ const Header = observer(() => {
               </nav>
               <div className="header__right">
                 <Cart />
-                {isAuthenticated ? (
+
                   <div
                     className="header__profile-btn"
                     onClick={() => navigate("/profile/info")}
@@ -264,12 +264,7 @@ const Header = observer(() => {
                       />
                     </svg>
                   </div>
-                ) : (
-                  <BtnMain
-                    name={"Увійти"}
-                    onClick={() => authModalHandler(true)}
-                  />
-                )}
+                
                 <div
                   className={`header__hamburger ${hamburger && "header__hamburger--active"
                     }`}
