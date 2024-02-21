@@ -2,8 +2,7 @@ import React from 'react';
 import './AboutUs.scss';
 
 import Container from '../../components/Container/Container';
-//Images
-//    src='./images/about/about-1-desc.png'
+
 import img01 from '../../../src/assets/images/about/about-1-desc.png';
 import img02 from '../../../src/assets/images/about/about-2-desc.png';
 import img03 from '../../../src/assets/images/about/about-3-desc.png';
@@ -213,7 +212,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-      {/*<section className='gallery-section'>
+      <section className='gallery-section'>
         <div className='gallery-container container'>
           <picture>
             <source
@@ -339,7 +338,7 @@ const AboutUs = () => {
             </picture>
           </div>
         </div>
-                  </section>*/}
+      </section>
     </Container>
   );
 };

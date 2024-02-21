@@ -2,8 +2,8 @@ import React from 'react';
 import Container from '../../components/Container/Container';
 
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
-import './Contact.scss';
 import { center, containerStyle, options } from './data';
+import './Contact.scss';
 
 const Contact = () => {
   return (
