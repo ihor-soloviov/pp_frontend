@@ -1,11 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import popupActionsStore from "../../store/popup-action-store";
 
 //Import style
-import "./PopupActions.scss";
 
-import { Link } from "react-router-dom";
-import popupActionsStore from "../../store/popup-action-store";
-import { observer } from "mobx-react-lite";
+import "./PopupActions.scss";
 
 const PopupActions = observer(({ action, error, onClick }) => {
   const { setActions } = popupActionsStore;
@@ -63,7 +63,7 @@ const PopupActions = observer(({ action, error, onClick }) => {
         <p>{action}</p>
         <div
           className="popup-actions__close"
-          onClick={() => setActions("")}
+          onClick={setActions}
         >
           <svg
             width="10"

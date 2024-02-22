@@ -39,7 +39,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   });
 
   const [isNumberChanging, setIsNumberChanging] = useState(false);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(undefined);
 
   const handleChange = useCallback(
     (e) => {

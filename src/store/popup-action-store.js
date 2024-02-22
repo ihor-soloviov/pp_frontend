@@ -7,7 +7,8 @@ class PopupActionsStore {
     makeAutoObservable(this);
   }
 
-  setActions = (action) => {
+  setActions = (action = '') => {
+    //якщо action не передати (дефолтне значння буде пустий рядок) - це прибирає action Modal
     this.currentAction = action;
   };
 }

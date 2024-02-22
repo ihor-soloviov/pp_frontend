@@ -31,6 +31,8 @@ import TagManager from "react-gtm-module";
 import PaymentAndDelivery from "./Pages/PaymentAndDelivery/PaymentAndDelivery";
 import Offero from "./Pages/Offero/Offero";
 import NotFound from "./Pages/NotFound/NotFound";
+import Popup from "./components/Popup/Popup";
+import SignUp from "./components/SignUp/SignUp";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -44,7 +46,7 @@ const App = observer(() => {
     userLogout,
   } = userStore;
 
-  const { isLoader, setLoader } = modalsStore;
+  const { isLoader, setLoader, authModalHandler, authModal } = modalsStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
@@ -55,7 +57,7 @@ const App = observer(() => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const cta = useCallback(() => {
+  const ModalHandler = useCallback(() => {
     if (currentAction === "addToCard") {
       return <PopupActions action={"Блюдо додано у кошик"} />;
     }
@@ -111,7 +113,12 @@ const App = observer(() => {
 
   return (
     <React.Fragment>
-      {cta()}
+      {ModalHandler()}
+      {authModal && (
+        <Popup closeModal={() => authModalHandler(false)}>
+          <SignUp />
+        </Popup>
+      )}
 
       {showHeader && <Header />}
 
