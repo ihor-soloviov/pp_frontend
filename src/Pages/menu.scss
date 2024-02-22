@@ -39,10 +39,10 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+
   &__btn {
     padding: 10px 16px 8px 16px;
     // text-transform: uppercase;
-    ;
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
@@ -72,14 +72,15 @@
 @media screen and (max-width: 768px) {
   .categories {
     margin-bottom: 48px;
-    
+
     h1 {
       font-size: 28px;
     }
     &__list {
       width: 99%;
       justify-content: flex-start;
-      overflow: scroll;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
       flex-wrap: nowrap;
       &::-webkit-scrollbar {
         display: none;
