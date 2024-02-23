@@ -78,7 +78,8 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
       return
     }
     const categories = response.data.response;
-    const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Чик-чирик"]
+    
+    const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Чик-чирик", "onlineOrder: Комбо "]
 
     // Фільтруємо та перетворюємо категорії
     const processedCategories = categories
@@ -102,6 +103,8 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
     processedCategories.sort(
       (a, b) => a.category_position_index - b.category_position_index
     );
+
+    console.log(processedCategories)
 
     // Оновлюємо стан
     setCategories(processedCategories);

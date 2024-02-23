@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.28f04112.css",
-    "main.js": "/static/js/main.cc205f90.js",
+    "main.css": "/static/css/main.3d9d98a6.css",
+    "main.js": "/static/js/main.a6f6f12e.js",
     "static/js/787.cfe4fae0.chunk.js": "/static/js/787.cfe4fae0.chunk.js",
     "static/media/hero_preview.png": "/static/media/hero_preview.33f32bcff4c534ce22a3.png",
     "static/media/about-8-desc.jpg": "/static/media/about-8-desc.6f0e8a25defda6b7d098.jpg",
@@ -30,7 +30,6 @@
     "static/media/404.jpg": "/static/media/404.ecb1f470d8c0fc8d7e88.jpg",
     "static/media/about-11-mobile.jpg": "/static/media/about-11-mobile.b18641fbe1ca70f3ecb3.jpg",
     "static/media/about-7-mobile.jpg": "/static/media/about-7-mobile.b5c34dbee4d662d27cfd.jpg",
-    "static/media/logo.svg": "/static/media/logo.4c66c0436de3e3728ef3931cb8bd0914.svg",
     "static/media/liqpay.svg": "/static/media/liqpay.81db62cd2e5f0c96fa328b281afd471c.svg",
     "static/media/sprite.svg": "/static/media/sprite.846e26b8e4d965e90cf93dc64c8476cc.svg",
     "static/media/visa.svg": "/static/media/visa.a4e2a3330170d1f5e56d72f68e7aacaf.svg",
@@ -42,12 +41,12 @@
     "static/media/arrow-left.svg": "/static/media/arrow-left.5e864e3fbecea962ed39880526d5b9c8.svg",
     "static/media/selected.svg": "/static/media/selected.7efede4d2f4b8dc5371e558b9fdbe70d.svg",
     "static/media/hover.svg": "/static/media/hover.c0c6d8f5031719e9c62fd78c00ed8fd7.svg",
-    "main.28f04112.css.map": "/static/css/main.28f04112.css.map",
-    "main.cc205f90.js.map": "/static/js/main.cc205f90.js.map",
+    "main.3d9d98a6.css.map": "/static/css/main.3d9d98a6.css.map",
+    "main.a6f6f12e.js.map": "/static/js/main.a6f6f12e.js.map",
     "787.cfe4fae0.chunk.js.map": "/static/js/787.cfe4fae0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.28f04112.css",
-    "static/js/main.cc205f90.js"
+    "static/css/main.3d9d98a6.css",
+    "static/js/main.a6f6f12e.js"
   ]
 }
