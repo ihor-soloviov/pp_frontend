@@ -1,8 +1,7 @@
 //Import React
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 //Import Routes
-import { useLocation } from "react-router-dom";
 
 //Import Mobx
 
@@ -21,57 +20,62 @@ import { MobileMenu } from "./HeaderComponents/MobileMenu";
 import "./header.scss";
 
 const Header = React.memo(() => {
-  const location = useLocation();
+
+  // useEffect(() => {
+  //   if (location.pathname !== "/") {
+  //     setHamburger(false);
+  //     setDropdown(false);
+  //   }
+  // }, [location]);
+
+  // useEffect(() => {
+  //   getCategories(setCategories);
+  // }, []);
+
+  return (
+    <header className="header">
+      <Container>
+        <div className="header__content">
+          <HeaderLeft />
+          <HeaderNavigation />
+          <HeaderRight/>
+        </div>
+      </Container>
+    </header>
+  )
 
 
-  const [hamburger, setHamburger] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    if (location.pathname !== "/") {
-      setHamburger(false);
-      setDropdown(false);
-    }
-  }, [location]);
-
-  useEffect(() => {
-    getCategories(setCategories);
-  }, []);
-
-  if (location.pathname === "/profile/info") {
-    return (
-      <header className="header">
-        <Container>
-          <div className="header__content">
-            <HeaderLeft />
-            <HeaderNavigation />
-            <HeaderRight setHamburger={setHamburger} hamburger={hamburger} />
-          </div>
-          {hamburger && (
-            <HamburgerMenu setDropdown={setDropdown} dropdown={dropdown} categories={categories} />
-          )}
-        </Container>
-      </header>
-    );
-  } else {
-    return (
-        <header className={`header ${hamburger ? "header__fh" : ""}`}>
-          <Container>
-            <div className="header__content">
-              <HeaderLeft />
-              <HeaderNavigation />
-              <HeaderRight setHamburger={setHamburger} hamburger={hamburger} />
-            </div>
-            {hamburger && (
-              <div className="mobile-menu">
-                <MobileMenu/>
-              </div>
-            )}
-          </Container>
-        </header>
-    );
-  }
 });
 
 export default Header;
+
+
+// if (location.pathname === "/profile/info") {
+//   return (
+//     <header className="header">
+//       <Container>
+//         <div className="header__content">
+//           <HeaderLeft />
+//           <HeaderNavigation />
+//           <HeaderRight />
+//         </div>
+// {hamburger && (
+//           <HamburgerMenu setDropdown={setDropdown} dropdown={dropdown} categories={categories} />
+// )}
+//       </Container>
+//     </header>
+//   );
+// } else {
+//   return (
+//     <header className='header'>
+//       <Container>
+//         <div className="header__content">
+//           <HeaderLeft />
+//           <HeaderNavigation />
+//           <HeaderRight />
+//         </div>
+
+//       </Container>
+//     </header>
+//   );
+// }

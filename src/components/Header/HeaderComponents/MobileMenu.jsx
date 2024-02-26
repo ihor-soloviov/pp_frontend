@@ -1,21 +1,40 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import userStore from '../../../store/user-store';
 import { observer } from 'mobx-react-lite';
 import BtnMain from '../../Buttons/BtnMain';
 import modalsStore from '../../../store/modal-store';
-import { useAnimate } from 'framer-motion';
+import instIcon from "../../../assets/instIcon.svg";
+import fbIcon from "../../../assets/fbIcon.svg";
 
-export const MobileMenu = observer(({ setHamburger, setDropdown, dropdown, categories }) => {
+const citiesInfo = [
+  {
+    label: "Одеса",
+    phone: "+380 (98) 727-19-91",
+    href: 'tel:+380987271991',
+    street: "вул. Лентейнанта Шмідта 25"
+  },
+  {
+    label: "Ужгород",
+    phone: "+380 (67) 714-96-59",
+    href: "tel:+380677149659",
+    street: "вул. Капушанська, 7а"
+  }
+]
+
+export const MobileMenu = observer(() => {
   const { isAuthenticated, name } = userStore;
-  const { authModalHandler } = modalsStore;
-  const navigate = useAnimate()
+  const { authModalHandler, isMobileMenu } = modalsStore;
+  const [dropdown, setDropdown] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  const navigate = useNavigate()
   return (
-    <div className="mobile-menu">
+    <div className={`mobile-menu ${isMobileMenu ? 'menu-slide-in' : 'menu-slide-out'}`}>
       <nav className="mobile-menu__navigation">
         <ul className="mobile-menu__menu">
           <li className="mobile-menu__link">
-            <Link to={"/"} onClick={() => setHamburger(false)}>Головна</Link>
+            <Link to={"/"} >Головна</Link>
           </li>
           <li className="mobile-menu__link ">
             <div
@@ -87,8 +106,45 @@ export const MobileMenu = observer(({ setHamburger, setDropdown, dropdown, categ
             <BtnMain
               name={"Увійти в особистий кабінет"}
               onClick={() => authModalHandler(true)}
+              fullWide
+
             />
           )}
+        </div>
+        <div className="mobile-menu__footer">
+          <div className="menu-footer">
+            <div className="menu-footer__langs">
+              <p className='lang lang-active'>UA</p>
+              <p className='lang '>DE</p>
+            </div>
+            <div className="menu-footer__cities">
+              {citiesInfo.map(el => (
+                <div key={el.label} className='city'>
+                  <span>{el.label}:</span>
+                  <a href={el.href}>{el.phone}</a>
+                  <p>{el.street}</p>
+                </div>
+              ))}
+            </div>
+            <div className="menu-footer__links">
+              <a
+                className="footer__links"
+                href="https://www.instagram.com/polarpelmeni/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img className='smm-link' src={instIcon} alt='instagram link' />
+              </a>
+              <a
+                className="footer__links"
+                href="https://www.facebook.com/polarpelmeni/"
+                target="_blank"
+                rel="noreferrer"
+              >
+              <img className='smm-link' src={fbIcon} alt='facebook link' />
+              </a>
+            </div>
+          </div>
         </div>
       </nav>
     </div>

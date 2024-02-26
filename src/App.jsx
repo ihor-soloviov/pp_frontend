@@ -33,6 +33,7 @@ import Offero from "./Pages/Offero/Offero";
 import NotFound from "./Pages/NotFound/NotFound";
 import Popup from "./components/Popup/Popup";
 import SignUp from "./components/SignUp/SignUp";
+import { MobileMenu } from "./components/Header/HeaderComponents/MobileMenu";
 
 const tagManagerArgs = {
   gtmId: "GTM-5CBQPKC",
@@ -46,7 +47,7 @@ const App = observer(() => {
     userLogout,
   } = userStore;
 
-  const { isLoader, setLoader, authModalHandler, authModal } = modalsStore;
+  const { isLoader, setLoader, authModalHandler, authModal, isMobileMenu } = modalsStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
@@ -121,7 +122,8 @@ const App = observer(() => {
         </Popup>
       )}
 
-      {showHeader && <Header />}
+      <Header />
+      <MobileMenu />
 
       {isLoader && <Loader />}
 
