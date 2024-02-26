@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import userStore from '../../../store/user-store';
 import { observer } from 'mobx-react-lite';
 import BtnMain from '../../Buttons/BtnMain';
 import modalsStore from '../../../store/modal-store';
 import instIcon from "../../../assets/instIcon.svg";
 import fbIcon from "../../../assets/fbIcon.svg";
+import { MobileLink } from '../../MobileLink/MobileLink';
 
 const citiesInfo = [
   {
@@ -24,17 +25,16 @@ const citiesInfo = [
 
 export const MobileMenu = observer(() => {
   const { isAuthenticated, name } = userStore;
-  const { authModalHandler, isMobileMenu } = modalsStore;
+  const { authModalHandler, isMobileMenu, mobileMenuHandler } = modalsStore;
   const [dropdown, setDropdown] = useState(false);
   const [categories, setCategories] = useState([]);
 
-  const navigate = useNavigate()
   return (
     <div className={`mobile-menu ${isMobileMenu ? 'menu-slide-in' : 'menu-slide-out'}`}>
       <nav className="mobile-menu__navigation">
         <ul className="mobile-menu__menu">
           <li className="mobile-menu__link">
-            <Link to={"/"} >Головна</Link>
+            <MobileLink to={"/"} >Головна</MobileLink>
           </li>
           <li className="mobile-menu__link ">
             <div
@@ -61,38 +61,38 @@ export const MobileMenu = observer(() => {
               <ul className="mobile-menu__submenu">
                 {categories.map((el) => {
                   return (
-                    <Link
+                    <MobileLink
                       key={el.category_id}
                       className="mobile-menu__sublink"
                       to={`menu/${el.category_id}`}
                     >
                       {el.category_name}
-                    </Link>
+                    </MobileLink>
                   );
                 })}
               </ul>
             )}
           </li>
           <li className="mobile-menu__link">
-            <Link to={"about-us"}>Про нас</Link>
+            <MobileLink to={"about-us"}>Про нас</MobileLink>
           </li>
           <li className="mobile-menu__link">
-            <Link to={"contact"}>Контакти</Link>
+            <MobileLink to={"contact"}>Контакти</MobileLink>
           </li>
         </ul>
 
         <div className="mobile-menu__auth">
           {isAuthenticated ? (
-            <div
+            <Link to="/profile/info"
               className="mobile-menu__profile-btn"
-              onClick={() => navigate("/profile/info")}
+              onClick={mobileMenuHandler}
             >
               <div className="mobile-menu__avatar">
                 <img
                   src={
                     "https://cdn-icons-png.flaticon.com/512/552/552721.png"
                   }
-                  alt=""
+                  alt="usersPhoto"
                 />
               </div>
               <div>
@@ -101,7 +101,7 @@ export const MobileMenu = observer(() => {
                   Перейти в профіль
                 </div>
               </div>
-            </div>
+            </Link>
           ) : (
             <BtnMain
               name={"Увійти в особистий кабінет"}
@@ -141,7 +141,7 @@ export const MobileMenu = observer(() => {
                 target="_blank"
                 rel="noreferrer"
               >
-              <img className='smm-link' src={fbIcon} alt='facebook link' />
+                <img className='smm-link' src={fbIcon} alt='facebook link' />
               </a>
             </div>
           </div>
