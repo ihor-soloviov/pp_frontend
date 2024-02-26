@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.cc18cae9.css",
-    "main.js": "/static/js/main.2d6d6685.js",
+    "main.css": "/static/css/main.addf8af4.css",
+    "main.js": "/static/js/main.3ecd8003.js",
     "static/js/787.cfe4fae0.chunk.js": "/static/js/787.cfe4fae0.chunk.js",
     "static/media/hero_preview.png": "/static/media/hero_preview.33f32bcff4c534ce22a3.png",
     "static/media/about-8-desc.jpg": "/static/media/about-8-desc.6f0e8a25defda6b7d098.jpg",
@@ -32,8 +32,10 @@
     "static/media/about-7-mobile.jpg": "/static/media/about-7-mobile.b5c34dbee4d662d27cfd.jpg",
     "static/media/liqpay.svg": "/static/media/liqpay.81db62cd2e5f0c96fa328b281afd471c.svg",
     "static/media/sprite.svg": "/static/media/sprite.846e26b8e4d965e90cf93dc64c8476cc.svg",
+    "static/media/instIcon.svg": "/static/media/instIcon.2e4af828bd077b766d8936f000804106.svg",
     "static/media/visa.svg": "/static/media/visa.a4e2a3330170d1f5e56d72f68e7aacaf.svg",
     "static/media/mastercard.svg": "/static/media/mastercard.b720e3b5a9bf9bce7ef42d6682f56356.svg",
+    "static/media/fbIcon.svg": "/static/media/fbIcon.f64498d3e4a2a4c273e47d7620bcc77a.svg",
     "index.html": "/index.html",
     "static/media/add.svg": "/static/media/add.9fe18f9cfb9097f3a7d3398bac711644.svg",
     "static/media/Vector.svg": "/static/media/Vector.46709a669661462dfb9a0e45d6d89617.svg",
@@ -41,12 +43,12 @@
     "static/media/arrow-left.svg": "/static/media/arrow-left.5e864e3fbecea962ed39880526d5b9c8.svg",
     "static/media/selected.svg": "/static/media/selected.7efede4d2f4b8dc5371e558b9fdbe70d.svg",
     "static/media/hover.svg": "/static/media/hover.c0c6d8f5031719e9c62fd78c00ed8fd7.svg",
-    "main.cc18cae9.css.map": "/static/css/main.cc18cae9.css.map",
-    "main.2d6d6685.js.map": "/static/js/main.2d6d6685.js.map",
+    "main.addf8af4.css.map": "/static/css/main.addf8af4.css.map",
+    "main.3ecd8003.js.map": "/static/js/main.3ecd8003.js.map",
     "787.cfe4fae0.chunk.js.map": "/static/js/787.cfe4fae0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cc18cae9.css",
-    "static/js/main.2d6d6685.js"
+    "static/css/main.addf8af4.css",
+    "static/js/main.3ecd8003.js"
   ]
 }

@@ -12,11 +12,9 @@ import Container from "../Container/Container";
 
 
 
-import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 import { HeaderLeft } from "./HeaderComponents/HeaderLeft";
 import { HeaderNavigation } from "./HeaderComponents/HeaderNavigation ";
 import { HeaderRight } from "./HeaderComponents/HeaderRight";
-import { MobileMenu } from "./HeaderComponents/MobileMenu";
 import "./header.scss";
 
 const Header = React.memo(() => {
