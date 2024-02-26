@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import img01 from '../../../src/assets/images/about/about-1-desc.png';
 import img02 from '../../../src/assets/images/about/about-2-desc.png';
 import img03 from '../../../src/assets/images/about/about-3-desc.png';
@@ -22,7 +22,7 @@ import img15 from '../../assets/images/about/about-15-mobile.jpg';
 import img15desc from '../../assets/images/about/about-15-desc.jpg';
 import svg1 from './sprite.svg';
 
-import "./AboutUs.scss";
+import './AboutUs.scss';
 import { useLocation } from 'react-router-dom';
 
 const AboutUpPictures = () => {
@@ -261,9 +261,8 @@ const AboutUpPictures = () => {
           </div>
         </section>
       )}
-
     </>
-  )
-}
+  );
+};
 
-export default AboutUpPictures
+export default AboutUpPictures;
