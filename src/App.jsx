@@ -57,7 +57,7 @@ const App = observer(() => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const ModalHandler = useCallback(() => {
+  const actionPopupHandler = useCallback(() => {
     if (currentAction === "addToCard") {
       return <PopupActions action={"Блюдо додано у кошик"} />;
     }
@@ -113,7 +113,8 @@ const App = observer(() => {
 
   return (
     <React.Fragment>
-      {ModalHandler()}
+      {actionPopupHandler()}
+
       {authModal && (
         <Popup closeModal={() => authModalHandler(false)}>
           <SignUp />

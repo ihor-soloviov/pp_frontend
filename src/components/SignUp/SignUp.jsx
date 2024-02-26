@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 //Import Mobx
 import { observer } from "mobx-react-lite";
 import modalsStore from "../../store/modal-store";
+import { onSendOtp, onVerify, registration, setUpRecaptcha } from "../../utils/firebase";
 
 //Import Components
 import InputText from "../Inputs/InputText";
@@ -16,8 +17,6 @@ import BtnMain from "../Buttons/BtnMain";
 
 //Import Style
 import "./singup.scss";
-
-import { onSendOtp, onVerify, registration, setUpRecaptcha } from "../../utils/firebase";
 
 const SignUp = observer(() => {
   //Tools

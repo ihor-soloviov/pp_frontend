@@ -77,6 +77,7 @@ export const getCategories = async (setCategories, setCurrentCatId) => {
     if (!response?.data?.response) {
       return
     }
+    
     const categories = response.data.response;
     
     const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Чик-чирик", "onlineOrder: Комбо "]

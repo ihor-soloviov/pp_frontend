@@ -6,6 +6,7 @@ import "./Orders.scss";
 import axios from "axios";
 import { url } from "../../api"
 import userStore from "../../store/user-store";
+import classNames from "classnames";
 
 export const getOrderStatus = status => status === "60" ? "Виконане" : "Готується"
 
@@ -65,28 +66,32 @@ const Orders = ({ handleSidebar }) => {
           Історія замовлень
         </ProfileLink>
         {orders.length > 0 && (
-          orders.map(el => (
-            <div key={el.id} className="order">
-              <div className="order-container">
-                <div className="order-info">
-                  <div className="order-info__number">
-                    <h4>{`Замовлення №${el.incoming_order_id}`}</h4>
-                    <p className="status">{getOrderStatus(el.processing_status)}</p>
+          orders.map(el => {
+            const { id, incoming_order_id, processing_status, created_at, amount } = el;
+            const status = getOrderStatus(processing_status)
+            return (
+              <div key={id} className="order">
+                <div className="order-container">
+                  <div className="order-info">
+                    <div className="order-info__number">
+                      <h4>{`Замовлення №${incoming_order_id}`}</h4>
+                      <p className={classNames("status", { processing: status !== "Виконане" })}>{status}</p>
+                    </div>
+                    <div className="order-info__datetime">{created_at}</div>
                   </div>
-                  <div className="order-info__datetime">{el.created_at}</div>
-                </div>
-                <div className="order-details">
-                  <h4>{el.amount} ₴</h4>
-                  <button
-                    onClick={() => openMainModal(el)}
-                    className="order-details__modal-link"
-                  >
-                    Детальніше
-                  </button>
+                  <div className="order-details">
+                    <h4>{amount} ₴</h4>
+                    <button
+                      onClick={() => openMainModal(el)}
+                      className="order-details__modal-link"
+                    >
+                      Детальніше
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            )
+          })
         )}
         {selectedOrder && (
 

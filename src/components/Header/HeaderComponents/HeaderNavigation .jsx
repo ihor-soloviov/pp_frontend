@@ -12,7 +12,7 @@ export const HeaderNavigation = () => (
         <NavLink
           key={label}
           to={href}
-          exact={label === "Головна"}
+          exact={(label === "Головна").toString()}
           className={({ isActive }) => isActive ? "navLink-active" : "navLink"}
         >
           {label}

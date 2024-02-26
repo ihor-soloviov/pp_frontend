@@ -62,10 +62,13 @@ class UserStore {
   }
 
   loadAddressesFromLocalStorage() {
-    const adresses = JSON.parse(localStorage.getItem("user_adresses"));
-    if (adresses) {
-      this.adresses = adresses;
+    const addressesFromLS = localStorage.getItem("user_adresses");
+    if (!addressesFromLS || addressesFromLS === "undefined") {
+      this.adresses = [];
+      return
     }
+
+    this.adresses = JSON.parse(addressesFromLS);
   }
 
   setUserAvatar = (avatarUrl) => {
@@ -109,7 +112,7 @@ class UserStore {
     this.token = null;
     this.promocode40 = false;
     this.dateOfBirth = null
-
+    this.adresses = [];
   };
 
   addToFavorit = ({ preview, name, price, weight, id, ingredients }) => {
@@ -124,9 +127,7 @@ class UserStore {
   };
 
   addToAdresses = (addresses) => {
-    if (addresses.length > 0) {
-      this.adresses = addresses;
-    }
+    this.adresses = addresses;
   };
 
   removeAdresses = (addressName) => {
