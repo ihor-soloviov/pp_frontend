@@ -25,7 +25,7 @@ import svg1 from './sprite.svg';
 import './AboutUs.scss';
 import { useLocation } from 'react-router-dom';
 
-const AboutUpPictures = () => {
+const AboutUsPictures = () => {
   const location = useLocation();
 
   return (
@@ -265,4 +265,4 @@ const AboutUpPictures = () => {
   );
 };
 
-export default AboutUpPictures;
+export default AboutUsPictures;

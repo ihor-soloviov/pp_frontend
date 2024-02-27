@@ -3,7 +3,7 @@ import './AboutUs.scss';
 
 import hero from '../../../src/assets/images/hero_preview.png';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import AboutUpPictures from './AboutUpPictures';
+import AboutUsPictures from './AboutUsPictures';
 
 const AboutUs = () => {
   return (
@@ -21,7 +21,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-      <AboutUpPictures />
+      <AboutUsPictures />
     </React.Fragment>
   );
 };
