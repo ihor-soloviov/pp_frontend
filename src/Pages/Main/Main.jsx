@@ -1,9 +1,8 @@
 import React from 'react';
-import Container from '../../components/Container/Container';
 import Menu from '../Menu';
 import AboutUsPictures from '../AboutUs/AboutUsPictures';
 
-const Main = () => {
+export const Main = () => {
   return (
     <React.Fragment>
       <div className='banner' />
@@ -14,7 +13,6 @@ const Main = () => {
   );
 };
 
-export default Main;
 
 // <section className="about-section" style={{ marginTop: 120 }}>
 //         <div className="about-container container">

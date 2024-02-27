@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard/ProductCard";
 
 //Import Utils
-import { getCategories, getProducts } from "../utils/menu";
+import { getProducts } from "../utils/menu";
 import classNames from "classnames";
 import { url } from "../api";
 

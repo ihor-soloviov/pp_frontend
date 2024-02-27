@@ -16,7 +16,7 @@ import Profile from './Pages/Profile/Profile';
 import ProductPage from './Pages/ProductPage/ProductPage';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import Order from './Pages/Order/Order';
-import Main from './Pages/Main/Main';
+import { Main } from './Pages/Main/Main';
 import MenuPage from './Pages/MenuPage/MenuPage';
 import Contact from './Pages/Contact/Contact';
 
