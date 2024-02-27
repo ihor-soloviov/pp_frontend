@@ -194,6 +194,22 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
     }
+
+    &__have-promocode {
+      // user-select: none;
+      // display: flex;
+      // align-items: center;
+      // gap: 12px;
+      // background: #62d9f1;
+      width: 100%;
+      justify-content: center;
+      span {
+        font-size: 14px;
+      }
+      // padding: 12px 24px;
+      // border-radius: 7px;
+      // margin: 24px 0 0 0;
+    }
   }
   .checkout {
     order: -1;

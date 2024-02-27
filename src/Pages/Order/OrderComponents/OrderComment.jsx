@@ -7,7 +7,7 @@ export const OrderComment = React.memo(({ formData, handleFormValueChange }) => 
   return (
     <section className="order-page__section">
       <h3 className='order-page__header'>Додатково</h3>
-      <section className="order-page__section-inputs order-page__section-inputs-row">
+      <section style={{ alignItems: "flex-start" }} className="order-page__section-inputs order-page__section-inputs-row">
         <div className="order-page__block">
           <span>Кількість персон:</span>
           <Checkbox
