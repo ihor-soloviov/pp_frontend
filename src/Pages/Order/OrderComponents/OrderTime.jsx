@@ -10,7 +10,7 @@ export const OrderTime = React.memo(({ handleFormValueChange, formData }) => {
   const { deliveryTime, selectedTime } = formData
   return (
     <section className="order-page__section">
-      <h3>Час отримання</h3>
+      <h3 className='order-page__header'>Час отримання</h3>
       <section className="order-page__section-inputs">
         <RadioButton
           data={[

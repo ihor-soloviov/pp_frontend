@@ -6,7 +6,7 @@ export const OrderPaymentType = ({ formData, handleFormValueChange }) => {
   const { bonus, paymentMethod, change } = formData;
   return (
     <section className="order-page__section">
-      <h3>Спосіб оплати</h3>
+      <h3 className='order-page__header'>Спосіб оплати</h3>
       <div className="order-page__section-inputs">
         <InputText
           name={"Використати бонуси"}

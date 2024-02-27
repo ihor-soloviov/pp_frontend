@@ -7,7 +7,7 @@ export const OrderAddress = React.memo(({ formData, handleFormValueChange }) => 
 
   return (
     <section className="order-page__section">
-      <h3>Спосіб отримання замовлення</h3>
+      <h3 className='order-page__header'>Спосіб отримання замовлення</h3>
       <section className="order-page__section-inputs order-page__section-inputs-row">
         <InputText
           name={"Вулиця"}

@@ -14,7 +14,7 @@ export const OrderPromo = observer(({ formData, handleFormValueChange, handleErr
 
   return (
     <section className="order-page__section">
-      <h3>Додати промокод</h3>
+      <h3 className='order-page__header'>Додати промокод</h3>
       <section className="order-page__section-inputs order-page__section-inputs-row">
         <InputSelector
           name={"Промокод"}

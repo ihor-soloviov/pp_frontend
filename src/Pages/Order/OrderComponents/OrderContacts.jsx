@@ -7,7 +7,7 @@ export const OrderContacts = React.memo(({ name, number, handleFormValueChange }
 
   return (
     <section className="order-page__section">
-      <h3>Контакти</h3>
+      <h3 className='order-page__header'>Контакти</h3>
       <div className="order-page__section-inputs">
         <InputText
           name={"Ваше ім’я"}
