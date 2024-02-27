@@ -169,7 +169,7 @@ body {
 
 /* Facts section */
 .facts-section {
-  padding: 100px 0;
+  padding: 100px 0 156px;
 }
 
 .facts-main-title {
@@ -298,7 +298,7 @@ body {
   .about-list,
   .about-bottom-list {
     text-align: start;
-    margin-bottom: 70px;
+    margin-bottom: 80px;
   }
 
   .about-top-subtitle {
@@ -424,7 +424,7 @@ body {
   .about-icon.second {
     width: 100px;
     height: 88px;
-    margin-bottom: 133px;
+    margin-bottom: 75px;
   }
 
   .about-wrap {
@@ -567,7 +567,7 @@ body {
     overflow: hidden;
 
     img {
-      height: 100%;
+      height: auto;
     }
   }
 }
