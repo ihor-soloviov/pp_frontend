@@ -8,7 +8,6 @@ const Main = () => {
     <Container>
       <div className="banner" />
       <Menu />
-      <div>huy</div>
       <AboutUsPictures />
 
     </Container>
