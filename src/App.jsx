@@ -45,7 +45,7 @@ const App = observer(() => {
   //Store
   const { userLogout } = userStore;
 
-  const { isLoader, setLoader, authModalHandler, authModal, isMobileMenu } = modalsStore;
+  const { isLoader, setLoader, authModalHandler, authModal } = modalsStore;
   const { currentAction } = popupActionsStore;
 
   //Usestate
