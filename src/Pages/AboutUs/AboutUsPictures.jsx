@@ -30,7 +30,10 @@ const AboutUsPictures = () => {
 
   return (
     <>
-      <section className='about-section' style={{ marginTop: location.pathname !== '/about-us' ? 120 : 0 }}>
+      <section
+        className='about-section'
+        style={{ marginTop: location.pathname !== '/about-us' ? 120 : 0 }}
+      >
         <div className='about-container container'>
           <div className='about-top-wrap'>
             <ul className='about-top-list list'>
@@ -206,7 +209,7 @@ const AboutUsPictures = () => {
       </section>
       {location.pathname !== '/about-us' && (
         <section className='gallery-section'>
-          <div className='gallery-container container'>
+          <div className='gallery-container'>
             <picture>
               <source srcSet={img08desc} type='image/jpeg' media='(min-width:768px)' />
               <img src={img08} alt='' className='gallery-img' />
