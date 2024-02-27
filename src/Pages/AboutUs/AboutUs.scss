@@ -275,6 +275,13 @@ body {
   border-radius: 10px;
 }
 
+@media screen and (min-width: 1367px) {
+  .gallery-container {
+    max-width: 1900px;
+    padding: 0 24px;
+  }
+}
+
 @media screen and (max-width: 1366px) {
   .gallery-container {
     max-width: 1200px;
