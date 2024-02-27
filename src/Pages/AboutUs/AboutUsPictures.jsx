@@ -30,7 +30,7 @@ const AboutUsPictures = () => {
 
   return (
     <>
-      <section className='about-section'>
+      <section className='about-section' style={{ marginTop: location.pathname !== '/about-us' ? 120 : 0 }}>
         <div className='about-container container'>
           <div className='about-top-wrap'>
             <ul className='about-top-list list'>
