@@ -12,22 +12,6 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const customIndexMap = {
-  12: 1,
-  11: 2,
-  8: 3,
-  10: 4,
-  9: 5,
-  2: 6,
-  3: 7,
-  0: 8,
-  6: 9,
-  4: 10,
-  7: 11,
-  1: 12,
-  5: 13,
-};
-
 export const handleModificatorChange = (newModificator, setSelectedModificators) => {
   setSelectedModificators(prev => {
     const index = prev.findIndex(modificator => modificator.group === newModificator.group);
@@ -70,50 +54,16 @@ export const addToCartHandler = (product, count) => {
   }, 2000);
 }
 
-export const getCategories = async (setCategories, setCurrentCatId) => {
+export const getCategories = async () => {
   try {
     const response = await axios.get(`${url}/api/menu`, { headers });
-
     if (!response?.data?.response) {
-      return
+      return [];
     }
-    
-    const categories = response.data.response;
-    
-    const filtr = ["onlineOrder: Напівфабрикати", "onlineOrder: Десерти", "onlineOrder: Додатково", "onlineOrder: Чик-чирик", "onlineOrder: Комбо "]
-
-    // Фільтруємо та перетворюємо категорії
-    const processedCategories = categories
-      .filter(category => !filtr.includes(category.category_name))
-      .filter((category) => category.category_name.startsWith("onlineOrder:"))
-      .map((category, index) => ({
-        ...category,
-        category_name: category.category_name.replace("onlineOrder: ", ""),
-        category_position_index: index,
-      }));
-
-
-    // Переназначаємо індекси згідно з мапою
-    processedCategories.forEach((category) => {
-      category.category_position_index =
-        customIndexMap[category.category_position_index] ||
-        category.category_position_index;
-    });
-
-    // Сортуємо категорії за індексом позиції
-    processedCategories.sort(
-      (a, b) => a.category_position_index - b.category_position_index
-    );
-
-    console.log(processedCategories)
-
-    // Оновлюємо стан
-    setCategories(processedCategories);
-    if (setCurrentCatId && processedCategories.length > 0) {
-      setCurrentCatId(processedCategories[0].category_id);
-    }
+    return response.data.response;
   } catch (error) {
     console.error("Помилка при отриманні категорій:", error);
+    return [];
   }
 };
 

@@ -12,19 +12,24 @@ import { url } from "../api";
 
 //Impost styles
 import "./menu.scss";
+import { observer } from "mobx-react-lite";
+import menuStore from "../store/menu-store";
 
-const Menu = React.memo(() => {
+const Menu = observer(() => {
+  const { categories } = menuStore;
   const { id } = useParams();
 
   const [currentCatId, setCurrentCatId] = useState(null);
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState(null);
 
 
 
   useEffect(() => {
-    getCategories(setCategories, setCurrentCatId);
-  }, []);
+    if (categories.length > 0) {
+      setCurrentCatId(categories[0].category_id);
+    }
+  }, [categories]);
 
   useEffect(() => {
     getProducts(currentCatId, setProducts);

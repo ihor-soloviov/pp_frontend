@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 //Import components
@@ -9,12 +9,13 @@ import logo from "../../assets/logo/logo.png";
 import mastercardIco from "../../assets/logo/mastercard.svg";
 import visaIco from "../../assets/logo/visa.svg";
 import liqpayIco from "../../assets/logo/liqpay.svg";
-import { getCategories } from "../../utils/menu";
 
 import "../Footer/Footer.scss";
+import { observer } from "mobx-react-lite";
+import menuStore from "../../store/menu-store";
 
-const Footer = () => {
-  const [categories, setCategories] = useState([]);
+const Footer = observer(() => {
+  const { categories } = menuStore
   const contacts = [
     {
       city: "Одеса",
@@ -29,10 +30,6 @@ const Footer = () => {
       address: "вул. Капушанська, 7а",
     },
   ];
-
-  useEffect(() => {
-    getCategories(setCategories);
-  }, []);
 
   return (
     <footer className="footer">
@@ -175,6 +172,6 @@ const Footer = () => {
       </Container>
     </footer>
   );
-};
+})
 
 export default Footer;

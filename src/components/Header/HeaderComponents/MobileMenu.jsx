@@ -7,6 +7,7 @@ import modalsStore from '../../../store/modal-store';
 import instIcon from "../../../assets/instIcon.svg";
 import fbIcon from "../../../assets/fbIcon.svg";
 import { MobileLink } from '../../MobileLink/MobileLink';
+import menuStore from '../../../store/menu-store';
 
 const citiesInfo = [
   {
@@ -24,10 +25,10 @@ const citiesInfo = [
 ]
 
 export const MobileMenu = observer(() => {
+  const { categories } = menuStore;
   const { isAuthenticated, name } = userStore;
   const { authModalHandler, isMobileMenu, mobileMenuHandler } = modalsStore;
   const [dropdown, setDropdown] = useState(false);
-  const [categories, setCategories] = useState([]);
 
   return (
     <div className={`mobile-menu ${isMobileMenu ? 'menu-slide-in' : 'menu-slide-out'}`}>
@@ -65,6 +66,7 @@ export const MobileMenu = observer(() => {
                       key={el.category_id}
                       className="mobile-menu__sublink"
                       to={`menu/${el.category_id}`}
+                      setDropdown={setDropdown}
                     >
                       {el.category_name}
                     </MobileLink>
