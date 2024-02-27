@@ -337,8 +337,16 @@ body {
 
 @media screen and (min-width: 1201px) {
   .about-section {
-    border-radius: 24px;
+    padding: unset;
+    background-color: unset;
   }
+  .about-hero-container.container {
+    padding: unset;
+  }
+  .about__hero {
+    padding: 80px 0 20px;
+  }
+
   .about__hero-title {
     font-size: 45px;
     width: fit-content;
@@ -355,6 +363,12 @@ body {
   }
   .text {
     max-width: unset;
+  }
+
+  .about-container {
+    padding: 120px 40px 120px;
+    border-radius: 24px;
+    background-color: var(--about-bg-color);
   }
   .about-top-wrap {
     display: flex;

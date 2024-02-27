@@ -9,7 +9,7 @@ const AboutUs = () => {
   return (
     <React.Fragment>
       <section className='about__hero'>
-        <div className='about-container container'>
+        <div className='about-hero-container container'>
           <div className='about__hero-content'>
             <h1 className='about__hero-title'>Наша історія</h1>
             <p className='about__hero-text'>
