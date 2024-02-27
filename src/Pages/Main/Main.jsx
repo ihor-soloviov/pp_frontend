@@ -1,22 +1,20 @@
-import React from "react";
-import Container from "../../components/Container/Container";
-import Menu from "../Menu";
-import AboutUsPictures from "../AboutUs/AboutUsPictures";
+import React from 'react';
+import Container from '../../components/Container/Container';
+import Menu from '../Menu';
+import AboutUsPictures from '../AboutUs/AboutUsPictures';
 
 const Main = () => {
   return (
-    <Container>
-      <div className="banner" />
+    <React.Fragment>
+      <div className='banner' />
       <Menu />
 
       <AboutUsPictures />
-
-    </Container>
+    </React.Fragment>
   );
 };
 
 export default Main;
-
 
 // <section className="about-section" style={{ marginTop: 120 }}>
 //         <div className="about-container container">
