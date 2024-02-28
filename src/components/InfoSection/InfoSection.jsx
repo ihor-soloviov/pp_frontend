@@ -8,7 +8,6 @@ import sprite from '../../assets/images/sprite.svg';
 import axios from 'axios';
 import { url } from '../../api';
 import { uploadImage } from '../../utils/firebase';
-
 //Import Mobx
 import { observer } from 'mobx-react-lite';
 import userStore from '../../store/user-store';
