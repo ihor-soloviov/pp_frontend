@@ -100,7 +100,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   useEffect(() => {
     console.log(formData)
   }, [formData])
-  
+
 
   //функції які потребують авторизованності
   useEffect(() => {
@@ -149,7 +149,8 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, [posterOrder]);
 
   const onSubmit = useCallback(() => {
-     if (cartItems.length === 0) {
+    console.log('clicked')
+    if (cartItems.length === 0) {
       return handleTemporaryError("Будь ласка, оберіть товари для замовлення");
     }
 
@@ -178,8 +179,11 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
       console.log("cash");
       return; // Якщо потрібно завершити виконання функції після цього умови
     }
-
     const totalPrice = calculateTotalPrice(cartItems);
+    if (!totalPrice) {
+      return handleTemporaryError("Проблема із застосунком");
+    }
+    console.log("totalPrice", totalPrice)
     let amount = isPromotion ? totalPrice * 0.6 : totalPrice;
     //додаємо вартість таксі
     if (amount < 500) {

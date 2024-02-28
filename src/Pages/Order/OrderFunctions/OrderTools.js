@@ -5,9 +5,7 @@ import userStore from "../../../store/user-store";
 
 const { userPromocodeNotUse, userPromocode } = userStore;
 
-export const calculateTotalPrice = (items) => {
-  items.reduce((acc, item) => acc + item.totalPrice, 0)
-};
+export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + item.totalPrice, 0)
 
 export const headers = {
   "Content-Type": "application/json",

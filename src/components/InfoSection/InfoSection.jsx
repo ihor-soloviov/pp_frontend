@@ -144,6 +144,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 <p>Ім'я</p>
                 <label className='form_item--label'>
                   <input
+                    style={{ fontSize: "16px" }}
                     type='text'
                     placeholder="Ім'я"
                     name='name'
@@ -157,6 +158,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 <p>Пошта</p>
                 <label className='form_item--label'>
                   <input
+                    style={{ fontSize: "16px" }}
                     type='text'
                     placeholder='xxx@gmail.com'
                     name='email'
@@ -170,6 +172,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 <p>Дата народження</p>
                 <label className='form_item--label'>
                   <input
+                    style={{ fontSize: "16px" }}
                     title='формат дд.мм.рррр'
                     type='text'
                     placeholder='Дата народження'
