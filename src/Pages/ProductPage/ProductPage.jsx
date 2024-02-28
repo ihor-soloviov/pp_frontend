@@ -71,21 +71,18 @@ const ProductPage = observer(() => {
           )}
           <Container>
             <div className="product-page__content">
-              <div className="product-page__preview">
-                <img
-                  src={`${url}/api/sendImage/${id}`}
-                  alt={product.product_name}
-                />
+              <div className="product-page__preview" style={{ backgroundImage: `url(${url}/api/sendImage/${id})` }}>
+
               </div>
               <div className="product-page__info">
-                <p className="product-page__weight text text__color--secondary">
+                <p className="product-page__weight text">
                   {product.out} г
                 </p>
                 <h1 className="product-page__title text__color--secondary">
                   {product.product_name}
                 </h1>
                 {productDescription && (
-                  <p className="product-page__desc text__color--secondary">
+                  <p className="product-page__desc">
                     {productDescription}
                   </p>
                 )}
@@ -175,7 +172,7 @@ const ProductPage = observer(() => {
             </div>
             <div className="product-page__recommendations">
               <div className="product-page__recommendations-head">
-                <h3 className="title__h3">Рекомендуємо спробувати</h3>
+                <h3 className="title__h3 product-page__rec-title">Рекомендуємо спробувати</h3>
               </div>
 
               {recommendationsProducts && (
