@@ -27,13 +27,19 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
     city: city,
     token: token,
   });
-  const [cityDrop, setCityDrop] = useState('');
-  console.log('cityDrop', cityDrop);
+
   const cityOptions = ['Одеса', 'Ужгород'].map((cityDrop) => ({
     value: cityDrop,
     label: cityDrop,
-    className: 'Dropdown-option',
+    className: cityDrop === 'Одеса' ? 'Dropdown-option' : 'Dropdown-option disabled',
   }));
+
+  const defaultCityOption = cityOptions[0];
+
+  const [cityDrop, setCityDrop] = useState({
+    label: defaultCityOption.label,
+    value: defaultCityOption.value,
+  });
 
   const [isNumberChanging, setIsNumberChanging] = useState(false);
   const [file, setFile] = useState(undefined);
@@ -41,6 +47,13 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   const handleChange = useCallback((e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }, []);
+
+  const handleChangeCity = (e) => {
+    if (e.value === 'Ужгород') {
+      return;
+    }
+    setCityDrop(e);
+  };
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -70,7 +83,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
           <img src={avatar} alt='profile' className='mobile-menu__avatar' width={70} />
           <div className='profile_info--head__contacts contacts'>
             <div className='contacts_name'>{name} </div>
-            <div className='contacts_phone'>{phone}</div>
+            <div className='contacts_phone'>{convertNumber(phone)}</div>
           </div>
           <div className='profile_info--head__button button'>
             <button className='button_link' onClick={openModal}>
@@ -175,7 +188,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                     placeholder='Оберіть місто'
                     options={cityOptions}
                     value={cityDrop}
-                    onChange={setCityDrop}
+                    onChange={handleChangeCity}
                     arrowClosed={
                       <svg className='iconArrow'>
                         <use href={sprite + '#icon-arrow'}></use>
