@@ -63,6 +63,7 @@
       display: flex;
       gap: 20px;
       align-items: center;
+      margin-bottom: 30px;
 
       @media (min-width: 769px) {
         display: none;
@@ -109,15 +110,18 @@
   &_name {
     font-size: 18px;
     padding-bottom: 12px;
-
+    font-family: 'Golos Text';
+    font-weight: 500;
+    line-height: 150%;
     @media (max-width: 768px) {
-      padding-bottom: 8px;
+      padding-bottom: 3px;
     }
   }
 
   &_phone {
     font-size: 14px;
-    color: #757479;
+    color: #12130f;
+    line-height: 150%;
 
     @media (max-width: 768px) {
       padding-bottom: 8px;
@@ -144,12 +148,17 @@
     font-weight: 500;
     flex: 1;
     cursor: pointer;
+    margin-left: 10px;
 
     @media (max-width: 768px) {
       font-size: 14px;
       font-weight: 400;
     }
   }
+}
+
+.button_link.label {
+  margin-left: unset;
 }
 
 .form {
@@ -176,6 +185,11 @@
     }
 
     p {
+      color: #757479;
+      font-family: 'Golos Text';
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 150%;
       padding-bottom: 7px;
     }
 
@@ -189,7 +203,13 @@
         border-radius: 5px;
         width: 100%;
         background-color: inherit;
-
+        height: 50px;
+        &::placeholder {
+          font-family: 'Golos Text';
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 150%;
+        }
         &:focus {
           box-shadow: 0 0 2px 2px #8aebff;
         }
@@ -236,6 +256,90 @@
     }
   }
 }
+
+//Dropdown styles
+
+.cityDrop {
+  padding: 14px 12px 12px 12px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  background-color: inherit;
+  height: 50px;
+  position: relative;
+
+  &:focus {
+    box-shadow: 0 0 2px 2px #8aebff;
+  }
+}
+
+.Dropdown-control {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 15px;
+  scroll-behavior: auto;
+  border-radius: 5px;
+  scroll-behavior: auto;
+  background-color: #f3f3f5;
+  position: absolute;
+  left: 0;
+  top: 40px;
+  width: 100%;
+  padding: 14px 12px 12px 12px;
+}
+
+.Dropdown-option {
+  color: #92939a;
+  font-family: 'Golos Text';
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  cursor: pointer;
+  &:hover {
+    background-color: #ebebee;
+  }
+}
+
+.Dropdown-arrow-wrapper {
+  width: fit-content;
+}
+
+.Dropdown-placeholder {
+  color: #92939a;
+  font-family: 'Golos Text';
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.iconArrow {
+  display: flex;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  cursor: pointer;
+}
+
+.iconArrowRotate {
+  display: flex;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transform: rotate(180deg);
+}
+
+//Dropdown styles
 
 .mobile {
   color: #000;
