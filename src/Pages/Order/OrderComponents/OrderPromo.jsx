@@ -1,61 +1,65 @@
-import React from 'react'
-import InputSelector from '../../../components/Inputs/InputSelector';
+import React, { useEffect, useState } from 'react'
 import userStore from '../../../store/user-store';
 import BtnMain from '../../../components/Buttons/BtnMain';
 import { calculateTotalPrice } from '../OrderFunctions/OrderTools';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import { observer } from 'mobx-react-lite';
+import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 
 export const OrderPromo = observer(({ formData, handleFormValueChange, handleError, isPromotion, setPromotionPopup, setIsPromotion }) => {
 
   const { promocode40 } = userStore;
-  const { products } = shoppingCartStore
-  const { paymentMethod } = formData;
+  const { cartItems } = shoppingCartStore
+  const [promo, setPromo] = useState({
+    label: "40%",
+    value: "40%"
+  })
+
+  const handleActivatePromoClick = () => {
+    if (promo.label !== '40%') {
+      return
+    }
+    if (calculateTotalPrice(cartItems) * (60 / 100) <= 200) {
+      handleError({
+        status: true,
+        currentError: "Мінімальна сумма замовлення 200 ₴",
+      });
+      setTimeout(() => {
+        handleError({
+          status: false,
+          currentError: "",
+        });
+      }, 2000);
+    } else {
+      setPromotionPopup(true)
+      setTimeout(() => {
+        setPromotionPopup(false)
+      }, 2500);
+      setIsPromotion(true);
+    }
+  }
+
+
+  const handleChangePromo = (e) => {
+    setPromo(e)
+    handleFormValueChange("promoCode", e)
+  }
+
+  const promoOptions = promocode40 ? ['40%', 'Без промокоду'] : ['Без промокоду']
 
   return (
     <section className="order-page__section">
       <h3 className='order-page__header'>Додати промокод</h3>
       <section className="order-page__section-inputs order-page__section-inputs-row">
-        <InputSelector
-          name={"Промокод"}
-          placeholder={"Промокод"}
-          data={
-            promocode40
-              ? [
-                {
-                  id: 0,
-                  label: "40%",
-                  value: "40%",
-                },
-              ]
-              : []
-          }
-          value={paymentMethod}
-          onChange={(value) => handleFormValueChange("promoCode", value)}
-        />
+        <label className='inputText'>
+          <span>Промокод</span>
+          <CustomSelect className={`cityDrop promo`} placeholder='Промокод' value={promo} options={promoOptions} handleChange={handleChangePromo} />
+        </label>
+
         {promocode40 && (
           <BtnMain
             name={"Застосувати"}
-            onClick={() => {
-              if (calculateTotalPrice(products) * (60 / 100) <= 200) {
-                handleError({
-                  status: true,
-                  currentError: "Мінімальна сумма замовлення 200 ₴",
-                });
-                setTimeout(() => {
-                  handleError({
-                    status: false,
-                    currentError: "",
-                  });
-                }, 2000);
-              } else {
-                setPromotionPopup(true)
-                setTimeout(() => {
-                  setPromotionPopup(false)
-                }, 2500);
-                setIsPromotion(true);
-              }
-            }}
+            onClick={handleActivatePromoClick}
             disabled={isPromotion}
           />
         )}

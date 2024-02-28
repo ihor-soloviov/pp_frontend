@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //Import React
 import React, { useCallback, useState } from 'react';
-import Dropdown from 'react-dropdown';
+
 import ProfileLink from '../ProfileLink/ProfileLink';
 import NumberChangeModal from './NumberChangeModal';
-import sprite from '../../assets/images/sprite.svg';
+
 import axios from 'axios';
 import { url } from '../../api';
 import { uploadImage } from '../../utils/firebase';
@@ -16,6 +16,7 @@ import { convertNumber } from '../../utils/convertNumber';
 //Import styles
 import '../ProfileGrid/ProfileGrid.scss';
 import './InfoSection.scss';
+import { CustomSelect } from '../CustomSelect/CustomSelect';
 
 const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   const { name, email, phone, dateOfBirth, token, city, setUserDataToStore, avatar } = userStore;
@@ -183,23 +184,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
               <div className='form_item'>
                 <p>Місто</p>
                 <label className='form_item--label'>
-                  <Dropdown
-                    className='cityDrop'
-                    placeholder='Оберіть місто'
-                    options={cityOptions}
-                    value={cityDrop}
-                    onChange={handleChangeCity}
-                    arrowClosed={
-                      <svg className='iconArrow'>
-                        <use href={sprite + '#icon-arrow'}></use>
-                      </svg>
-                    }
-                    arrowOpen={
-                      <svg className='iconArrowRotate'>
-                        <use href={sprite + '#icon-arrow'}></use>
-                      </svg>
-                    }
-                  />
+                  <CustomSelect placeholder='Оберіть місто' value={cityDrop} options={cityOptions} handleChange={handleChangeCity} className="cityDrop" />
                 </label>
               </div>
             </div>

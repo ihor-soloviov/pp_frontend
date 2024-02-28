@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import InputText from '../../../components/Inputs/InputText'
-import InputSelector from '../../../components/Inputs/InputSelector'
+import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 
 export const OrderPaymentType = ({ formData, handleFormValueChange }) => {
-  const { bonus, paymentMethod, change } = formData;
+  const { bonus, change } = formData;
+  const [payment, setPayment] = useState({label: "Онлайн", value: "Онлайн"})
+
+
+  const handleChangePayment = (e) => {
+    setPayment(e)
+    handleFormValueChange("paymentMethod", e)
+  }
+
   return (
     <section className="order-page__section">
       <h3 className='order-page__header'>Спосіб оплати</h3>
@@ -16,16 +24,15 @@ export const OrderPaymentType = ({ formData, handleFormValueChange }) => {
         />
       </div>
       <div className="order-page__section-inputs order-page__section-inputs-row">
-        <InputSelector
-          name={"Оплата"}
-          placeholder={"Онлайн"}
-          data={[
-            { id: 0, label: "Онлайн", value: "Онлайн" },
-            { id: 1, label: "Готівка", value: "Готівка" },
-          ]}
-          value={paymentMethod}
-          onChange={(value) => handleFormValueChange("paymentMethod", value)}
-        />
+        <label className='inputText'>
+          <span>Промокод</span>
+          <CustomSelect
+            className={`cityDrop promo`}
+            placeholder='Онлайн'
+            value={payment}
+            options={["Онлайн", "Готівка"]}
+            handleChange={handleChangePayment} />
+        </label>
         <InputText
           name={"Сдача с"}
           placeholder={"500"}

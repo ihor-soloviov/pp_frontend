@@ -81,7 +81,7 @@ export const getOrderData = (formData, products, isPromotion) => {
       comment: isAddressComment ? "Вийду до машини" : ""
     },
     payment: {
-      type: paymentMethod === "Готівка" ? 0 : 1,
+      type: paymentMethod.label === "Готівка" ? 0 : 1,
       sum: isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products),
       currency: "UAH",
     },
