@@ -1,67 +1,25 @@
 //Import React
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
 
 //Import Components
 import ProductCard from "../components/ProductCard/ProductCard";
 
 //Import Utils
-import { getProducts } from "../utils/menu";
-import classNames from "classnames";
 import { url } from "../api";
 
 //Impost styles
 import "./menu.scss";
-import { observer } from "mobx-react-lite";
-import menuStore from "../store/menu-store";
+import { Categories } from "../components/Categories/Categories";
 
-const Menu = observer(() => {
-  const { categories } = menuStore;
-  const { id } = useParams();
-
-  const [currentCatId, setCurrentCatId] = useState(null);
-  // const [categories, setCategories] = useState([]);
+const Menu = React.memo(() => {
   const [products, setProducts] = useState(null);
 
-
-
-  useEffect(() => {
-    if (categories.length > 0) {
-      setCurrentCatId(categories[0].category_id);
-    }
-  }, [categories]);
-
-  useEffect(() => {
-    getProducts(currentCatId, setProducts);
-  }, [currentCatId]);
-
-  useEffect(() => {
-    if (id) {
-      setCurrentCatId(id);
-    }
-  }, [id]);
 
   return (
     <React.Fragment>
       <div className="categories" id="menu">
         <h1 className="title__h1">Куштуй тільки найсмачніше</h1>
-        {categories && (
-          <div className="categories__list">
-            {categories.map((cat) => {
-              return (
-                <button
-                  key={cat.category_id}
-                  className={classNames("categories__btn", {
-                    "categories__btn-active": currentCatId === cat.category_id,
-                  })}
-                  onClick={() => setCurrentCatId(cat.category_id)}
-                >
-                  {cat.category_name}
-                </button>
-              );
-            })}
-          </div>
-        )}
+          <Categories setProducts={setProducts} />
       </div>
       {products && (
         <div className="menu__products">
