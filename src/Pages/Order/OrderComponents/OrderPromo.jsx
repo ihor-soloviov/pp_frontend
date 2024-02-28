@@ -10,10 +10,7 @@ export const OrderPromo = observer(({ formData, handleFormValueChange, handleErr
 
   const { promocode40 } = userStore;
   const { cartItems } = shoppingCartStore
-  const [promo, setPromo] = useState({
-    label: "40%",
-    value: "40%"
-  })
+  const [promo, setPromo] = useState('')
 
   const handleActivatePromoClick = () => {
     if (promo.label !== '40%') {
@@ -45,7 +42,7 @@ export const OrderPromo = observer(({ formData, handleFormValueChange, handleErr
     handleFormValueChange("promoCode", e)
   }
 
-  const promoOptions = promocode40 ? ['40%', 'Без промокоду'] : ['Без промокоду']
+  const promoOptions = promocode40 ? ['40%', ''] : ['']
 
   return (
     <section className="order-page__section">
