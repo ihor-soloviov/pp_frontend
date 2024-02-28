@@ -13,7 +13,6 @@ import OrderForm from "./OrderComponents/OrderForm";
 
 const Order = observer(() => {
   const { cartItems } = shoppingCartStore;
-  console.log(cartItems)
 
   const [isPromotion, setIsPromotion] = useState(false);
   const [total, setTotal] = useState(0);

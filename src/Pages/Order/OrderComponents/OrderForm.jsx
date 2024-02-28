@@ -55,7 +55,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     selectedTime: getCurrentDate(),
     promoCode: "",
     bonus: "",
-    paymentMethod: 1,
+    paymentMethod: 'Онлайн',
     change: "",
     withoutDevices: false,
     personCount: 1,
@@ -96,6 +96,11 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const navigate = useNavigate();
 
   useCheckTransactionStatus(location.search, setTransactionStatus);
+
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
+  
 
   //функції які потребують авторизованності
   useEffect(() => {

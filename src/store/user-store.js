@@ -33,7 +33,7 @@ class UserStore {
     );
 
     reaction(
-      () => this.adresses,
+      () => this.adresses.slice(),
       adresses => {
         if (this.isAuthenticated) {
           localStorage.setItem("user_adresses", JSON.stringify(adresses));
