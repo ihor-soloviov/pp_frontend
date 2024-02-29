@@ -39,6 +39,7 @@ export const getCurrentDate = () => {
 
   // Додаємо 10 хвилин до поточного часу
   currentDate.setMinutes(currentDate.getMinutes() + 10);
+  
 
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(2, "0");
