@@ -174,7 +174,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     console.log(orderData);
     setOrderData(orderData);
 
-    if (formData.paymentMethod === "Готівка") {
+    if (formData.paymentMethod.label === "Готівка") {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
       console.log("cash");
       return; // Якщо потрібно завершити виконання функції після цього умови
