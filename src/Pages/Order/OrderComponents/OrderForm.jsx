@@ -11,12 +11,14 @@ import userStore from "../../../store/user-store";
 
 //Import Functios
 import {
-  calculateTotalPrice,
   createOrder,
   createTransaction,
   checkCurrentUserPromo,
   getCurrentDate,
   setTemporaryError,
+  validateOrderData,
+  calculateFinalAmount,
+  createOrderData,
 } from "../OrderFunctions/OrderTools";
 
 import { purchase } from "../../../gm4";
@@ -25,7 +27,6 @@ import Popup from "../../../components/Popup/Popup";
 import Thanks from "../../../components/Thanks/Thanks";
 import PopupActions from "../../../components/PopupActions/PopupActions";
 
-import { getOrderData } from "../OrderFunctions/orderData";
 
 import "../Order.scss";
 import { OrderContacts } from "./OrderContacts";
@@ -101,7 +102,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     console.log(formData)
   }, [formData])
 
-
   //функції які потребують авторизованності
   useEffect(() => {
     if (!isAuthenticated) {
@@ -149,46 +149,21 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, [posterOrder]);
 
   const onSubmit = useCallback(() => {
-    console.log('clicked')
-    if (cartItems.length === 0) {
-      return handleTemporaryError("Будь ласка, оберіть товари для замовлення");
+    const errorMessage = validateOrderData(formData, cartItems);
+    if (errorMessage) {
+      handleTemporaryError(errorMessage);
+      return;
     }
 
-    if (!formData.number) {
-      return handleTemporaryError("Будь ласка, заповніть поле номеру телефону");
-    }
-
-    if (!formData.howToReciveOrder) {
-      return handleTemporaryError("Будь ласка, оберіть спосіб отримання замовлення");
-    }
-
-    if (!formData.deliveryTime) {
-      return handleTemporaryError("Будь ласка, оберіть час отримання замовлення");
-    }
-
-    if (calculateTotalPrice(cartItems) <= 200) {
-      return handleTemporaryError("Мінімальна сумма замовлення 200 ₴");
-    }
-
-    const orderData = getOrderData(formData, cartItems, isPromotion);
-    console.log(orderData);
+    const amount = calculateFinalAmount(cartItems, isPromotion);
+    const orderData = createOrderData(formData, cartItems, isPromotion);
     setOrderData(orderData);
 
     if (formData.paymentMethod.label === "Готівка") {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-      console.log("cash");
-      return; // Якщо потрібно завершити виконання функції після цього умови
+      return;
     }
-    const totalPrice = calculateTotalPrice(cartItems);
-    if (!totalPrice) {
-      return handleTemporaryError("Проблема із застосунком");
-    }
-    console.log("totalPrice", totalPrice)
-    let amount = isPromotion ? totalPrice * 0.6 : totalPrice;
-    //додаємо вартість таксі
-    if (amount < 500) {
-      amount += 60
-    }
+
     createTransaction(amount, setPaymentData);
   }, [formData, cartItems, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 

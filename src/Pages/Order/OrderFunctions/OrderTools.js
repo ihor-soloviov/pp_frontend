@@ -2,6 +2,7 @@ import axios from "axios";
 import { url } from "../../../api";
 
 import userStore from "../../../store/user-store";
+import { getOrderData } from "./orderData";
 
 const { userPromocodeNotUse, userPromocode } = userStore;
 
@@ -133,6 +134,30 @@ export const usagePromotion = async () => {
   }
 };
 
+export const validateOrderData = (formData, cartItems) => {
+  if (cartItems.length === 0) return "Будь ласка, оберіть товари для замовлення";
+  if (!formData.number) return "Будь ласка, заповніть поле номеру телефону";
+  if (!formData.howToReciveOrder) return "Будь ласка, оберіть спосіб отримання замовлення";
+  if (!formData.deliveryTime) return "Будь ласка, оберіть час отримання замовлення";
+  if (calculateTotalPrice(cartItems) <= 200) return "Мінімальна сумма замовлення 200 ₴";
+  return null;
+}
+
+export const calculateFinalAmount = (cartItems, isPromotion, howToReciveOrder) => {
+  let totalPrice = calculateTotalPrice(cartItems);
+  let amount = isPromotion ? totalPrice * 0.6 : totalPrice;
+  if (howToReciveOrder === "Самовивіз") {
+    return amount
+  }
+  //якщо не самовивіз - то треба додавати вартість таксі
+  if (amount < 500) amount += 60;
+  return amount;
+}
+
+export const createOrderData = (formData, cartItems, isPromotion) => {
+  return getOrderData(formData, cartItems, isPromotion);
+}
+
 export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion) => {
   try {
     const token = getToken()
@@ -208,3 +233,5 @@ export const checkTransactionStatus = async (setTransactionStatus) => {
     setTemporaryError("Помилка при перевірці статусу транзакції");
   }
 };
+
+

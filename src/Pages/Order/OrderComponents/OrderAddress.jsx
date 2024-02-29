@@ -4,9 +4,11 @@ import RadioButton from '../../../components/RadioButton/RadioButton'
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 import { observer } from "mobx-react-lite"
 import userStore from '../../../store/user-store';
+import shoppingCartStore from '../../../store/shoping-cart-store';
 
 export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
   const { floor, buildingCode, entrance, apartment, houseNumber, street, howToReciveOrder } = formData;
+  const { setDeliveryPrice } = shoppingCartStore
   // const [selectedAddress, setSelectedAddress] = useState({ label: '', value: '' })
   // const { adresses } = userStore;
   // const addressOptions = adresses.map(el => ({ label: el.adressName, value: el.adressName }))
@@ -52,8 +54,14 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
             },
           ]}
           selectedOption={howToReciveOrder}
-          onOptionChange={(event) =>
+          onOptionChange={(event) => {
+            if (event.target.value === "Самовивіз"){
+              setDeliveryPrice(0)
+            } else {
+              setDeliveryPrice(60)
+            }
             handleFormValueChange("howToReciveOrder", event.target.value)
+          }
           }
         />
       </section>

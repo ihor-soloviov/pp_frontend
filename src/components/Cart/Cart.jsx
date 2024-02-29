@@ -17,15 +17,10 @@ import "./card.scss";
 const Cart = observer(() => {
   const navigate = useNavigate();
 
-  const { cartItems, cartTotalPrice, itemCount } = shoppingCartStore
+  const { cartItems, totalPrice, deliveryPrice, itemCount } = shoppingCartStore
 
   const [isOpen, setIsOpen] = useState(false);
-  const [delivery, setDelivery] = useState(60)
   const [error, setError] = useState(false);
-
-  useEffect(() => {
-    cartTotalPrice > 500 ? setDelivery(0) : setDelivery(60)
-  }, [cartTotalPrice])
 
 
   useEffect(() => {
@@ -180,24 +175,24 @@ const Cart = observer(() => {
               <div className="shopping-cart__total">
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text">Сума замовлення:</p>
-                  <p className="shopping-cart__text">{cartTotalPrice} ₴</p>
+                  <p className="shopping-cart__text">{totalPrice} ₴</p>
                 </div>
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text">Доставка:</p>
                   <p className="shopping-cart__text">
-                    {delivery} ₴
+                    {deliveryPrice} ₴
                   </p>
                 </div>
                 <div className="shopping-cart__total-row">
                   <p className="shopping-cart__text-final">Всього до сплати:</p>
-                  <p className="shopping-cart__text-final">{cartTotalPrice + delivery} ₴</p>
+                  <p className="shopping-cart__text-final">{totalPrice + deliveryPrice} ₴</p>
                 </div>
               </div>
               <BtnMain
                 name={"Замовити"}
                 fullWide
                 onClick={() => {
-                  if (cartTotalPrice < 200) {
+                  if (totalPrice < 200) {
                     setError(true);
                     setTimeout(() => setError(false), 3000);
                   } else {

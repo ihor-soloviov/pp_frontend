@@ -6,16 +6,18 @@ class ShoppingCartStore {
   cartItems = [];
   promocode = false;
   totalPrice = 0
+  deliveryPrice = 60;
 
   constructor() {
     makeAutoObservable(this);
     this.loadCartFromLocalStorage();
     // Автоматично зберігає стан кошика в localStorage при будь-яких змінах
     reaction(
-      () => [this.cartItems, this.totalPrice],
+      () => [this.cartItems, this.totalPrice, this.deliveryPrice],
       () => {
         localStorage.setItem('shoppingCart', JSON.stringify(this.cartItems));
         localStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
+        localStorage.setItem('deliveryPrice', JSON.stringify(this.deliveryPrice))
       }
     );
   }
@@ -23,8 +25,10 @@ class ShoppingCartStore {
   loadCartFromLocalStorage() {
     const cartItems = JSON.parse(localStorage.getItem('shoppingCart') || '[]');
     const totalPrice = JSON.parse(localStorage.getItem('totalPrice') || '0');
+    const deliveryPrice = JSON.parse(localStorage.getItem('deliveryPrice') || '60');
     this.cartItems = cartItems;
     this.totalPrice = totalPrice;
+    this.deliveryPrice = deliveryPrice;
   }
 
   addProduct = (product) => {
@@ -56,23 +60,27 @@ class ShoppingCartStore {
       const cartItemId = Date.now() + Math.random().toString(16).substring(2);
       this.cartItems.push({ ...product, totalPrice: totalPriceForProduct, cartItemId });
     }
-    this.totalPrice += totalPriceForProduct
+    const newPrice = this.totalPrice += totalPriceForProduct;
+    this.totalPrice = newPrice;
+    newPrice >= 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
   };
 
   removeFromCart = (cartItemId) => {
     const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
     if (itemIndex > -1) {
-      this.totalPrice -= this.cartItems[itemIndex].totalPrice;
+      const newPrice = this.totalPrice -= this.cartItems[itemIndex].totalPrice;
+      this.totalPrice = newPrice
       this.cartItems.splice(itemIndex, 1);
+      newPrice > 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
     }
+  }
+
+  setDeliveryPrice = (price) => {
+    this.deliveryPrice = price
   }
 
   get itemCount() {
     return this.cartItems.length;
-  }
-
-  get cartTotalPrice() {
-    return this.totalPrice
   }
 
   getItemById = (cartItemId) => {
@@ -88,7 +96,9 @@ class ShoppingCartStore {
 
       this.cartItems[itemIndex] = { ...item, count: newCount, totalPrice };
       // Перерахунок загальної вартості кошика
-      this.totalPrice = this.cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
+      const newPrice = this.totalPrice = this.cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
+      this.totalPrice = newPrice;
+      newPrice >= 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
     }
   }
 
@@ -120,8 +130,10 @@ class ShoppingCartStore {
   clearCart = () => {
     this.cartItems = [];
     this.totalPrice = 0
+    this.deliveryPrice = 60
     localStorage.removeItem("shoppingCart");
     localStorage.removeItem("totalPrice");
+    localStorage.removeItem("deliveryPrice");
     localStorage.removeItem("posterOrder");
     localStorage.removeItem("poster_order");
     localStorage.removeItem("user_payment_data");
