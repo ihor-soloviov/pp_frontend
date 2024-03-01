@@ -82,7 +82,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //stores
   const { thanksModal, thanksModalHandler } = modalsStore;
   const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
-  const { cartItems, clearCart } = shoppingCartStore;
+  const { cartItems, clearCart, totalPrice, deliveryPrice } = shoppingCartStore;
   const { name, phone, isAuthenticated } = userStore;
 
   //Hooks
@@ -124,11 +124,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         shoppingCart,
       );
 
-      thanksModalHandler(false);
-      setTimeout(() => {
-        navigate('/');
-      }, 5000);
-
       clearCart();
     }
   }, [isOrderCreate]);
@@ -141,7 +136,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, [posterOrder]);
 
   const onSubmit = useCallback(() => {
-    const errorMessage = validateOrderData(formData, cartItems);
+    const errorMessage = validateOrderData(formData, cartItems, totalPrice, deliveryPrice);
     if (errorMessage) {
       handleTemporaryError(errorMessage);
       return;
