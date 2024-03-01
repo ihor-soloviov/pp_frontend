@@ -151,7 +151,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     const orderData = createOrderData(formData, cartItems, isPromotion);
     setOrderData(orderData);
 
-    if (formData.paymentMethod.label === 'Готівка') {
+    if (formData.paymentMethod === 'Готівка') {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
       return;
     }
