@@ -16,7 +16,7 @@ const AboutUs = () => {
               Коли людям хочеться швидко і смачно, вони обирають Polar
             </p>
             <div className='about__hero-preview'>
-              <LazyLoadImage effect='opacity' src={hero} alt='girll' />
+              <LazyLoadImage effect="blur" src={hero} alt='girll' />
             </div>
           </div>
         </div>

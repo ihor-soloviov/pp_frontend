@@ -147,7 +147,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
       return;
     }
 
-    const amount = calculateFinalAmount(cartItems, isPromotion);
+    const amount = calculateFinalAmount(cartItems, isPromotion, formData.howToReciveOrder);
     const orderData = createOrderData(formData, cartItems, isPromotion);
     setOrderData(orderData);
 

@@ -24,6 +24,7 @@ import svg1 from './sprite.svg';
 
 import './AboutUs.scss';
 import { useLocation } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const AboutUsPictures = () => {
   const location = useLocation();
@@ -66,7 +67,7 @@ const AboutUsPictures = () => {
                 </p>
               </li>
             </ul>
-            <img src={img01} alt='women' className='about-top-img first' />
+            <LazyLoadImage effect='blur' src={img01} alt='women' className='about-top-img first' />
           </div>
           <svg className='about-icon first'>
             <use href={`${svg1}#icon-arrow-1`}></use>
@@ -144,7 +145,7 @@ const AboutUsPictures = () => {
               </li>
             </ul>
 
-            <img src={img03} alt='women' className='about-bottom-img' />
+            <LazyLoadImage effect='blur' src={img03} alt='women' className='about-bottom-img' />
           </div>
         </div>
       </section>
@@ -212,53 +213,53 @@ const AboutUsPictures = () => {
           <div className='gallery-container'>
             <picture>
               <source srcSet={img08desc} type='image/jpeg' media='(min-width:768px)' />
-              <img src={img08} alt='' className='gallery-img' />
+              <LazyLoadImage effect='blur' src={img08} alt='' className='gallery-img' />
             </picture>
 
             <div className='gallery-img-wrap'>
               <picture>
                 <source srcSet={img07desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img07} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img07} alt='' className='gallery-img' />
               </picture>
 
               <picture>
                 <source srcSet={img13desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img13} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img13} alt='' className='gallery-img' />
               </picture>
             </div>
 
             <div className='gallery-img-wrap'>
               <picture>
                 <source srcSet={img09desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img09} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img09} alt='' className='gallery-img' />
               </picture>
 
               <picture>
                 <source srcSet={img15desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img15} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img15} alt='' className='gallery-img' />
               </picture>
             </div>
 
             <div className='gallery-img-wrap'>
               <picture>
                 <source srcSet={img12desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img12} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img12} alt='' className='gallery-img' />
               </picture>
 
               <picture>
                 <source srcSet={img14desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img14} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img14} alt='' className='gallery-img' />
               </picture>
             </div>
 
             <div className='gallery-img-wrap'>
               <picture>
                 <source srcSet={img11desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img11} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img11} alt='' className='gallery-img' />
               </picture>
               <picture>
                 <source srcSet={img10desc} type='image/jpeg' media='(min-width:768px)' />
-                <img src={img10} alt='' className='gallery-img' />
+                <LazyLoadImage effect='blur' src={img10} alt='' className='gallery-img' />
               </picture>
             </div>
           </div>
