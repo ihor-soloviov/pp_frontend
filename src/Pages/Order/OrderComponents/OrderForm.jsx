@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useCheckTransactionStatus } from "../../../utils/useCheckLiqpay";
-import { observer } from "mobx-react-lite";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useCheckTransactionStatus } from '../../../utils/useCheckLiqpay';
+import { observer } from 'mobx-react-lite';
 
-import orderStore from "../../../store/order-store";
-import modalsStore from "../../../store/modal-store";
-import shoppingCartStore from "../../../store/shoping-cart-store";
-import userStore from "../../../store/user-store";
+import orderStore from '../../../store/order-store';
+import modalsStore from '../../../store/modal-store';
+import shoppingCartStore from '../../../store/shoping-cart-store';
+import userStore from '../../../store/user-store';
 
 //Import Functios
 import {
@@ -19,48 +19,46 @@ import {
   validateOrderData,
   calculateFinalAmount,
   createOrderData,
-} from "../OrderFunctions/OrderTools";
+} from '../OrderFunctions/OrderTools';
 
-import { purchase } from "../../../gm4";
+import { purchase } from '../../../gm4';
 
-import Popup from "../../../components/Popup/Popup";
-import Thanks from "../../../components/Thanks/Thanks";
-import PopupActions from "../../../components/PopupActions/PopupActions";
+import Popup from '../../../components/Popup/Popup';
+import Thanks from '../../../components/Thanks/Thanks';
+import PopupActions from '../../../components/PopupActions/PopupActions';
 
-
-import "../Order.scss";
-import { OrderContacts } from "./OrderContacts";
-import { OrderAddress } from "./OrderAddress";
-import { OrderTime } from "./OrderTime";
-import { OrderPromo } from "./OrderPromo";
-import { OrderPaymentType } from "./OrderPaymentType";
-import { OrderComment } from "./OrderComment";
-import BtnMain from "../../../components/Buttons/BtnMain";
-
+import '../Order.scss';
+import { OrderContacts } from './OrderContacts';
+import { OrderAddress } from './OrderAddress';
+import { OrderTime } from './OrderTime';
+import { OrderPromo } from './OrderPromo';
+import { OrderPaymentType } from './OrderPaymentType';
+import { OrderComment } from './OrderComment';
+import BtnMain from '../../../components/Buttons/BtnMain';
 
 const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //States
   const [formData, setFormData] = useState({
     spot_id: 1,
-    name: "",
-    number: "",
-    selectedAddress: "",
-    street: "",
-    houseNumber: "",
-    deliveryTime: "",
-    howToReciveOrder: "",
-    entrance: "",
-    apartment: "",
-    buildingCode: "",
-    floor: "",
+    name: '',
+    number: '',
+    selectedAddress: '',
+    street: '',
+    houseNumber: '',
+    deliveryTime: '',
+    howToReciveOrder: '',
+    entrance: '',
+    apartment: '',
+    buildingCode: '',
+    floor: '',
     selectedTime: getCurrentDate(),
-    promoCode: "",
-    bonus: "",
+    promoCode: '',
+    bonus: '',
     paymentMethod: 'Онлайн',
-    change: "",
+    change: '',
     withoutDevices: false,
     personCount: 1,
-    comment: "",
+    comment: '',
     doNotCall: false,
   });
 
@@ -68,12 +66,11 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const [transactionStatus, setTransactionStatus] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
   const [isOrderCreate, setIsOrderCreate] = useState(false);
-  const [error, setError] = useState({ status: false, currentError: "" });
-
+  const [error, setError] = useState({ status: false, currentError: '' });
 
   //handlers
-  const handleError = newErrorState => setError(newErrorState);
-  const handleTemporaryError = message => setTemporaryError(message, setError);
+  const handleError = (newErrorState) => setError(newErrorState);
+  const handleTemporaryError = (message) => setTemporaryError(message, setError);
 
   const handleFormValueChange = useCallback((field, value) => {
     setFormData((prevFormData) => ({
@@ -86,11 +83,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   const { thanksModal, thanksModalHandler } = modalsStore;
   const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
   const { cartItems, clearCart } = shoppingCartStore;
-  const {
-    name,
-    phone,
-    isAuthenticated,
-  } = userStore;
+  const { name, phone, isAuthenticated } = userStore;
 
   //Hooks
   const location = useLocation();
@@ -99,8 +92,8 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   useCheckTransactionStatus(location.search, setTransactionStatus);
 
   useEffect(() => {
-    console.log(formData)
-  }, [formData])
+    console.log(formData);
+  }, [formData]);
 
   //функції які потребують авторизованності
   useEffect(() => {
@@ -108,10 +101,9 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
       return;
     }
 
-    handleFormValueChange("name", name)
-    handleFormValueChange("number", phone)
+    handleFormValueChange('name', name);
+    handleFormValueChange('number', phone);
     checkCurrentUserPromo();
-
   }, [isAuthenticated]);
 
   //створення замовлення в постер
@@ -123,18 +115,18 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   useEffect(() => {
     if (isOrderCreate) {
-      const data = JSON.parse(localStorage.getItem("user_order_data"));
-      const shoppingCart = JSON.parse(localStorage.getItem("shoppingCart"));
-      setPosterOrder(JSON.parse(localStorage.getItem("poster_order")));
+      const data = JSON.parse(localStorage.getItem('user_order_data'));
+      const shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'));
+      setPosterOrder(JSON.parse(localStorage.getItem('poster_order')));
       purchase(
-        JSON.parse(localStorage.getItem("poster_order")).incoming_order_id,
+        JSON.parse(localStorage.getItem('poster_order')).incoming_order_id,
         data.payment.sum,
-        shoppingCart
+        shoppingCart,
       );
 
       thanksModalHandler(false);
       setTimeout(() => {
-        navigate('/')
+        navigate('/');
       }, 5000);
 
       clearCart();
@@ -143,7 +135,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   useEffect(() => {
     if (posterOrder) {
-      console.log("posterOrder", posterOrder);
+      console.log('posterOrder', posterOrder);
       thanksModalHandler(true);
     }
   }, [posterOrder]);
@@ -159,7 +151,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     const orderData = createOrderData(formData, cartItems, isPromotion);
     setOrderData(orderData);
 
-    if (formData.paymentMethod.label === "Готівка") {
+    if (formData.paymentMethod.label === 'Готівка') {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
       return;
     }
@@ -188,7 +180,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
           onClick={() =>
             setError({
               status: false,
-              currentError: "",
+              currentError: '',
             })
           }
           error
@@ -197,16 +189,19 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
       {promotionPopup && (
         <PopupActions
-          action={"Ваш промокод застосован"}
+          action={'Ваш промокод застосован'}
           onClick={() => {
             setPromotionPopup(false);
           }}
         />
       )}
 
-      <section className="order-page__form">
-
-        <OrderContacts name={formData.name} number={formData.number} handleFormValueChange={handleFormValueChange} />
+      <section className='order-page__form'>
+        <OrderContacts
+          name={formData.name}
+          number={formData.number}
+          handleFormValueChange={handleFormValueChange}
+        />
 
         <OrderAddress formData={formData} handleFormValueChange={handleFormValueChange} />
 
@@ -225,11 +220,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
         <OrderComment formData={formData} handleFormValueChange={handleFormValueChange} />
 
-        <BtnMain
-          name={"Оформити замовлення"}
-          fullWide
-          onClick={onSubmit}
-        />
+        <BtnMain name={'Оформити замовлення'} fullWide onClick={onSubmit} />
       </section>
     </React.Fragment>
   );
