@@ -8,9 +8,17 @@ import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 
 export const OrderPromo = observer(({ formData, handleFormValueChange, handleError, isPromotion, setPromotionPopup, setIsPromotion }) => {
 
-  const { promocode40 } = userStore;
+  const { promocode40, isAuthenticated } = userStore;
   const { cartItems } = shoppingCartStore
   const [promo, setPromo] = useState('')
+  const [banner, setBanner] = useState('У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%')
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setBanner('Зареєструйтесь для отримання знижки')
+    }
+  }, [isAuthenticated])
+  
 
   const handleActivatePromoClick = () => {
     if (promo.label !== '40%') {
@@ -47,22 +55,24 @@ export const OrderPromo = observer(({ formData, handleFormValueChange, handleErr
   return (
     <section className="order-page__section">
       <h3 className='order-page__header'>Додати промокод</h3>
-      <section className="order-page__section-inputs order-page__section-inputs-row">
-        <label className='inputText'>
-          <span>Промокод</span>
-          <CustomSelect className={`cityDrop promo`} placeholder='Промокод' value={promo} options={promoOptions} handleChange={handleChangePromo} />
-        </label>
+      {isAuthenticated && (
+        <section className="order-page__section-inputs order-page__section-inputs-row">
+          <label className='inputText'>
+            <span>Промокод</span>
+            <CustomSelect className={`cityDrop promo`} placeholder='Промокод' value={promo} options={promoOptions} handleChange={handleChangePromo} />
+          </label>
 
-        {promocode40 && (
-          <BtnMain
-            name={"Застосувати"}
-            onClick={handleActivatePromoClick}
-            disabled={isPromotion}
-          />
-        )}
-      </section>
+          {promocode40 && (
+            <BtnMain
+              name={"Застосувати"}
+              onClick={handleActivatePromoClick}
+              disabled={isPromotion}
+            />
+          )}
+        </section>
+      )}
       {promocode40 && <div className='order-page__have-promocode'>
-        <span>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
+        <span>{banner}</span>
         <div className="order-page__arrow">
           <svg
             width="17"

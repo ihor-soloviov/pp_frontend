@@ -126,8 +126,8 @@ export const usagePromotion = async () => {
   }
 };
 
-export const validateOrderData = (formData, cartItems, totalPrice) => {
-  const rules = getValidateRules(formData, cartItems, totalPrice);
+export const validateOrderData = (formData, cartItems, totalPrice, deliveryPrice) => {
+  const rules = getValidateRules(formData, cartItems, totalPrice, deliveryPrice);
 
   for (let rule of rules) {
     if (rule.check()) return rule.message;

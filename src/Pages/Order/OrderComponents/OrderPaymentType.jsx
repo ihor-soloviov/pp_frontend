@@ -24,7 +24,7 @@ export const OrderPaymentType = ({ formData, handleFormValueChange }) => {
       </div>
       <div className='order-page__section-inputs order-page__section-inputs-row'>
         <label className='inputText'>
-          <span>Промокод</span>
+          <span>Оплата</span>
           <CustomSelect
             className={`cityDrop promo`}
             placeholder='Онлайн'
@@ -34,8 +34,8 @@ export const OrderPaymentType = ({ formData, handleFormValueChange }) => {
           />
         </label>
         <InputText
-          name={'Сдача с'}
-          placeholder={'500'}
+          name={'Решта з'}
+          placeholder={'0'}
           value={change}
           onChange={(value) => handleFormValueChange('change', value)}
         />

@@ -38,8 +38,8 @@ const shoppingCartMapPromo = products => products.map((item) => {
   };
 });
 
-export const getValidateRules = (formData, cartItems, totalPrice) => {
-  const { number, howToReciveOrder, houseNumber, street, deliveryTime, apartment, entrance } = formData
+export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice) => {
+  const { number, howToReciveOrder, houseNumber, street, deliveryTime, apartment, entrance, paymentMethod, change } = formData
   return [
     { check: () => cartItems.length === 0, message: 'Будь ласка, оберіть товари для замовлення' },
     { check: () => number === '', message: 'Будь ласка, заповніть поле номеру телефону' },
@@ -51,6 +51,10 @@ export const getValidateRules = (formData, cartItems, totalPrice) => {
     {
       check: () => howToReciveOrder === 'До дверей' && (!apartment || !entrance),
       message: "Будь ласка, вкажіть номер квартири та парадну"
+    },
+    {
+      check: () => paymentMethod === 'Готівка' && (+change < (totalPrice + deliveryPrice)),
+      message: "Будь ласка, вкажіть валідну суму для підрахунку решти"
     },
     { check: () => !deliveryTime, message: 'Будь ласка, оберіть час отримання замовлення' },
     { check: () => totalPrice <= 200, message: 'Мінімальна сумма замовлення 200 ₴' },
