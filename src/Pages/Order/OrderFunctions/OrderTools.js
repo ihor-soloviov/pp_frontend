@@ -2,7 +2,7 @@ import axios from 'axios';
 import { url } from '../../../api';
 
 import userStore from '../../../store/user-store';
-import { getOrderData } from './orderData';
+import { getOrderData, getValidateRules } from './orderData';
 
 const { userPromocodeNotUse, userPromocode } = userStore;
 
@@ -126,18 +126,13 @@ export const usagePromotion = async () => {
   }
 };
 
-export const validateOrderData = (formData, cartItems) => {
-  if (cartItems.length === 0) return 'Будь ласка, оберіть товари для замовлення';
-  if (!formData.number) return 'Будь ласка, заповніть поле номеру телефону';
-  if (!formData.howToReciveOrder) return 'Будь ласка, оберіть спосіб отримання замовлення';
-  if (formData.howToReciveOrder !== 'Самовивіз') {
-    if (formData.houseNumber === '' || formData.street === '') {
-      return 'Будь ласка, вкажіть адресу';
-    }
-  }
-  if (!formData.deliveryTime) return 'Будь ласка, оберіть час отримання замовлення';
+export const validateOrderData = (formData, cartItems, totalPrice) => {
+  const rules = getValidateRules(formData, cartItems, totalPrice);
 
-  if (calculateTotalPrice(cartItems) <= 200) return 'Мінімальна сумма замовлення 200 ₴';
+  for (let rule of rules) {
+    if (rule.check()) return rule.message;
+  }
+
   return null;
 };
 
