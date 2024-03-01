@@ -1,29 +1,29 @@
-import axios from "axios";
-import { url } from "../../../api";
+import axios from 'axios';
+import { url } from '../../../api';
 
-import userStore from "../../../store/user-store";
-import { getOrderData } from "./orderData";
+import userStore from '../../../store/user-store';
+import { getOrderData } from './orderData';
 
 const { userPromocodeNotUse, userPromocode } = userStore;
 
-export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + item.totalPrice, 0)
+export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + item.totalPrice, 0);
 
 export const headers = {
-  "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*"
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
 };
 
 const getToken = () => {
-  const userDataFromLS = localStorage.getItem("userData");
-  console.log("Отримали userData з LS")
+  const userDataFromLS = localStorage.getItem('userData');
+  console.log('Отримали userData з LS');
 
   if (userDataFromLS) {
     const uData = JSON.parse(userDataFromLS);
-    console.log("getToken")
-    return uData.token
+    console.log('getToken');
+    return uData.token;
   }
 
-  return null
+  return null;
 };
 
 export const setTemporaryError = (error, setError) => {
@@ -31,7 +31,7 @@ export const setTemporaryError = (error, setError) => {
     status: true,
     currentError: error,
   });
-  setTimeout(() => setError({ status: false, currentError: "" }), 3000);
+  setTimeout(() => setError({ status: false, currentError: '' }), 3000);
 };
 
 export const getCurrentDate = () => {
@@ -39,14 +39,13 @@ export const getCurrentDate = () => {
 
   // Додаємо 10 хвилин до поточного часу
   currentDate.setMinutes(currentDate.getMinutes() + 10);
-  
 
   const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const day = String(currentDate.getDate()).padStart(2, "0");
-  const hours = String(currentDate.getHours()).padStart(2, "0");
-  const minutes = String(currentDate.getMinutes()).padStart(2, "0");
-  const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const seconds = String(currentDate.getSeconds()).padStart(2, '0');
 
   const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   return formattedDate;
@@ -64,15 +63,7 @@ export const dateFormatter = (timeRange) => {
   var startTime = timeParts[0];
 
   // Объединение текущей даты с начальным временем
-  var startDateTime =
-    currentYear +
-    '-' +
-    currentMonth +
-    '-' +
-    currentDay +
-    ' ' +
-    startTime +
-    ':00';
+  var startDateTime = currentYear + '-' + currentMonth + '-' + currentDay + ' ' + startTime + ':00';
 
   return startDateTime;
 };
@@ -91,13 +82,13 @@ export function filterTimeArray(array) {
   });
 
   return filteredArray;
-};
+}
 
 export const checkCurrentUserPromo = async () => {
   try {
     const token = getToken();
     if (!token) {
-      console.error("Token is not available.");
+      console.error('Token is not available.');
       return;
     }
 
@@ -105,7 +96,7 @@ export const checkCurrentUserPromo = async () => {
     const response = await axios.post(`${url}/api/auth`, JSONdata, { headers });
 
     const { promocode40 } = response.data;
-    console.log("checkCurrentUserPromo", promocode40);
+    console.log('checkCurrentUserPromo', promocode40);
 
     // Використання прямої умови замість !promocode40 для підвищення читабельності
     if (promocode40) {
@@ -114,68 +105,83 @@ export const checkCurrentUserPromo = async () => {
       userPromocode();
     }
   } catch (err) {
-    console.error("Error checking current user promo:", err);
+    console.error('Error checking current user promo:', err);
   }
 };
 
 export const usagePromotion = async () => {
   try {
-    const token = getToken()
-    console.log("usagePromotion", token)
+    const token = getToken();
+    console.log('usagePromotion', token);
     if (!token || token === null) {
-      console.error('Не знайдено токен в локалСторі')
-      return
+      console.error('Не знайдено токен в локалСторі');
+      return;
     }
-    const res = await axios.post(url + "/api/promocode", { token: token }, { headers: headers });
+    const res = await axios.post(url + '/api/promocode', { token: token }, { headers: headers });
     const data = res.data;
 
-    console.log("usagePromotion:", data);
+    console.log('usagePromotion:', data);
   } catch (err) {
     console.error(err);
   }
 };
 
 export const validateOrderData = (formData, cartItems) => {
-  if (cartItems.length === 0) return "Будь ласка, оберіть товари для замовлення";
-  if (!formData.number) return "Будь ласка, заповніть поле номеру телефону";
-  if (!formData.howToReciveOrder) return "Будь ласка, оберіть спосіб отримання замовлення";
-  if (!formData.deliveryTime) return "Будь ласка, оберіть час отримання замовлення";
-  if (calculateTotalPrice(cartItems) <= 200) return "Мінімальна сумма замовлення 200 ₴";
+  if (cartItems.length === 0) return 'Будь ласка, оберіть товари для замовлення';
+  if (!formData.number) return 'Будь ласка, заповніть поле номеру телефону';
+  if (!formData.howToReciveOrder) return 'Будь ласка, оберіть спосіб отримання замовлення';
+  if (formData.howToReciveOrder !== 'Самовивіз') {
+    if (formData.houseNumber === '' || formData.street === '') {
+      return 'Будь ласка, вкажіть адресу';
+    }
+  }
+  if (!formData.deliveryTime) return 'Будь ласка, оберіть час отримання замовлення';
+
+  if (calculateTotalPrice(cartItems) <= 200) return 'Мінімальна сумма замовлення 200 ₴';
   return null;
-}
+};
 
 export const calculateFinalAmount = (cartItems, isPromotion, howToReciveOrder) => {
   let totalPrice = calculateTotalPrice(cartItems);
   let amount = isPromotion ? totalPrice * 0.6 : totalPrice;
-  if (howToReciveOrder === "Самовивіз") {
-    return amount
+  if (howToReciveOrder === 'Самовивіз') {
+    return amount;
   }
   //якщо не самовивіз - то треба додавати вартість таксі
   if (amount < 500) amount += 60;
   return amount;
-}
+};
 
 export const createOrderData = (formData, cartItems, isPromotion) => {
   return getOrderData(formData, cartItems, isPromotion);
-}
+};
 
 export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromotion) => {
   try {
-    const token = getToken()
-    console.log("createOrder", token)
-    const user_payment_data = JSON.parse(localStorage.getItem("user_payment_data"));
-    const data = JSON.parse(localStorage.getItem("user_order_data"));
-    const shoppingCart = JSON.parse(localStorage.getItem("shoppingCart"))
+    const token = getToken();
+    console.log('createOrder', token);
+    const user_payment_data = JSON.parse(localStorage.getItem('user_payment_data'));
+    const data = JSON.parse(localStorage.getItem('user_order_data'));
+    const shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'));
     const transactionOrderId = user_payment_data ? user_payment_data.order_id : null;
 
-    const res = await axios.post(url + "/api/createOrder", { transactionOrderId: transactionOrderId, userToken: token, data: data, shoppingCart: shoppingCart }, { headers: headers });
+    const res = await axios.post(
+      url + '/api/createOrder',
+      {
+        transactionOrderId: transactionOrderId,
+        userToken: token,
+        data: data,
+        shoppingCart: shoppingCart,
+      },
+      { headers: headers },
+    );
     const responseData = res.data;
     if (!responseData.error) {
-      console.log("createOrder:", responseData);
+      console.log('createOrder:', responseData);
       setPosterResponse(responseData.response);
       setIsOrderCreate(true);
 
-      if (isPromotion || responseData.promotion !== "") {
+      if (isPromotion || responseData.promotion !== '') {
         usagePromotion(token);
       }
     }
@@ -187,13 +193,13 @@ export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromoti
 export const createTransaction = async (amount, setPaymentData) => {
   try {
     const data = { amount: amount };
-    const res = await axios.post(url + "/api/pay", data, { headers: headers });
+    const res = await axios.post(url + '/api/pay', data, { headers: headers });
     const responseData = res.data;
     const payment_url = `https://liqpay.ua/api/3/checkout?data=${responseData.data}&signature=${responseData.signature}`;
 
     setPaymentData(responseData);
 
-    console.log("createTransaction:", responseData, payment_url);
+    console.log('createTransaction:', responseData, payment_url);
 
     window.location.replace(payment_url);
   } catch (err) {
@@ -203,11 +209,11 @@ export const createTransaction = async (amount, setPaymentData) => {
 
 export const checkTransactionStatus = async (setTransactionStatus) => {
   try {
-    const user_payment_data = JSON.parse(localStorage.getItem("user_payment_data"));
-    console.log("checkTransactionStatus", user_payment_data);
+    const user_payment_data = JSON.parse(localStorage.getItem('user_payment_data'));
+    console.log('checkTransactionStatus', user_payment_data);
 
     if (!user_payment_data) {
-      setTemporaryError("Оплата не вдала");
+      setTemporaryError('Оплата не вдала');
       return;
     }
 
@@ -215,24 +221,22 @@ export const checkTransactionStatus = async (setTransactionStatus) => {
     const response = await axios.post(`${url}/api/getStatus`, data, { headers });
 
     const responseData = response.data;
-    console.log("checkTransactionStatus: response data", responseData);
+    console.log('checkTransactionStatus: response data', responseData);
 
     switch (responseData) {
-      case "unpaid":
+      case 'unpaid':
         userPromocodeNotUse();
-        setTemporaryError("Оплата не вдала");
+        setTemporaryError('Оплата не вдала');
         break;
-      case "success":
+      case 'success':
         setTransactionStatus(true);
         userPromocode();
         break;
       default:
-        setTemporaryError("Невідомий статус оплати");
+        setTemporaryError('Невідомий статус оплати');
     }
   } catch (error) {
     console.error(error);
-    setTemporaryError("Помилка при перевірці статусу транзакції");
+    setTemporaryError('Помилка при перевірці статусу транзакції');
   }
 };
-
-
