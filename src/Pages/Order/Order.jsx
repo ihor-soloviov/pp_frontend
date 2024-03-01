@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Container from "../../components/Container/Container";
 import "./Order.scss";
 
@@ -9,51 +9,19 @@ import shoppingCartStore from "../../store/shoping-cart-store";
 //Import components
 
 import OrderForm from "./OrderComponents/OrderForm";
+import { calculateTotalPrice } from "./OrderFunctions/OrderTools";
 
 
 const Order = observer(() => {
-  const { cartItems } = shoppingCartStore;
-  console.log(cartItems)
-
+  const { cartItems, totalPrice, deliveryPrice } = shoppingCartStore;
   const [isPromotion, setIsPromotion] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [delivery, setDelivery] = useState(60)
-
-  const calculateTotalPrice = (items) => {
-    let totalPrice = 0;
-
-    items.forEach((item) => {
-      totalPrice += item.totalPrice;
-    });
-
-    return totalPrice;
-  };
-
-  useEffect(() => {
-    let totalPrice = calculateTotalPrice(cartItems);
-
-    if (isPromotion) {
-      totalPrice = totalPrice * 0.6
-    }
-
-    if (totalPrice > 500) {
-      setDelivery(0)
-    } else {
-      setDelivery(60)
-    }
-
-    setTotal(totalPrice)
-  }, [cartItems, isPromotion])
-
-
-
 
   return (
     <React.Fragment>
       <Container>
         <div className="order-page">
           <div className="order-page__content">
-            <OrderForm setIsPromotion={setIsPromotion} isPromotion={isPromotion} />
+            <OrderForm setIsPromotion={setIsPromotion} isPromotion={isPromotion}  />
             <div className="checkout">
               <div className="checkout__content">
                 <h3 className="title__h3 text__color--secondary">
@@ -93,13 +61,13 @@ const Order = observer(() => {
                   <div className="checkout__row">
                     <p className="checkout__text">Сума замовлення:</p>
                     <p className="checkout__text">
-                      {total} ₴
+                      {totalPrice} ₴
                     </p>
                   </div>
                   <div className="checkout__row checkout__row-delivery">
                     <p className="checkout__text">Доставка:</p>
                     <p className="checkout__text">
-                      {delivery} ₴
+                      {deliveryPrice} ₴
                     </p>
                   </div>
                   {isPromotion && (
@@ -118,7 +86,7 @@ const Order = observer(() => {
                       Всього до сплати:
                     </p>
                     <p className="checkout__text-bold">
-                      {total + delivery} ₴
+                      {totalPrice + deliveryPrice} ₴
                     </p>
                   </div>
                 </div>

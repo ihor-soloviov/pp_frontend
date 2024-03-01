@@ -11,7 +11,7 @@
   &__info {
     display: block;
     padding-left: 30px;
-    color: #92939A;
+    color: #92939a;
   }
   &__flex-content {
     display: flex;
@@ -66,5 +66,12 @@
         background-color: transparent;
       }
     }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .radio-button {
+    display: flex;
+    flex-direction: column;
   }
 }

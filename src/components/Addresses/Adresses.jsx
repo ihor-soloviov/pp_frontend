@@ -33,9 +33,12 @@ const Addresses = observer(({ handleSidebar }) => {
             "Content-Type": "application/json",
           },
         });
-        if (response?.data) {
+
+        if (!response?.data) {
+          console.log('шоо')
           return
         }
+
 
         addToAdresses(response.data.addresses);
       } catch (error) {
@@ -46,9 +49,8 @@ const Addresses = observer(({ handleSidebar }) => {
     };
 
     fetchAdresses();
-  }, [token, isAdressesUpdating, addToAdresses]);
 
-  // const addressCondition = adresses
+  }, [token, isAdressesUpdating, addToAdresses]);
 
   const handleModal = () => {
     setModalOpen((prev) => !prev);
@@ -64,7 +66,7 @@ const Addresses = observer(({ handleSidebar }) => {
           isModalOpen={isModalOpen}
           setIsAdressesUpdating={setIsAdressesUpdating}
         />
-        {adresses &&
+        {adresses.length > 0 &&
           adresses.map((adress) => (
             <React.Fragment key={adress.addressName}>
               <CreatedAddress

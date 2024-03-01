@@ -10,7 +10,7 @@ const CreatedAddress = observer(
     const { token, removeAdresses } = userStore;
 
     const flat = getFlat(adress);
-    const street = getStreet(adress.streetName = "", adress.homeNumber = "", flat);
+    const street = getStreet(adress.streetName, adress.homeNumber, flat);
 
     return (
       <div className="addresses_created">

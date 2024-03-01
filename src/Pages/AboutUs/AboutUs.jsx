@@ -1,29 +1,28 @@
 import React from 'react';
 import './AboutUs.scss';
 
-import Container from '../../components/Container/Container';
-
-
 import hero from '../../../src/assets/images/hero_preview.png';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import AboutUpPictures from './AboutUpPictures';
+import AboutUsPictures from './AboutUsPictures';
 
 const AboutUs = () => {
   return (
-    <Container>
+    <React.Fragment>
       <section className='about__hero'>
-        <div className='about-container container'>
+        <div className='about-hero-container container'>
           <div className='about__hero-content'>
-            <h1 className='title__h1'>Наша історія</h1>
-            <p className='text'>Коли людям хочеться швидко і смачно, вони обирають Polar</p>
+            <h1 className='about__hero-title'>Наша історія</h1>
+            <p className='about__hero-text'>
+              Коли людям хочеться швидко і смачно, вони обирають Polar
+            </p>
             <div className='about__hero-preview'>
-              <LazyLoadImage effect='opacity' src={hero} alt='girll' />
+              <LazyLoadImage effect="blur" src={hero} alt='girll' />
             </div>
           </div>
         </div>
       </section>
-      <AboutUpPictures />
-    </Container>
+      <AboutUsPictures />
+    </React.Fragment>
   );
 };
 

@@ -129,8 +129,8 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
             >
               -
             </div>
-            <div className="counter__value plus">{count}</div>
-            <div className="counter__btn" onClick={() => setCount(count + 1)}>
+            <div className="counter__value ">{count}</div>
+            <div className="counter__btn plus" onClick={() => setCount(count + 1)}>
               +
             </div>
           </div>

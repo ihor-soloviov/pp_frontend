@@ -11,9 +11,7 @@
     .counter {
       .counter__btn {
         user-select: none;
-        &:last-child {
-          color: rgba(18, 19, 15, 1);
-        }
+
       }
     }
   }
@@ -76,7 +74,6 @@
     background: rgba(0, 0, 0, 0.6);
     font-size: 16px;
     line-height: 150%;
-    /* identical to box height, or 24px */
 
     padding: 8px 0;
     color: #ffffff;
@@ -223,7 +220,7 @@
     }
     &__addToCard {
       bottom: 0;
-      padding: 15px 0;
+      padding: 8px 0;
     }
     &__inCart {
       bottom: 0;

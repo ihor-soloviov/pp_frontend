@@ -5,9 +5,14 @@ class ModalsStore {
   cityModal = true;
   thanksModal = false;
   isLoader = false;
+  isMobileMenu = false
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  mobileMenuHandler = () => {
+    this.isMobileMenu = !this.isMobileMenu
   }
 
   authModalHandler = (isOpen) => {
