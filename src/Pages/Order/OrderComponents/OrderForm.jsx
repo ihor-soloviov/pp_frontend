@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useCheckTransactionStatus } from '../../../utils/useCheckLiqpay';
 import { observer } from 'mobx-react-lite';
 
@@ -87,7 +87,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   //Hooks
   const location = useLocation();
-  const navigate = useNavigate();
 
   useCheckTransactionStatus(location.search, setTransactionStatus);
 

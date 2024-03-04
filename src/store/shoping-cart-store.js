@@ -45,6 +45,7 @@ class ShoppingCartStore {
 
     const modsPrice = mods.reduce((acc, mod) => acc + (mod.price || 0), 0);
     const totalPriceForProduct = count * (price + modsPrice);
+    console.log(modsPrice, price, totalPriceForProduct)
 
     // Перевірка наявності товару з такими ж модифікаторами
     const existingProductIndex = this.cartItems.findIndex(item => item.id === id && areModifiersEqual(item.mods, mods));

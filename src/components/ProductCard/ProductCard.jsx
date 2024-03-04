@@ -105,7 +105,7 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
               alt={name}
             />
           </Link>
-          <button className="product__addToCard" onClick={() => product?.group_modifications?.length ? handleModPopup() : addProductToCart()}>
+          <button className="product__addToCard" onClick={() => product?.group_modifications?.length ? setIsPopupOpened(true) : addProductToCart()} >
             В кошик
           </button>
         </div>

@@ -53,11 +53,11 @@ const ProductPage = observer(() => {
     productPageGetter(id, setProduct, setGroupsOfModificators, setRecommendationsProducts);
   }, [id]);
 
-  if (!!product) {
+  if (product) {
     view_item(
       product.product_name,
       product.product_id,
-      parseInt(product.price[1].slice(0, -2)),
+      product.price,
       product.category_name.replace(/onlineOrder: /, "")
     );
 
@@ -88,13 +88,13 @@ const ProductPage = observer(() => {
                 )}
                 {window.innerWidth > 1000 ? (
                   <p className="product-page__price text-price text__color--secondary">
-                    {parseInt(product.price[1].slice(0, -2))} ₴
+                    {product.price} ₴
                   </p>
                 )
                   : (
                     <div className="product-page__price__mob">
                       <p className="product-page__price text-price text__color--secondary">
-                        {parseInt(product.price[1].slice(0, -2))} ₴
+                        {product.price} ₴
                       </p>
                       <div className="counter">
                         <div
@@ -186,7 +186,7 @@ const ProductPage = observer(() => {
                             product.product_id
                           }
                           name={product.product_name}
-                          price={parseInt(product.price[1].slice(0, -2))}
+                          price={product.price}
                           ingredients={product.ingredients}
                           weight={product.out}
                           key={product.product_id}

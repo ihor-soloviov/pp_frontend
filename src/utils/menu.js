@@ -32,7 +32,7 @@ export const addToCartHandler = (product, count) => {
   const { product_name, price, out, category_name, product_id, mods } = product
   addProduct({
     name: product_name,
-    price: parseInt(price[1].slice(0, -2)),
+    price: price,
     count,
     preview: `${url}/api/sendImage/${product.product_id}`,
     weight: out,
@@ -43,7 +43,7 @@ export const addToCartHandler = (product, count) => {
   add_to_cart(
     product_name,
     product_id,
-    parseInt(price[1].slice(0, -2)) * count,
+    price * count,
     category_name,
     count
   );
@@ -93,7 +93,7 @@ export const getProducts = async (id, setProducts) => {
       }) => ({
         photo: photo_origin,
         product_name: product_name,
-        price: price,
+        price: parseInt(price[1].slice(0, -2)),
         out: out,
         product_id: product_id,
         ingredients: product_production_description
@@ -105,6 +105,8 @@ export const getProducts = async (id, setProducts) => {
       })
     );
 
+    console.log(processedProducts)
+
     setProducts(processedProducts);
   } catch (error) {
     console.error("Помилка при отриманні продуктів:", error);
@@ -115,24 +117,28 @@ export const productPageGetter = async (id, setProduct, setGroupsOfModificators,
   try {
     // Перший запит
     const productResponse = await axios.post(`${url}/api/product`, JSON.stringify({ productId: id }), { headers });
-    console.log(productResponse.data)
-    setProduct(productResponse.data);
+    const factoredProduct = {
+      ...productResponse.data, price: parseInt(productResponse.data.price[1].slice(0, -2))
+    }
+    setProduct(factoredProduct);
     const modificators = productResponse.data.group_modifications;
     setGroupsOfModificators(modificators)
 
     // Другий запит
     const menuCategoryId = JSON.stringify({ categoryId: productResponse.data.menu_category_id });
     const recommendationsResponse = await axios.post(`${url}/api/products`, menuCategoryId, { headers });
+    console.log(recommendationsResponse.data.response)
 
     const recommendationsData = recommendationsResponse.data.response.map(item => ({
       key: item.product_id,
       photo: item.photo_origin,
       product_name: item.product_name,
-      price: item.price,
+      price: parseInt(item.price[1].slice(0, -2)),
       out: item.out,
       product_id: item.product_id,
       ingredients: item.product_production_description.split(".")[0].split(", ").join(", "),
       category_name: item.category_name,
+      group_modifications: item.group_modifications
     }));
     setRecommendationsProducts(recommendationsData);
 

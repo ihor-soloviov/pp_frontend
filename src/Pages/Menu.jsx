@@ -19,25 +19,24 @@ const Menu = React.memo(() => {
     <React.Fragment>
       <div className="categories" id="menu">
         <h1 className="title__h1">Куштуй тільки найсмачніше</h1>
-          <Categories setProducts={setProducts} />
+        <Categories setProducts={setProducts} />
       </div>
       {products && (
         <div className="menu__products">
-          {products.map((product) => {
-            return (
-              <ProductCard
-                product={product}
-                preview={`${url}/api/sendImage/${product.product_id}`}
-                name={product.product_name}
-                price={parseInt(product.price[1].slice(0, -2))}
-                ingredients={product.ingredients}
-                weight={product.out}
-                key={product.product_id}
-                id={product.product_id}
-                category={product.category}
-              />
-            );
-          })}
+          {products.map((product) => (
+            <ProductCard
+              product={product}
+              preview={`${url}/api/sendImage/${product.product_id}`}
+              name={product.product_name}
+              price={product.price}
+              ingredients={product.ingredients}
+              weight={product.out}
+              key={product.product_id}
+              id={product.product_id}
+              category={product.category}
+            />
+          )
+          )}
         </div>
       )}
     </React.Fragment>
