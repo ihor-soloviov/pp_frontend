@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { observer } from "mobx-react-lite";
 import { view_item } from "../../gm4";
 import { addToCartHandler, productPageGetter } from "../../utils/menu";
 
@@ -17,7 +16,7 @@ import { url } from "../../api";
 //Import styles
 import "./ProductPage.scss";
 
-const ProductPage = observer(() => {
+const ProductPage = React.memo(() => {
   const { id } = useParams();
 
   const [count, setCount] = useState(1);
@@ -178,23 +177,23 @@ const ProductPage = observer(() => {
               {recommendationsProducts && (
                 <div className="product-page__recommendations-track">
                   <div className="product-page__recommendations-list">
-                    {recommendationsProducts.map((product) => {
-                      return (
-                        <ProductCard
-                          preview={
-                            "https://api.polarpelmeni.com.ua/api/sendImage/" +
-                            product.product_id
-                          }
-                          name={product.product_name}
-                          price={product.price}
-                          ingredients={product.ingredients}
-                          weight={product.out}
-                          key={product.product_id}
-                          id={product.product_id}
-                          category={product.category_name}
-                        />
-                      );
-                    })}
+                    {recommendationsProducts.map((product) => (
+                      <ProductCard
+                        product={product}
+                        preview={
+                          "https://api.polarpelmeni.com.ua/api/sendImage/" +
+                          product.product_id
+                        }
+                        name={product.product_name}
+                        price={product.price}
+                        ingredients={product.ingredients}
+                        weight={product.out}
+                        key={product.product_id}
+                        id={product.product_id}
+                        category={product.category_name}
+                      />
+                    )
+                    )}
                   </div>
                 </div>
               )}

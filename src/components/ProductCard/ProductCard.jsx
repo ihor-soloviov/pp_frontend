@@ -24,10 +24,9 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
   const [isPopupOpened, setIsPopupOpened] = useState(false)
   const [selectedModificators, setSelectedModificators] = useState([]);
 
-
-
   const addProductToCart = () => {
-    const productWithMods = { ...product, mods: selectedModificators }
+    const productWithMods = { ...product, mods: selectedModificators };
+    console.log(productWithMods)
     addToCartHandler(productWithMods, count);
     setIsPopupOpened(false);
     setSelectedModificators([])

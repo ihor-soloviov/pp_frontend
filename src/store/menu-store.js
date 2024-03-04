@@ -4,6 +4,7 @@ import { getCategories } from "../utils/menu"
 class MenuStore {
   categories = [];
   isFetchedCategories = false;
+  products = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -22,6 +23,14 @@ class MenuStore {
     } catch (error) {
       console.error("Помилка при завантаженні категорій:", error);
     }
+  }
+
+  fetchProductsByCategory = async (categoryId) => {
+    const productsByCategory = this.products.find(({category_id}) => category_id === categoryId)
+    if (productsByCategory) {
+      return productsByCategory
+    }
+    // доробити
   }
 
 }
