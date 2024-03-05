@@ -60,6 +60,7 @@ export const getCategories = async () => {
     if (!response?.data?.response) {
       return [];
     }
+    console.log(response.data.response)
     return response.data.response;
   } catch (error) {
     console.error("Помилка при отриманні категорій:", error);
@@ -69,45 +70,15 @@ export const getCategories = async () => {
 
 export const getProducts = async (id, setProducts) => {
   try {
-    const data = JSON.stringify({ categoryId: id });
-
-    const response = await axios.post(`${url}/api/products`, data, { headers });
-
-    if (!response?.data?.response) {
+    const response = await axios.get(`${url}/api/products/${id}`, { headers });
+    console.log(response)
+    if (!response?.data) {
       return
     }
 
-    const productsData = response.data.response;
-
-    // Перетворюємо дані продуктів
-    const processedProducts = productsData.map(
-      ({
-        photo_origin,
-        product_name,
-        price,
-        out,
-        product_id,
-        product_production_description,
-        category_name,
-        group_modifications
-      }) => ({
-        photo: photo_origin,
-        product_name: product_name,
-        price: parseInt(price[1].slice(0, -2)),
-        out: out,
-        product_id: product_id,
-        ingredients: product_production_description
-          .split(".")[0]
-          .split(", ")
-          .join(", "),
-        category: category_name,
-        group_modifications
-      })
-    );
-
-    console.log(processedProducts)
-
-    setProducts(processedProducts);
+    const productsData = response.data;
+    console.log(productsData)
+    setProducts(productsData);
   } catch (error) {
     console.error("Помилка при отриманні продуктів:", error);
   }
