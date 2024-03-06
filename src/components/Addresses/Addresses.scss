@@ -28,7 +28,7 @@
     transition: background 0.4s ease-in-out;
 
     &:hover {
-      background: rgba(98, 217, 241, 0.1);
+      background: rgba(243, 112, 5, 0.1);
     }
 
     @media (max-width: 768px) {
@@ -113,7 +113,7 @@
   justify-content: space-between;
 
   h4 {
-    font-family: "Unbounded";
+    font-family: 'Unbounded';
   }
 
   button {

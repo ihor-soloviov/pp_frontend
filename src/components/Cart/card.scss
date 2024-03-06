@@ -1,3 +1,4 @@
+@import '../../style/colors.scss';
 .card {
   display: flex;
   align-items: center;
@@ -17,7 +18,7 @@
     position: absolute;
     width: 17px;
     height: 17px;
-    background-color: #62d9f1;
+    background-color: $accentColor;
     border-radius: 100px;
     top: -4px;
     right: -8px;
@@ -28,6 +29,9 @@
     font-size: 16px;
     line-height: 150%;
     color: #12130f;
+  }
+  &_count {
+    color: $btnTextColor;
   }
 }
 
