@@ -97,10 +97,11 @@ export const MobileMenu = observer(() => {
             </Link>
           ) : (
             <BtnMain
-              name={'Увійти в особистий кабінет'}
               onClick={() => authModalHandler(true)}
               fullWide
-            />
+            >
+              Увійти в особистий кабінет
+            </BtnMain>
           )}
         </div>
         <div className='mobile-menu__footer'>

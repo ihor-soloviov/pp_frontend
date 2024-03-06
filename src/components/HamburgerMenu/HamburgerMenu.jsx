@@ -86,9 +86,10 @@ const HamburgerMenu = (setHamburger, setDropdown, dropdown, categories) => {
             </div>
           ) : (
             <BtnMain
-              name={"Увійти в особистий кабінет"}
               onClick={() => authModalHandler(true)}
-            />
+            >
+              Увійти в особистий кабінет
+            </BtnMain>
           )}
         </div>
       </nav>

@@ -36,10 +36,31 @@ const SignUp = observer(() => {
 
   //Next step
   const [btnNext, setBtnNext] = useState(true);
+  const [isButtonLoading, setIsButtonLoading] = useState(false)
 
   useEffect(() => {
     setUpRecaptcha()
   }, [])
+
+  const stepButtonHandler = () => {
+    if (step === "STEP_01") {
+      setIsButtonLoading(true)
+      onSendOtp(phoneNumber, setVerifId, setStep)
+    } else if (step === 'STEP_02') {
+      setIsButtonLoading(true)
+      onVerify(verifId, verificationCode, setStep, setToken, navigate, authModalHandler)
+    } else {
+      setIsButtonLoading(true)
+      registration(
+        userName,
+        userEmail,
+        token,
+        phoneNumber,
+        navigate,
+        authModalHandler
+      )
+    }
+  }
 
   //STEP 01 Validation
   useEffect(() => {
@@ -56,6 +77,7 @@ const SignUp = observer(() => {
   //STEP 02 Validation
   useEffect(() => {
     if (step === "STEP_02") {
+      setIsButtonLoading(false)
       setBtnNext(true);
       if (verificationCode.length === 6) {
         setBtnNext(false);
@@ -68,6 +90,7 @@ const SignUp = observer(() => {
   //STEP 03 Validation
   useEffect(() => {
     if (step === "STEP_03") {
+      setIsButtonLoading(false)
       setBtnNext(true);
       if (userName !== "" && userEmail !== "") {
         setBtnNext(false);
@@ -91,10 +114,12 @@ const SignUp = observer(() => {
           <InputNumber onChange={(value) => setPhoneNumber(value)} />
 
           <BtnMain
-            name={"Продовжити"}
             disabled={btnNext}
-            onClick={() => onSendOtp(phoneNumber, setVerifId, setStep)}
-          />
+            onClick={stepButtonHandler}
+          >
+            {isButtonLoading ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : "Продовжити"}
+          </BtnMain>
+          <div className="loader"></div>
         </React.Fragment>
       );
     }
@@ -119,10 +144,11 @@ const SignUp = observer(() => {
           </form>
 
           <BtnMain
-            name={"Продовжити"}
             disabled={btnNext}
-            onClick={() => onVerify(verifId, verificationCode, setStep, setToken, navigate, authModalHandler)}
-          />
+            onClick={stepButtonHandler}
+          >
+            {isButtonLoading ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : "Продовжити"}
+          </BtnMain>
         </React.Fragment>
       );
     }
@@ -147,19 +173,11 @@ const SignUp = observer(() => {
             />
           </form>
           <BtnMain
-            name={"Зареєструватися"}
             disabled={btnNext}
-            onClick={() =>
-              registration(
-                userName,
-                userEmail,
-                token,
-                phoneNumber,
-                navigate,
-                authModalHandler
-              )
-            }
-          />
+            onClick={stepButtonHandler}
+          >
+            {isButtonLoading ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : "Продовжити"}
+          </BtnMain>
         </React.Fragment>
       );
     }

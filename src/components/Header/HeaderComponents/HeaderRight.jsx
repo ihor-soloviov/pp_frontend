@@ -54,8 +54,10 @@ export const HeaderRight = observer(() => {
 
         : (
           window.innerWidth > 1000 ?
-            <BtnMain name={"Увійти"}
-              onClick={() => authModalHandler(true)} />
+            <BtnMain
+              onClick={() => authModalHandler(true)} >
+              Увійти
+            </BtnMain>
             : <div
               className={classNames("header__hamburger", { "header__hamburger--active": isMobileMenu })}
               onClick={() => {
