@@ -71,7 +71,7 @@ const Cart = observer(() => {
           </svg>
           {itemCount !== 0 && (
             <div className='card__length'>
-              <span>{itemCount}</span>
+              <span className='card_count'>{itemCount}</span>
             </div>
           )}
         </div>

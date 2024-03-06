@@ -1,3 +1,5 @@
+@import '../../style/colors.scss';
+
 .order-page {
   position: relative;
 
@@ -18,11 +20,18 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #62d9f1;
+    background: $accentColor;
     width: fit-content;
     padding: 12px 24px;
     border-radius: 7px;
     margin: 24px 0 0 0;
+    transition: linear 0.25s;
+    &:hover {
+      background: $accentColorHover;
+    }
+    &:active {
+      background: $accentColorActive;
+    }
   }
 
   &__arrow {
@@ -57,6 +66,7 @@
       font-weight: 400;
       font-size: 16px;
       line-height: 150%;
+
       /* identical to box height, or 24px */
 
       letter-spacing: -0.01em;
@@ -68,7 +78,9 @@
     }
   }
 }
-
+.promo-span {
+  color: $btnTextColor;
+}
 .checkout {
   background: #12130f;
   height: fit-content;

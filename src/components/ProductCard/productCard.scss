@@ -11,7 +11,6 @@
     .counter {
       .counter__btn {
         user-select: none;
-
       }
     }
   }
@@ -38,9 +37,9 @@
     &-active {
       background: rgba(255, 255, 255, 1);
       svg {
-        fill: #df643a;
+        fill: #ff5124;
         path {
-          stroke: #df643a;
+          stroke: #ff5124;
         }
       }
     }
