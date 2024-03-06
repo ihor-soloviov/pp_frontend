@@ -1,17 +1,14 @@
 //Import React
 import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import menuStore from "../store/menu-store";
 
 //Import Components
 import ProductCard from "../components/ProductCard/ProductCard";
-
-//Import Utils
-import { url } from "../api";
+import { Categories } from "../components/Categories/Categories";
 
 //Impost styles
 import "./menu.scss";
-import { Categories } from "../components/Categories/Categories";
-import { observer } from "mobx-react-lite";
-import menuStore from "../store/menu-store";
 
 const Menu = observer(() => {
   const [products, setProducts] = useState(null);
@@ -24,8 +21,6 @@ const Menu = observer(() => {
     }
   }, [products, setProductsByCategoryId])
 
-
-
   return (
     <React.Fragment>
       <div className="categories" id="menu">
@@ -35,17 +30,9 @@ const Menu = observer(() => {
       {products && (
         <div className="menu__products">
           {products.map((product) => (
-            <ProductCard
-              product={product}
-              preview={`${url}/api/sendImage/${product.product_id}`}
-              name={product.product_name}
-              price={product.price}
-              ingredients={product.ingredients}
-              weight={product.out}
-              key={product.product_id}
-              id={product.product_id}
-              category={product.category}
-            />
+            <React.Fragment key={product.product_id}>
+              <ProductCard product={product} />
+            </React.Fragment>
           )
           )}
         </div>

@@ -167,13 +167,6 @@ const ProductPage = observer(() => {
                     {products.map((product) => (
                       <ProductCard
                         product={product}
-                        preview={
-                          `${url}/api/sendImage/${product.product_id}`
-                        }
-                        name={product.product_name}
-                        price={product.price}
-                        ingredients={product.ingredients}
-                        weight={product.out}
                         key={product.product_id}
                       />
                     )

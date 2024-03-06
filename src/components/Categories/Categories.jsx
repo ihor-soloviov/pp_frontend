@@ -7,14 +7,8 @@ import { useParams } from 'react-router-dom';
 
 export const Categories = observer(({ setProducts }) => {
   const { id } = useParams();
-  const [currentCatId, setCurrentCatId] = useState(null);
+  const [currentCatId, setCurrentCatId] = useState("47");
   const { categories } = menuStore;
-
-  useEffect(() => {
-    if (categories.length > 0) {
-      setCurrentCatId(categories[0].category_id);
-    }
-  }, [categories]);
 
   useEffect(() => {
     getProducts(currentCatId, setProducts);
@@ -30,19 +24,18 @@ export const Categories = observer(({ setProducts }) => {
   if (categories) {
     return (
       <div className="categories__list">
-        {categories.map((cat) => {
-          return (
-            <button
-              key={cat.category_id}
-              className={classNames("categories__btn", {
-                "categories__btn-active": currentCatId === cat.category_id,
-              })}
-              onClick={() => setCurrentCatId(cat.category_id)}
-            >
-              {cat.category_name}
-            </button>
-          );
-        })}
+        {categories.map(({ category_id, category_name }) => (
+          <button
+            key={category_id}
+            className={classNames("categories__btn", {
+              "categories__btn-active": currentCatId === category_id,
+            })}
+            onClick={() => setCurrentCatId(category_id)}
+          >
+            {category_name}
+          </button>
+        )
+        )}
       </div>
     )
   }

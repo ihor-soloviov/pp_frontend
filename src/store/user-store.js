@@ -115,14 +115,14 @@ class UserStore {
     this.adresses = [];
   };
 
-  addToFavorit = ({ preview, name, price, weight, id, ingredients }) => {
-    const product = { preview, name, price, count: 1, weight, id, ingredients };
+  addToFavorit = ({ product_name, price, out, product_id, ingredients }) => {
+    const product = { product_name, price, count: 1, out, product_id, ingredients };
     this.favoritProducts.push(product);
   };
 
   removeFromFavorit = (productId) => {
     this.favoritProducts = this.favoritProducts.filter(
-      (product) => product.id !== productId
+      (product) => product.product_id !== productId
     );
   };
 

@@ -1,6 +1,7 @@
 //Import React
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { url } from "../../api";
 
 import classNames from "classnames";
 import { addToCartHandler } from "../../utils/menu";
@@ -15,8 +16,9 @@ import ModificatorsPopup from "../../Pages/ProductPage/ModificatorsPopup";
 
 import "./productCard.scss";
 
-const ProductCard = observer(({ product, preview, name, price, ingredients, weight, id }) => {
+const ProductCard = observer(({ product }) => {
   const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
+  const { out, ingredients, price, product_id, product_name, group_modifications } = product;
 
   const { setActions } = popupActionsStore;
 
@@ -35,16 +37,15 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
   const handleModPopup = () => setIsPopupOpened(prev => !prev)
 
   const isItemFavourite = () => {
-    if (!favoritProducts || favoritProducts === null) {
-      return false;
+    if (favoritProducts) {
+      return favoritProducts.some((el) => el.product_id === product_id);
     }
-    return favoritProducts.some((el) => el.id === id);
   };
 
   const handleFavorite = () => {
 
     if (isItemFavourite()) {
-      removeFromFavorit(id);
+      removeFromFavorit(product_id);
     } else {
       setActions("addToFavorit");
       setTimeout(() => {
@@ -52,12 +53,10 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
       }, 2000);
 
       addToFavorit({
-        name,
+        product_name,
         price,
-        count,
-        preview,
-        weight,
-        id,
+        out,
+        product_id,
         ingredients,
       });
 
@@ -67,9 +66,9 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
 
   return (
     <React.Fragment>
-      {isPopupOpened && product.group_modifications && (
+      {isPopupOpened && group_modifications && (
         <Popup closeModal={handleModPopup}>
-          <ModificatorsPopup groups={product.group_modifications} setSelectedModificators={setSelectedModificators} addProductToCart={addProductToCart} />
+          <ModificatorsPopup groups={group_modifications} setSelectedModificators={setSelectedModificators} addProductToCart={addProductToCart} />
         </Popup>
       )}
 
@@ -98,20 +97,20 @@ const ProductCard = observer(({ product, preview, name, price, ingredients, weig
           </div>
         </div>
         <div className="product__preview">
-          <Link to={`/product/${id}`}>
+          <Link to={`/product/${product_id}`}>
             <img
-              src={preview}
-              alt={name}
+              src={`${url}/api/sendImage/${product_id}`}
+              alt={product_name}
             />
           </Link>
-          <button className="product__addToCard" onClick={() => product?.group_modifications?.length ? setIsPopupOpened(true) : addProductToCart()} >
+          <button className="product__addToCard" onClick={() => group_modifications?.length ? setIsPopupOpened(true) : addProductToCart()} >
             В кошик
           </button>
         </div>
         <div className="product__info">
-          <p className="product__weight">{weight} г</p>
-          <h4 className="product__name">{name}</h4>
-          <p className="product__composition">{ingredients}</p>
+          <p className="product__weight">{out} г</p>
+          <h4 className="product__name">{product_name}</h4>
+          {ingredients.length !== 0 && <p className="product__composition">{ingredients.join(', ')}</p>}
         </div>
         <div className="product__order">
           <div className="product__price">
