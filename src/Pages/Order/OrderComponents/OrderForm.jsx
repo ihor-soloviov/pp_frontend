@@ -214,7 +214,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
         <OrderComment formData={formData} handleFormValueChange={handleFormValueChange} />
 
-        <BtnMain name={'Оформити замовлення'} fullWide onClick={onSubmit} />
+        <BtnMain fullWide onClick={onSubmit} >Оформити замовлення</BtnMain>
       </section>
     </React.Fragment>
   );

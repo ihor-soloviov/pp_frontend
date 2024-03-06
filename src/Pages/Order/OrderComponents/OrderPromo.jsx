@@ -18,7 +18,7 @@ export const OrderPromo = observer(({ formData, handleFormValueChange, handleErr
       setBanner('Зареєструйтесь для отримання знижки')
     }
   }, [isAuthenticated])
-  
+
 
   const handleActivatePromoClick = () => {
     if (promo.label !== '40%') {
@@ -64,10 +64,11 @@ export const OrderPromo = observer(({ formData, handleFormValueChange, handleErr
 
           {promocode40 && (
             <BtnMain
-              name={"Застосувати"}
               onClick={handleActivatePromoClick}
               disabled={isPromotion}
-            />
+            >
+              Застосувати
+            </BtnMain>
           )}
         </section>
       )}
