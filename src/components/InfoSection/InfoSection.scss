@@ -303,10 +303,15 @@
   font-weight: 400;
   line-height: 150%;
   cursor: pointer;
+
+  &.is-selected {
+    color: #000;
+  }
   &:hover {
     background-color: #ebebee;
   }
 }
+
 .Dropdown-option.disabled {
   opacity: 0.3;
   pointer-events: none;
@@ -317,7 +322,7 @@
 }
 
 .Dropdown-placeholder {
-  color: #92939a;
+  color: #000;
   font-family: 'Golos Text';
 
   font-size: 16px;
