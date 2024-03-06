@@ -71,13 +71,11 @@ export const getProducts = async (id, setProducts) => {
   try {
 
     const response = await axios.get(`${url}/api/products/${id}`, { headers });
-    console.log(response)
     if (!response?.data) {
       return
     }
 
     const productsData = response.data;
-    console.log(productsData)
     setProducts(productsData);
   } catch (error) {
     console.error("Помилка при отриманні продуктів:", error);

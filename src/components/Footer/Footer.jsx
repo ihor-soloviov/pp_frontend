@@ -15,7 +15,7 @@ import { observer } from 'mobx-react-lite';
 import menuStore from '../../store/menu-store';
 
 const Footer = observer(() => {
-  const { categories } = menuStore;
+  const { categories, setCurrentCategoryId } = menuStore;
   const contacts = [
     {
       city: 'Одеса',
@@ -40,7 +40,12 @@ const Footer = observer(() => {
                   categories.map((item) => {
                     return (
                       <li className='footer__link' key={item.category_id}>
-                        <Link to={`/menu/${item.category_id}`}>{item.category_name}</Link>
+                        <Link
+                          to={`/menu/${item.category_id}`}
+                          onClick={() => setCurrentCategoryId(item.category_id)}
+                        >
+                          {item.category_name}
+                        </Link>
                       </li>
                     );
                   })}

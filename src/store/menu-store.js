@@ -3,6 +3,7 @@ import { getCategories } from "../utils/menu"
 
 class MenuStore {
   categories = [];
+  currentCategoryId = '47'
   products = [];
 
   constructor() {
@@ -19,6 +20,10 @@ class MenuStore {
     } catch (error) {
       console.error("Помилка при завантаженні категорій:", error);
     }
+  }
+
+  setCurrentCategoryId = (id) => {
+    this.currentCategoryId = id
   }
 
   setProductsByCategoryId = (products) => {

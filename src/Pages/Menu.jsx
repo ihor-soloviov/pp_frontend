@@ -16,7 +16,7 @@ const Menu = observer(() => {
   const { setProductsByCategoryId } = menuStore;
 
   useEffect(() => {
-    if (products) {
+    if (products?.length) {
       setProductsByCategoryId(products)
     }
   }, [products, setProductsByCategoryId])
