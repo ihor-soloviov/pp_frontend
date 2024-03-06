@@ -32,7 +32,7 @@ const NumberChangeModal = observer(({ setIsNumberChanging }) => {
           </div>
           <InputNumber onChange={(value) => setPhoneNumber(value)} />
 
-          <BtnMain name={"Продовжити"} onClick={() => onSetNewPhone(phoneNumber, setVerifId, setStep)} />
+          <BtnMain onClick={() => onSetNewPhone(phoneNumber, setVerifId, setStep)} >Продовжити</BtnMain>
         </React.Fragment>
       );
     }

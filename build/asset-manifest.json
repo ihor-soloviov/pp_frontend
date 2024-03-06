@@ -43,10 +43,8 @@
     "static/media/selected.svg": "/static/media/selected.7efede4d2f4b8dc5371e558b9fdbe70d.svg",
     "static/media/hover.svg": "/static/media/hover.c0c6d8f5031719e9c62fd78c00ed8fd7.svg",
     "main.70255140.css.map": "/static/css/main.70255140.css.map",
-    "main.e3d997c5.js.map": "/static/js/main.e3d997c5.js.map"
+    "main.e3d997c5.js.map": "/static/js/main.e3d997c5.js.map",
+    "main.54d50855.js.map": "/static/js/main.54d50855.js.map"
   },
-  "entrypoints": [
-    "static/css/main.70255140.css",
-    "static/js/main.e3d997c5.js"
-  ]
+  "entrypoints": ["static/css/main.70255140.css", "static/js/main.2de791d0.js"]
 }

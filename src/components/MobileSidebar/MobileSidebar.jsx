@@ -46,15 +46,6 @@ const MobileSidebar = observer(({ handleSidebar }) => {
             </SidebarLink>
           ))}
         </ul>
-
-        <div className='sidebar-mobile__footer'>
-          <ul className='sidebar-mobile__footer--list'>
-            <Link to={'/'}>Головна</Link>
-            <Link to={'/'}>Меню</Link>
-            <Link to={'/about-us'}>Про нас</Link>
-            <Link to={'/contact'}>Контакти</Link>
-          </ul>
-        </div>
       </section>
     </>
   );

@@ -98,7 +98,7 @@ const AboutUsPictures = () => {
               <li className='about-item'>
                 <p className='about-text text'>
                   Команда Polar не здалася і прийняла рішення відчинитися в більш безпечному місті
-                  України — Ужгороді.
+                  України.
                 </p>
               </li>
               <li className='about-item'>

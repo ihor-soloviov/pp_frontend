@@ -28,11 +28,13 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
     token: token,
   });
 
-  const cityOptions = ['Одеса', 'Ужгород'].map((cityDrop) => ({
-    value: cityDrop,
-    label: cityDrop,
-    className: cityDrop === 'Одеса' ? 'Dropdown-option' : 'Dropdown-option disabled',
-  }));
+  const cityOptions = [
+    {
+      value: 'Одеса',
+      label: 'Одеса',
+      className: 'Dropdown-option',
+    },
+  ];
 
   const defaultCityOption = cityOptions[0];
 
@@ -49,9 +51,6 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
   }, []);
 
   const handleChangeCity = (e) => {
-    if (e.value === 'Ужгород') {
-      return;
-    }
     setCityDrop(e);
   };
 
@@ -144,7 +143,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 <p>Ім'я</p>
                 <label className='form_item--label'>
                   <input
-                    style={{ fontSize: "16px" }}
+                    style={{ fontSize: '16px' }}
                     type='text'
                     placeholder="Ім'я"
                     name='name'
@@ -158,7 +157,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 <p>Пошта</p>
                 <label className='form_item--label'>
                   <input
-                    style={{ fontSize: "16px" }}
+                    style={{ fontSize: '16px' }}
                     type='text'
                     placeholder='xxx@gmail.com'
                     name='email'
@@ -172,7 +171,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 <p>Дата народження</p>
                 <label className='form_item--label'>
                   <input
-                    style={{ fontSize: "16px" }}
+                    style={{ fontSize: '16px' }}
                     title='формат дд.мм.рррр'
                     type='text'
                     placeholder='Дата народження'
@@ -186,7 +185,13 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
               <div className='form_item'>
                 <p>Місто</p>
                 <label className='form_item--label'>
-                  <CustomSelect placeholder='Оберіть місто' value={cityDrop} options={cityOptions} handleChange={handleChangeCity} className="cityDrop" />
+                  <CustomSelect
+                    placeholder='Оберіть місто'
+                    value={cityDrop}
+                    options={cityOptions}
+                    handleChange={handleChangeCity}
+                    className='cityDrop'
+                  />
                 </label>
               </div>
             </div>

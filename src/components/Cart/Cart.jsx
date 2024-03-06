@@ -170,7 +170,6 @@ const Cart = observer(() => {
                 </div>
               </div>
               <BtnMain
-                name={'Замовити'}
                 fullWide
                 onClick={() => {
                   if (totalPrice < 200) {
@@ -182,7 +181,9 @@ const Cart = observer(() => {
                     navigate('/order');
                   }
                 }}
-              />
+              >
+                Замовити
+              </BtnMain>
             </div>
           )}
         </div>
