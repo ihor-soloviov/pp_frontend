@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { view_item } from "../../gm4";
-import { addToCartHandler, productPageGetter } from "../../utils/menu";
+import { addToCartHandler, getProductById } from "../../utils/menu";
 
 //Import components
 import Container from "../../components/Container/Container";
@@ -15,20 +15,22 @@ import { url } from "../../api";
 
 //Import styles
 import "./ProductPage.scss";
+import { observer } from "mobx-react-lite";
+import menuStore from "../../store/menu-store";
 
-const ProductPage = React.memo(() => {
+const ProductPage = observer(() => {
   const { id } = useParams();
+  const { products } = menuStore
 
   const [count, setCount] = useState(1);
 
   const [product, setProduct] = useState(null);
-  const [productIngredients, setProductIngredients] = useState(null);
-  const [productDescription, setProductDescription] = useState(null)
-  const [recommendationsProducts, setRecommendationsProducts] = useState(null);
-  const [groupsOfModificators, setGroupsOfModificators] = useState([])
   const [selectedModificators, setSelectedModificators] = useState([]);
-
   const [isPopupOpened, setIsPopupOpened] = useState(false)
+
+  useEffect(() => {
+    getProductById(id, setProduct);
+  }, [id]);
 
   const addProductToCart = () => {
     const productWithMods = { ...product, mods: selectedModificators }
@@ -39,33 +41,22 @@ const ProductPage = React.memo(() => {
 
   const handleModPopup = () => { setIsPopupOpened(prev => !prev); setSelectedModificators([]) }
 
-  useEffect(() => {
-    if (product) {
-      const stringOfDescription = product.product_production_description;
-      const arr = stringOfDescription.split(".")[0].split(", ");
-      setProductIngredients(arr);
-      setProductDescription(stringOfDescription.split(".").splice(1).join(""))
-    }
-  }, [product]);
-
-  useEffect(() => {
-    productPageGetter(id, setProduct, setGroupsOfModificators, setRecommendationsProducts);
-  }, [id]);
-
   if (product) {
     view_item(
       product.product_name,
       product.product_id,
       product.price,
-      product.category_name.replace(/onlineOrder: /, "")
+      product.category_name
     );
+
+    const { out, product_name, description, price, group_modifications, ingredients } = product;
 
     return (
       <div>
         <div className="product-page">
-          {isPopupOpened && groupsOfModificators && (
+          {isPopupOpened && group_modifications && (
             <Popup closeModal={handleModPopup}>
-              <ModificatorsPopup groups={groupsOfModificators} setSelectedModificators={setSelectedModificators} addProductToCart={addProductToCart} />
+              <ModificatorsPopup groups={group_modifications} setSelectedModificators={setSelectedModificators} addProductToCart={addProductToCart} />
             </Popup>
           )}
           <Container>
@@ -75,25 +66,23 @@ const ProductPage = React.memo(() => {
               </div>
               <div className="product-page__info">
                 <p className="product-page__weight text">
-                  {product.out} г
+                  {out} г
                 </p>
                 <h1 className="product-page__title text__color--secondary">
-                  {product.product_name}
+                  {product_name}
                 </h1>
-                {productDescription && (
-                  <p className="product-page__desc">
-                    {productDescription}
-                  </p>
-                )}
+                <p className="product-page__desc">
+                  {description}
+                </p>
                 {window.innerWidth > 1000 ? (
                   <p className="product-page__price text-price text__color--secondary">
-                    {product.price} ₴
+                    {price} ₴
                   </p>
                 )
                   : (
                     <div className="product-page__price__mob">
                       <p className="product-page__price text-price text__color--secondary">
-                        {product.price} ₴
+                        {price} ₴
                       </p>
                       <div className="counter">
                         <div
@@ -122,7 +111,7 @@ const ProductPage = React.memo(() => {
                 <div className="product-page__order">
                   <button
                     className="btn btn-main"
-                    onClick={() => groupsOfModificators ? handleModPopup() : addProductToCart()}
+                    onClick={() => group_modifications ? handleModPopup() : addProductToCart()}
                   >
                     Додати в кошик
                   </button>
@@ -152,18 +141,16 @@ const ProductPage = React.memo(() => {
                   )}
                 </div>
 
-                {product.product_production_description && (
+                {ingredients && (
                   <React.Fragment>
                     <h6 className="product-page__compile-title title__h6 text__color--secondary">
                       Склад
                     </h6>
                     <ul className="product-page__compile">
-                      {productIngredients &&
-                        productIngredients.map((el) => {
-                          return (
-                            <li key={el} className="product-page__compile-item">{el}</li>
-                          );
-                        })}
+                      {ingredients.map((ingredient) => (
+                        <li key={ingredient} className="product-page__compile-item">{ingredient}</li>
+                      ))
+                      }
                     </ul>
                   </React.Fragment>
                 )}
@@ -174,23 +161,20 @@ const ProductPage = React.memo(() => {
                 <h3 className="title__h3 product-page__rec-title">Рекомендуємо спробувати</h3>
               </div>
 
-              {recommendationsProducts && (
+              {products && (
                 <div className="product-page__recommendations-track">
                   <div className="product-page__recommendations-list">
-                    {recommendationsProducts.map((product) => (
+                    {products.map((product) => (
                       <ProductCard
                         product={product}
                         preview={
-                          "https://api.polarpelmeni.com.ua/api/sendImage/" +
-                          product.product_id
+                          `${url}/api/sendImage/${product.product_id}`
                         }
                         name={product.product_name}
                         price={product.price}
                         ingredients={product.ingredients}
                         weight={product.out}
                         key={product.product_id}
-                        id={product.product_id}
-                        category={product.category_name}
                       />
                     )
                     )}

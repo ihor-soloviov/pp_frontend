@@ -3,7 +3,6 @@ import { getCategories } from "../utils/menu"
 
 class MenuStore {
   categories = [];
-  isFetchedCategories = false;
   products = [];
 
   constructor() {
@@ -12,9 +11,6 @@ class MenuStore {
   }
 
   fetchCategories = async () => {
-    if (this.isFetchedCategories) return;
-    this.isFetchedCategories = true; // Запобігає повторному виконанню
-    console.log('fetching')
     try {
       const fetchedCategories = await getCategories();
       runInAction(() => {
@@ -25,12 +21,8 @@ class MenuStore {
     }
   }
 
-  fetchProductsByCategory = async (categoryId) => {
-    const productsByCategory = this.products.find(({category_id}) => category_id === categoryId)
-    if (productsByCategory) {
-      return productsByCategory
-    }
-    // доробити
+  setProductsByCategoryId = (products) => {
+    this.products = products
   }
 
 }

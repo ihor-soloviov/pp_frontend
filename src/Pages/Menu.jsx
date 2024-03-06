@@ -1,5 +1,5 @@
 //Import React
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //Import Components
 import ProductCard from "../components/ProductCard/ProductCard";
@@ -10,9 +10,20 @@ import { url } from "../api";
 //Impost styles
 import "./menu.scss";
 import { Categories } from "../components/Categories/Categories";
+import { observer } from "mobx-react-lite";
+import menuStore from "../store/menu-store";
 
-const Menu = React.memo(() => {
+const Menu = observer(() => {
   const [products, setProducts] = useState(null);
+
+  const { setProductsByCategoryId } = menuStore;
+
+  useEffect(() => {
+    if (products) {
+      setProductsByCategoryId(products)
+    }
+  }, [products, setProductsByCategoryId])
+
 
 
   return (

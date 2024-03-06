@@ -60,7 +60,6 @@ export const getCategories = async () => {
     if (!response?.data?.response) {
       return [];
     }
-    console.log(response.data.response)
     return response.data.response;
   } catch (error) {
     console.error("Помилка при отриманні категорій:", error);
@@ -70,7 +69,7 @@ export const getCategories = async () => {
 
 export const getProducts = async (id, setProducts) => {
   try {
-    
+
     const response = await axios.get(`${url}/api/products/${id}`, { headers });
     console.log(response)
     if (!response?.data) {
@@ -85,36 +84,14 @@ export const getProducts = async (id, setProducts) => {
   }
 };
 
-export const productPageGetter = async (id, setProduct, setGroupsOfModificators, setRecommendationsProducts) => {
+export const getProductById = async (id, setProduct) => {
   try {
     // Перший запит
-    const productResponse = await axios.post(`${url}/api/product`, JSON.stringify({ productId: id }), { headers });
-    const factoredProduct = {
-      ...productResponse.data, price: parseInt(productResponse.data.price[1].slice(0, -2))
+    const product = await axios.get(`${url}/api/product/${id}`, { headers });
+
+    if (product.data) {
+      setProduct(product.data);
     }
-    setProduct(factoredProduct);
-    const modificators = productResponse.data.group_modifications;
-    setGroupsOfModificators(modificators)
-
-    // Другий запит
-    const menuCategoryId = JSON.stringify({ categoryId: productResponse.data.menu_category_id });
-    const recommendationsResponse = await axios.post(`${url}/api/products`, menuCategoryId, { headers });
-    console.log(recommendationsResponse.data.response)
-
-    const recommendationsData = recommendationsResponse.data.response.map(item => ({
-      key: item.product_id,
-      photo: item.photo_origin,
-      product_name: item.product_name,
-      price: parseInt(item.price[1].slice(0, -2)),
-      out: item.out,
-      product_id: item.product_id,
-      ingredients: item.product_production_description.split(".")[0].split(", ").join(", "),
-      category_name: item.category_name,
-      group_modifications: item.group_modifications
-    }));
-    setRecommendationsProducts(recommendationsData);
-
-
 
   } catch (error) {
     console.error(error);
