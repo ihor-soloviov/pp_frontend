@@ -44,13 +44,8 @@ TagManager.initialize(tagManagerArgs);
 const App = observer(() => {
   //Store
   const { userLogout } = userStore;
-
-  const { isLoader, setLoader, authModalHandler, authModal } = modalsStore;
+  const { authModalHandler, authModal } = modalsStore;
   const { currentAction } = popupActionsStore;
-
-  //Usestate
-  const [showHeader, setShowHeader] = useState(true);
-  const [prevPath, setPrevPath] = useState('');
 
   //Tools
   const location = useLocation();
@@ -67,20 +62,6 @@ const App = observer(() => {
     }
   }, [currentAction]);
 
-  //Функція яка вмикає лоадер тільки коли змінилась корнева директорія
-  useEffect(() => {
-    const currentPath = location.pathname;
-    const prevPathFirstPart = prevPath.split('/')[1];
-    const currentPathFirstPart = currentPath.split('/')[1];
-
-    if (prevPathFirstPart !== currentPathFirstPart) {
-      setLoader();
-      console.log('Шлях змінився!');
-    }
-
-    setPrevPath(currentPath);
-  }, [location]);
-
   useEffect(() => {
     if (location.pathname === '/profile/signout') {
       userLogout();
@@ -88,43 +69,16 @@ const App = observer(() => {
     }
   }, [location.pathname, userLogout, navigate]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    const handleWindowResize = () => {
-      const maxWidth = 768;
-      const isProfileItemPage = location.pathname.includes('/profile');
-
-      if (window.innerWidth <= maxWidth && isProfileItemPage) {
-        setShowHeader(false);
-      } else {
-        setShowHeader(true);
-      }
-    };
-
-    handleWindowResize(location, setShowHeader);
-    window.addEventListener('resize', handleWindowResize);
-
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    };
-  }, [location]);
-
   return (
     <React.Fragment>
       {actionPopupHandler()}
-
       {authModal && (
         <Popup closeModal={() => authModalHandler(false)}>
           <SignUp />
         </Popup>
       )}
-
       <Header />
       <MobileMenu />
-
-      {isLoader && <Loader />}
-
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/menu' element={<MenuPage />}>
