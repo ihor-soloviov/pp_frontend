@@ -37,21 +37,15 @@
     display: flex;
     gap: 12px;
     width: 86%;
-    margin: 0 auto;
     flex-wrap: wrap;
     justify-content: center;
   }
 
   &__btn {
     padding: 10px 16px 8px 16px;
-    // text-transform: uppercase;
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
-    /* identical to box height, or 24px */
-
-    /* 800 */
-
     color: #49484d;
 
     border: 1px solid #d9d9de;
@@ -85,11 +79,15 @@
     h1 {
       font-size: 28px;
     }
-    &__list {
-      width: 99%;
-      justify-content: flex-start;
-      overflow-x: auto;
+    &__inner {
+      width: 100%;
+      overflow-x: scroll;
       scroll-snap-type: x mandatory;
+      scrollbar-color: transparent transparent;
+    }
+    &__list {
+      width: 100%;
+      justify-content: flex-start;
       flex-wrap: nowrap;
       &::-webkit-scrollbar {
         display: none;

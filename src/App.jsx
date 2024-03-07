@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //Import React
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 //Import Routing
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
@@ -9,7 +9,6 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import modalsStore from './store/modal-store';
 import userStore from './store/user-store';
-import popupActionsStore from './store/popup-action-store';
 
 //Import pages
 import Profile from './Pages/Profile/Profile';
@@ -23,8 +22,6 @@ import Contact from './Pages/Contact/Contact';
 //Import components
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import PopupActions from './components/PopupActions/PopupActions';
-import Loader from './components/Loader/Loader';
 
 //Import Utils
 import TagManager from 'react-gtm-module';
@@ -34,6 +31,7 @@ import NotFound from './Pages/NotFound/NotFound';
 import Popup from './components/Popup/Popup';
 import SignUp from './components/SignUp/SignUp';
 import { MobileMenu } from "./components/Header/HeaderComponents/MobileMenu";
+import { ActionPopup } from './components/ActionPopup/ActionPopup';
 
 const tagManagerArgs = {
   gtmId: 'GTM-5CBQPKC',
@@ -43,35 +41,10 @@ TagManager.initialize(tagManagerArgs);
 
 const App = observer(() => {
   //Store
-  const { userLogout } = userStore;
   const { authModalHandler, authModal } = modalsStore;
-  const { currentAction } = popupActionsStore;
-
-  //Tools
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const actionPopupHandler = useCallback(() => {
-    if (currentAction === 'addToCard') {
-      return <PopupActions action={'Блюдо додано у кошик'} />;
-    }
-    if (currentAction === 'addToFavorit') {
-      return <PopupActions action={'Блюдо додано в «Улюблене»'} />;
-    } else {
-      return false;
-    }
-  }, [currentAction]);
-
-  useEffect(() => {
-    if (location.pathname === '/profile/signout') {
-      userLogout();
-      navigate('/');
-    }
-  }, [location.pathname, userLogout, navigate]);
-
+  
   return (
     <React.Fragment>
-      {actionPopupHandler()}
       {authModal && (
         <Popup closeModal={() => authModalHandler(false)}>
           <SignUp />
@@ -79,6 +52,7 @@ const App = observer(() => {
       )}
       <Header />
       <MobileMenu />
+      <ActionPopup />
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/menu' element={<MenuPage />}>
