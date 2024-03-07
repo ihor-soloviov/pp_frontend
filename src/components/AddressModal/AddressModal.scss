@@ -101,8 +101,14 @@
   }
 }
 
-.id-input-label {
-  position: absolute;
-  visibility: hidden;
-  opacity: 0;
+.test-error-text {
+  font-family: 'Golos Text';
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: red;
+  max-width: 180px;
+  &.name {
+    max-width: 395px;
+  }
 }

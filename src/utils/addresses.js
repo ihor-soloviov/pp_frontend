@@ -26,12 +26,14 @@ export const updateAddress = async (token, adress) => {
       address: adress,
     });
 
-    await axios.patch(`${url}/api/updateAdress`, JSONrequest, {
+    const data = await axios.patch(`${url}/api/updateAdress`, JSONrequest, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
     });
+    console.log(adress);
+    console.log(data);
   } catch (error) {
     console.log(error);
   }

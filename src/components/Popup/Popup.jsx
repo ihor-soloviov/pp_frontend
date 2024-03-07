@@ -4,7 +4,15 @@ import React from 'react';
 //Import Style
 import './popup.scss';
 
-const Popup = ({ children, closeModal, small, isEdit, setIsEdit, setCurrentAddressId }) => {
+const Popup = ({
+  children,
+  closeModal,
+  small,
+  isEdit,
+  setIsEdit,
+  setCurrentAddressId,
+  setCurrentAddressState,
+}) => {
   return (
     <div className={`popup ${small && 'popup-small'}`}>
       <div className={`popup__content ${small && 'popup__content-small'}`}>
@@ -15,6 +23,7 @@ const Popup = ({ children, closeModal, small, isEdit, setIsEdit, setCurrentAddre
             if (isEdit) {
               setIsEdit(!isEdit);
               setCurrentAddressId(null);
+              setCurrentAddressState(null);
             }
 
             closeModal();

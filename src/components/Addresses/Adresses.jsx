@@ -20,7 +20,6 @@ const Addresses = observer(({ handleSidebar }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentAddressId, setCurrentAddressId] = useState(null);
   const [isAdressesUpdating, setIsAdressesUpdating] = useState(false);
-  console.log('isEdit', isEdit);
 
   useEffect(() => {
     const fetchAdresses = async () => {
@@ -60,16 +59,17 @@ const Addresses = observer(({ handleSidebar }) => {
       <ProfileLink handleSidebar={handleSidebar}>Збережені адреси</ProfileLink>
       <div className='addresses_inner'>
         <NewAddress openModal={handleModal} />
-        <AddressModal
-          adresses={adresses}
-          closeModal={handleModal}
-          isModalOpen={isModalOpen}
-          setIsAdressesUpdating={setIsAdressesUpdating}
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
-          currentAddressId={currentAddressId}
-          setCurrentAddressId={setCurrentAddressId}
-        />
+        {isModalOpen && (
+          <AddressModal
+            adresses={isEdit && currentAddressId && adresses}
+            closeModal={handleModal}
+            setIsAdressesUpdating={setIsAdressesUpdating}
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+            currentAddressId={currentAddressId}
+            setCurrentAddressId={setCurrentAddressId}
+          />
+        )}
         {adresses.length > 0 &&
           adresses.map((adress) => (
             <React.Fragment key={adress.addressId}>
