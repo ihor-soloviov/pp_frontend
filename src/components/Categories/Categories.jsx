@@ -22,10 +22,13 @@ export const Categories = observer(({ setProducts }) => {
   }, [id, setCurrentCategoryId]);
 
   useEffect(() => {
-    const activeBtn = document.getElementById(currentCategoryId);
-    if (activeBtn) {
-      // Прокрутка до активної кнопки з плавною анімацією
-      activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    if (window.innerWidth < 1024) {
+
+      const activeBtn = document.getElementById(currentCategoryId);
+      if (activeBtn) {
+        // Прокрутка до активної кнопки з плавною анімацією
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     }
   }, [currentCategoryId]);
 

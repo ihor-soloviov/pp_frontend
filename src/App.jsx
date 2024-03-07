@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //Import React
-import React, { useEffect } from 'react';
+import React from 'react';
 
 //Import Routing
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 //Import MOBX
 import { observer } from 'mobx-react-lite';
 import modalsStore from './store/modal-store';
-import userStore from './store/user-store';
 
 //Import pages
 import Profile from './Pages/Profile/Profile';
@@ -42,7 +41,7 @@ TagManager.initialize(tagManagerArgs);
 const App = observer(() => {
   //Store
   const { authModalHandler, authModal } = modalsStore;
-  
+
   return (
     <React.Fragment>
       {authModal && (
