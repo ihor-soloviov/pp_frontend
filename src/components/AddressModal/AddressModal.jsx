@@ -29,9 +29,7 @@ const AddressModal = observer(
 
     const [currentAddressState, setCurrentAddressState] = useState(null);
 
-    console.log('currentAddressState', currentAddressState);
-
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState('house');
 
     const handleOptionChange = (event) => {
       setSelectedOption(event.target.value);
@@ -51,7 +49,7 @@ const AddressModal = observer(
           });
         }
 
-        await updateAddress(token, data);
+        await updateAddress(token, { ...data, addressId: currentAddressId });
       } catch (error) {
         console.log(error);
       } finally {
@@ -89,11 +87,11 @@ const AddressModal = observer(
         comment: Yup.string(),
       }),
       onSubmit: (values) => {
-        console.log('values', values);
         addToAdresses({ address: values });
 
         formSubmit(values);
         isEdit && setIsEdit(!isEdit);
+        setCurrentAddressId(null);
       },
     });
     const currentAddress =

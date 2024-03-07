@@ -1,14 +1,14 @@
-import { makeAutoObservable, runInAction } from "mobx";
-import { getCategories } from "../utils/menu"
+import { makeAutoObservable, runInAction } from 'mobx';
+import { getCategories } from '../utils/menu';
 
 class MenuStore {
   categories = [];
-  currentCategoryId = '47'
+  currentCategoryId = '47';
   products = [];
 
   constructor() {
     makeAutoObservable(this);
-    this.fetchCategories()
+    this.fetchCategories();
   }
 
   fetchCategories = async () => {
@@ -18,18 +18,17 @@ class MenuStore {
         this.categories = fetchedCategories;
       });
     } catch (error) {
-      console.error("Помилка при завантаженні категорій:", error);
+      console.error('Помилка при завантаженні категорій:', error);
     }
-  }
+  };
 
   setCurrentCategoryId = (id) => {
-    this.currentCategoryId = id
-  }
+    this.currentCategoryId = id;
+  };
 
   setProductsByCategoryId = (products) => {
-    this.products = products
-  }
-
+    this.products = products;
+  };
 }
 
 const menuStore = new MenuStore();
