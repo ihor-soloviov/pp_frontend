@@ -29,6 +29,7 @@ const AddressModal = observer(
 
     const [currentAddressState, setCurrentAddressState] = useState(null);
 
+    const [currentOption, setCurrentOption] = useState(null);
     const [selectedOption, setSelectedOption] = useState('house');
 
     const handleOptionChange = (event) => {
@@ -38,7 +39,7 @@ const AddressModal = observer(
     const formSubmit = async (data) => {
       try {
         if (!isEdit) {
-          const dataWithId = { ...data, addressId: nanoid() };
+          const dataWithId = { ...data, adressType: selectedOption, addressId: nanoid() };
           const JSONdata = JSON.stringify({ token: token, data: dataWithId });
 
           await axios.post(`${url}/api/addresses`, JSONdata, {
@@ -49,7 +50,11 @@ const AddressModal = observer(
           });
         }
 
-        await updateAddress(token, { ...data, addressId: currentAddressId });
+        await updateAddress(token, {
+          ...data,
+          adressType: selectedOption,
+          addressId: currentAddressId,
+        });
       } catch (error) {
         console.log(error);
       } finally {
@@ -102,6 +107,13 @@ const AddressModal = observer(
     useEffect(() => {
       currentAddress && setCurrentAddressState(currentAddress);
     }, [adresses, currentAddressId, currentAddress]);
+
+    useEffect(() => {
+      if (currentAddress) {
+        setCurrentOption(currentAddress.adressType);
+        setSelectedOption(currentOption);
+      }
+    }, [currentAddress, currentOption]);
 
     useEffect(() => {
       const setFormValues = (address) => {
