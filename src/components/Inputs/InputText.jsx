@@ -5,6 +5,7 @@ import React from 'react';
 import './InputText.scss';
 
 const InputText = ({ name, placeholder, value, onChange }) => {
+  console.log('inputValue', value);
   return (
     <label className={`inputText`}>
       <span>{name}</span>
