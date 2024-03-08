@@ -1,0 +1,9 @@
+@import '../../style/colors.scss';
+.loading {
+  display: flex;
+  justify-content: center;
+
+  .lds-ellipsis div {
+    background-color: $accentColorHover;
+  }
+}
