@@ -4,7 +4,7 @@ import React from 'react';
 //Import Styles
 import './InputText.scss';
 
-const InputText = ({ name, placeholder, value, onChange }) => {
+const InputText = ({ name, placeholder, value, onChange, disabled }) => {
   return (
     <label className={`inputText`}>
       <span>{name}</span>
@@ -13,6 +13,7 @@ const InputText = ({ name, placeholder, value, onChange }) => {
         placeholder={placeholder}
         value={value && value}
         onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
       />
     </label>
   );

@@ -2,11 +2,19 @@
   background-color: #f3f3f5;
 }
 
+.Dropdown-option {
+  color: black;
+}
+
 .Dropdown-menu {
   z-index: 5;
 }
+.Dropdown-placeholder {
+  color: grey;
+}
 
-.promo {
+.promo,
+.address {
   background-color: #f3f3f5;
   height: auto;
   padding: 12px;

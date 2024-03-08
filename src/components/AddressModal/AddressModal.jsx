@@ -95,19 +95,13 @@ const AddressModal = observer(
         streetName: '',
       },
       validationSchema: Yup.object({
-        adressName: Yup.string()
-          .matches(/^[a-zA-Zа-яА-ЯїЇіІєЄёЁґҐ\s]*$/, 'Вкажіть коректне значення')
-          .required(`Обов'язкове поле`),
-        entranceCode: Yup.number().typeError('Вкажіть коректне значення'),
-        entranceNumber: Yup.number().typeError('Вкажіть коректне значення'),
+        adressName: Yup.string().required(`Обов'язкове поле`),
+        entranceCode: Yup.string(),
+        entranceNumber: Yup.string(),
         flatNumber: Yup.number().typeError('Вкажіть коректне значення'),
         floar: Yup.number().typeError('Вкажіть коректне значення'),
-        homeNumber: Yup.number()
-          .typeError('Вкажіть коректне значення')
-          .required(`Обов'язкове поле`),
-        streetName: Yup.string()
-          .matches(/^[a-zA-Zа-яА-ЯїЇіІєЄёЁґҐ\s]*$/, 'Вкажіть коректне значення')
-          .required(`Обов'язкове поле`),
+        homeNumber: Yup.string().required(`Обов'язкове поле`),
+        streetName: Yup.string().required(`Обов'язкове поле`),
         comment: Yup.string(),
       }),
       onSubmit: (values) => {
