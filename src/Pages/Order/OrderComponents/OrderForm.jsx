@@ -161,10 +161,14 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
             thanksModalHandler(false);
           }}
         >
-          <Thanks
+          {/*<Thanks
             orderId={posterOrder.incoming_order_id}
             deliveryTime={posterOrder.delivery_time}
-          />
+        />*/}
+        <Thanks
+            orderId={1488}
+            deliveryTime={'14:88'}
+        />
         </Popup>
       )}
 
