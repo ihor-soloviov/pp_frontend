@@ -23,9 +23,10 @@ export const updateAddress = async (token, adress) => {
       address: adress,
     });
 
-    await axios.patch(`${url}/api/updateAdress`, JSONrequest, {
+    const response = await axios.patch(`${url}/api/updateAdress`, JSONrequest, {
       headers,
     });
+    return response;
   } catch (error) {
     console.log(error);
   }
