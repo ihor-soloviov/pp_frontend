@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //Import React
-import React from 'react';
+import React, { useEffect } from 'react';
 
 //Import Routing
 import { Routes, Route } from 'react-router-dom';
@@ -31,6 +31,7 @@ import Popup from './components/Popup/Popup';
 import SignUp from './components/SignUp/SignUp';
 import { MobileMenu } from "./components/Header/HeaderComponents/MobileMenu";
 import { ActionPopup } from './components/ActionPopup/ActionPopup';
+import { Loader } from './components/Loader/Loader';
 
 const tagManagerArgs = {
   gtmId: 'GTM-5CBQPKC',
@@ -40,7 +41,11 @@ TagManager.initialize(tagManagerArgs);
 
 const App = observer(() => {
   //Store
-  const { authModalHandler, authModal } = modalsStore;
+  const { authModalHandler, authModal, isLoader, setLoader } = modalsStore;
+
+  useEffect(() => {
+    setLoader();
+  }, []);
 
   return (
     <React.Fragment>
@@ -52,6 +57,7 @@ const App = observer(() => {
       <Header />
       <MobileMenu />
       <ActionPopup />
+      {isLoader && <Loader />}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/menu' element={<MenuPage />}>
