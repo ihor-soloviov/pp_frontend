@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import userStore from '../../../store/user-store';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
+import '../Order.scss';
 export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
   const { floor, buildingCode, entrance, apartment, houseNumber, street, howToReciveOrder } =
     formData;
@@ -12,22 +13,36 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
 
   const { adresses } = userStore;
 
-  const addressOptions = adresses.map((address) => ({
-    value: address.addressId,
-    label: address.adressName,
-    id: address.addressId,
-  }));
-
+  const addressOptions = [
+    { value: null, label: 'Не обрати' },
+    ...adresses.map((address) => ({
+      value: address.addressId,
+      label: address.adressName,
+      id: address.addressId,
+    })),
+  ];
   const [dropAddress, setDropAddress] = useState(null);
 
   const [currentAddressInfo, setCurrentAddressInfo] = useState(null);
 
-  console.log('dropAddress', dropAddress);
-
-  console.log('currentAddressState', currentAddressInfo);
+  const [isSavedAddressSelected, setIsSavedAddressSelected] = useState(false);
 
   const handleChangeAddress = (e) => {
+    if (e.value === null) {
+      setDropAddress(e.value);
+      setCurrentAddressInfo(e.value);
+      setIsSavedAddressSelected(false);
+      handleFormValueChange('street', '');
+      handleFormValueChange('houseNumber', '');
+      handleFormValueChange('howToReciveOrder', '');
+      handleFormValueChange('floor', '');
+      handleFormValueChange('buildingCode', '');
+      handleFormValueChange('entrance', '');
+      handleFormValueChange('apartment', '');
+      return;
+    }
     setDropAddress(e.value);
+    setIsSavedAddressSelected(true);
   };
 
   useEffect(() => {
@@ -40,43 +55,55 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
     const currentAddressInfo =
       allAddresses && allAddresses.find((address) => address.addressId === dropAddress);
 
-    currentAddressInfo && setCurrentAddressInfo(currentAddressInfo);
-  }, [adresses, dropAddress]);
+    if (currentAddressInfo) {
+      setCurrentAddressInfo(currentAddressInfo);
+      handleFormValueChange('street', currentAddressInfo.streetName);
+      handleFormValueChange('houseNumber', currentAddressInfo.homeNumber);
+      handleFormValueChange(
+        'howToReciveOrder',
+        currentAddressInfo.adressType === 'house' ? 'Приватний будинок' : 'До дверей',
+      );
+      handleFormValueChange('apartment', currentAddressInfo.flatNumber);
+      handleFormValueChange('entrance', currentAddressInfo.entranceNumber);
+      handleFormValueChange('buildingCode', currentAddressInfo.entranceCode);
+      handleFormValueChange('floor', currentAddressInfo.floar);
+    }
+  }, [adresses, dropAddress, handleFormValueChange]);
 
   return (
     <section className='order-page__section'>
       <h3 className='order-page__header'>Спосіб отримання замовлення</h3>
-      {/*<section className="order-page__section-inputs">
-        <label className='inputText'>
-          <span>Збережені адреси</span>
-          <CustomSelect placeholder="Оберіть адресу" value={selectedAddress} options={addressOptions} />
-        </label>
-  </section>*/}
-      <section className='order-page__section-inputs order-page__section-inputs-row'>
-        {adresses.length === 0 ? (
-          <>
-            <InputText
-              name={'Вулиця'}
-              placeholder={'Вулиця'}
-              value={street}
-              onChange={(value) => handleFormValueChange('street', value)}
-            />
-            <InputText
-              name={'№ Будинку'}
-              placeholder={'№ Будинку'}
-              value={houseNumber}
-              onChange={(value) => handleFormValueChange('houseNumber', value)}
-            />
-          </>
-        ) : (
+
+      {adresses.length > 0 && (
+        <label className='address-label'>
+          Збережні адреси
           <CustomSelect
             className={'cityDrop address'}
-            placeholder={'Збережні адреси'}
+            placeholder={'Оберіть адресу'}
             options={addressOptions}
             value={dropAddress}
             handleChange={handleChangeAddress}
           />
-        )}
+        </label>
+      )}
+
+      <section className='order-page__section-inputs order-page__section-inputs-row'>
+        <>
+          <InputText
+            name={'Вулиця'}
+            placeholder={'Вулиця'}
+            value={currentAddressInfo && dropAddress ? currentAddressInfo.streetName : street}
+            onChange={(value) => handleFormValueChange('street', value)}
+            disabled={isSavedAddressSelected}
+          />
+          <InputText
+            name={'№ Будинку'}
+            placeholder={'№ Будинку'}
+            value={currentAddressInfo && dropAddress ? currentAddressInfo.homeNumber : houseNumber}
+            onChange={(value) => handleFormValueChange('houseNumber', value)}
+            disabled={isSavedAddressSelected}
+          />
+        </>
       </section>
       <section className='order-page__section-inputs'>
         <RadioButton
@@ -96,6 +123,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
             },
           ]}
           selectedOption={howToReciveOrder}
+          disabled={isSavedAddressSelected}
           onOptionChange={(event) => {
             if (event.target.value === 'Самовивіз') {
               setDeliveryPrice(0);
@@ -112,32 +140,47 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
           <InputText
             name={'Квартира'}
             placeholder={'№ Квартири'}
-            value={apartment}
+            value={
+              dropAddress && currentAddressInfo && currentAddressInfo.flatNumber
+                ? currentAddressInfo.flatNumber
+                : apartment
+            }
             onChange={(value) => handleFormValueChange('apartment', value)}
+            disabled={isSavedAddressSelected}
           />
 
           <InputText
             name={'Парадна'}
             placeholder={'№ Парадної'}
-            value={entrance}
+            value={
+              dropAddress && currentAddressInfo && currentAddressInfo.entranceNumber
+                ? currentAddressInfo.entranceNumber
+                : entrance
+            }
             onChange={(value) => handleFormValueChange('entrance', value)}
+            disabled={isSavedAddressSelected}
           />
           <InputText
             name={'Код'}
             placeholder={'Код'}
-            currentValue={
-              currentAddressInfo &&
-              currentAddressInfo.entranceCode &&
-              currentAddressInfo.entranceCode
+            value={
+              dropAddress && currentAddressInfo && currentAddressInfo.entranceCode
+                ? currentAddressInfo.entranceCode
+                : buildingCode
             }
-            value={buildingCode}
             onChange={(value) => handleFormValueChange('buildingCode', value)}
+            disabled={isSavedAddressSelected}
           />
           <InputText
             name={'Поверх'}
             placeholder={'Поверх'}
-            value={floor}
+            value={
+              dropAddress && currentAddressInfo && currentAddressInfo.floar
+                ? currentAddressInfo.floar
+                : floor
+            }
             onChange={(value) => handleFormValueChange('floor', value)}
+            disabled={isSavedAddressSelected}
           />
         </section>
       )}
