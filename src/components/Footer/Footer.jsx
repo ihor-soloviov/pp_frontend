@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Container from '../Container/Container';
 
 //Import Images
-import logo from '../../assets/logo/logo.png';
+import logo from '../../assets/logo/logoBlackText.svg';
 import mastercardIco from '../../assets/logo/mastercard.svg';
 import visaIco from '../../assets/logo/visa.svg';
 import liqpayIco from '../../assets/logo/liqpay.svg';

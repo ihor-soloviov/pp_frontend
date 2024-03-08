@@ -32,7 +32,6 @@ export const Categories = observer(({ setProducts }) => {
     }
   }, [currentCategoryId]);
 
-
   if (categories) {
     return (
       <div className='categories__inner'>
@@ -56,4 +55,3 @@ export const Categories = observer(({ setProducts }) => {
     )
   }
 })
-

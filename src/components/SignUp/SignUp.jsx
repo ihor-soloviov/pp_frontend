@@ -17,6 +17,7 @@ import BtnMain from "../Buttons/BtnMain";
 
 //Import Style
 import "./singup.scss";
+import { DotsLoader } from "../Loader/DotsLoader";
 
 const SignUp = observer(() => {
   //Tools
@@ -117,7 +118,7 @@ const SignUp = observer(() => {
             disabled={btnNext}
             onClick={stepButtonHandler}
           >
-            {isButtonLoading ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : "Продовжити"}
+            {isButtonLoading ? <DotsLoader /> : "Продовжити"}
           </BtnMain>
           <div className="loader"></div>
         </React.Fragment>
@@ -147,7 +148,7 @@ const SignUp = observer(() => {
             disabled={btnNext}
             onClick={stepButtonHandler}
           >
-            {isButtonLoading ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : "Продовжити"}
+            {isButtonLoading ? <DotsLoader /> : "Продовжити"}
           </BtnMain>
         </React.Fragment>
       );
@@ -176,7 +177,7 @@ const SignUp = observer(() => {
             disabled={btnNext}
             onClick={stepButtonHandler}
           >
-            {isButtonLoading ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : "Продовжити"}
+            {isButtonLoading ? <DotsLoader /> : "Продовжити"}
           </BtnMain>
         </React.Fragment>
       );

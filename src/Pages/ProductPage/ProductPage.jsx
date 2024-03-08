@@ -17,6 +17,7 @@ import { url } from "../../api";
 import "./ProductPage.scss";
 import { observer } from "mobx-react-lite";
 import menuStore from "../../store/menu-store";
+import { DotsLoader } from "../../components/Loader/DotsLoader";
 
 const ProductPage = observer(() => {
   const { id } = useParams();
@@ -181,7 +182,7 @@ const ProductPage = observer(() => {
     );
   } else {
     return (
-      <NotFound />
+      <DotsLoader />
     );
   }
 });
