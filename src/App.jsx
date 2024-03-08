@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 
 //Import Routing
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 //Import MOBX
 import { observer } from 'mobx-react-lite';
@@ -32,6 +32,7 @@ import SignUp from './components/SignUp/SignUp';
 import { MobileMenu } from "./components/Header/HeaderComponents/MobileMenu";
 import { ActionPopup } from './components/ActionPopup/ActionPopup';
 import { Loader } from './components/Loader/Loader';
+import userStore from './store/user-store';
 
 const tagManagerArgs = {
   gtmId: 'GTM-5CBQPKC',
@@ -40,12 +41,23 @@ const tagManagerArgs = {
 TagManager.initialize(tagManagerArgs);
 
 const App = observer(() => {
+  const location = useLocation();
+  const navigate = useNavigate();
   //Store
   const { authModalHandler, authModal, isLoader, setLoader } = modalsStore;
+  const { userLogout } = userStore
 
   useEffect(() => {
     setLoader();
   }, []);
+
+  useEffect(() => {
+    if (location.pathname === '/profile/signout') {
+      userLogout()
+      navigate('/')
+    }
+  }, [location])
+
 
   return (
     <React.Fragment>
@@ -69,10 +81,7 @@ const App = observer(() => {
         <Route path='/contact' element={<Contact />} />
         <Route path='/offero' element={<Offero />} />
         <Route path='/payment-and-delivery' element={<PaymentAndDelivery />} />
-        <Route path='/profile'>
-          <Route index element={<Profile />} />
-          <Route path=':item' element={<Profile />} />
-        </Route>
+        <Route path='/profile/*' element={<Profile />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

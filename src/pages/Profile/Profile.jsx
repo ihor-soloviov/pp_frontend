@@ -2,26 +2,21 @@ import React, { useState } from 'react';
 import Container from '../../components/Container/Container';
 import ProfileGrid from '../../components/ProfileGrid/ProfileGrid';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { SwitchComponents } from '../../components/SwitchComponents/SwitchComponents';
-import { observer } from 'mobx-react-lite';
-import userStore from '../../store/user-store';
+import { useLocation, Routes, Route } from 'react-router-dom';
+import InfoSection from '../../components/InfoSection/InfoSection';
+import Addresses from '../../components/Addresses/Adresses';
+import Favorites from '../../components/Favorites/Favorites';
+import Orders from '../../components/Orders/Orders';
+import Bonus from '../../components/Bonus/Bonus';
+import MobileSidebar from '../../components/MobileSidebar/MobileSidebar';
 
-const Profile = observer(() => {
+const Profile = React.memo(() => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate()
   const pathlink = location.pathname.replace('/profile/', '');
-
-  const { userLogout } = userStore
 
   const handleSidebar = () => {
     setIsSidebarClosed((prev => !prev));
-    console.log(pathlink)
-    if (pathlink === 'Вихід') {
-      userLogout();
-      navigate('/')
-    }
   };
 
   return (
@@ -29,11 +24,14 @@ const Profile = observer(() => {
       <Container>
         <ProfileGrid>
           <Sidebar pathlink={pathlink} />
-          <SwitchComponents
-            pathlink={pathlink}
-            handleSidebar={handleSidebar}
-            isSidebarClosed={isSidebarClosed}
-          />
+          <Routes>
+            <Route index element={<MobileSidebar handleSidebar={handleSidebar} />} /> {/* Головна сторінка профілю */}
+            <Route path="info" element={<InfoSection handleSidebar={handleSidebar} isSidebarClosed={isSidebarClosed} />} /> {/* Головна сторінка профілю */}
+            <Route path="addresses" element={<Addresses handleSidebar={handleSidebar} />} />
+            <Route path='history' element={<Orders handleSidebar={handleSidebar} />} />
+            <Route path="favourite" element={<Favorites handleSidebar={handleSidebar} />} />
+            <Route path='bonuses' element={<Bonus handleSidebar={handleSidebar} />} />
+          </Routes>
         </ProfileGrid>
       </Container>
     </>
