@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { url } from '../../api';
 import { headers } from '../../utils/menu';
-
+import popupActionsStore from '../../store/popup-action-store';
 import './AddressModal.scss';
 import { observer } from 'mobx-react-lite';
 
@@ -28,6 +28,8 @@ const AddressModal = observer(
     const [currentAddressState, setCurrentAddressState] = useState(null);
     const [currentOption, setCurrentOption] = useState(null);
     const [selectedOption, setSelectedOption] = useState('house');
+    const { setActions } = popupActionsStore;
+
     const currentAddress =
       adresses && Array.isArray(adresses)
         ? adresses.find((address) => address.addressId === currentAddressId)
@@ -40,18 +42,38 @@ const AddressModal = observer(
     const formSubmit = async (data) => {
       try {
         if (!isEdit) {
-          const dataWithId = { ...data, adressType: selectedOption, addressId: nanoid() };
+          const dataWithId = {
+            ...data,
+            adressType: selectedOption,
+            entranceCode: selectedOption !== 'house' ? data.entranceCode : '',
+            entranceNumber: selectedOption !== 'house' ? data.entranceNumber : '',
+            flatNumber: selectedOption !== 'house' ? data.flatNumber : '',
+            floar: selectedOption !== 'house' ? data.floar : '',
+            addressId: nanoid(),
+          };
           const JSONdata = JSON.stringify({ token: token, data: dataWithId });
 
-          await axios.post(`${url}/api/addresses`, JSONdata, {
+          const response = await axios.post(`${url}/api/addresses`, JSONdata, {
             headers,
           });
+          if (response.status === 200) {
+            setActions('savedAddress');
+          }
+
+          return;
         }
-        await updateAddress(token, {
+        const response = await updateAddress(token, {
           ...data,
           adressType: selectedOption,
+          entranceCode: selectedOption !== 'house' ? data.entranceCode : '',
+          entranceNumber: selectedOption !== 'house' ? data.entranceNumber : '',
+          flatNumber: selectedOption !== 'house' ? data.flatNumber : '',
+          floar: selectedOption !== 'house' ? data.floar : '',
           addressId: currentAddressId,
         });
+        if (response.status === 200) {
+          setActions('updatedAddress');
+        }
       } catch (error) {
         console.log(error);
       } finally {
