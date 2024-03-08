@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import Container from '../../components/Container/Container';
 import ProfileGrid from '../../components/ProfileGrid/ProfileGrid';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import { useLocation } from 'react-router-dom';
-import { SwitchComponents } from '../../components/SwitchComponents/SwitchComponents';
+import { useLocation, Routes, Route } from 'react-router-dom';
+import InfoSection from '../../components/InfoSection/InfoSection';
+import Addresses from '../../components/Addresses/Adresses';
+import Favorites from '../../components/Favorites/Favorites';
+import Orders from '../../components/Orders/Orders';
+import Bonus from '../../components/Bonus/Bonus';
+import MobileSidebar from '../../components/MobileSidebar/MobileSidebar';
 
 const Profile = React.memo(() => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
@@ -19,11 +24,14 @@ const Profile = React.memo(() => {
       <Container>
         <ProfileGrid>
           <Sidebar pathlink={pathlink} />
-          <SwitchComponents
-            pathlink={pathlink}
-            handleSidebar={handleSidebar}
-            isSidebarClosed={isSidebarClosed}
-          />
+          <Routes>
+            <Route index element={<MobileSidebar handleSidebar={handleSidebar} />} />
+            <Route path="info" element={<InfoSection handleSidebar={handleSidebar} isSidebarClosed={isSidebarClosed} />} />
+            <Route path="addresses" element={<Addresses handleSidebar={handleSidebar} />} />
+            <Route path='history' element={<Orders handleSidebar={handleSidebar} />} />
+            <Route path="favourite" element={<Favorites handleSidebar={handleSidebar} />} />
+            <Route path='bonuses' element={<Bonus handleSidebar={handleSidebar} />} />
+          </Routes>
         </ProfileGrid>
       </Container>
     </>

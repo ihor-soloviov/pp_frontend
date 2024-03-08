@@ -1,8 +1,10 @@
+@import '../../style/colors.scss';
+
 /* variables */
 :root {
   --about-bg-color: #12130f;
   --about-text-color: rgba(224, 224, 224, 0.8);
-  --about-icon-color: #df643a;
+  --about-icon-color: #ff5124;
 }
 
 /* base */
@@ -138,7 +140,7 @@ body {
   font-size: 16px;
   font-weight: 400;
   line-height: 150%;
-  color: #62d9f1;
+  color: $accentColor;
 }
 
 .about-top-title {

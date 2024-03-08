@@ -1,3 +1,5 @@
+@import '../../style/colors.scss';
+
 .checkbox-container {
   position: relative;
   display: inline-block;
@@ -42,14 +44,14 @@
   top: 4px;
   width: 5px;
   height: 10px;
-  border: solid #000000;
+  border: solid $btnTextColor;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 
 .checkbox-container input[type='checkbox']:checked + .checkmark {
-  background: #62d9f1;
-  border: 1px solid #62d9f1;
+  background: $accentColor;
+  border: 1px solid $accentColor;
 }
 
 .checkbox-label {

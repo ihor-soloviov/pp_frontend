@@ -1,3 +1,5 @@
+@import '../../style/colors.scss';
+
 .modal-content__info {
   padding-top: 35px;
 }
@@ -79,7 +81,7 @@
   font-size: 16px;
   padding: 13px 127px;
   margin-top: 16px;
-  background-color: #62d9f1;
+  background-color: $accentColor;
   border-radius: 7px;
 }
 .confirm-text {

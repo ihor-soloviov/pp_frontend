@@ -9,6 +9,7 @@ import { Categories } from "../components/Categories/Categories";
 
 //Impost styles
 import "./menu.scss";
+import { Loading } from "../components/Loading/Loading";
 
 const Menu = observer(() => {
   const [products, setProducts] = useState(null);
@@ -27,16 +28,19 @@ const Menu = observer(() => {
         <h1 className="title__h1">Куштуй тільки найсмачніше</h1>
         <Categories setProducts={setProducts} />
       </div>
-      {products && (
+      {products
+        ?
         <div className="menu__products">
           {products.map((product) => (
             <React.Fragment key={product.product_id}>
               <ProductCard product={product} />
             </React.Fragment>
           )
+
           )}
         </div>
-      )}
+        : <Loading />
+      }
     </React.Fragment>
   );
 });

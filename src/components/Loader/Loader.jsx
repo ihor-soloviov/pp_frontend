@@ -1,7 +1,7 @@
 import React from "react";
 import "./Loader.scss";
 
-const Loader = () => {
+export const Loader = () => {
   return (
     <div className="loader__wrapper">
       <section className="anim-inner">
@@ -11,4 +11,3 @@ const Loader = () => {
   );
 };
 
-export default Loader;

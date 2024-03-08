@@ -1,157 +1,160 @@
+@import '../../style/colors.scss';
+
 .contact {
-    margin-top: 130px;
+  margin-top: 130px;
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+  }
+
+  &__list {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 43px 0;
+  }
+
+  &__item {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    &-title {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 150%;
+      /* identical to box height, or 21px */
+
+      /* 500 */
+
+      color: #92939a;
+    }
+
+    &-link {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+      /* identical to box height, or 24px */
+
+      text-align: right;
+
+      color: #000000;
+    }
+  }
+
+  &__map {
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    background-color: #92939a;
+    height: 524px;
+    overflow: hidden;
+  }
+
+  &__section {
+    margin-top: 20px;
+  }
+
+  &__btns {
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+  }
+
+  &__text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #92939a;
+  }
+
+  &__btn {
+    cursor: pointer;
+    padding: 10px 16px;
+    width: fit-content;
+    transition: linear 0.25s;
+    border: 1px solid #d9d9de;
+    border-radius: 7px;
+
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    color: #49484d;
+
+    svg {
+      margin-left: 7px;
+    }
+
+    &:hover {
+      color: $btnTextColor;
+      border: 1px solid #12130f;
+    }
+
+    &-active {
+      background: $accentColor;
+      border: 1px solid $accentColor;
+      color: $btnTextColor;
+
+      &:hover {
+        border: 1px solid $accentColorHover;
+        background-color: $accentColorHover;
+      }
+      &:active {
+        border: 1px solid $accentColorActive;
+        background-color: $accentColorActive;
+      }
+    }
+
+    &:disabled {
+      background: #f3f3f5;
+      color: #b4b4bc;
+
+      &:hover {
+        background: #f3f3f5;
+        color: #b4b4bc;
+        border: 1px solid #d9d9de;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .contact {
+    margin-top: 40px;
 
     &__content {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        align-items: center;
-    }
-
-    &__list {
-        margin-top: 50px;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 43px 0;
-    }
-
-    &__item {
-        width: fit-content;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-
-        &-title {
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 150%;
-            /* identical to box height, or 21px */
-
-            /* 500 */
-
-            color: #92939a;
-        }
-
-        &-link {
-            ;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 150%;
-            /* identical to box height, or 24px */
-
-            text-align: right;
-
-            color: #000000;
-        }
-    }
-
-    &__map {
-        width: 100%;
-        height: 100%;
-        border-radius: 24px;
-        background-color: #92939a;
-        height: 524px;
-        overflow: hidden;
-    }
-
-    &__section {
-        margin-top: 20px;
-    }
-
-    &__btns {
-        margin-top: 30px;
-        display: flex;
-        gap: 12px;
-    }
-
-    &__text {
-        ;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 150%;
-        color: #92939a;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      max-width: 700px;
+      margin: 0 auto;
     }
 
     &__btn {
-        cursor: pointer;
-        padding: 10px 16px;
-        width: fit-content;
-        transition: linear 0.25s;
-        border: 1px solid #d9d9de;
-        border-radius: 7px;
-
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 150%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-
-        color: #49484d;
-
-        svg {
-            margin-left: 7px;
-        }
-
-        &:hover {
-            color: #12130f;
-            border: 1px solid #12130f;
-        }
-
-        &-active {
-            background: #62d9f1;
-            border: 1px solid #62d9f1;
-            color: #12130f;
-
-            &:hover {
-                border: 1px solid #62d9f1;
-            }
-        }
-
-        &:disabled {
-            background: #f3f3f5;
-            color: #b4b4bc;
-
-            &:hover {
-                background: #f3f3f5;
-                color: #b4b4bc;
-                border: 1px solid #d9d9de;
-            }
-        }
+      max-width: 163px;
+      width: 100%;
+      flex-shrink: 1;
     }
-}
 
-
-@media screen and (max-width: 1024px) {
-    .contact {
-        margin-top: 40px;
-
-        &__content {
-            grid-template-columns: 1fr;
-            gap: 40px;
-            max-width: 700px;
-            margin: 0 auto;
-
-        }
-
-        &__btn {
-          max-width: 163px;
-          width: 100%;
-          flex-shrink: 1;
-        }
-
-        &__list {
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        &__map {
-            aspect-ratio: 1 / 1;
-            height: auto;
-            width: 100%;
-            margin: 0 auto;
-            gap: 40px;
-        }
+    &__list {
+      grid-template-columns: 1fr;
+      gap: 30px;
     }
+
+    &__map {
+      aspect-ratio: 1 / 1;
+      height: auto;
+      width: 100%;
+      margin: 0 auto;
+      gap: 40px;
+    }
+  }
 }

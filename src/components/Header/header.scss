@@ -1,3 +1,5 @@
+@import '../../style/colors.scss';
+
 .header {
   position: sticky;
   top: 0;
@@ -17,7 +19,7 @@
     gap: 45px;
 
     .navLink-active {
-      color: #62d9f1;
+      color: $accentColor;
     }
   }
 

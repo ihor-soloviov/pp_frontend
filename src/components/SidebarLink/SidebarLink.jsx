@@ -12,6 +12,7 @@ const SidebarLink = observer(({
   handleSidebar,
 }) => {
 
+
   const links = [
     "info",
     "favourite",
@@ -21,6 +22,7 @@ const SidebarLink = observer(({
     "signout",
   ];
 
+  const isSignOut = links[index] === 'signout';
 
   return (
     <li className="profile_sidebar--nav__item sidebar-mobile__item--mobile">
@@ -29,7 +31,7 @@ const SidebarLink = observer(({
         onClick={handleSidebar}
         className={classNames(
           "profile_sidebar--nav__link sidebar-mobile__link",
-          { sign_out: children === "Вихід" },
+          { sign_out: isSignOut },
           { active: pathlink === links[index] }
         )}
       >

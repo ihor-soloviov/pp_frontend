@@ -1,6 +1,8 @@
+@import '../../style/colors.scss';
+
 .radio-button {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+
   gap: 16px;
 
   &-column {
@@ -36,10 +38,10 @@
       opacity: 0;
 
       &:checked + span {
-        border-color: #62d9f1;
+        border-color: $accentColor;
 
         &::before {
-          background-color: #62d9f1;
+          background-color: $accentColor;
         }
       }
     }

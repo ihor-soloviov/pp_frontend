@@ -10,13 +10,13 @@ import Container from "../../components/Container/Container";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Popup from "../../components/Popup/Popup";
 import ModificatorsPopup from "./ModificatorsPopup";
-import NotFound from "../NotFound/NotFound";
 import { url } from "../../api";
 
 //Import styles
 import "./ProductPage.scss";
 import { observer } from "mobx-react-lite";
 import menuStore from "../../store/menu-store";
+import { DotsLoader } from "../../components/Loader/DotsLoader";
 
 const ProductPage = observer(() => {
   const { id } = useParams();
@@ -181,7 +181,7 @@ const ProductPage = observer(() => {
     );
   } else {
     return (
-      <NotFound />
+      <DotsLoader />
     );
   }
 });

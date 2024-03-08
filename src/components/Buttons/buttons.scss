@@ -1,3 +1,5 @@
+@import '../../style/colors.scss';
+
 button {
   outline: none;
   border: none;
@@ -5,14 +7,13 @@ button {
   height: fit-content;
 }
 
-
 .btn {
 }
 
 .btn-main {
   cursor: pointer;
   transition: linear 0.25s;
-  background: #62d9f1;
+  background: $accentColor;
   border-radius: 7px;
   padding: 13px 24px;
   font-weight: 500;
@@ -23,15 +24,15 @@ button {
   justify-content: center;
   text-align: center;
 
-  color: #12130f;
+  color: $btnTextColor;
   svg {
     margin-left: 7px;
   }
   &:hover {
-    background: #8aebff;
+    background: $accentColorHover;
   }
   &:active {
-    background: #37ceed;
+    background: $accentColorActive;
   }
   &:disabled {
     background: #f3f3f5;
@@ -69,7 +70,6 @@ button {
   &:disabled {
     background: #f3f3f5;
     color: #b4b4bc;
-   
   }
 
   &-fw {

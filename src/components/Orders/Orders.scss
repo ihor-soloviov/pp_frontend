@@ -1,3 +1,5 @@
+@import '../../style/colors.scss';
+
 .order {
   border-radius: 15px;
   background-color: #f3f3f5;
@@ -56,8 +58,8 @@
   margin-left: 16px;
   font-size: 12px;
   padding: 2px 6px;
-
-  background-color: #62d9f1;
+  color: $btnTextColor;
+  background-color: $accentColor;
   border-radius: 4px;
 
   @media (max-width: 768px) {
