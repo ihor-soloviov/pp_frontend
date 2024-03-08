@@ -52,6 +52,7 @@ const App = observer(() => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
     if (location.pathname === '/profile/signout') {
       userLogout()
       navigate('/')
