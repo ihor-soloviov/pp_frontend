@@ -10,7 +10,6 @@ import Container from "../../components/Container/Container";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Popup from "../../components/Popup/Popup";
 import ModificatorsPopup from "./ModificatorsPopup";
-import NotFound from "../NotFound/NotFound";
 import { url } from "../../api";
 
 //Import styles
