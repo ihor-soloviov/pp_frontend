@@ -1,26 +1,26 @@
-import axios from "axios";
-import { url } from "../api";
-import { add_to_cart } from "../gm4";
-import shoppingCartStore from "../store/shoping-cart-store";
-import popupActionsStore from "../store/popup-action-store";
+import axios from 'axios';
+import { url } from '../api';
+import { add_to_cart } from '../gm4';
+import shoppingCartStore from '../store/shoping-cart-store';
+import popupActionsStore from '../store/popup-action-store';
 
 const { addProduct } = shoppingCartStore;
 const { setActions } = popupActionsStore;
 
-const headers = {
-  "Access-Control-Allow-Origin": "*",
-  "Content-Type": "application/json",
+export const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Content-Type': 'application/json',
 };
 
 export const handleModificatorChange = (newModificator, setSelectedModificators) => {
-  setSelectedModificators(prev => {
-    const index = prev.findIndex(modificator => modificator.group === newModificator.group);
+  setSelectedModificators((prev) => {
+    const index = prev.findIndex((modificator) => modificator.group === newModificator.group);
 
     if (index !== -1) {
-      if (newModificator.name.toLowerCase().includes("без")) {
+      if (newModificator.name.toLowerCase().includes('без')) {
         return prev.filter((_, idx) => idx !== index);
       } else {
-        return prev.map((modificator, idx) => idx === index ? newModificator : modificator);
+        return prev.map((modificator, idx) => (idx === index ? newModificator : modificator));
       }
     } else {
       return [...prev, newModificator];
@@ -29,7 +29,7 @@ export const handleModificatorChange = (newModificator, setSelectedModificators)
 };
 
 export const addToCartHandler = (product, count) => {
-  const { product_name, price, out, category_name, product_id, mods } = product
+  const { product_name, price, out, category_name, product_id, mods } = product;
   addProduct({
     name: product_name,
     price: price,
@@ -38,21 +38,15 @@ export const addToCartHandler = (product, count) => {
     weight: out,
     category: category_name,
     id: product_id,
-    mods
+    mods,
   });
-  add_to_cart(
-    product_name,
-    product_id,
-    price * count,
-    category_name,
-    count
-  );
+  add_to_cart(product_name, product_id, price * count, category_name, count);
 
-  setActions("addToCard");
+  setActions('addToCard');
   setTimeout(() => {
-    setActions("");
+    setActions('');
   }, 2000);
-}
+};
 
 export const getCategories = async () => {
   try {
@@ -62,23 +56,22 @@ export const getCategories = async () => {
     }
     return response.data.response;
   } catch (error) {
-    console.error("Помилка при отриманні категорій:", error);
+    console.error('Помилка при отриманні категорій:', error);
     return [];
   }
 };
 
 export const getProducts = async (id, setProducts) => {
   try {
-
     const response = await axios.get(`${url}/api/products/${id}`, { headers });
     if (!response?.data) {
-      return
+      return;
     }
 
     const productsData = response.data;
     setProducts(productsData);
   } catch (error) {
-    console.error("Помилка при отриманні продуктів:", error);
+    console.error('Помилка при отриманні продуктів:', error);
   }
 };
 
@@ -90,7 +83,6 @@ export const getProductById = async (id, setProduct) => {
     if (product.data) {
       setProduct(product.data);
     }
-
   } catch (error) {
     console.error(error);
   }

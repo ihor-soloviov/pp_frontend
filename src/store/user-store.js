@@ -1,4 +1,4 @@
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable, reaction } from 'mobx';
 
 class UserStore {
   isAuthenticated = false;
@@ -10,7 +10,7 @@ class UserStore {
   favoritProducts = [];
   adresses = [];
   dateOfBirth = null;
-  avatar = "https://cdn-icons-png.flaticon.com/512/552/552721.png";
+  avatar = 'https://cdn-icons-png.flaticon.com/512/552/552721.png';
 
   constructor() {
     makeAutoObservable(this);
@@ -20,25 +20,25 @@ class UserStore {
 
     reaction(
       () => this.userDataForLocalStorage,
-      userData => localStorage.setItem("userData", JSON.stringify(userData))
+      (userData) => localStorage.setItem('userData', JSON.stringify(userData)),
     );
 
     reaction(
       () => this.favoritProducts.slice(), // Використовуйте .slice() для створення копії масиву, якщо необхідно
       (favoritProducts) => {
         if (this.isAuthenticated) {
-          localStorage.setItem("favoritProducts", JSON.stringify(favoritProducts));
+          localStorage.setItem('favoritProducts', JSON.stringify(favoritProducts));
         }
-      }
+      },
     );
 
     reaction(
       () => this.adresses.slice(),
-      adresses => {
+      (adresses) => {
         if (this.isAuthenticated) {
-          localStorage.setItem("user_adresses", JSON.stringify(adresses));
+          localStorage.setItem('user_adresses', JSON.stringify(adresses));
         }
-      }
+      },
     );
   }
 
@@ -48,24 +48,24 @@ class UserStore {
   }
 
   loadUserDataFromLocalStorage = () => {
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData) {
       Object.assign(this, userData);
     }
-  }
+  };
 
   loadFavoritesFromLocalStorage() {
-    const favoritProducts = JSON.parse(localStorage.getItem("favoritProducts"));
+    const favoritProducts = JSON.parse(localStorage.getItem('favoritProducts'));
     if (favoritProducts) {
       this.favoritProducts = favoritProducts;
     }
   }
 
   loadAddressesFromLocalStorage() {
-    const addressesFromLS = localStorage.getItem("user_adresses");
-    if (!addressesFromLS || addressesFromLS === "undefined") {
+    const addressesFromLS = localStorage.getItem('user_adresses');
+    if (!addressesFromLS || addressesFromLS === 'undefined') {
       this.adresses = [];
-      return
+      return;
     }
 
     this.adresses = JSON.parse(addressesFromLS);
@@ -76,11 +76,11 @@ class UserStore {
       return;
     }
     this.avatar = avatarUrl;
-  }
+  };
 
   changePhoneNumber = (newNumber) => {
     this.phone = newNumber;
-  }
+  };
 
   setUserDataToStore = ({
     name,
@@ -90,14 +90,14 @@ class UserStore {
     promocode40,
     favorites,
     addresses,
-    dateOfBirth
+    dateOfBirth,
   }) => {
-    console.log('setUserDataToStore')
+    console.log('setUserDataToStore');
     this.isAuthenticated = true;
     this.name = name;
     this.phone = phone;
     this.email = email;
-    this.dateOfBirth = dateOfBirth
+    this.dateOfBirth = dateOfBirth;
     this.token = token;
     this.promocode40 = promocode40;
     this.adresses = addresses;
@@ -111,7 +111,7 @@ class UserStore {
     this.email = null;
     this.token = null;
     this.promocode40 = false;
-    this.dateOfBirth = null
+    this.dateOfBirth = null;
     this.adresses = [];
   };
 
@@ -122,7 +122,7 @@ class UserStore {
 
   removeFromFavorit = (productId) => {
     this.favoritProducts = this.favoritProducts.filter(
-      (product) => product.product_id !== productId
+      (product) => product.product_id !== productId,
     );
   };
 
@@ -130,10 +130,8 @@ class UserStore {
     this.adresses = addresses;
   };
 
-  removeAdresses = (addressName) => {
-    this.adresses = this.adresses.filter(
-      (adress) => adress.adressName !== addressName
-    );
+  removeAdresses = (addressId) => {
+    this.adresses = this.adresses.filter((adress) => adress.addressId !== addressId);
   };
 
   userPromocode = () => {
