@@ -40,6 +40,7 @@ export const HeaderRight = observer(() => {
           <div
             className={classNames("header__hamburger", { "header__hamburger--active": isMobileMenu })}
             onClick={() => {
+
               if (window.innerWidth < 1000) {
                 mobileMenuHandler()
               } else {

@@ -17,21 +17,20 @@ import Order from './Pages/Order/Order';
 import { Main } from './Pages/Main/Main';
 import MenuPage from './Pages/MenuPage/MenuPage';
 import Contact from './Pages/Contact/Contact';
+import PaymentAndDelivery from './Pages/PaymentAndDelivery/PaymentAndDelivery';
+import Offero from './Pages/Offero/Offero';
+import NotFound from './Pages/NotFound/NotFound';
 
 //Import components
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-
-//Import Utils
-import TagManager from 'react-gtm-module';
-import PaymentAndDelivery from './Pages/PaymentAndDelivery/PaymentAndDelivery';
-import Offero from './Pages/Offero/Offero';
-import NotFound from './Pages/NotFound/NotFound';
 import Popup from './components/Popup/Popup';
 import SignUp from './components/SignUp/SignUp';
 import { MobileMenu } from "./components/Header/HeaderComponents/MobileMenu";
 import { ActionPopup } from './components/ActionPopup/ActionPopup';
 import { Loader } from './components/Loader/Loader';
+//Import Utils
+import TagManager from 'react-gtm-module';
 import userStore from './store/user-store';
 
 const tagManagerArgs = {
@@ -52,6 +51,7 @@ const App = observer(() => {
   }, []);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (location.pathname === '/profile/signout') {
       userLogout()
       navigate('/')
