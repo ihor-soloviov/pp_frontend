@@ -25,8 +25,8 @@ const Profile = React.memo(() => {
         <ProfileGrid>
           <Sidebar pathlink={pathlink} />
           <Routes>
-            <Route index element={<MobileSidebar handleSidebar={handleSidebar} />} /> {/* Головна сторінка профілю */}
-            <Route path="info" element={<InfoSection handleSidebar={handleSidebar} isSidebarClosed={isSidebarClosed} />} /> {/* Головна сторінка профілю */}
+            <Route index element={<MobileSidebar handleSidebar={handleSidebar} />} />
+            <Route path="info" element={<InfoSection handleSidebar={handleSidebar} isSidebarClosed={isSidebarClosed} />} />
             <Route path="addresses" element={<Addresses handleSidebar={handleSidebar} />} />
             <Route path='history' element={<Orders handleSidebar={handleSidebar} />} />
             <Route path="favourite" element={<Favorites handleSidebar={handleSidebar} />} />
