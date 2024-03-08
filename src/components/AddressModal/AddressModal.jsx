@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import Popup from '../Popup/Popup';
-
 import hover from '../../../src/assets/radiobuttons/hover.svg';
 import selected from '../../../src/assets/radiobuttons/selected.svg';
 import { updateAddress } from '../../utils/addresses';
@@ -11,6 +9,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { url } from '../../api';
+import { headers } from '../../utils/menu';
 
 import './AddressModal.scss';
 import { observer } from 'mobx-react-lite';
@@ -26,11 +25,13 @@ const AddressModal = observer(
     setCurrentAddressId,
   }) => {
     const { token, addToAdresses } = userStore;
-
     const [currentAddressState, setCurrentAddressState] = useState(null);
-
     const [currentOption, setCurrentOption] = useState(null);
     const [selectedOption, setSelectedOption] = useState('house');
+    const currentAddress =
+      adresses && Array.isArray(adresses)
+        ? adresses.find((address) => address.addressId === currentAddressId)
+        : null;
 
     const handleOptionChange = (event) => {
       setSelectedOption(event.target.value);
@@ -43,13 +44,9 @@ const AddressModal = observer(
           const JSONdata = JSON.stringify({ token: token, data: dataWithId });
 
           await axios.post(`${url}/api/addresses`, JSONdata, {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
+            headers,
           });
         }
-
         await updateAddress(token, {
           ...data,
           adressType: selectedOption,
@@ -95,14 +92,12 @@ const AddressModal = observer(
         addToAdresses({ address: values });
 
         formSubmit(values);
+
         isEdit && setIsEdit(!isEdit);
+
         setCurrentAddressId(null);
       },
     });
-    const currentAddress =
-      adresses && Array.isArray(adresses)
-        ? adresses.find((address) => address.addressId === currentAddressId)
-        : null;
 
     useEffect(() => {
       currentAddress && setCurrentAddressState(currentAddress);
@@ -130,6 +125,7 @@ const AddressModal = observer(
       };
       currentAddressState && setFormValues(currentAddress);
     }, [currentAddress, setFieldValue, currentAddressState]);
+
     return (
       <>
         <Popup

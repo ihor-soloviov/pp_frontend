@@ -8,7 +8,6 @@ import { getFlat, getStreet } from './utils';
 const CreatedAddress = observer(
   ({ adress, openModal, setIsAdressesUpdating, isEdit, setIsEdit, setCurrentAddressId }) => {
     const { token, removeAdresses } = userStore;
-
     const flat = getFlat(adress);
     const street = getStreet(adress.streetName, adress.homeNumber, flat);
 

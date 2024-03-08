@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import userStore from '../../store/user-store';
-
+import { headers } from '../../utils/menu';
 import AddressModal from '../AddressModal/AddressModal';
 import NewAddress from '../NewAddress/NewAddress';
 import CreatedAddress from '../CreatedAddress/CreatedAddress';
@@ -15,7 +15,6 @@ import { observer } from 'mobx-react-lite';
 
 const Addresses = observer(({ handleSidebar }) => {
   const { token, adresses, addToAdresses } = userStore;
-
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [currentAddressId, setCurrentAddressId] = useState(null);
@@ -30,10 +29,7 @@ const Addresses = observer(({ handleSidebar }) => {
         const dataToResponse = { token: token };
         const JSONdata = JSON.stringify(dataToResponse);
         const response = await axios.post(`${url}/api/auth`, JSONdata, {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-          },
+          headers,
         });
         if (!response?.data) {
           console.log('шоо');
@@ -54,6 +50,7 @@ const Addresses = observer(({ handleSidebar }) => {
   const handleModal = () => {
     setModalOpen((prev) => !prev);
   };
+
   return (
     <section className='grid_layout--main addresses'>
       <ProfileLink handleSidebar={handleSidebar}>Збережені адреси</ProfileLink>
