@@ -74,22 +74,20 @@ export const OrderPromo = observer(
             </label>
 
             {promocode40 && (
-              <BtnMain
-                name={'Застосувати'}
-                onClick={handleActivatePromoClick}
-                disabled={isPromotion}
-              />
+              <BtnMain onClick={handleActivatePromoClick} disabled={isPromotion}>
+                Застосувати
+              </BtnMain>
             )}
           </section>
         )}
         {promocode40 && (
           <div className='order-page__have-promocode'>
-            <span>{banner}</span>
+            <span className='promo-text'>{banner}</span>
             <div className='order-page__arrow'>
               <svg width='17' height='20' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <path
                   d='M9.16645 11.7814L12.7425 8.20535L13.6851 9.14802L8.49979 14.3334L3.31445 9.14802L4.25712 8.20535L7.83312 11.7814V3.66669H9.16645V11.7814Z'
-                  fill='#12130F'
+                  fill='#f8f9fb'
                 />
               </svg>
             </div>

@@ -179,6 +179,10 @@
   }
 }
 
+.promo-text {
+  color: $btnTextColor;
+}
+
 @media screen and (max-width: 1366px) {
   .order-page {
     &__content {
