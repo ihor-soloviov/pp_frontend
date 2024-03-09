@@ -9,15 +9,15 @@ const ModificatorsPopup = React.memo(({ groups, setSelectedModificators, addProd
       <div className='modificators-container'>
         {groups.length > 0 &&
           groups.map((group) => (
-            <>
-              <p className='mod-label'>{group.name}:</p> 
+            <div key={group.dish_modification_group_id}>
+              <p className='mod-label'>{group.name}:</p>
               <div className='modificators-inner' key={group.dish_modification_group_id}>
                 <GroupOfModificators
                   group={group}
                   setSelectedModificators={setSelectedModificators}
                 />
               </div>
-            </>
+            </div>
           ))}
       </div>
       <button

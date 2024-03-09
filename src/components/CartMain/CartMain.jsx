@@ -1,5 +1,5 @@
 //Import React
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import shoppingCartStore from '../../store/shoping-cart-store';
 
@@ -16,21 +16,6 @@ const CartMain = observer(() => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      // Блокируем задний скролл при открытии модального окна
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Восстанавливаем задний скролл при закрытии модального окна
-      document.body.style.overflow = 'auto';
-    }
-
-    // Очищаем обработчик события при размонтировании компонента
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen]);
 
   const popupError = useCallback((err) => {
     if (err) {

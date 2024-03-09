@@ -5,11 +5,35 @@ import ShoppingCartItem from '../ShoppingCartItem';
 import { begin_checkout } from '../../../gm4';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import BtnMain from '../../Buttons/BtnMain';
+import { useEffect } from 'react';
 export const Cart = ({ isOpen, setIsOpen, setError }) => {
   const { cartItems, totalPrice, deliveryPrice, itemCount } = shoppingCartStore;
   const navigate = useNavigate();
   const cartRoot = document.querySelector('#cart-root');
 
+  useEffect(() => {
+    const handleCloseModal = (event) => {
+      if (!event.target.closest('.shopping-cart')) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKeyPress = (event) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleCloseModal);
+      document.addEventListener('keydown', handleKeyPress);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleCloseModal);
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isOpen, setIsOpen]);
   return createPortal(
     <>
       <div className='shopping-cart'>
