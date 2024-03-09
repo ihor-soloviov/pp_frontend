@@ -14,7 +14,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
   const { adresses } = userStore;
 
   const addressOptions = [
-    { value: null, label: 'Не обрати' },
+    { value: null, label: 'Не обирати' },
     ...adresses.map((address) => ({
       value: address.addressId,
       label: address.adressName,
