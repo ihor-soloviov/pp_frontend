@@ -1,28 +1,26 @@
 //Import React
-import React from "react";
+import React from 'react';
 
 //Import components
-import Container from "../Container/Container";
-import { HeaderLeft } from "./HeaderComponents/HeaderLeft";
-import { HeaderNavigation } from "./HeaderComponents/HeaderNavigation ";
-import { HeaderRight } from "./HeaderComponents/HeaderRight";
-import "./header.scss";
+import Container from '../Container/Container';
+import { HeaderLeft } from './HeaderComponents/HeaderLeft';
+import { HeaderNavigation } from './HeaderComponents/HeaderNavigation ';
+import { HeaderRight } from './HeaderComponents/HeaderRight';
+import './header.scss';
 
 const Header = React.memo(() => {
-
+  console.log('render');
   return (
-    <header className="header">
+    <header className='header'>
       <Container>
-        <div className="header__content">
+        <div className='header__content'>
           <HeaderLeft />
           <HeaderNavigation />
-          <HeaderRight/>
+          <HeaderRight />
         </div>
       </Container>
     </header>
-  )
-
-
+  );
 });
 
 export default Header;
