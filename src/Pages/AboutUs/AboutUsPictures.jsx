@@ -211,56 +211,84 @@ const AboutUsPictures = () => {
       {location.pathname !== '/about-us' && (
         <section className='gallery-section'>
           <div className='gallery-container'>
-            <picture>
-              <source srcSet={img08desc} type='image/jpeg' media='(min-width:768px)' />
-              <LazyLoadImage effect='blur' src={img08} alt='' className='gallery-img' />
-            </picture>
+            <LazyLoadImage
+              className='gallery-img-mob desc'
+              src={img08desc}
+              type='image/jpeg'
+              media='(min-width:768px)'
+            />
+            <LazyLoadImage effect='blur' src={img08} alt='' className='gallery-img-mob' />
 
             <div className='gallery-img-wrap'>
-              <picture>
-                <source srcSet={img07desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img07} alt='' className='gallery-img' />
-              </picture>
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                src={img07desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img07} alt='' className='gallery-img-mob' />
 
-              <picture>
-                <source srcSet={img13desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img13} alt='' className='gallery-img' />
-              </picture>
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                srcSet={img13desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img13} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
-              <picture>
-                <source srcSet={img09desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img09} alt='' className='gallery-img' />
-              </picture>
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                src={img09desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img09} alt='' className='gallery-img-mob' />
 
-              <picture>
-                <source srcSet={img15desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img15} alt='' className='gallery-img' />
-              </picture>
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                srcSet={img15desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img15} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
-              <picture>
-                <source srcSet={img12desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img12} alt='' className='gallery-img' />
-              </picture>
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                src={img12desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img12} alt='' className='gallery-img-mob' />
 
-              <picture>
-                <source srcSet={img14desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img14} alt='' className='gallery-img' />
-              </picture>
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                src={img14desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img14} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
-              <picture>
-                <source srcSet={img11desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img11} alt='' className='gallery-img' />
-              </picture>
-              <picture>
-                <source srcSet={img10desc} type='image/jpeg' media='(min-width:768px)' />
-                <LazyLoadImage effect='blur' src={img10} alt='' className='gallery-img' />
-              </picture>
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                src={img11desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img11} alt='' className='gallery-img-mob' />
+
+              <LazyLoadImage
+                className='gallery-img-mob desc'
+                src={img10desc}
+                type='image/jpeg'
+                media='(min-width:768px)'
+              />
+              <LazyLoadImage effect='blur' src={img10} alt='' className='gallery-img-mob' />
             </div>
           </div>
         </section>
