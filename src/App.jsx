@@ -57,7 +57,7 @@ const App = observer(() => {
       userLogout()
       navigate('/')
     }
-  }, [location])
+  }, [location.pathname])
 
 
   return (
