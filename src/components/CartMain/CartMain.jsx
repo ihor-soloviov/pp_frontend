@@ -7,6 +7,7 @@ import PopupActions from '../PopupActions/PopupActions';
 
 import { observer } from 'mobx-react-lite';
 import { Cart } from './Cart/Cart';
+import { AnimatePresence } from 'framer-motion';
 
 //Import Styles
 import './card.scss';
@@ -57,7 +58,9 @@ const CartMain = observer(() => {
         </div>
         <span className='card__text'>Кошик</span>
       </button>
-      {isOpen && <Cart isOpen={isOpen} setIsOpen={setIsOpen} setError={setError} />}
+      <AnimatePresence>
+        {isOpen && <Cart isOpen={isOpen} setIsOpen={setIsOpen} setError={setError} />}
+      </AnimatePresence>
     </React.Fragment>
   );
 });
