@@ -66,17 +66,16 @@ const ProductCard = observer(({ product }) => {
 
   return (
     <React.Fragment>
-      <AnimatePresence>
-        {isPopupOpened && group_modifications && (
-          <Popup closeModal={handleModPopup}>
-            <ModificatorsPopup
-              groups={group_modifications}
-              setSelectedModificators={setSelectedModificators}
-              addProductToCart={addProductToCart}
-            />
-          </Popup>
-        )}
-      </AnimatePresence>
+      {isPopupOpened && group_modifications && (
+        <Popup closeModal={handleModPopup}>
+          <ModificatorsPopup
+            groups={group_modifications}
+            setSelectedModificators={setSelectedModificators}
+            addProductToCart={addProductToCart}
+          />
+        </Popup>
+      )}
+
       <motion.div
         variants={dropInProducts}
         initial='hidden'
