@@ -1,10 +1,11 @@
 import classNames from 'classnames';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { getProducts } from '../../utils/menu';
 import menuStore from '../../store/menu-store';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
-
+import { motion } from 'framer-motion';
+import { dropInCategories } from '../../utils/animation';
 
 export const Categories = observer(({ setProducts }) => {
   const { id } = useParams();
@@ -14,7 +15,6 @@ export const Categories = observer(({ setProducts }) => {
     getProducts(currentCategoryId, setProducts);
   }, [currentCategoryId, setProducts]);
 
-
   useEffect(() => {
     if (id) {
       setCurrentCategoryId(id);
@@ -23,7 +23,6 @@ export const Categories = observer(({ setProducts }) => {
 
   useEffect(() => {
     if (window.innerWidth < 1024) {
-
       const activeBtn = document.getElementById(currentCategoryId);
       if (activeBtn) {
         // Прокрутка до активної кнопки з плавною анімацією
@@ -34,24 +33,29 @@ export const Categories = observer(({ setProducts }) => {
 
   if (categories) {
     return (
-      <div className='categories__inner'>
-        <div className="categories__list">
+      <motion.div
+        variants={dropInCategories}
+        initial='hidden'
+        animate='visible'
+        exit='exit'
+        className='categories__inner'
+      >
+        <div className='categories__list'>
           {categories.map(({ category_id, category_name, order }) => (
             <button
               id={category_id}
               name={order}
               key={category_id}
-              className={classNames("categories__btn", {
-                "categories__btn-active": currentCategoryId === category_id,
+              className={classNames('categories__btn', {
+                'categories__btn-active': currentCategoryId === category_id,
               })}
               onClick={() => setCurrentCategoryId(category_id)}
             >
               {category_name}
             </button>
-          )
-          )}
+          ))}
         </div>
-      </div>
-    )
+      </motion.div>
+    );
   }
-})
+});

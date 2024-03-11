@@ -1,4 +1,9 @@
 @import '../../style/colors.scss';
+
+body .shopping-cart {
+  overflow: hidden;
+}
+
 .card {
   display: flex;
   align-items: center;

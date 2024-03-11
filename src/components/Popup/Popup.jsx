@@ -1,8 +1,9 @@
 //Import React
 import React from 'react';
-
+import { motion } from 'framer-motion';
 //Import Style
 import './popup.scss';
+import { dropInPopup } from '../../utils/animation';
 
 const Popup = ({
   children,
@@ -15,7 +16,13 @@ const Popup = ({
 }) => {
   return (
     <div className={`popup ${small && 'popup-small'}`}>
-      <div className={`popup__content ${small && 'popup__content-small'}`}>
+      <motion.div
+        variants={dropInPopup}
+        initial='hidden'
+        animate='visible'
+        exit='exit'
+        className={`popup__content ${small && 'popup__content-small'}`}
+      >
         <button
           className='popup__close'
           onClick={() => {
@@ -43,7 +50,7 @@ const Popup = ({
           </svg>
         </button>
         {children}
-      </div>
+      </motion.div>
     </div>
   );
 };

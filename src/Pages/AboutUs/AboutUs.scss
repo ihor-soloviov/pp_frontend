@@ -273,10 +273,22 @@ body {
   gap: 10px;
 }
 
-.gallery-img {
+.gallery-img-mob {
   border-radius: 10px;
 }
+.gallery-img-mob.desc {
+  display: none;
+}
 
+@media screen and (min-width: 768px) {
+  .gallery-img-mob {
+    display: none;
+  }
+
+  .gallery-img-mob.desc {
+    display: block;
+  }
+}
 @media screen and (min-width: 1367px) {
   .gallery-container {
     max-width: 1900px;
@@ -565,7 +577,7 @@ body {
     gap: 20px;
   }
 
-  .gallery-img {
+  .gallery-img-mob {
     border-radius: 24px;
   }
   .gallery-img-wrap {
