@@ -34,10 +34,10 @@ import TagManager from 'react-gtm-module';
 import userStore from './store/user-store';
 
 const tagManagerArgs = {
-  gtmId: 'GTM-5CBQPKC',
+  gtmId: 'GTM-WPHZCLVL',
 };
 
-TagManager.initialize(tagManagerArgs);
+
 
 const App = observer(() => {
   const location = useLocation();
@@ -47,7 +47,9 @@ const App = observer(() => {
   const { userLogout } = userStore
 
   useEffect(() => {
+    TagManager.initialize(tagManagerArgs);
     setLoader();
+
   }, []);
 
   useEffect(() => {
