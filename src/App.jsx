@@ -47,7 +47,6 @@ const App = observer(() => {
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
     setLoader();
-
   }, []);
 
   useEffect(() => {

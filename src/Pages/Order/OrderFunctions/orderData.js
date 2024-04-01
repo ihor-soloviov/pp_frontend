@@ -57,7 +57,7 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
       message: "Будь ласка, вкажіть валідну суму для підрахунку решти"
     },
     { check: () => !deliveryTime, message: 'Будь ласка, оберіть час отримання замовлення' },
-    { check: () => totalPrice <= 200, message: 'Мінімальна сумма замовлення 200 ₴' },
+    { check: () => totalPrice < 200, message: 'Мінімальна сумма замовлення 200 ₴' },
   ]
 };
 

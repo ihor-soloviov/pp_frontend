@@ -1,3 +1,21 @@
+// Перегляд категорії товарів
+
+export const view_item_list = (category_id, category_name, items) => {
+  window.dataLayer.push({ ecommerce: null });
+  window.dataLayer.push({
+    event: "view_item_list",
+    ecommerce: {
+      item_list_id: category_id,
+      item_list_name: category_name,
+      items: items.map(item => ({
+        item_id: item.product_id,
+        item_name: item.product_name,
+      }))
+    }
+  })
+}
+
+
 //Просмотр карточки товара
 
 export const view_item = (item_name, item_id, price, item_category) => {

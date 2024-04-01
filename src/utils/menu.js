@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { url } from '../api';
-import { add_to_cart } from '../gm4';
+import { add_to_cart, view_item_list } from '../gm4';
 import shoppingCartStore from '../store/shoping-cart-store';
 import popupActionsStore from '../store/popup-action-store';
 
@@ -69,6 +69,8 @@ export const getProducts = async (id, setProducts) => {
     }
 
     const productsData = response.data;
+    console.log(productsData);
+    view_item_list(productsData[0].category, id, productsData)
     setProducts(productsData);
   } catch (error) {
     console.error('Помилка при отриманні продуктів:', error);

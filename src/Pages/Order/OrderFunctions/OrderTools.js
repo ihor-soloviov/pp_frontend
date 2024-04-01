@@ -205,10 +205,11 @@ export const createTransaction = async (amount, setPaymentData) => {
 export const checkTransactionStatus = async (setTransactionStatus) => {
   try {
     const user_payment_data = JSON.parse(localStorage.getItem('user_payment_data'));
-    console.log('checkTransactionStatus', user_payment_data);
+    console.log('user_payment_data', user_payment_data);
 
     if (!user_payment_data) {
       setTemporaryError('Оплата не вдала');
+      setTransactionStatus(false)
       return;
     }
 
@@ -216,7 +217,7 @@ export const checkTransactionStatus = async (setTransactionStatus) => {
     const response = await axios.post(`${url}/api/getStatus`, data, { headers });
 
     const responseData = response.data;
-    console.log('checkTransactionStatus: response data', responseData);
+    console.log('TransactionStatus:', responseData);
 
     switch (responseData) {
       case 'unpaid':
