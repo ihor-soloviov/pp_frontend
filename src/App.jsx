@@ -58,7 +58,6 @@ const App = observer(() => {
     }
   }, [location.pathname])
 
-
   return (
     <React.Fragment>
       {authModal && (

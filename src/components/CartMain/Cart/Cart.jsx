@@ -8,8 +8,9 @@ import BtnMain from '../../Buttons/BtnMain';
 import { useEffect } from 'react';
 import { dropInCart } from '../../../utils/animation';
 import { motion } from 'framer-motion';
+import { observer } from 'mobx-react-lite';
 
-export const Cart = ({ isOpen, setIsOpen, setError }) => {
+export const Cart = observer(({ isOpen, setIsOpen, setError }) => {
   const { cartItems, totalPrice, deliveryPrice, itemCount } = shoppingCartStore;
   const navigate = useNavigate();
   const cartRoot = document.querySelector('#cart-root');
@@ -156,4 +157,4 @@ export const Cart = ({ isOpen, setIsOpen, setError }) => {
     </motion.div>,
     cartRoot,
   );
-};
+});
