@@ -94,7 +94,7 @@ export const getOrderData = (formData, products, isPromotion) => {
   const com = `Кількість персон: ${personCount},${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`
 
   return {
-    spot_id: 1,
+    spot_id: 1, //
     first_name: name,
     phone: number,
     products: shoppingCartMap(products),
