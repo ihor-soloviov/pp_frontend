@@ -44,16 +44,14 @@ const Contact = () => {
           </div>
           <div className='contact__column'>
             <div className='contact__map'>
-              <LoadScript googleMapsApiKey='AIzaSyCzB6rCMnEpMYWY4K7sbQyFSKRxjGn77V0'>
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={center}
-                  zoom={16}
-                  options={options}
-                >
-                  <MarkerF position={center} />
-                </GoogleMap>
-              </LoadScript>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={16}
+                options={options}
+              >
+                <MarkerF position={center} />
+              </GoogleMap>
             </div>
           </div>
         </div>

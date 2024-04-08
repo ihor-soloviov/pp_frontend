@@ -39,7 +39,7 @@ import BtnMain from '../../../components/Buttons/BtnMain';
 const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   //States
   const [formData, setFormData] = useState({
-    spot_id: 1,
+    spot_id: '',
     name: '',
     number: '',
     selectedAddress: '',
@@ -197,7 +197,11 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
           handleFormValueChange={handleFormValueChange}
         />
 
-        <OrderAddress formData={formData} handleFormValueChange={handleFormValueChange} />
+        <OrderAddress
+          handleError={handleError}
+          formData={formData}
+          handleFormValueChange={handleFormValueChange}
+        />
 
         <OrderTime formData={formData} handleFormValueChange={handleFormValueChange} />
 
@@ -214,7 +218,9 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
         <OrderComment formData={formData} handleFormValueChange={handleFormValueChange} />
 
-        <BtnMain fullWide onClick={onSubmit} >Оформити замовлення</BtnMain>
+        <BtnMain fullWide onClick={onSubmit}>
+          Оформити замовлення
+        </BtnMain>
       </section>
     </React.Fragment>
   );

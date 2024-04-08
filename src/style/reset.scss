@@ -53,6 +53,20 @@ li {
   }
 }
 
+.hdpi.pac-logo:after {
+  content: none !important;
+}
+
+.pac-container {
+  top: 565px !important;
+  z-index: 2 !important;
+  background: #f3f3f5 !important;
+  border-radius: 5px !important;
+  @include onMobile {
+    top: 1036px !important;
+  }
+}
+
 // * {
 //   border: 1px solid red;
 // }
