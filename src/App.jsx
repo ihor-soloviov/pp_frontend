@@ -32,6 +32,7 @@ import { Loader } from './components/Loader/Loader';
 //Import Utils
 import TagManager from 'react-gtm-module';
 import userStore from './store/user-store';
+import { DiscountModal } from './components/DiscountModal/DiscountModal';
 
 const tagManagerArgs = {
   gtmId: 'GTM-WPHZCLVL',
@@ -41,7 +42,7 @@ const App = observer(() => {
   const location = useLocation();
   const navigate = useNavigate();
   //Store
-  const { authModalHandler, authModal, isLoader, setLoader } = modalsStore;
+  const { authModalHandler, authModal, isLoader, setLoader, isDiscountModal, isDiscountHandler } = modalsStore;
   const { userLogout } = userStore
 
   useEffect(() => {
@@ -69,6 +70,11 @@ const App = observer(() => {
       <MobileMenu />
       <ActionPopup />
       {isLoader && <Loader />}
+      {isDiscountModal && (
+        <Popup closeModal={() => isDiscountHandler(false)}>
+          <DiscountModal />
+        </Popup>
+      )}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/menu' element={<MenuPage />}>
