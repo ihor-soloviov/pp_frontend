@@ -5,7 +5,8 @@ class ModalsStore {
   cityModal = true;
   thanksModal = false;
   isLoader = false;
-  isMobileMenu = false
+  isMobileMenu = false;
+  isDiscountModal = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -30,6 +31,10 @@ class ModalsStore {
   isLoaderHandler = (isOpen) => {
     this.isLoader = isOpen;
   };
+
+  isDiscountHandler = (isOpen) => {
+    this.isDiscountModal = isOpen
+  }
 
   setLoader = () => {
     runInAction(() => {
