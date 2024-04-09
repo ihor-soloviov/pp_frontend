@@ -36,7 +36,7 @@ import { OrderPaymentType } from './OrderPaymentType';
 import { OrderComment } from './OrderComment';
 import BtnMain from '../../../components/Buttons/BtnMain';
 
-const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
+const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, posterOrder }) => {
   //States
   const [formData, setFormData] = useState({
     spot_id: 1,
@@ -64,7 +64,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(false);
-  const [posterOrder, setPosterOrder] = useState(null);
+
   const [isOrderCreate, setIsOrderCreate] = useState(false);
   const [error, setError] = useState({ status: false, currentError: '' });
 
@@ -80,7 +80,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
   }, []);
 
   //stores
-  const { thanksModal, thanksModalHandler } = modalsStore;
   const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
   const { cartItems, clearCart, totalPrice, deliveryPrice } = shoppingCartStore;
   const { name, phone, isAuthenticated } = userStore;
@@ -127,12 +126,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
     }
   }, [isOrderCreate]);
 
-  useEffect(() => {
-    if (posterOrder) {
-      console.log('posterOrder', posterOrder);
-      thanksModalHandler(true);
-    }
-  }, [posterOrder]);
 
   const onSubmit = useCallback(() => {
     const errorMessage = validateOrderData(formData, cartItems, totalPrice, deliveryPrice);
@@ -155,19 +148,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
 
   return (
     <React.Fragment>
-      {thanksModal && (
-        <Popup
-          closeModal={() => {
-            thanksModalHandler(false);
-          }}
-        >
-          <Thanks
-            orderId={posterOrder.incoming_order_id}
-            deliveryTime={posterOrder.delivery_time}
-          />
-        </Popup>
-      )}
-
       {!!error.status && (
         <PopupActions
           action={error.currentError}

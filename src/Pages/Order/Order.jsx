@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/Container/Container';
 import './Order.scss';
 import { motion } from 'framer-motion';
@@ -11,13 +12,38 @@ import shoppingCartStore from '../../store/shoping-cart-store';
 import OrderForm from './OrderComponents/OrderForm';
 import { calculateTotalPrice } from './OrderFunctions/OrderTools';
 import { dropInProducts } from '../../utils/animation';
+import modalsStore from '../../store/modal-store';
+import Popup from '../../components/Popup/Popup';
+import Thanks from '../../components/Thanks/Thanks';
 
 const Order = observer(() => {
   const { cartItems, totalPrice, deliveryPrice } = shoppingCartStore;
+  const { thanksModal, thanksModalHandler } = modalsStore;
   const [isPromotion, setIsPromotion] = useState(false);
+  const [posterOrder, setPosterOrder] = useState(null);
+
+
+  useEffect(() => {
+    if (posterOrder) {
+      console.log('posterOrder', posterOrder);
+      thanksModalHandler(true);
+    }
+  }, [posterOrder]);
 
   return (
     <React.Fragment>
+      {thanksModal && (
+        <Popup
+          closeModal={() => {
+            thanksModalHandler(false);
+          }}
+        >
+          <Thanks
+            orderId={posterOrder.incoming_order_id}
+            deliveryTime={posterOrder.delivery_time}
+          />
+        </Popup>
+      )}
       <Container>
         <motion.div
           variants={dropInProducts}
@@ -27,7 +53,7 @@ const Order = observer(() => {
           className='order-page'
         >
           <div className='order-page__content'>
-            <OrderForm setIsPromotion={setIsPromotion} isPromotion={isPromotion} />
+            <OrderForm setIsPromotion={setIsPromotion} isPromotion={isPromotion} posterOrder={posterOrder} setPosterOrder={setPosterOrder} />
             <div className='checkout'>
               <div className='checkout__content'>
                 <h3 className='title__h3 text__color--secondary'>Ваше замовлення</h3>

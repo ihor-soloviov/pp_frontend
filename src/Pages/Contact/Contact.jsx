@@ -26,7 +26,7 @@ const Contact = () => {
               <li className='contact__item'>
                 <span className='contact__item-title'>Телефон</span>
                 <a href='tel:+390987271991' className='contact__item-link'>
-                  +39 (098) 727 19 91
+                  +38 (098) 727 19 91
                 </a>
               </li>
               <li className='contact__item'>

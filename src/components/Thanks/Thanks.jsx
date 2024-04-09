@@ -30,7 +30,7 @@ const Thanks = ({ orderId, deliveryTime }) => {
               Орієнтовний час отримання: <b>{deliveryTime}</b>
             </p>
           </div>
-          <BtnSecondary name={'Зв’язатися з нами'} onClick={() => navigate('/contact')}fullWide />
+          <BtnSecondary name={'Зв’язатися з нами'} onClick={() => navigate('/contact')} fullWide />
         </div>
       </div>
     </div>

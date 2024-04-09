@@ -29,6 +29,11 @@
 
 .categories {
   margin-bottom: 48px;
+  width: max-content;
+
+  &__inner {
+    padding-left: 40px;
+  }
   h1 {
     text-align: center;
     margin: 116px 0 30px 0;
