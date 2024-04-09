@@ -168,7 +168,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
         </Popup>
       )}
 
-      {!!error.status && (
+      {error.status && (
         <PopupActions
           action={error.currentError}
           onClick={() =>
@@ -197,11 +197,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion }) => {
           handleFormValueChange={handleFormValueChange}
         />
 
-        <OrderAddress
-          handleError={handleError}
-          formData={formData}
-          handleFormValueChange={handleFormValueChange}
-        />
+        <OrderAddress formData={formData} handleFormValueChange={handleFormValueChange} />
 
         <OrderTime formData={formData} handleFormValueChange={handleFormValueChange} />
 

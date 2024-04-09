@@ -20,6 +20,7 @@ const Addresses = observer(({ handleSidebar }) => {
   const [currentAddressId, setCurrentAddressId] = useState(null);
   const [isAdressesUpdating, setIsAdressesUpdating] = useState(false);
 
+  console.log('currentAddressId', currentAddressId);
   useEffect(() => {
     const fetchAdresses = async () => {
       if (!token) {
@@ -50,6 +51,15 @@ const Addresses = observer(({ handleSidebar }) => {
   const handleModal = () => {
     setModalOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isModalOpen]);
 
   return (
     <section className='grid_layout--main addresses'>

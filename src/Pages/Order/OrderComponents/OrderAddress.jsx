@@ -6,21 +6,14 @@ import { observer } from 'mobx-react-lite';
 import userStore from '../../../store/user-store';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
-
+import { compareDistances } from '../../../utils/distance';
 import { Autocomplete } from '@react-google-maps/api';
 
 import '../Order.scss';
-export const OrderAddress = observer(({ formData, handleFormValueChange, handleError }) => {
-  const {
-    floor,
-    buildingCode,
-    entrance,
-    apartment,
-    houseNumber,
-    street,
-    howToReciveOrder,
-    spot_id,
-  } = formData;
+import PopupActions from '../../../components/PopupActions/PopupActions';
+
+export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
+  const { floor, buildingCode, entrance, apartment, howToReciveOrder } = formData;
   const { setDeliveryPrice } = shoppingCartStore;
 
   const { adresses } = userStore;
@@ -42,18 +35,21 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
     handleFormValueChange('buildingCode', '');
     handleFormValueChange('entrance', '');
     handleFormValueChange('apartment', '');
+    handleFormValueChange('spot_id', '');
+    setSpotTwoDistance(null);
+    setSpotTwoDistance(null);
   };
+
+  const [error, setError] = useState({ status: false, currentError: '' });
   const [dropAddress, setDropAddress] = useState(null);
-
   const [currentAddressInfo, setCurrentAddressInfo] = useState(null);
-
   const [isSavedAddressSelected, setIsSavedAddressSelected] = useState(false);
-
   const [streetInput, setStreetInput] = useState('');
   const [streetAutocomplete, setStreetAutocomplete] = useState(null);
-
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
+
+  const handleError = (newErrorState) => setError(newErrorState);
 
   const handleChangeAddress = (e) => {
     if (e.value === null) {
@@ -71,6 +67,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
     if (event.target.value === 'Самовивіз') {
       setDeliveryPrice(0);
       resetInputFields();
+      setStreetInput('');
     } else {
       setDeliveryPrice(60);
     }
@@ -78,61 +75,63 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
   };
 
   const handleStreetChange = (value) => {
-    handleFormValueChange('street', '');
-    handleFormValueChange('houseNumber', '');
-    handleFormValueChange('spot_id', '');
-    setSpotTwoDistance(null);
-    setSpotTwoDistance(null);
+    resetInputFields();
     setStreetInput(value);
   };
 
   const handleAutoStreetChange = () => {
     if (!streetAutocomplete) {
-      handleError('Адреса не знайдена');
       return;
     }
-
     const place = streetAutocomplete.getPlace();
-    console.log('place', place);
-
     const { address_components: addressComponents } = place;
+
     if (!addressComponents) {
-      handleError('Адреса не знайдена');
+      handleError({
+        status: true,
+        currentError: 'Адреса не знайдена',
+      });
       return;
     }
-    calculateDistance(place.formatted_address);
 
     const streetComponent = addressComponents.find((component) =>
       component.types.includes('route'),
     );
+
     const houseNumberComponent = addressComponents.find((component) =>
       component.types.includes('street_number'),
     );
 
+    const formatedAddress = place.formatted_address;
     const streetName = streetComponent ? streetComponent.long_name : null;
+    const houseNum = houseNumberComponent ? houseNumberComponent.long_name : null;
 
-    if (!streetName) {
-      handleError('Вулиця не знайдена');
+    if (!houseNumberComponent) {
+      handleError({
+        status: true,
+        currentError: 'Вкажіть номер будинку',
+      });
+
+      setStreetInput(formatedAddress);
       return;
     }
 
-    const houseNum = houseNumberComponent ? houseNumberComponent.long_name : null;
-
-    setStreetInput(`${streetName}${houseNum ? ', ' + houseNum : ''}`);
-    handleFormValueChange('street', streetName);
-
-    if (houseNum) {
-      handleFormValueChange('houseNumber', houseNum);
-    } else {
-      handleError('Номер будинку не знайдено');
+    if (!streetComponent) {
+      handleError({
+        status: true,
+        currentError: 'Адреса не знайдена',
+      });
+      setStreetInput(formatedAddress);
+      return;
     }
-  };
-
-  const compareDistances = (distance1, distance2) => {
-    const value1 = parseFloat(distance1.replace(',', '.').split(' ')[0]);
-    const value2 = parseFloat(distance2.replace(',', '.').split(' ')[0]);
-
-    return value1 > value2 ? 2 : value1 < value2 ? 1 : 2;
+    calculateDistance(formatedAddress);
+    setStreetInput(formatedAddress);
+    handleFormValueChange('street', streetName);
+    handleFormValueChange('houseNumber', houseNum);
+    handleError({
+      status: false,
+      currentError: '',
+    });
   };
 
   const calculateDistance = (fullAddress) => {
@@ -164,7 +163,6 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
       spotOneDistance && spotTwoDistance && compareDistances(spotOneDistance, spotTwoDistance);
     console.log('spotOneDistance', spotOneDistance);
     console.log('spotTwoDistance', spotTwoDistance);
-    console.log('currentSpot', currentSpot);
     handleFormValueChange('spot_id', currentSpot);
   };
 
@@ -185,6 +183,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
       allAddresses && allAddresses.find((address) => address.addressId === dropAddress);
 
     if (currentAddressInfo) {
+      const distance = calculateDistance(currentAddressInfo.address);
       setCurrentAddressInfo(currentAddressInfo);
       handleFormValueChange('street', currentAddressInfo.streetName);
       handleFormValueChange('houseNumber', currentAddressInfo.homeNumber);
@@ -196,8 +195,20 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
       handleFormValueChange('entrance', currentAddressInfo.entranceNumber);
       handleFormValueChange('buildingCode', currentAddressInfo.entranceCode);
       handleFormValueChange('floor', currentAddressInfo.floar);
+      handleFormValueChange('spot_id', distance);
     }
   }, [adresses, dropAddress, handleFormValueChange]);
+
+  useEffect(() => {
+    const cleanup = () => {
+      const autocompleteContainers = document.getElementsByClassName('pac-container');
+      Array.from(autocompleteContainers).forEach((container) => {
+        container.parentNode.removeChild(container);
+      });
+    };
+
+    return cleanup;
+  }, []);
 
   return (
     <section className='order-page__section'>
@@ -235,51 +246,16 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
               componentRestrictions: {
                 country: ['ua'],
               },
-
-              googleLogo: false,
-              disableDefaultUI: true,
-              inputStyle: {
-                backgroundColor: 'lightgray',
-                fontFamily: 'Arial, sans-serif',
-                fontSize: '16px',
-                width: '262px',
-              },
-              // Установка стиля для контейнера, который содержит предложения автозаполнения
-              // Здесь вы можете настроить стили фона, шрифта и др.
-              containerStyle: {
-                backgroundColor: 'white',
-                border: '1px solid black',
-                borderRadius: '5px',
-
-                zIndex: 2,
-              },
-              // Установка стиля для элементов списка предложений автозаполнения
-              // Здесь вы можете настроить стили фона, шрифта и др.
-              itemStyle: {
-                padding: '10px',
-                borderBottom: '1px solid gray',
-                cursor: 'pointer',
-              },
             }}
           >
             <InputText
               name={'Адреса'}
               placeholder={'Адреса'}
-              value={
-                currentAddressInfo && dropAddress ? currentAddressInfo.streetName : streetInput
-              }
+              value={currentAddressInfo && dropAddress ? currentAddressInfo.address : streetInput}
               onChange={handleStreetChange}
               disabled={isSavedAddressSelected}
             />
           </Autocomplete>
-
-          {/* <InputText
-            name={'№ Будинку'}
-            placeholder={'№ Будинку'}
-            value={currentAddressInfo && dropAddress ? currentAddressInfo.homeNumber : houseNumber}
-            onChange={handleHouseNumChange}
-            disabled={isSavedAddressSelected}
-          /> */}
         </>
       </section>
       <section className='order-page__section-inputs'>
@@ -353,6 +329,20 @@ export const OrderAddress = observer(({ formData, handleFormValueChange, handleE
             disabled={isSavedAddressSelected}
           />
         </section>
+      )}
+      {error.status && (
+        <div className='popupWrapOrder'>
+          <PopupActions
+            action={error.currentError}
+            onClick={() =>
+              setError({
+                status: false,
+                currentError: '',
+              })
+            }
+            error
+          />
+        </div>
       )}
     </section>
   );

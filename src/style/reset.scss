@@ -57,13 +57,33 @@ li {
   content: none !important;
 }
 
+.pac-item {
+  padding: 7px 12px !important;
+}
+
+.pac-icon {
+  display: none !important;
+}
+
 .pac-container {
-  top: 565px !important;
-  z-index: 2 !important;
   background: #f3f3f5 !important;
   border-radius: 5px !important;
+}
+
+.order-page > .pac-container {
+  top: 565px !important;
+  z-index: 2 !important;
   @include onMobile {
     top: 1036px !important;
+  }
+}
+.address-page > .pac-container {
+  top: 410px !important;
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    top: 390px !important;
+  }
+  @media screen and (min-width: 1024px) {
+    top: 385px !important;
   }
 }
 

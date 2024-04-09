@@ -59,6 +59,28 @@ const App = observer(() => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    const isOrderPage = location.pathname.startsWith('/order');
+    const isAddressPage = location.pathname.startsWith('/profile/addresses');
+
+    if (isOrderPage) {
+      document.body.classList.add('order-page');
+    } else {
+      document.body.classList.remove('order-page');
+    }
+
+    if (isAddressPage) {
+      document.body.classList.add('address-page');
+    } else {
+      document.body.classList.remove('address-page');
+    }
+
+    return () => {
+      document.body.classList.remove('order-page');
+      document.body.classList.remove('address-page');
+    };
+  }, [location.pathname]);
+
   return (
     <LoadScript googleMapsApiKey={googleMapsApiKey} language='uk' libraries={places}>
       <React.Fragment>

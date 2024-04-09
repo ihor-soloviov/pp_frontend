@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Autocomplete } from '@react-google-maps/api';
 import { nanoid } from 'nanoid';
+import PopupActions from '../PopupActions/PopupActions';
 import Popup from '../Popup/Popup';
 import hover from '../../../src/assets/radiobuttons/hover.svg';
 import selected from '../../../src/assets/radiobuttons/selected.svg';
@@ -29,6 +31,14 @@ const AddressModal = observer(
     const [currentOption, setCurrentOption] = useState(null);
     const [selectedOption, setSelectedOption] = useState('house');
     const { setActions } = popupActionsStore;
+    const [addressAutocomplete, setAddressAutocomplete] = useState(null);
+    const [error, setError] = useState({ status: false, currentError: '' });
+    const [validAddress, setValidAddress] = useState(false);
+    const [streetAndHouse, setStreetAndHouse] = useState(null);
+
+    const handleError = (newErrorState) => setError(newErrorState);
+
+    console.log('validAddress', validAddress);
 
     const currentAddress =
       adresses && Array.isArray(adresses)
@@ -83,7 +93,16 @@ const AddressModal = observer(
       }
     };
 
-    const { handleSubmit, errors, touched, getFieldProps, setFieldValue } = useFormik({
+    const {
+      handleSubmit,
+      handleChange,
+      errors,
+      touched,
+      getFieldProps,
+      setFieldValue,
+      isValid,
+      dirty,
+    } = useFormik({
       initialValues: {
         adressName: '',
         comment: '',
@@ -91,8 +110,7 @@ const AddressModal = observer(
         entranceNumber: '',
         flatNumber: '',
         floar: '',
-        homeNumber: '',
-        streetName: '',
+        address: '',
       },
       validationSchema: Yup.object({
         adressName: Yup.string().required(`Обов'язкове поле`),
@@ -100,20 +118,76 @@ const AddressModal = observer(
         entranceNumber: Yup.string(),
         flatNumber: Yup.number().typeError('Вкажіть коректне значення'),
         floar: Yup.number().typeError('Вкажіть коректне значення'),
-        homeNumber: Yup.string().required(`Обов'язкове поле`),
-        streetName: Yup.string().required(`Обов'язкове поле`),
+        address: Yup.string().required(`Обов'язкове поле`),
         comment: Yup.string(),
       }),
-      onSubmit: (values) => {
-        addToAdresses({ address: values });
 
-        formSubmit(values);
+      onSubmit: (values) => {
+        const formDataStreetAndHouse = { ...values, ...streetAndHouse };
+        addToAdresses({ address: formDataStreetAndHouse });
+
+        formSubmit(formDataStreetAndHouse);
 
         isEdit && setIsEdit(!isEdit);
 
         setCurrentAddressId(null);
       },
     });
+
+    const handleAutoAddressChange = () => {
+      if (!addressAutocomplete) {
+        return;
+      }
+      const place = addressAutocomplete.getPlace();
+      const { address_components: addressComponents } = place;
+
+      if (!addressComponents) {
+        handleError({
+          status: true,
+          currentError: 'Адреса не знайдена',
+        });
+        return;
+      }
+
+      const streetComponent = addressComponents.find((component) =>
+        component.types.includes('route'),
+      );
+
+      const houseNumberComponent = addressComponents.find((component) =>
+        component.types.includes('street_number'),
+      );
+
+      const streetName = streetComponent ? streetComponent.long_name : null;
+      const houseNum = houseNumberComponent ? houseNumberComponent.long_name : null;
+
+      const formatedAddress = place.formatted_address;
+
+      if (!houseNumberComponent) {
+        handleError({
+          status: true,
+          currentError: 'Вкажіть номер будинку',
+        });
+        setFieldValue('address', formatedAddress);
+        return;
+      }
+
+      if (!streetComponent) {
+        handleError({
+          status: true,
+          currentError: 'Адреса не знайдена',
+        });
+
+        setFieldValue('address', formatedAddress);
+        return;
+      }
+      setValidAddress(true);
+      setStreetAndHouse({ streetName: streetName, homeNumber: houseNum });
+      setFieldValue('address', formatedAddress);
+      handleError({
+        status: false,
+        currentError: '',
+      });
+    };
 
     useEffect(() => {
       currentAddress && setCurrentAddressState(currentAddress);
@@ -135,12 +209,26 @@ const AddressModal = observer(
           setFieldValue('entranceNumber', address.entranceNumber || '');
           setFieldValue('flatNumber', address.flatNumber || '');
           setFieldValue('floar', address.floar || '');
-          setFieldValue('homeNumber', address.homeNumber || '');
-          setFieldValue('streetName', address.streetName || '');
+          setFieldValue('address', address.address || '');
         }
       };
       currentAddressState && setFormValues(currentAddress);
     }, [currentAddress, setFieldValue, currentAddressState]);
+
+    useEffect(() => {
+      const cleanup = () => {
+        const autocompleteContainers = document.getElementsByClassName('pac-container');
+        Array.from(autocompleteContainers).forEach((container) => {
+          container.parentNode.removeChild(container);
+        });
+      };
+
+      return cleanup;
+    }, []);
+
+    useEffect(() => {
+      isEdit && setValidAddress(true);
+    }, [isEdit]);
 
     return (
       <>
@@ -171,23 +259,43 @@ const AddressModal = observer(
                   )}
                 </div>
                 <div className='modal-grid--item-1 grid-item'>
-                  <p className='grid-item__text'>Вулиця</p>
+                  <p className='grid-item__text'>Адреса</p>
                   <label className='form_item--label'>
-                    <input type='text' placeholder='Вулиця' {...getFieldProps('streetName')} />
+                    <Autocomplete
+                      types={['address']}
+                      className='autocomplete-saved-wrap'
+                      onLoad={(autocomplete) => setAddressAutocomplete(autocomplete)}
+                      onPlaceChanged={handleAutoAddressChange}
+                      options={{
+                        bounds: new window.google.maps.LatLngBounds({
+                          north: 46.6053,
+                          south: 46.3201,
+                          west: 30.5788,
+                          east: 30.8433,
+                        }),
+                        strictBounds: true,
+
+                        componentRestrictions: {
+                          country: ['ua'],
+                        },
+                      }}
+                    >
+                      <input
+                        type='text'
+                        placeholder='Адреса'
+                        {...getFieldProps('address')}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setValidAddress(false);
+                        }}
+                      />
+                    </Autocomplete>
                   </label>
-                  {touched.streetName && errors.streetName && (
-                    <p className='test-error-text'>{errors.streetName}</p>
+                  {touched.address && errors.address && (
+                    <p className='test-error-text'>{errors.address}</p>
                   )}
                 </div>
-                <div className='modal-grid--item-2 grid-item'>
-                  <p className='grid-item__text'>№ Будинку</p>
-                  <label className='form_item--label'>
-                    <input type='text' placeholder='№ Будинку' {...getFieldProps('homeNumber')} />
-                  </label>
-                  {touched.homeNumber && errors.homeNumber && (
-                    <p className='test-error-text'>{errors.homeNumber}</p>
-                  )}
-                </div>
+
                 <div className='modal-grid--item-3 grid-item grid-radio'>
                   <label className='radio'>
                     <div
@@ -278,12 +386,26 @@ const AddressModal = observer(
                 </div>
               </div>
               <div className='form-button'>
-                <button className='btn-main ' type='submit'>
+                <button disabled={!validAddress} className='btn-main ' type='submit'>
                   Зберегти зміни
                 </button>
               </div>
             </form>
           </div>
+          {error.status && (
+            <div className='popupWrapAddress'>
+              <PopupActions
+                action={error.currentError}
+                onClick={() =>
+                  setError({
+                    status: false,
+                    currentError: '',
+                  })
+                }
+                error
+              />
+            </div>
+          )}
         </Popup>
       </>
     );
