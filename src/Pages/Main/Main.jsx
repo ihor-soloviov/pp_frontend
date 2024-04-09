@@ -7,7 +7,11 @@ export const Main = () => (
   <React.Fragment>
     <Container>
       <div className='banner'>
-        <p className='banner-text-anim'>-40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40%</p>
+        <div className="banner-anim">
+          <div className='banner-text-anim'>-40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40%</div>
+          <div className='banner-text-anim'>-40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40% -40%</div>
+        </div>
+
       </div>
       <Menu />
     </Container>
