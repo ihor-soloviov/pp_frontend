@@ -1,0 +1,95 @@
+@import '../../style/mixins.scss';
+
+.banner {
+  position: relative;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  background-image: url('../../assets/bannerDesk.webp');
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+
+  max-width: 1320px;
+  height: 600px;
+  margin: 0 auto;
+
+  border-radius: 20px;
+
+  @include onMobile {
+    background-image: url('../../assets/bannerMob.webp');
+    height: auto;
+  }
+}
+
+.banner__info {
+  position: absolute;
+  top: 140px;
+  left: 78px;
+
+  h1 {
+    color: white;
+    font-size: 4rem;
+    font-weight: 400;
+    line-height: 130%;
+    letter-spacing: -1.28px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: white;
+    font-family: Unbounded;
+    font-size: 16px;
+    line-height: 150%;
+    margin-bottom: 54px;
+  }
+
+  button {
+    text-decoration: underline;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 150%;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.banner__inner-anim {
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  bottom: 10px;
+  color: white;
+}
+
+.banner[data-animated='true'] {
+  overflow: hidden;
+  // -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+  // mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+}
+
+.banner[data-animated='true'] .banner__inner-anim {
+  width: fit-content;
+  flex-wrap: nowrap;
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 5px));
+  }
+}
+
+.anim-item {
+  font-family: Unbounded;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 130%; /* 27.3px */
+  letter-spacing: -0.42px;
+}

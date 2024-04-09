@@ -52,7 +52,7 @@ export const HeaderRight = observer(() => {
           </div>
         </React.Fragment>
       ) : window.innerWidth > 1000 ? (
-        <BtnMain onClick={() => authModalHandler(true)}>Увійти</BtnMain>
+        <BtnMain onClick={() => authModalHandler(true)}>Зареєструватись</BtnMain>
       ) : (
         <div
           className={classNames('header__hamburger', { 'header__hamburger--active': isMobileMenu })}
