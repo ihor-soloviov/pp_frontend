@@ -31,11 +31,14 @@ const Menu = observer(() => {
 
       {products ? (
         <div className='menu__products'>
-          {products.map((product) => (
-            <React.Fragment key={product.product_id}>
-              <ProductCard product={product} />
-            </React.Fragment>
-          ))}
+          {products.map((product) => {
+            console.log(product);
+            return (
+              <React.Fragment key={product.product_id}>
+                <ProductCard product={product} />
+              </React.Fragment>
+            )
+          })}
         </div>
       ) : (
         <Loading />

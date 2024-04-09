@@ -9,7 +9,6 @@ import { HeaderRight } from './HeaderComponents/HeaderRight';
 import './header.scss';
 
 const Header = React.memo(() => {
-  console.log('render');
   return (
     <header className='header'>
       <Container>
