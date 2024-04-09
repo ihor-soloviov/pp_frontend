@@ -33,10 +33,13 @@ export const Banner = observer(() => {
     <div className='banner'>
       <section className="banner__info">
         <h1>зареєструйся <br /> на сайті</h1>
-        <p>та отримай знижку на перше замовлення</p>
+        <p>та отримай знижку на перше {window.innerWidth < 1024 && <br />} замовлення</p>
         <button onClick={() => {
           authModalHandler(true)
-        }}>Зареєструватися</button>
+        }}
+        >
+          Зареєструватися
+        </button>
       </section>
       <ul className="banner__inner-anim">
         <li className='anim-item'>-40%</li>
