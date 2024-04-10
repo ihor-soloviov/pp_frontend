@@ -5,7 +5,6 @@ import { useCheckTransactionStatus } from '../../../utils/useCheckLiqpay';
 import { observer } from 'mobx-react-lite';
 
 import orderStore from '../../../store/order-store';
-import modalsStore from '../../../store/modal-store';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import userStore from '../../../store/user-store';
 
@@ -22,9 +21,6 @@ import {
 } from '../OrderFunctions/OrderTools';
 
 import { purchase } from '../../../gm4';
-
-import Popup from '../../../components/Popup/Popup';
-import Thanks from '../../../components/Thanks/Thanks';
 import PopupActions from '../../../components/PopupActions/PopupActions';
 
 import '../Order.scss';

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export const HeaderLeft = () => (
   <div className="header__left">
-    <Link className="header__logo" to={"/"}>
+    <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="header__logo" to={"/"} >
       <img src={logo} alt="Polar Pelmeni – авторські пельмені" />
     </Link>
     <div className="header__selectors">
@@ -52,5 +52,5 @@ export const HeaderLeft = () => (
         </svg>
       </div>
     </div>
-  </div>
+  </div >
 );

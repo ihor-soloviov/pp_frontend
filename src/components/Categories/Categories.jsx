@@ -25,7 +25,6 @@ export const Categories = observer(({ setProducts }) => {
     if (window.innerWidth < 1024) {
       const activeBtn = document.getElementById(currentCategoryId);
       if (activeBtn) {
-        // Прокрутка до активної кнопки з плавною анімацією
         activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
     }
