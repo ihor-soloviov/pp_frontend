@@ -1,10 +1,7 @@
 //Import React
 import React, { useCallback, useState } from 'react';
-
 import shoppingCartStore from '../../store/shoping-cart-store';
-
 import PopupActions from '../PopupActions/PopupActions';
-
 import { observer } from 'mobx-react-lite';
 import { Cart } from './Cart/Cart';
 import { AnimatePresence } from 'framer-motion';

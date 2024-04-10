@@ -178,7 +178,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
         <OrderTime formData={formData} handleFormValueChange={handleFormValueChange} />
 
         <OrderPromo
-          formData={formData}
           handleFormValueChange={handleFormValueChange}
           handleError={handleError}
           isPromotion={isPromotion}
