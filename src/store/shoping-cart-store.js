@@ -1,5 +1,5 @@
 import axios from "axios";
-import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 import { url } from "../api";
 import { getCurrentDate } from "../Pages/Order/OrderFunctions/OrderTools";
 
@@ -35,89 +35,102 @@ class ShoppingCartStore {
   constructor() {
     makeAutoObservable(this);
     this.loadCartFromLocalStorage();
-    // Автоматично зберігає стан кошика в localStorage при будь-яких змінах
     reaction(
       () => [this.cartItems, this.totalPrice, this.deliveryPrice],
-      () => {
-        localStorage.setItem('shoppingCart', JSON.stringify(this.cartItems));
-        localStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
-        localStorage.setItem('deliveryPrice', JSON.stringify(this.deliveryPrice))
-      }
+      () => this.saveCartToLocalStorage()
     );
   }
 
-  loadCartFromLocalStorage() {
-    const cartItems = JSON.parse(localStorage.getItem('shoppingCart') || '[]');
-    const totalPrice = JSON.parse(localStorage.getItem('totalPrice') || '0');
-    const deliveryPrice = JSON.parse(localStorage.getItem('deliveryPrice') || '60');
-    this.cartItems = cartItems;
-    this.totalPrice = totalPrice;
-    this.deliveryPrice = deliveryPrice;
+  loadCartFromLocalStorage = () => {
+    const storageKeys = ['shoppingCart', 'totalPrice', 'deliveryPrice'];
+    const defaultValues = ['[]', '0', '60'];
+    storageKeys.forEach((key, index) => {
+      this[key] = JSON.parse(localStorage.getItem(key) || defaultValues[index]);
+    });
+  }
+
+  saveCartToLocalStorage = () => {
+    localStorage.setItem('shoppingCart', JSON.stringify(this.cartItems));
+    localStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
+    localStorage.setItem('deliveryPrice', JSON.stringify(this.deliveryPrice));
   }
 
   handleFormValueChange = (field, value) => {
-    const updatedFormData = { ...this.orderFormData, [field]: value };
-
-    this.orderFormData = updatedFormData;
+    this.orderFormData[field] = value;
   }
 
   updateDeliveryPrice = (newPrice) => {
-    // Перевіряємо, чи замовлення передбачає самовивіз
-    if (this.orderFormData.howToReciveOrder === 'Самовивіз') {
-      this.deliveryPrice = 0;
-    } else {
-      if (newPrice > 500) {
-        this.deliveryPrice = 0;
-      } else {
-        this.deliveryPrice = 60;
-      }
-    }
+    this.deliveryPrice = this.orderFormData.howToReciveOrder === 'Самовивіз' ? 0 : (newPrice > 500 ? 0 : 60);
+  }
+
+  calculateProductTotalPrice = ({ price, count, mods = [] }) => {
+    return count * (price + mods.reduce((acc, mod) => acc + (mod.price || 0), 0));
+  }
+
+  findExistingProductIndex = (id, mods) => {
+    return this.cartItems.findIndex(item => item.id === id && JSON.stringify(item.mods) === JSON.stringify(mods));
   }
 
   addProduct = (product) => {
-    const { id, price, count, mods = [] } = product;
-
-    // Функція для перевірки еквівалентності модифікаторів
-    const areModifiersEqual = (mods1, mods2) => {
-      if (mods1.length !== mods2.length) return false;
-      return mods1.every(mod1 => {
-        const mod2 = mods2.find(m => m.m === mod1.m);
-        return mod2 && mod1.a === mod2.a;
-      });
-    };
-
-    const modsPrice = mods.reduce((acc, mod) => acc + (mod.price || 0), 0);
-    const totalPriceForProduct = count * (price + modsPrice);
-    console.log(modsPrice, price, totalPriceForProduct)
-
-    // Перевірка наявності товару з такими ж модифікаторами
-    const existingProductIndex = this.cartItems.findIndex(item => item.id === id && areModifiersEqual(item.mods, mods));
+    const existingProductIndex = this.findExistingProductIndex(product.id, product.mods);
+    const totalPriceForProduct = this.calculateProductTotalPrice(product);
 
     if (existingProductIndex >= 0) {
-      // Якщо товар з такими ж модифікаторами вже є, збільшуємо кількість
       const existingProduct = this.cartItems[existingProductIndex];
-      existingProduct.count += count;
+      existingProduct.count += product.count;
       existingProduct.totalPrice += totalPriceForProduct;
-      this.cartItems[existingProductIndex] = existingProduct;
     } else {
-      // Якщо немає точно такого товару, додаємо як новий
       const cartItemId = Date.now() + Math.random().toString(16).substring(2);
       this.cartItems.push({ ...product, totalPrice: totalPriceForProduct, cartItemId });
     }
-    const newPrice = this.totalPrice += totalPriceForProduct;
-    this.totalPrice = newPrice;
 
-    this.updateDeliveryPrice(newPrice)
+    this.totalPrice += totalPriceForProduct;
+    this.updateDeliveryPrice(this.totalPrice);
   };
 
   removeFromCart = (cartItemId) => {
     const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
     if (itemIndex > -1) {
-      const newPrice = this.totalPrice -= this.cartItems[itemIndex].totalPrice;
-      this.totalPrice = newPrice
+      this.totalPrice -= this.cartItems[itemIndex].totalPrice;
       this.cartItems.splice(itemIndex, 1);
-      this.updateDeliveryPrice(newPrice)
+      this.updateDeliveryPrice(this.totalPrice);
     }
+  }
+
+  updateItemQuantity = (cartItemId, newCount) => {
+    const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
+    if (itemIndex > -1) {
+      const item = this.cartItems[itemIndex];
+      const newTotalPrice = this.calculateProductTotalPrice({ ...item, count: newCount });
+      this.totalPrice += newTotalPrice - item.totalPrice;
+      item.count = newCount;
+      item.totalPrice = newTotalPrice;
+      this.updateDeliveryPrice(this.totalPrice);
+    }
+  }
+
+  repeatTheOrder = async (orderId) => {
+    try {
+      const response = await axios.get(`${url}/api/getProductsByOrderId/${orderId}`);
+      if (response && response.data) {
+        const products = response.data[0].products;
+        this.cartItems = products;
+        this.totalPrice = products.reduce((total, item) => total + item.totalPrice, 0);
+      }
+    } catch (error) {
+      console.error("Не вдалося додати продукти до кошика:", error);
+    }
+  }
+
+  clearCart = () => {
+    this.cartItems = [];
+    this.totalPrice = 0;
+    this.deliveryPrice = 60;
+    ['shoppingCart', 'totalPrice', 'deliveryPrice', 'posterOrder', 'poster_order', 'user_payment_data', 'user_order_data'].forEach(key => localStorage.removeItem(key));
+  }
+
+  cartPromocode() {
+    this.promocode = true;
   }
 
   setDeliveryPrice = (price) => {
@@ -132,58 +145,6 @@ class ShoppingCartStore {
     return this.cartItems.find(item => item.cartItemId === cartItemId);
   }
 
-  updateItemQuantity = (cartItemId, newCount) => {
-    const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
-    if (itemIndex > -1) {
-      const item = this.cartItems[itemIndex];
-      const modsPrice = item.mods.reduce((acc, mod) => acc + mod.price, 0);
-      const totalPrice = newCount * (item.price + modsPrice);
-
-      this.cartItems[itemIndex] = { ...item, count: newCount, totalPrice };
-      // Перерахунок загальної вартості кошика
-      const newPrice = this.totalPrice = this.cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
-      this.totalPrice = newPrice;
-      this.updateDeliveryPrice(newPrice)
-    }
-  }
-
-  repeatTheOrder = async (orderId) => {
-    this.cartItems = [];
-    this.totalPrice = 0;
-
-    try {
-      const response = await axios.get(`${url}/api/getProductsByOrderId/${orderId}`);
-
-      if (!response || !response.data) return;
-
-      const products = response.data[0].products
-
-      runInAction(() => {
-        this.cartItems = products;
-        this.totalPrice = products.reduce((total, item) => total + item.totalPrice, 0)
-      })
-    } catch (error) {
-      console.error("Не вдалося додати продукти до кошика:", error);
-    }
-
-  }
-
-  cartPromocode = () => {
-    this.promocode = true;
-  };
-
-  clearCart = () => {
-    this.cartItems = [];
-    this.totalPrice = 0
-    this.deliveryPrice = 60
-    localStorage.removeItem("shoppingCart");
-    localStorage.removeItem("totalPrice");
-    localStorage.removeItem("deliveryPrice");
-    localStorage.removeItem("posterOrder");
-    localStorage.removeItem("poster_order");
-    localStorage.removeItem("user_payment_data");
-    localStorage.removeItem("user_order_data");
-  }
 }
 
 const shoppingCartStore = new ShoppingCartStore();
