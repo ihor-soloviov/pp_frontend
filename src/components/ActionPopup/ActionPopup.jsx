@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import PopupActions from '../PopupActions/PopupActions';
 import { observer } from 'mobx-react-lite';
 import popupActionsStore from '../../store/popup-action-store';
@@ -11,4 +11,3 @@ export const ActionPopup = observer(() => {
 
   return actionMessage ? <PopupActions action={actionMessage} /> : null;
 });
-
