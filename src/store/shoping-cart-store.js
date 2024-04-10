@@ -4,7 +4,6 @@ import { url } from "../api";
 
 class ShoppingCartStore {
   cartItems = [];
-  promocode = false;
   totalPrice = 0
   deliveryPrice = 60;
 
@@ -23,12 +22,9 @@ class ShoppingCartStore {
   }
 
   loadCartFromLocalStorage() {
-    const cartItems = JSON.parse(localStorage.getItem('shoppingCart') || '[]');
-    const totalPrice = JSON.parse(localStorage.getItem('totalPrice') || '0');
-    const deliveryPrice = JSON.parse(localStorage.getItem('deliveryPrice') || '60');
-    this.cartItems = cartItems;
-    this.totalPrice = totalPrice;
-    this.deliveryPrice = deliveryPrice;
+    this.cartItems = JSON.parse(localStorage.getItem('shoppingCart') || '[]');
+    this.totalPrice = JSON.parse(localStorage.getItem('totalPrice') || '0');
+    this.deliveryPrice = JSON.parse(localStorage.getItem('deliveryPrice') || '60');
   }
 
   addProduct = (product) => {
@@ -45,7 +41,6 @@ class ShoppingCartStore {
 
     const modsPrice = mods.reduce((acc, mod) => acc + (mod.price || 0), 0);
     const totalPriceForProduct = count * (price + modsPrice);
-    console.log(modsPrice, price, totalPriceForProduct)
 
     // Перевірка наявності товару з такими ж модифікаторами
     const existingProductIndex = this.cartItems.findIndex(item => item.id === id && areModifiersEqual(item.mods, mods));
@@ -63,7 +58,7 @@ class ShoppingCartStore {
     }
     const newPrice = this.totalPrice += totalPriceForProduct;
     this.totalPrice = newPrice;
-    newPrice >= 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
+    newPrice > 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
   };
 
   removeFromCart = (cartItemId) => {
@@ -123,10 +118,6 @@ class ShoppingCartStore {
     }
 
   }
-
-  cartPromocode = () => {
-    this.promocode = true;
-  };
 
   clearCart = () => {
     this.cartItems = [];

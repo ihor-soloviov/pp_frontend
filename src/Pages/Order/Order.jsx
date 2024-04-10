@@ -10,7 +10,6 @@ import shoppingCartStore from '../../store/shoping-cart-store';
 //Import components
 
 import OrderForm from './OrderComponents/OrderForm';
-import { calculateTotalPrice } from './OrderFunctions/OrderTools';
 import { dropInProducts } from '../../utils/animation';
 import modalsStore from '../../store/modal-store';
 import Popup from '../../components/Popup/Popup';
@@ -21,7 +20,6 @@ const Order = observer(() => {
   const { thanksModal, thanksModalHandler } = modalsStore;
   const [isPromotion, setIsPromotion] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
-
 
   useEffect(() => {
     if (posterOrder) {
@@ -53,7 +51,12 @@ const Order = observer(() => {
           className='order-page'
         >
           <div className='order-page__content'>
-            <OrderForm setIsPromotion={setIsPromotion} isPromotion={isPromotion} posterOrder={posterOrder} setPosterOrder={setPosterOrder} />
+            <OrderForm
+              setIsPromotion={setIsPromotion}
+              isPromotion={isPromotion}
+              posterOrder={posterOrder}
+              setPosterOrder={setPosterOrder}
+            />
             <div className='checkout'>
               <div className='checkout__content'>
                 <h3 className='title__h3 text__color--secondary'>Ваше замовлення</h3>
@@ -97,14 +100,14 @@ const Order = observer(() => {
                     <div className='checkout__row'>
                       <p className='checkout__text'>Знижка:</p>
                       <p className='checkout__text'>
-                        {(calculateTotalPrice(cartItems) * (40 / 100)).toFixed(2)} ₴
+                        {(totalPrice * (40 / 100)).toFixed(2)} ₴
                       </p>
                     </div>
                   )}
 
                   <div className='checkout__row'>
                     <p className='checkout__text checkout__text-bold'>Всього до сплати:</p>
-                    <p className='checkout__text-bold'>{totalPrice + deliveryPrice} ₴</p>
+                    <p className='checkout__text-bold'>{isPromotion ? (totalPrice * 0.6 + deliveryPrice) : totalPrice + deliveryPrice} ₴</p>
                   </div>
                 </div>
               </div>

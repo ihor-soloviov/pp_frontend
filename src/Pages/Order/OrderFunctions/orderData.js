@@ -35,7 +35,7 @@ const shoppingCartMapPromo = (products) =>
     };
   });
 
-export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice) => {
+export const getValidateRules = (formData, cartItems, totalPrice, isPromotion, deliveryPrice) => {
   const {
     number,
     howToReciveOrder,
@@ -47,6 +47,9 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
     paymentMethod,
     change,
   } = formData;
+
+  const orderPrice = isPromotion ? totalPrice * 0.6 : totalPrice;
+
   return [
     { check: () => cartItems.length === 0, message: 'Будь ласка, оберіть товари для замовлення' },
     { check: () => number === '', message: 'Будь ласка, заповніть поле номеру телефону' },
@@ -64,7 +67,7 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
       message: 'Будь ласка, вкажіть валідну суму для підрахунку решти',
     },
     { check: () => !deliveryTime, message: 'Будь ласка, оберіть час отримання замовлення' },
-    { check: () => totalPrice < 200, message: 'Мінімальна сумма замовлення 200 ₴' },
+    { check: () => orderPrice < 200, message: 'Мінімальна сума до сплати 200 ₴' },
   ];
 };
 

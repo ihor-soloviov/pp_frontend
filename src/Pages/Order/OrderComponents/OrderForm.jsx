@@ -124,7 +124,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
 
 
   const onSubmit = useCallback(() => {
-    const errorMessage = validateOrderData(formData, cartItems, totalPrice, deliveryPrice);
+    const errorMessage = validateOrderData(formData, cartItems, totalPrice, isPromotion, deliveryPrice);
     if (errorMessage) {
       handleTemporaryError(errorMessage);
       return;
