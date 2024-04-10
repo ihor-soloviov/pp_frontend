@@ -1,12 +1,36 @@
 import axios from "axios";
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { url } from "../api";
+import { getCurrentDate } from "../Pages/Order/OrderFunctions/OrderTools";
 
 class ShoppingCartStore {
   cartItems = [];
   promocode = false;
   totalPrice = 0
   deliveryPrice = 60;
+  orderFormData = {
+    spot_id: '',
+    name: '',
+    number: '',
+    selectedAddress: '',
+    street: '',
+    houseNumber: '',
+    deliveryTime: '',
+    howToReciveOrder: '',
+    entrance: '',
+    apartment: '',
+    buildingCode: '',
+    floor: '',
+    selectedTime: getCurrentDate(),
+    promoCode: '',
+    bonus: '',
+    paymentMethod: 'Онлайн',
+    change: '',
+    withoutDevices: false,
+    personCount: 1,
+    comment: '',
+    doNotCall: false,
+  }
 
   constructor() {
     makeAutoObservable(this);
@@ -29,6 +53,25 @@ class ShoppingCartStore {
     this.cartItems = cartItems;
     this.totalPrice = totalPrice;
     this.deliveryPrice = deliveryPrice;
+  }
+
+  handleFormValueChange = (field, value) => {
+    const updatedFormData = { ...this.orderFormData, [field]: value };
+
+    this.orderFormData = updatedFormData;
+  }
+
+  updateDeliveryPrice = (newPrice) => {
+    // Перевіряємо, чи замовлення передбачає самовивіз
+    if (this.orderFormData.howToReciveOrder === 'Самовивіз') {
+      this.deliveryPrice = 0;
+    } else {
+      if (newPrice > 500) {
+        this.deliveryPrice = 0;
+      } else {
+        this.deliveryPrice = 60;
+      }
+    }
   }
 
   addProduct = (product) => {
@@ -63,7 +106,8 @@ class ShoppingCartStore {
     }
     const newPrice = this.totalPrice += totalPriceForProduct;
     this.totalPrice = newPrice;
-    newPrice > 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
+
+    this.updateDeliveryPrice(newPrice)
   };
 
   removeFromCart = (cartItemId) => {
@@ -72,7 +116,7 @@ class ShoppingCartStore {
       const newPrice = this.totalPrice -= this.cartItems[itemIndex].totalPrice;
       this.totalPrice = newPrice
       this.cartItems.splice(itemIndex, 1);
-      newPrice > 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
+      this.updateDeliveryPrice(newPrice)
     }
   }
 
@@ -99,7 +143,7 @@ class ShoppingCartStore {
       // Перерахунок загальної вартості кошика
       const newPrice = this.totalPrice = this.cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
       this.totalPrice = newPrice;
-      newPrice > 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
+      this.updateDeliveryPrice(newPrice)
     }
   }
 

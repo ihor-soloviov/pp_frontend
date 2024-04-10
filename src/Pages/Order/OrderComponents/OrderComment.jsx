@@ -1,9 +1,13 @@
 import React from 'react'
 import Checkbox from '../../../components/Inputs/Checkbox';
 import InputTextArea from '../../../components/Inputs/InputTextArea';
+import { observer } from 'mobx-react-lite';
+import shoppingCartStore from '../../../store/shoping-cart-store';
 
-export const OrderComment = React.memo(({ formData, handleFormValueChange }) => {
-  const { withoutDevices, personCount, comment, doNotCall } = formData;
+export const OrderComment = observer(() => {
+  const { orderFormData, handleFormValueChange } = shoppingCartStore
+  const { withoutDevices, personCount, comment, doNotCall } = orderFormData;
+  
   return (
     <section className="order-page__section">
       <h3 className='order-page__header'>Додатково</h3>

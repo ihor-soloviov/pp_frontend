@@ -13,7 +13,6 @@ import {
   createOrder,
   createTransaction,
   checkCurrentUserPromo,
-  getCurrentDate,
   setTemporaryError,
   validateOrderData,
   calculateFinalAmount,
@@ -34,30 +33,6 @@ import BtnMain from '../../../components/Buttons/BtnMain';
 
 const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, posterOrder }) => {
   //States
-  const [formData, setFormData] = useState({
-    spot_id: '',
-    name: '',
-    number: '',
-    selectedAddress: '',
-    street: '',
-    houseNumber: '',
-    deliveryTime: '',
-    howToReciveOrder: '',
-    entrance: '',
-    apartment: '',
-    buildingCode: '',
-    floor: '',
-    selectedTime: getCurrentDate(),
-    promoCode: '',
-    bonus: '',
-    paymentMethod: 'Онлайн',
-    change: '',
-    withoutDevices: false,
-    personCount: 1,
-    comment: '',
-    doNotCall: false,
-  });
-
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(false);
 
@@ -68,16 +43,9 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
   const handleError = (newErrorState) => setError(newErrorState);
   const handleTemporaryError = (message) => setTemporaryError(message, setError);
 
-  const handleFormValueChange = useCallback((field, value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [field]: value,
-    }));
-  }, []);
-
   //stores
   const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
-  const { cartItems, clearCart, totalPrice, deliveryPrice } = shoppingCartStore;
+  const { cartItems, clearCart, totalPrice, deliveryPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
   const { name, phone, isAuthenticated } = userStore;
 
   //Hooks
@@ -86,8 +54,8 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
   useCheckTransactionStatus(location.search, setTransactionStatus);
 
   useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+    console.log(orderFormData);
+  }, [orderFormData]);
 
   //функції які потребують авторизованності
   useEffect(() => {
@@ -124,23 +92,23 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
 
 
   const onSubmit = useCallback(() => {
-    const errorMessage = validateOrderData(formData, cartItems, totalPrice, deliveryPrice);
+    const errorMessage = validateOrderData(orderFormData, cartItems, totalPrice, deliveryPrice);
     if (errorMessage) {
       handleTemporaryError(errorMessage);
       return;
     }
 
-    const amount = calculateFinalAmount(cartItems, isPromotion, formData.howToReciveOrder);
-    const orderData = createOrderData(formData, cartItems, isPromotion);
+    const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
+    const orderData = createOrderData(orderFormData, cartItems, isPromotion);
     setOrderData(orderData);
 
-    if (formData.paymentMethod === 'Готівка') {
+    if (orderFormData.paymentMethod === 'Готівка') {
       createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
       return;
     }
 
     createTransaction(amount, setPaymentData);
-  }, [formData, cartItems, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
+  }, [orderFormData, cartItems, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
 
   return (
     <React.Fragment>
@@ -168,26 +136,24 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
 
       <section className='order-page__form'>
         <OrderContacts
-          name={formData.name}
-          number={formData.number}
-          handleFormValueChange={handleFormValueChange}
+          name={orderFormData.name}
+          number={orderFormData.number}
         />
 
-        <OrderAddress formData={formData} handleFormValueChange={handleFormValueChange} />
+        <OrderAddress />
 
-        <OrderTime formData={formData} handleFormValueChange={handleFormValueChange} />
+        <OrderTime />
 
         <OrderPromo
-          handleFormValueChange={handleFormValueChange}
           handleError={handleError}
           isPromotion={isPromotion}
           setPromotionPopup={setPromotionPopup}
           setIsPromotion={setIsPromotion}
         />
 
-        <OrderPaymentType formData={formData} handleFormValueChange={handleFormValueChange} />
+        <OrderPaymentType />
 
-        <OrderComment formData={formData} handleFormValueChange={handleFormValueChange} />
+        <OrderComment />
 
         <BtnMain fullWide onClick={onSubmit}>
           Оформити замовлення

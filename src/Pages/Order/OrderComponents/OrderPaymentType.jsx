@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import InputText from '../../../components/Inputs/InputText';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
+import { observer } from 'mobx-react-lite';
+import shoppingCartStore from '../../../store/shoping-cart-store';
 
-export const OrderPaymentType = ({ formData, handleFormValueChange }) => {
-  const { bonus, change } = formData;
+export const OrderPaymentType = observer(() => {
+  const { orderFormData, handleFormValueChange } = shoppingCartStore
+  const { bonus, change } = orderFormData;
   const [payment, setPayment] = useState({ label: 'Онлайн', value: 'Онлайн' });
 
   const handleChangePayment = (e) => {
@@ -42,4 +45,4 @@ export const OrderPaymentType = ({ formData, handleFormValueChange }) => {
       </div>
     </section>
   );
-};
+})

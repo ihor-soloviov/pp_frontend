@@ -7,14 +7,13 @@ import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 
 export const OrderPromo = observer(
   ({
-    handleFormValueChange,
     handleError,
     isPromotion,
     setPromotionPopup,
     setIsPromotion,
   }) => {
     const { promocode40, isAuthenticated } = userStore;
-    const { totalPrice } = shoppingCartStore;
+    const { totalPrice, handleFormValueChange } = shoppingCartStore;
     const [promo, setPromo] = useState('');
 
     const handleActivatePromoClick = () => {

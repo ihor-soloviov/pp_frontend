@@ -17,9 +17,9 @@ import { Autocomplete } from '@react-google-maps/api';
 import '../Order.scss';
 import PopupActions from '../../../components/PopupActions/PopupActions';
 
-export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
-  const { floor, buildingCode, entrance, apartment, howToReciveOrder } = formData;
-  const { setDeliveryPrice, totalPrice } = shoppingCartStore;
+export const OrderAddress = observer(() => {
+  const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
+  const { floor, buildingCode, entrance, apartment, howToReciveOrder } = orderFormData;
 
   const { adresses } = userStore;
 

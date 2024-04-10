@@ -1,9 +1,11 @@
 import React from 'react'
-
+import { observer } from 'mobx-react-lite';
 import InputText from '../../../components/Inputs/InputText'
 import InputNumber from '../../../components/Inputs/InputNumber'
+import shoppingCartStore from '../../../store/shoping-cart-store';
 
-export const OrderContacts = React.memo(({ name, number, handleFormValueChange }) => {
+export const OrderContacts = observer(({ name, number }) => {
+  const { handleFormValueChange } = shoppingCartStore
 
   return (
     <section className="order-page__section">

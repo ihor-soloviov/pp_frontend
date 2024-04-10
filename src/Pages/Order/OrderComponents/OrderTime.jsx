@@ -4,11 +4,15 @@ import { timeArray } from '../time';
 import { filterTimeArray } from '../OrderFunctions/OrderTools';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import '../../../components/Inputs/InputText.scss';
+import shoppingCartStore from '../../../store/shoping-cart-store';
+
 const timeOptions = filterTimeArray(timeArray);
 
-export const OrderTime = React.memo(({ handleFormValueChange, formData }) => {
-  const { deliveryTime } = formData;
+export const OrderTime = observer(() => {
+  const { orderFormData, handleFormValueChange } = shoppingCartStore
+  const { deliveryTime } = orderFormData;
 
   const [dropTime, setDropTime] = useState(null);
 
