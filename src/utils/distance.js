@@ -56,7 +56,7 @@ export const pullInputFields = (
   setSpotTwoDistance,
 ) => {
   const distance = calculateDistance(
-    currentAddressInfo.address,
+    currentAddressInfo.fullAddress,
     setSpotOneDistance,
     setSpotTwoDistance,
   );

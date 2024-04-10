@@ -41,6 +41,8 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
 
+  console.log('spotOneDistance', spotOneDistance);
+  console.log('spotTwoDistance', spotTwoDistance);
   const handleError = (newErrorState) => setError(newErrorState);
 
   const handleChangeAddress = (e) => {
@@ -48,6 +50,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
       setDropAddress(e.value);
       setCurrentAddressInfo(e.value);
       setIsSavedAddressSelected(false);
+      setAddressInput('');
       resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
       return;
     }
@@ -104,7 +107,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
         currentError: 'Вкажіть номер будинку',
       });
 
-      setAddressInput(formatedAddress);
+      setAddressInput(`${streetName}`);
       return;
     }
 
@@ -113,11 +116,12 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
         status: true,
         currentError: 'Адреса не знайдена',
       });
-      setAddressInput(formatedAddress);
+      setAddressInput(`${streetName}`);
+
       return;
     }
     calculateDistance(formatedAddress, setSpotOneDistance, setSpotTwoDistance);
-    setAddressInput(formatedAddress);
+    setAddressInput(`${streetName}, ${houseNum}`);
     handleFormValueChange('street', streetName);
     handleFormValueChange('houseNumber', houseNum);
     handleError({

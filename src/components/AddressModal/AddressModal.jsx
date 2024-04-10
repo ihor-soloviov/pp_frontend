@@ -36,6 +36,7 @@ const AddressModal = observer(
     const [error, setError] = useState({ status: false, currentError: '' });
     const [validAddress, setValidAddress] = useState(false);
     const [streetAndHouse, setStreetAndHouse] = useState(null);
+    const [fullAddress, setFullAddress] = useState(null);
 
     const handleError = (newErrorState) => setError(newErrorState);
 
@@ -116,7 +117,7 @@ const AddressModal = observer(
         }),
 
         onSubmit: (values) => {
-          const formDataStreetAndHouse = { ...values, ...streetAndHouse };
+          const formDataStreetAndHouse = { ...values, ...streetAndHouse, ...fullAddress };
           addToAdresses({ address: formDataStreetAndHouse });
 
           formSubmit(formDataStreetAndHouse);
@@ -161,7 +162,7 @@ const AddressModal = observer(
           status: true,
           currentError: 'Вкажіть номер будинку',
         });
-        setFieldValue('address', formatedAddress);
+        setFieldValue('address', streetName);
         return;
       }
 
@@ -171,12 +172,13 @@ const AddressModal = observer(
           currentError: 'Адреса не знайдена',
         });
 
-        setFieldValue('address', formatedAddress);
+        setFieldValue('address', streetName);
         return;
       }
       setValidAddress(true);
       setStreetAndHouse({ streetName: streetName, homeNumber: houseNum });
-      setFieldValue('address', formatedAddress);
+      setFullAddress({ fullAddress: formatedAddress });
+      setFieldValue('address', `${streetName}, ${houseNum}`);
       handleError({
         status: false,
         currentError: '',
