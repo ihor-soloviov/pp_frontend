@@ -6,7 +6,12 @@ import { observer } from 'mobx-react-lite';
 import userStore from '../../../store/user-store';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
-import { compareDistances } from '../../../utils/distance';
+import {
+  calculateDistance,
+  setSpotIds,
+  resetInputFields,
+  pullInputFields,
+} from '../../../utils/distance';
 import { Autocomplete } from '@react-google-maps/api';
 
 import '../Order.scss';
@@ -27,25 +32,12 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
     })),
   ];
 
-  const resetInputFields = () => {
-    handleFormValueChange('street', '');
-    handleFormValueChange('houseNumber', '');
-    handleFormValueChange('howToReciveOrder', '');
-    handleFormValueChange('floor', '');
-    handleFormValueChange('buildingCode', '');
-    handleFormValueChange('entrance', '');
-    handleFormValueChange('apartment', '');
-    handleFormValueChange('spot_id', '');
-    setSpotTwoDistance(null);
-    setSpotTwoDistance(null);
-  };
-
   const [error, setError] = useState({ status: false, currentError: '' });
   const [dropAddress, setDropAddress] = useState(null);
   const [currentAddressInfo, setCurrentAddressInfo] = useState(null);
   const [isSavedAddressSelected, setIsSavedAddressSelected] = useState(false);
-  const [streetInput, setStreetInput] = useState('');
-  const [streetAutocomplete, setStreetAutocomplete] = useState(null);
+  const [addressInput, setAddressInput] = useState('');
+  const [addressAutocomplete, setAddresstAutocomplete] = useState(null);
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
 
@@ -56,7 +48,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
       setDropAddress(e.value);
       setCurrentAddressInfo(e.value);
       setIsSavedAddressSelected(false);
-      resetInputFields();
+      resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
       return;
     }
     setDropAddress(e.value);
@@ -66,8 +58,8 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
   const onOptionChange = (event) => {
     if (event.target.value === 'Самовивіз') {
       setDeliveryPrice(0);
-      resetInputFields();
-      setStreetInput('');
+      resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
+      setAddressInput('');
     } else {
       setDeliveryPrice(60);
     }
@@ -75,15 +67,15 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
   };
 
   const handleStreetChange = (value) => {
-    resetInputFields();
-    setStreetInput(value);
+    resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
+    setAddressInput(value);
   };
 
-  const handleAutoStreetChange = () => {
-    if (!streetAutocomplete) {
+  const handleAutoAddressChange = () => {
+    if (!addressAutocomplete) {
       return;
     }
-    const place = streetAutocomplete.getPlace();
+    const place = addressAutocomplete.getPlace();
     const { address_components: addressComponents } = place;
 
     if (!addressComponents) {
@@ -112,7 +104,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
         currentError: 'Вкажіть номер будинку',
       });
 
-      setStreetInput(formatedAddress);
+      setAddressInput(formatedAddress);
       return;
     }
 
@@ -121,11 +113,11 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
         status: true,
         currentError: 'Адреса не знайдена',
       });
-      setStreetInput(formatedAddress);
+      setAddressInput(formatedAddress);
       return;
     }
-    calculateDistance(formatedAddress);
-    setStreetInput(formatedAddress);
+    calculateDistance(formatedAddress, setSpotOneDistance, setSpotTwoDistance);
+    setAddressInput(formatedAddress);
     handleFormValueChange('street', streetName);
     handleFormValueChange('houseNumber', houseNum);
     handleError({
@@ -134,41 +126,9 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
     });
   };
 
-  const calculateDistance = (fullAddress) => {
-    const service = new window.google.maps.DistanceMatrixService();
-
-    const spotOne = 'вулиця Маршала Малиновскього, 18, Одеса, Одеська область, Україна, 65000';
-    const spotTwo = 'Економічний провулок, 1, Одеса, Одеська область, Україна, 65000';
-    service.getDistanceMatrix(
-      {
-        origins: [spotOne, spotTwo],
-        destinations: [fullAddress],
-        travelMode: 'DRIVING',
-      },
-      (response, status) => {
-        if (status === 'OK' && response !== null) {
-          const distanceOne = response.rows[0].elements[0].distance.text;
-          const distanceTwo = response.rows[1].elements[0].distance.text;
-          setSpotOneDistance(distanceOne);
-          setSpotTwoDistance(distanceTwo);
-        } else {
-          console.error('Error:', status);
-        }
-      },
-    );
-  };
-
-  const setSpotIds = () => {
-    const currentSpot =
-      spotOneDistance && spotTwoDistance && compareDistances(spotOneDistance, spotTwoDistance);
-    console.log('spotOneDistance', spotOneDistance);
-    console.log('spotTwoDistance', spotTwoDistance);
-    handleFormValueChange('spot_id', currentSpot);
-  };
-
   useEffect(() => {
     if (spotOneDistance !== null && spotTwoDistance !== null) {
-      setSpotIds();
+      setSpotIds(spotOneDistance, spotTwoDistance, handleFormValueChange);
     }
   }, [spotOneDistance, spotTwoDistance]);
 
@@ -183,19 +143,13 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
       allAddresses && allAddresses.find((address) => address.addressId === dropAddress);
 
     if (currentAddressInfo) {
-      const distance = calculateDistance(currentAddressInfo.address);
       setCurrentAddressInfo(currentAddressInfo);
-      handleFormValueChange('street', currentAddressInfo.streetName);
-      handleFormValueChange('houseNumber', currentAddressInfo.homeNumber);
-      handleFormValueChange(
-        'howToReciveOrder',
-        currentAddressInfo.adressType === 'house' ? 'Приватний будинок' : 'До дверей',
+      pullInputFields(
+        currentAddressInfo,
+        handleFormValueChange,
+        setSpotOneDistance,
+        setSpotTwoDistance,
       );
-      handleFormValueChange('apartment', currentAddressInfo.flatNumber);
-      handleFormValueChange('entrance', currentAddressInfo.entranceNumber);
-      handleFormValueChange('buildingCode', currentAddressInfo.entranceCode);
-      handleFormValueChange('floor', currentAddressInfo.floar);
-      handleFormValueChange('spot_id', distance);
     }
   }, [adresses, dropAddress, handleFormValueChange]);
 
@@ -232,8 +186,8 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
           <Autocomplete
             types={['address']}
             className='autocomplete-wrap'
-            onLoad={(autocomplete) => setStreetAutocomplete(autocomplete)}
-            onPlaceChanged={handleAutoStreetChange}
+            onLoad={(autocomplete) => setAddresstAutocomplete(autocomplete)}
+            onPlaceChanged={handleAutoAddressChange}
             options={{
               bounds: new window.google.maps.LatLngBounds({
                 north: 46.6053,
@@ -251,7 +205,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
             <InputText
               name={'Адреса'}
               placeholder={'Адреса'}
-              value={currentAddressInfo && dropAddress ? currentAddressInfo.address : streetInput}
+              value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
               onChange={handleStreetChange}
               disabled={isSavedAddressSelected}
             />

@@ -93,46 +93,39 @@ const AddressModal = observer(
       }
     };
 
-    const {
-      handleSubmit,
-      handleChange,
-      errors,
-      touched,
-      getFieldProps,
-      setFieldValue,
-      isValid,
-      dirty,
-    } = useFormik({
-      initialValues: {
-        adressName: '',
-        comment: '',
-        entranceCode: '',
-        entranceNumber: '',
-        flatNumber: '',
-        floar: '',
-        address: '',
+    const { handleSubmit, handleChange, errors, touched, getFieldProps, setFieldValue } = useFormik(
+      {
+        initialValues: {
+          adressName: '',
+          comment: '',
+          entranceCode: '',
+          entranceNumber: '',
+          flatNumber: '',
+          floar: '',
+          address: '',
+        },
+        validationSchema: Yup.object({
+          adressName: Yup.string().required(`Обов'язкове поле`),
+          entranceCode: Yup.string(),
+          entranceNumber: Yup.string(),
+          flatNumber: Yup.number().typeError('Вкажіть коректне значення'),
+          floar: Yup.number().typeError('Вкажіть коректне значення'),
+          address: Yup.string().required(`Обов'язкове поле`),
+          comment: Yup.string(),
+        }),
+
+        onSubmit: (values) => {
+          const formDataStreetAndHouse = { ...values, ...streetAndHouse };
+          addToAdresses({ address: formDataStreetAndHouse });
+
+          formSubmit(formDataStreetAndHouse);
+
+          isEdit && setIsEdit(!isEdit);
+
+          setCurrentAddressId(null);
+        },
       },
-      validationSchema: Yup.object({
-        adressName: Yup.string().required(`Обов'язкове поле`),
-        entranceCode: Yup.string(),
-        entranceNumber: Yup.string(),
-        flatNumber: Yup.number().typeError('Вкажіть коректне значення'),
-        floar: Yup.number().typeError('Вкажіть коректне значення'),
-        address: Yup.string().required(`Обов'язкове поле`),
-        comment: Yup.string(),
-      }),
-
-      onSubmit: (values) => {
-        const formDataStreetAndHouse = { ...values, ...streetAndHouse };
-        addToAdresses({ address: formDataStreetAndHouse });
-
-        formSubmit(formDataStreetAndHouse);
-
-        isEdit && setIsEdit(!isEdit);
-
-        setCurrentAddressId(null);
-      },
-    });
+    );
 
     const handleAutoAddressChange = () => {
       if (!addressAutocomplete) {
