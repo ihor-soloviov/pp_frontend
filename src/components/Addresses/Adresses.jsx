@@ -20,7 +20,6 @@ const Addresses = observer(({ handleSidebar }) => {
   const [currentAddressId, setCurrentAddressId] = useState(null);
   const [isAdressesUpdating, setIsAdressesUpdating] = useState(false);
 
-  console.log('currentAddressId', currentAddressId);
   useEffect(() => {
     const fetchAdresses = async () => {
       if (!token) {

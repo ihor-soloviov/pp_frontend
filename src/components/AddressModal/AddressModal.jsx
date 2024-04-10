@@ -15,6 +15,7 @@ import { headers } from '../../utils/menu';
 import popupActionsStore from '../../store/popup-action-store';
 import './AddressModal.scss';
 import { observer } from 'mobx-react-lite';
+import { SetFieldValues } from '../../utils/savedAddress';
 
 const AddressModal = observer(
   ({
@@ -196,13 +197,7 @@ const AddressModal = observer(
     useEffect(() => {
       const setFormValues = (address) => {
         if (address) {
-          setFieldValue('adressName', address.adressName || '');
-          setFieldValue('comment', address.comment || '');
-          setFieldValue('entranceCode', address.entranceCode || '');
-          setFieldValue('entranceNumber', address.entranceNumber || '');
-          setFieldValue('flatNumber', address.flatNumber || '');
-          setFieldValue('floar', address.floar || '');
-          setFieldValue('address', address.address || '');
+          SetFieldValues(setFieldValue, address);
         }
       };
       currentAddressState && setFormValues(currentAddress);
