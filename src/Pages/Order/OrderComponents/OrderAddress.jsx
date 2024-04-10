@@ -19,7 +19,7 @@ import PopupActions from '../../../components/PopupActions/PopupActions';
 
 export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
   const { floor, buildingCode, entrance, apartment, howToReciveOrder } = formData;
-  const { setDeliveryPrice } = shoppingCartStore;
+  const { setDeliveryPrice, totalPrice } = shoppingCartStore;
 
   const { adresses } = userStore;
 
@@ -61,7 +61,7 @@ export const OrderAddress = observer(({ formData, handleFormValueChange }) => {
       resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
       setAddressInput('');
     } else {
-      setDeliveryPrice(60);
+      totalPrice < 500 ? setDeliveryPrice(60) : setDeliveryPrice(0);
     }
     handleFormValueChange('howToReciveOrder', event.target.value);
   };
