@@ -63,7 +63,7 @@ class ShoppingCartStore {
     }
     const newPrice = this.totalPrice += totalPriceForProduct;
     this.totalPrice = newPrice;
-    newPrice >= 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
+    newPrice > 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
   };
 
   removeFromCart = (cartItemId) => {
@@ -99,7 +99,7 @@ class ShoppingCartStore {
       // Перерахунок загальної вартості кошика
       const newPrice = this.totalPrice = this.cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
       this.totalPrice = newPrice;
-      newPrice >= 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
+      newPrice > 500 ? this.deliveryPrice = 0 : this.deliveryPrice = 60
     }
   }
 
