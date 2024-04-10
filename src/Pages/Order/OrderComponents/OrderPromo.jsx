@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import userStore from '../../../store/user-store';
 import BtnMain from '../../../components/Buttons/BtnMain';
-import { calculateTotalPrice } from '../OrderFunctions/OrderTools';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import { observer } from 'mobx-react-lite';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 
 export const OrderPromo = observer(
   ({
-    formData,
     handleFormValueChange,
     handleError,
     isPromotion,
@@ -16,32 +14,30 @@ export const OrderPromo = observer(
     setIsPromotion,
   }) => {
     const { promocode40, isAuthenticated } = userStore;
-    const { cartItems } = shoppingCartStore;
+    const { totalPrice } = shoppingCartStore;
     const [promo, setPromo] = useState('');
-    const [banner, setBanner] = useState('У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%');
-
-    useEffect(() => {
-      if (!isAuthenticated) {
-        setBanner('Зареєструйтесь для отримання знижки');
-      }
-    }, [isAuthenticated]);
 
     const handleActivatePromoClick = () => {
       if (promo.label !== '40%') {
         return;
       }
-      if (calculateTotalPrice(cartItems) * (60 / 100) <= 200) {
+
+      if (totalPrice < 200) {
+
         handleError({
           status: true,
           currentError: 'Мінімальна сумма замовлення 200 ₴',
         });
+
         setTimeout(() => {
           handleError({
             status: false,
             currentError: '',
           });
         }, 2000);
+
       } else {
+
         setPromotionPopup(true);
         setTimeout(() => {
           setPromotionPopup(false);
@@ -50,9 +46,9 @@ export const OrderPromo = observer(
       }
     };
 
-    const handleChangePromo = (e) => {
-      setPromo(e);
-      handleFormValueChange('promoCode', e);
+    const handleChangePromo = (event) => {
+      setPromo(event);
+      handleFormValueChange('promoCode', event);
     };
 
     const promoOptions = promocode40 ? ['40%', ''] : [''];
@@ -60,6 +56,7 @@ export const OrderPromo = observer(
     return (
       <section className='order-page__section'>
         <h3 className='order-page__header'>Додати промокод</h3>
+
         {isAuthenticated && (
           <section className='order-page__section-inputs order-page__section-inputs-row'>
             <label className='inputText'>
@@ -80,9 +77,10 @@ export const OrderPromo = observer(
             )}
           </section>
         )}
+
         {promocode40 && (
           <div className='order-page__have-promocode'>
-            <span className='promo-text'>{banner}</span>
+            <span className='promo-text'>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
             <div className='order-page__arrow'>
               <svg width='17' height='20' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <path
