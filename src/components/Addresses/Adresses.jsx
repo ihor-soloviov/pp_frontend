@@ -51,6 +51,15 @@ const Addresses = observer(({ handleSidebar }) => {
     setModalOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isModalOpen]);
+
   return (
     <section className='grid_layout--main addresses'>
       <ProfileLink handleSidebar={handleSidebar}>Збережені адреси</ProfileLink>

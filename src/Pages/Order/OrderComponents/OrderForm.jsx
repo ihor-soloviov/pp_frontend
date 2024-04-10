@@ -35,7 +35,7 @@ import BtnMain from '../../../components/Buttons/BtnMain';
 const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, posterOrder }) => {
   //States
   const [formData, setFormData] = useState({
-    spot_id: 1,
+    spot_id: '',
     name: '',
     number: '',
     selectedAddress: '',
@@ -190,7 +190,9 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
 
         <OrderComment formData={formData} handleFormValueChange={handleFormValueChange} />
 
-        <BtnMain fullWide onClick={onSubmit} >Оформити замовлення</BtnMain>
+        <BtnMain fullWide onClick={onSubmit}>
+          Оформити замовлення
+        </BtnMain>
       </section>
     </React.Fragment>
   );

@@ -5,7 +5,7 @@ const RadioButton = ({ data, selectedOption, onOptionChange, column, disabled })
   return (
     <div className={`radio-button ${column && 'radio-button-column'}`}>
       {data.map((item) => (
-        <label key={item.id}>
+        <label className={`${disabled ? 'disabled' : ''}`} key={item.id}>
           <div className='radio-button__flex-content'>
             <input
               disabled={disabled}

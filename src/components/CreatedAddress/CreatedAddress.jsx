@@ -3,13 +3,11 @@ import cross from '../../../src/assets/Vector.svg';
 import userStore from '../../store/user-store';
 import { deleteAddress } from '../../utils/addresses';
 import { observer } from 'mobx-react-lite';
-import { getFlat, getStreet } from './utils';
 
 const CreatedAddress = observer(
   ({ adress, openModal, setIsAdressesUpdating, isEdit, setIsEdit, setCurrentAddressId }) => {
     const { token, removeAdresses } = userStore;
-    const flat = getFlat(adress);
-    const street = getStreet(adress.streetName, adress.homeNumber, flat);
+    const street = adress.address;
 
     return (
       <div id={adress.addressId} className='addresses_created'>
@@ -31,9 +29,7 @@ const CreatedAddress = observer(
               </button>
             </div>
             <div className='top-street'>
-              <p>
-                <span>Вулиця</span> {street.length < 21 ? street : `${street.slice(0, 21)}...`}
-              </p>
+              <p>{street.length < 21 ? street : `${street.slice(0, 21)}...`}</p>
             </div>
           </div>
           <div className='addresses_created__container--bot'>

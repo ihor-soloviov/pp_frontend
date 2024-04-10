@@ -183,6 +183,10 @@
   color: $btnTextColor;
 }
 
+.autocomplete-wrap {
+  width: 100%;
+}
+
 .address-label {
   font-weight: 400;
   font-size: 12px;
@@ -192,6 +196,38 @@
   width: 100%;
   color: #757479;
   margin-top: 30px;
+}
+
+.order-page__section,
+.order-page__section.__section-inputs-row {
+  position: relative;
+}
+
+.popupWrapOrder {
+  position: relative;
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+  }
+  @media screen and (min-width: 1024px) {
+  }
+}
+
+.popupWrapOrder .popup-actions {
+  position: absolute;
+
+  top: -410px;
+  bottom: unset;
+  left: 70px;
+  @media screen and (min-width: 400px) {
+    top: -380px;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    left: unset;
+    right: 0;
+  }
+  @media screen and (min-width: 1024px) {
+    left: unset;
+  }
 }
 
 @media screen and (max-width: 1366px) {
@@ -217,9 +253,6 @@
     }
 
     &__section-inputs-row {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
     }
 
     &__have-promocode {

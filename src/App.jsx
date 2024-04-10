@@ -20,13 +20,12 @@ import Contact from './Pages/Contact/Contact';
 import PaymentAndDelivery from './Pages/PaymentAndDelivery/PaymentAndDelivery';
 import Offero from './Pages/Offero/Offero';
 import NotFound from './Pages/NotFound/NotFound';
-
 //Import components
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Popup from './components/Popup/Popup';
 import SignUp from './components/SignUp/SignUp';
-import { MobileMenu } from "./components/Header/HeaderComponents/MobileMenu";
+import { MobileMenu } from './components/Header/HeaderComponents/MobileMenu';
 import { ActionPopup } from './components/ActionPopup/ActionPopup';
 import { Loader } from './components/Loader/Loader';
 //Import Utils
@@ -34,6 +33,8 @@ import TagManager from 'react-gtm-module';
 import userStore from './store/user-store';
 import { DiscountModal } from './components/DiscountModal/DiscountModal';
 
+import { LoadScript } from '@react-google-maps/api';
+import { places, googleMapsApiKey } from './utils/googleMap';
 const tagManagerArgs = {
   gtmId: 'GTM-WPHZCLVL',
 };
@@ -41,9 +42,11 @@ const tagManagerArgs = {
 const App = observer(() => {
   const location = useLocation();
   const navigate = useNavigate();
+
   //Store
-  const { authModalHandler, authModal, isLoader, setLoader, isDiscountModal, isDiscountHandler } = modalsStore;
-  const { userLogout } = userStore
+  const { authModalHandler, authModal, isLoader, setLoader, isDiscountModal, isDiscountHandler } =
+    modalsStore;
+  const { userLogout } = userStore;
 
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
@@ -54,13 +57,35 @@ const App = observer(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (location.pathname === '/profile/signout') {
-      userLogout()
-      navigate('/')
+      userLogout();
+      navigate('/');
     }
-  }, [location.pathname])
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const isOrderPage = location.pathname.startsWith('/order');
+    const isAddressPage = location.pathname.startsWith('/profile/addresses');
+
+    if (isOrderPage) {
+      document.body.classList.add('order-page');
+    } else {
+      document.body.classList.remove('order-page');
+    }
+
+    if (isAddressPage) {
+      document.body.classList.add('address-page');
+    } else {
+      document.body.classList.remove('address-page');
+    }
+
+    return () => {
+      document.body.classList.remove('order-page');
+      document.body.classList.remove('address-page');
+    };
+  }, [location.pathname]);
 
   return (
-    <React.Fragment>
+    <LoadScript googleMapsApiKey={googleMapsApiKey} language='uk' libraries={places}>
       {authModal && (
         <Popup closeModal={() => authModalHandler(false)}>
           <SignUp />
@@ -90,7 +115,7 @@ const App = observer(() => {
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
-    </React.Fragment>
+    </LoadScript>
   );
 });
 

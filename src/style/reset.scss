@@ -37,4 +37,23 @@ li {
   list-style: none;
 }
 
+.pac-logo:after {
+  content: none !important;
+}
 
+.pac-item {
+  padding: 7px 12px !important;
+}
+
+.pac-icon {
+  display: none !important;
+}
+
+.pac-container {
+  background: #f3f3f5 !important;
+  border-radius: 5px !important;
+}
+
+.order-page > .pac-container {
+  z-index: 2 !important;
+}
