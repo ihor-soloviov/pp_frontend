@@ -70,6 +70,9 @@ const AddressModal = observer(
           });
           if (response.status === 200) {
             setActions('savedAddress');
+            setTimeout(() => {
+              setActions('');
+            }, 2000);
           }
 
           return;
@@ -85,6 +88,9 @@ const AddressModal = observer(
         });
         if (response.status === 200) {
           setActions('updatedAddress');
+          setTimeout(() => {
+            setActions('');
+          }, 2000);
         }
       } catch (error) {
         console.log(error);

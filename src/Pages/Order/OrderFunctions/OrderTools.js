@@ -158,7 +158,7 @@ export const createOrder = async (setPosterResponse, setIsOrderCreate, isPromoti
     const user_payment_data = JSON.parse(localStorage.getItem('user_payment_data'));
     const data = JSON.parse(localStorage.getItem('user_order_data'));
     const shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'));
-    const transactionOrderId = user_payment_data ? user_payment_data.order_id : null;
+    const transactionOrderId = user_payment_data ? user_payment_data.order_id : `S_${Date.now()}`;
 
     const res = await axios.post(
       url + '/api/createOrder',
@@ -209,7 +209,7 @@ export const checkTransactionStatus = async (setTransactionStatus) => {
 
     if (!user_payment_data) {
       setTemporaryError('Оплата не вдала');
-      setTransactionStatus(false)
+      setTransactionStatus(false);
       return;
     }
 
