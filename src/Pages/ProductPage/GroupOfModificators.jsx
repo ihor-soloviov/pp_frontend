@@ -52,7 +52,7 @@ const GroupOfModificators = ({ group, setSelectedModificators }) => {
           />
           <b>{getFactoredName(modificator.name)}</b>
           {/*<span>{modificator.price}₴/{modificator.brutto}г</span>*/}
-          {modificator.price !== 0 && <span>{modificator.price}₴/40г</span>}
+          {modificator.price !== 0 && <span>+{modificator.price}₴/40г</span>}
         </div>
       ))}
     </React.Fragment>

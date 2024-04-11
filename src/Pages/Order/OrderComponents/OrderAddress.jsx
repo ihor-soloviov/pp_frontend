@@ -18,6 +18,28 @@ import { Autocomplete } from '@react-google-maps/api';
 import '../Order.scss';
 import PopupActions from '../../../components/PopupActions/PopupActions';
 
+const radioOptions = [
+  { id: 1, value: 'До дверей', label: 'До дверей' },
+  {
+    id: 2,
+    value: 'Приватний будинок',
+    label: 'Приватний будинок',
+  },
+  { id: 4, value: 'Вийду до машини', label: 'Вийду до машини' },
+  {
+    id: 3,
+    value: 'Самовивіз1',
+    label: 'Самовивіз',
+    info: '(Одеса, вул. Маршала Малиновскього 18)',
+  },
+  {
+    id: 5,
+    value: 'Самовивіз2',
+    label: 'Самовивіз',
+    info: '(Одеса, провулок Економічний 1)',
+  },
+]
+
 export const OrderAddress = observer(() => {
   const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
   const { floor, buildingCode, entrance, apartment, howToReciveOrder } = orderFormData;
@@ -50,8 +72,6 @@ export const OrderAddress = observer(() => {
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
 
-  console.log('spotOneDistance', spotOneDistance);
-  console.log('spotTwoDistance', spotTwoDistance);
   const handleError = (newErrorState) => setError(newErrorState);
 
   const handleChangeAddress = (e) => {
@@ -61,10 +81,11 @@ export const OrderAddress = observer(() => {
       setIsSavedAddressSelected(false);
       setAddressInput('');
       resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
-      return;
+      return
     }
     setDropAddress(e.value);
     setIsSavedAddressSelected(true);
+
   };
 
   const onOptionChange = (event) => {
@@ -247,27 +268,7 @@ export const OrderAddress = observer(() => {
       </section>
       <section className='order-page__section-inputs'>
         <RadioButton
-          data={[
-            { id: 1, value: 'До дверей', label: 'До дверей' },
-            {
-              id: 2,
-              value: 'Приватний будинок',
-              label: 'Приватний будинок',
-            },
-            { id: 4, value: 'Вийду до машини', label: 'Вийду до машини' },
-            {
-              id: 3,
-              value: 'Самовивіз1',
-              label: 'Самовивіз',
-              info: '(Одеса, вул. Маршала Малиновскього 18)',
-            },
-            {
-              id: 5,
-              value: 'Самовивіз2',
-              label: 'Самовивіз',
-              info: '(Одеса, провулок Економічний 1)',
-            },
-          ]}
+          data={radioOptions}
           selectedOption={howToReciveOrder}
           disabled={isSavedAddressSelected}
           onOptionChange={onOptionChange}
