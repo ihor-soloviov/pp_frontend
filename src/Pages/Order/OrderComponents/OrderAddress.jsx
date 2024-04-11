@@ -159,14 +159,16 @@ export const OrderAddress = observer(() => {
   };
 
   useEffect(() => {
-    if (howToReciveOrder.includes('Самовивіз')) {
-      handleFormValueChange('spot_id', howToReciveOrder === 'Самовивіз1' ? 1 : 2);
-      return
-    }
     if (spotOneDistance !== null && spotTwoDistance !== null) {
       setSpotIds(spotOneDistance, spotTwoDistance, handleFormValueChange);
     }
   }, [spotOneDistance, spotTwoDistance]);
+
+  useEffect(() => {
+    if (howToReciveOrder.includes('Самовивіз')) {
+      handleFormValueChange('spot_id', howToReciveOrder === 'Самовивіз1' ? 1 : 2);
+    }
+  }, [howToReciveOrder]);
 
   useEffect(() => {
     const allAddresses =
