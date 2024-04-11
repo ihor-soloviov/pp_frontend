@@ -36,7 +36,7 @@ export const OrderPromo = observer(
         }, 2000);
 
       } else {
-
+        
         setPromotionPopup(true);
         setTimeout(() => {
           setPromotionPopup(false);

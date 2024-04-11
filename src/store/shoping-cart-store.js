@@ -41,15 +41,13 @@ class ShoppingCartStore {
     );
   }
 
-  loadCartFromLocalStorage = () => {
-    const storageKeys = ['shoppingCart', 'totalPrice', 'deliveryPrice'];
-    const defaultValues = ['[]', '0', '60'];
-    storageKeys.forEach((key, index) => {
-      this[key] = JSON.parse(localStorage.getItem(key) || defaultValues[index]);
-    });
+  loadCartFromLocalStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem('shoppingCart') || '[]');
+    this.totalPrice = JSON.parse(localStorage.getItem('totalPrice') || '0');
+    this.deliveryPrice = JSON.parse(localStorage.getItem('deliveryPrice') || '60');
   }
 
-  saveCartToLocalStorage = () => {
+  saveCartToLocalStorage() {
     localStorage.setItem('shoppingCart', JSON.stringify(this.cartItems));
     localStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
     localStorage.setItem('deliveryPrice', JSON.stringify(this.deliveryPrice));
@@ -60,7 +58,7 @@ class ShoppingCartStore {
   }
 
   updateDeliveryPrice = (newPrice) => {
-    this.deliveryPrice = this.orderFormData.howToReciveOrder === 'Самовивіз' ? 0 : (newPrice > 500 ? 0 : 60);
+    this.deliveryPrice = this.orderFormData.howToReciveOrder.includes('Самовивіз') ? 0 : (newPrice > 500 ? 0 : 60);
   }
 
   calculateProductTotalPrice = ({ price, count, mods = [] }) => {
