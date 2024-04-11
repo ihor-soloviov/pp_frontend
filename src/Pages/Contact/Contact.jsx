@@ -1,9 +1,10 @@
 import React from 'react';
 import Container from '../../components/Container/Container';
 
-import { GoogleMap, MarkerF } from '@react-google-maps/api';
+import { GoogleMap, MarkerF, PolygonF } from '@react-google-maps/api';
 import { center, containerStyle, options } from './data';
 import './Contact.scss';
+import { polygonPaths } from '../../utils/distance';
 
 const Contact = () => {
   return (
@@ -50,6 +51,16 @@ const Contact = () => {
                 zoom={16}
                 options={options}
               >
+                <PolygonF
+                  paths={polygonPaths}
+                  options={{
+                    strokeColor: '#ff5124',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#ff5124',
+                    fillOpacity: 0.25,
+                  }}
+                />
                 <MarkerF position={center} />
               </GoogleMap>
             </div>
