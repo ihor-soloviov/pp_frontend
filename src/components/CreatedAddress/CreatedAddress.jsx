@@ -29,7 +29,7 @@ const CreatedAddress = observer(
               </button>
             </div>
             <div className='top-street'>
-              <p>{street.length < 21 ? street : `${street.slice(0, 21)}...`}</p>
+              <p>{street.length < 33 ? street : `${street.slice(0, 33)}...`}</p>
             </div>
           </div>
           <div className='addresses_created__container--bot'>
