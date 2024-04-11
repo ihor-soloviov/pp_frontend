@@ -16,7 +16,7 @@ import popupActionsStore from '../../store/popup-action-store';
 import './AddressModal.scss';
 import { observer } from 'mobx-react-lite';
 import { SetFieldValues } from '../../utils/savedAddress';
-
+import { polygonPaths } from '../../utils/distance';
 const AddressModal = observer(
   ({
     closeModal,
@@ -41,6 +41,13 @@ const AddressModal = observer(
     const handleError = (newErrorState) => setError(newErrorState);
 
     console.log('validAddress', validAddress);
+
+    const customPolygon = new window.google.maps.Polygon({
+      paths: polygonPaths,
+    });
+
+    const customPolygonBounds = new window.google.maps.LatLngBounds();
+    customPolygon.getPath().forEach((point) => customPolygonBounds.extend(point));
 
     const currentAddress =
       adresses && Array.isArray(adresses)
@@ -139,56 +146,75 @@ const AddressModal = observer(
       if (!addressAutocomplete) {
         return;
       }
-      const place = addressAutocomplete.getPlace();
-      const { address_components: addressComponents } = place;
 
-      if (!addressComponents) {
+      try {
+        const place = addressAutocomplete.getPlace();
+        const location = place.geometry.location;
+
+        if (!window.google.maps.geometry.poly.containsLocation(location, customPolygon)) {
+          handleError({
+            status: true,
+            currentError: 'Вибрана адреса знаходиться поза доступною зоною доставки',
+          });
+          setFieldValue('address', '');
+          return;
+        }
+
+        const { address_components: addressComponents } = place;
+
+        if (!addressComponents) {
+          handleError({
+            status: true,
+            currentError: 'Адреса не знайдена',
+          });
+          return;
+        }
+
+        const streetComponent = addressComponents.find((component) =>
+          component.types.includes('route'),
+        );
+
+        const houseNumberComponent = addressComponents.find((component) =>
+          component.types.includes('street_number'),
+        );
+
+        const streetName = streetComponent ? streetComponent.long_name : null;
+        const houseNum = houseNumberComponent ? houseNumberComponent.long_name : null;
+
+        const formatedAddress = place.formatted_address;
+
+        if (!houseNumberComponent) {
+          handleError({
+            status: true,
+            currentError: 'Вкажіть номер будинку',
+          });
+          setFieldValue('address', streetName);
+          return;
+        }
+
+        if (!streetComponent) {
+          handleError({
+            status: true,
+            currentError: 'Адреса не знайдена',
+          });
+
+          setFieldValue('address', streetName);
+          return;
+        }
+        setValidAddress(true);
+        setStreetAndHouse({ streetName: streetName, homeNumber: houseNum });
+        setFullAddress({ fullAddress: formatedAddress });
+        setFieldValue('address', `${streetName}, ${houseNum}`);
+        handleError({
+          status: false,
+          currentError: '',
+        });
+      } catch (error) {
         handleError({
           status: true,
           currentError: 'Адреса не знайдена',
         });
-        return;
       }
-
-      const streetComponent = addressComponents.find((component) =>
-        component.types.includes('route'),
-      );
-
-      const houseNumberComponent = addressComponents.find((component) =>
-        component.types.includes('street_number'),
-      );
-
-      const streetName = streetComponent ? streetComponent.long_name : null;
-      const houseNum = houseNumberComponent ? houseNumberComponent.long_name : null;
-
-      const formatedAddress = place.formatted_address;
-
-      if (!houseNumberComponent) {
-        handleError({
-          status: true,
-          currentError: 'Вкажіть номер будинку',
-        });
-        setFieldValue('address', streetName);
-        return;
-      }
-
-      if (!streetComponent) {
-        handleError({
-          status: true,
-          currentError: 'Адреса не знайдена',
-        });
-
-        setFieldValue('address', streetName);
-        return;
-      }
-      setValidAddress(true);
-      setStreetAndHouse({ streetName: streetName, homeNumber: houseNum });
-      setFullAddress({ fullAddress: formatedAddress });
-      setFieldValue('address', `${streetName}, ${houseNum}`);
-      handleError({
-        status: false,
-        currentError: '',
-      });
     };
 
     useEffect(() => {
@@ -263,12 +289,7 @@ const AddressModal = observer(
                       onLoad={(autocomplete) => setAddressAutocomplete(autocomplete)}
                       onPlaceChanged={handleAutoAddressChange}
                       options={{
-                        bounds: new window.google.maps.LatLngBounds({
-                          north: 46.6053,
-                          south: 46.3201,
-                          west: 30.5788,
-                          east: 30.8433,
-                        }),
+                        bounds: customPolygonBounds,
                         strictBounds: true,
 
                         componentRestrictions: {
