@@ -3,7 +3,7 @@ import sprite from '../../assets/images/sprite.svg';
 import Dropdown from 'react-dropdown';
 import "./CustomSelect.scss"
 
-export const CustomSelect = ({ options, value, handleChange, className, placeholder }) => (
+export const CustomSelect = React.memo(({ options, value, handleChange, className, placeholder }) => (
   <Dropdown
     className={`${className}`}
     placeholder={placeholder}
@@ -21,5 +21,5 @@ export const CustomSelect = ({ options, value, handleChange, className, placehol
       </svg>
     }
   />
-)
+))
 

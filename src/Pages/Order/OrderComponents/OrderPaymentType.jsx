@@ -32,7 +32,7 @@ export const OrderPaymentType = observer(() => {
             className={`cityDrop promo`}
             placeholder='Онлайн'
             value={payment}
-            options={['Онлайн', 'Готівка']}
+            options={orderFormData.howToReciveOrder === 'Самовивіз2' ? ['Онлайн'] : ['Онлайн', 'Готівка']}
             handleChange={handleChangePayment}
           />
         </label>

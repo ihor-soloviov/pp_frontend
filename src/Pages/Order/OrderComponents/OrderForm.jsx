@@ -53,10 +53,6 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
 
   useCheckTransactionStatus(location.search, setTransactionStatus);
 
-  useEffect(() => {
-    console.log(orderFormData);
-  }, [orderFormData]);
-
   //функції які потребують авторизованності
   useEffect(() => {
     if (!isAuthenticated) {
