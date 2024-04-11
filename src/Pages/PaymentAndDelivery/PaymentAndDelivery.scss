@@ -2,16 +2,44 @@
   &__content {
     display: flex;
     flex-direction: column;
-    gap: 56px;
+    gap: 100px;
   }
   &__block {
     .title__h3 {
-      padding-bottom: 36px;
+      margin-bottom: 36px;
+      font-size: 45px;
+      font-weight: 500;
+      line-height: 130%; /* 58.5px */
+      letter-spacing: -0.9px;
+    }
+  }
+
+  .map {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+
+    ul {
+      padding-left: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 150%;
+    }
+
+    .deliveryMap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      font-family: Unbounded;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 130%;
     }
   }
   &__paymentMethodts {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-column-gap: 1.145vw;
     grid-row-gap: 1.145vw;
   }
@@ -48,6 +76,14 @@
       li {
         list-style-type: decimal;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .paymentAndDelivery {
+    &__paymentMethodts {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }

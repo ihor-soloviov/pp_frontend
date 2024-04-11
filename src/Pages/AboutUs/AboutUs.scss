@@ -462,7 +462,8 @@ body {
   }
 
   .about-top-img {
-    border-radius: 24px;
+    width: 594px;
+    height: 532px;
   }
   .about-icon {
     width: 150px;
@@ -505,6 +506,8 @@ body {
   }
 
   .about-img.second {
+    width: 592px;
+    height: 531px;
     order: -1;
   }
 
@@ -531,7 +534,8 @@ body {
   }
 
   .about-bottom-img {
-    border-radius: 24px;
+    width: 594px;
+    height: 533px;
   }
 
   .facts-main-title {
@@ -584,6 +588,7 @@ body {
   .gallery-img-mob {
     border-radius: 24px;
   }
+  
   .gallery-img-wrap {
     gap: 20px;
   }
@@ -615,6 +620,7 @@ body {
 
   &__hero-preview {
     width: 100%;
+    border-radius: 24px;
 
     margin: 0 auto;
     overflow: hidden;

@@ -1,8 +1,9 @@
 import React from "react";
 import Container from "../../components/Container/Container";
+import { Map } from "../../components/Map/Map";
 import "./PaymentAndDelivery.scss";
 
-const PaymentAndDelivery = () => (
+export const PaymentAndDelivery = () => (
   <section className="paymentAndDelivery">
     <Container>
       <div className="paymentAndDelivery__content">
@@ -336,21 +337,19 @@ const PaymentAndDelivery = () => (
           </div>
         </section>
 
-        <div className="paymentAndDelivery__block">
-          <h3 className="title__h3">Умови доставки</h3>
-          <p className="text text__color--primary">Ми доставляємо:</p>
-          <ul className="paymentAndDelivery__list">
-            <li>Київский</li>
-            <li>Аркадія</li>
-            <li>Фонтан</li>
-            <li>Приморський</li>
-            <li>Малиновський</li>
-            <li>Пересепський</li>
-            <li>Авангард</li>
-          </ul>
-          <p className="text text__color--primary">
-            Доставка здійснюється за допомогою таксі Uklon
-          </p>
+        <div className="paymentAndDelivery__block map">
+          <div className="deliveryInfo">
+            <h3 className="title__h3">Умови доставки</h3>
+            <ul className="paymentAndDelivery__list">
+              <li>Доставка здійснюється нашим кур'єром</li>
+              <li>Безкоштовна доставка пи сумі замовлення на 500+ грн</li>
+              <li>Вартість доставки - 60 грн</li>
+            </ul>
+          </div>
+          <div className="deliveryMap">
+            <Map />
+            <h3>Райони доставки</h3>
+          </div>
         </div>
         <div className="paymentAndDelivery__block">
           <h3 className="title__h3">Умови повернення:</h3>
@@ -402,4 +401,3 @@ const PaymentAndDelivery = () => (
   </section>
 );
 
-export default PaymentAndDelivery;

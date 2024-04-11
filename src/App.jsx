@@ -17,7 +17,7 @@ import Order from './Pages/Order/Order';
 import { Main } from './Pages/Main/Main';
 import MenuPage from './Pages/MenuPage/MenuPage';
 import Contact from './Pages/Contact/Contact';
-import PaymentAndDelivery from './Pages/PaymentAndDelivery/PaymentAndDelivery';
+import { PaymentAndDelivery } from './Pages/PaymentAndDelivery/PaymentAndDelivery';
 import Offero from './Pages/Offero/Offero';
 import NotFound from './Pages/NotFound/NotFound';
 //Import components
