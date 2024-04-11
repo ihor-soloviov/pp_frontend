@@ -63,6 +63,7 @@ export const OrderAddress = observer(() => {
       resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
       return;
     }
+    totalPrice < 500 ? setDeliveryPrice(60) : setDeliveryPrice(0);
     setDropAddress(e.value);
     setIsSavedAddressSelected(true);
   };
@@ -75,6 +76,7 @@ export const OrderAddress = observer(() => {
     } else {
       totalPrice < 500 ? setDeliveryPrice(60) : setDeliveryPrice(0);
     }
+
     handleFormValueChange('howToReciveOrder', event.target.value);
   };
 
