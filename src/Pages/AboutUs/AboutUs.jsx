@@ -1,7 +1,7 @@
 import React from 'react';
 import './AboutUs.scss';
 
-import hero from '../../../src/assets/images/hero_preview.png';
+import hero from '../../../src/assets/images/hero_preview.jpg';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import AboutUsPictures from './AboutUsPictures';
 import { motion } from 'framer-motion';
