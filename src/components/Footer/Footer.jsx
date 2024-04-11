@@ -77,6 +77,9 @@ const Footer = observer(() => {
               <li>
                 <Link to={'/offero'}>Публічний договір</Link>
               </li>
+              <li>
+                <Link to={'/payment-and-delivery'}>Оплата і доставка</Link>
+              </li>
             </ul>
             <div className='footer__bottom-contacts'>
               <a href='mailto:support@polarpelmeni.com'>support@polarpelmeni.com</a>
