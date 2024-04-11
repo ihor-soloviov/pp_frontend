@@ -37,7 +37,7 @@ const ShoppingCartItem = observer(({ id }) => {
 
           <p className='shopping-cart__weight'>{weight} г</p>
           <div className='shopping-cart__row'>
-            <p className='shopping-cart__price'>{price} ₴</p>
+            <p className='shopping-cart__price'>{price * count} ₴</p>
             <div className='counter'>
               <div
                 className='counter__btn counter__btn--light'
@@ -60,7 +60,7 @@ const ShoppingCartItem = observer(({ id }) => {
           </div>
         </div>
       </div>
-      {mods && mods?.length !== 0 && (
+      {mods?.length !== 0 && (
         <ul className='mods-inner'>
           {mods.map((mod) => (
             <li className='mods-item' key={mod.m}>

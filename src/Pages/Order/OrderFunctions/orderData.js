@@ -52,7 +52,7 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
     { check: () => number === '', message: 'Будь ласка, заповніть поле номеру телефону' },
     { check: () => !howToReciveOrder, message: 'Будь ласка, оберіть спосіб отримання замовлення' },
     {
-      check: () => howToReciveOrder !== 'Самовивіз' && (!houseNumber || !street),
+      check: () => !howToReciveOrder.includes('Самовивіз') && (!houseNumber || !street),
       message: 'Будь ласка, вкажіть адресу',
     },
     {
@@ -95,12 +95,12 @@ export const getOrderData = (formData, products, isPromotion) => {
       ? `Парадная: ${entrance}, Квартира: ${apartment}, Код: ${buildingCode}, Поверх: ${floor}`
       : 'Приватний будинок';
   const isAddressComment = howToReciveOrder === 'Вийду до машини';
-  const serviceMode = howToReciveOrder === 'Самовивіз' ? 2 : 3;
+  const serviceMode = howToReciveOrder.includes('Самовивіз') ? 2 : 3;
   const delivery_time =
     deliveryTime === 'На зараз' ? getCurrentDate() : dateFormatter(selectedTime);
   const devicesComment = withoutDevices ? ', Без приборів' : '';
   const callOrNot = NotCall ? ', Не передзвонювати' : '';
-  const orderRecive = howToReciveOrder === 2 ? ', Самовивіз' : '';
+  const orderRecive = howToReciveOrder.includes('Самовивіз') ? ', Самовивіз' : '';
   const isProm = isPromotion ? ' Знижка 40%' : '';
   const com = `Кількість персон: ${personCount},${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`;
 

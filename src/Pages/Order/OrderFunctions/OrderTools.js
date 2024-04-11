@@ -139,7 +139,7 @@ export const validateOrderData = (formData, cartItems, totalPrice, deliveryPrice
 export const calculateFinalAmount = (cartItems, isPromotion, howToReciveOrder) => {
   let totalPrice = calculateTotalPrice(cartItems);
   let amount = isPromotion ? totalPrice * 0.6 : totalPrice;
-  if (howToReciveOrder === 'Самовивіз') {
+  if (howToReciveOrder.includes('Самовивіз')) {
     return amount;
   }
   //якщо не самовивіз - то треба додавати вартість таксі

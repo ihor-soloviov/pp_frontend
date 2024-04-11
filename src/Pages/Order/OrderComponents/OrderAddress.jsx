@@ -68,7 +68,7 @@ export const OrderAddress = observer(() => {
   };
 
   const onOptionChange = (event) => {
-    if (event.target.value === 'Самовивіз') {
+    if (event.target.value.includes('Самовивіз')) {
       setDeliveryPrice(0);
       resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
       setAddressInput('');
@@ -159,6 +159,10 @@ export const OrderAddress = observer(() => {
   };
 
   useEffect(() => {
+    if (howToReciveOrder.includes('Самовивіз')) {
+      handleFormValueChange('spot_id', howToReciveOrder === 'Самовивіз1' ? 1 : 2);
+      return
+    }
     if (spotOneDistance !== null && spotTwoDistance !== null) {
       setSpotIds(spotOneDistance, spotTwoDistance, handleFormValueChange);
     }
@@ -251,9 +255,15 @@ export const OrderAddress = observer(() => {
             { id: 4, value: 'Вийду до машини', label: 'Вийду до машини' },
             {
               id: 3,
-              value: 'Самовивіз',
+              value: 'Самовивіз1',
               label: 'Самовивіз',
-              info: '(Одеса, вул. Лейтенанта Шмідта 25)',
+              info: '(Одеса, вул. Маршала Малиновскього 18)',
+            },
+            {
+              id: 5,
+              value: 'Самовивіз2',
+              label: 'Самовивіз',
+              info: '(Одеса, провулок Економічний 1)',
             },
           ]}
           selectedOption={howToReciveOrder}
