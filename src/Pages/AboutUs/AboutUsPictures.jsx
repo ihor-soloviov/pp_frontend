@@ -18,22 +18,22 @@ import img14 from '../../assets/images/about/about-14-mobile.jpg';
 import img14desc from '../../assets/images/about/about-14-desc.jpg';
 import img15 from '../../assets/images/about/about-15-mobile.jpg';
 import img15desc from '../../assets/images/about/about-15-desc.jpg';
+import img16 from '../../assets/images/about/about-16-mobile.jpg';
 import img16desc from '../../assets/images/about/about-16-desc.jpg';
-//
+import img17 from '../../assets/images/about/about-17-mobile.jpg';
 import img17desc from '../../assets/images/about/about-17-desc.jpg';
-//
+import img18 from '../../assets/images/about/about-18-mobile.jpg';
 import img18desc from '../../assets/images/about/about-18-desc.jpg';
-//
+import img19 from '../../assets/images/about/about-19-mobile.jpg';
 import img19desc from '../../assets/images/about/about-19-desc.jpg';
-//
+import img20 from '../../assets/images/about/about-20-mobile.jpg';
 import img20desc from '../../assets/images/about/about-20-desc.jpg';
-//
+import img21 from '../../assets/images/about/about-21-mobile.jpg';
 import img21desc from '../../assets/images/about/about-21-desc.jpg';
-//
+import img22 from '../../assets/images/about/about-22-mobile.jpg';
 import img22desc from '../../assets/images/about/about-22-desc.jpg';
-//
+import img23 from '../../assets/images/about/about-23-mobile.jpg'
 import img23desc from '../../assets/images/about/about-23-desc.jpg';
-//
 
 import svg1 from './sprite.svg';
 
@@ -82,9 +82,6 @@ const AboutUsPictures = () => {
             </ul>
             <LazyLoadImage effect='blur' src={img01} alt='women' className='about-top-img first' />
           </div>
-          <svg className='about-icon first'>
-            <use href={`${svg1}#icon-arrow-1`}></use>
-          </svg>
           <div className='about-wrap'>
             <ul className='about-list list'>
               <li className='about-item'>
@@ -121,9 +118,6 @@ const AboutUsPictures = () => {
             </ul>
             <LazyLoadImage src={img02} alt='dishes' className='about-img second' />
           </div>
-          <svg className='about-icon second'>
-            <use href={`${svg1}#icon-arrow-2`}></use>
-          </svg>
           <div className='about-bottom-wrap'>
             <ul className='about-bottom-list list'>
               <li className='about-bottom-item'>
@@ -225,7 +219,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img07} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img07} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -234,7 +228,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img13} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img13} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
@@ -245,7 +239,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img09} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img09} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -254,7 +248,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img15} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img15} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
@@ -265,7 +259,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img12} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img12} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -274,7 +268,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img14} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img14} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
@@ -285,7 +279,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img11} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img11} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -294,7 +288,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img10} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img10} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
@@ -305,7 +299,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img07} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img16} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -314,7 +308,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img13} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img18} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
@@ -325,7 +319,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img09} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img17} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -334,7 +328,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img15} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img19} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
@@ -345,7 +339,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img07} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img20} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -354,7 +348,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img13} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img22} alt='' className='gallery-img-mob' />
             </div>
 
             <div className='gallery-img-wrap'>
@@ -365,7 +359,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img09} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img21} alt='' className='gallery-img-mob' />
 
               <LazyLoadImage
                 className='gallery-img-mob desc'
@@ -374,7 +368,7 @@ const AboutUsPictures = () => {
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
-              <LazyLoadImage effect='blur' src={img15} alt='' className='gallery-img-mob' />
+              <LazyLoadImage width={162} effect='blur' src={img23} alt='' className='gallery-img-mob' />
             </div>
           </div>
         </section>
