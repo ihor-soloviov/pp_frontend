@@ -53,15 +53,19 @@ const App = observer(() => {
   const [error, setError] = useState({ status: false, currentError: '' });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleError({
-        status: false,
-        currentError: '',
-      });
-    }, 2000);
+    let timer;
+    if (error.status) {
+      timer = setTimeout(() => {
+        handleError({
+          status: false,
+          currentError: '',
+        });
+      }, 2000);
+    }
 
     return () => clearTimeout(timer);
   }, [error]);
+
   const handleError = (newErrorState) => setError(newErrorState);
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
@@ -111,10 +115,12 @@ const App = observer(() => {
       <ActionPopup />
       {isLoader && <Loader />}
       {isDiscountModal && (
-        <Popup closeModal={() => {
-          isDiscountHandler(false)
-          navigate('/order')
-        }}>
+        <Popup
+          closeModal={() => {
+            isDiscountHandler(false);
+            navigate('/order');
+          }}
+        >
           <DiscountModal />
         </Popup>
       )}
