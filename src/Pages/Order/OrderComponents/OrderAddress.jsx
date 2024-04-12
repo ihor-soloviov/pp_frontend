@@ -259,6 +259,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
             }}
           >
             <InputText
+              autocomplete='off'
               id='order-address'
               name={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
               placeholder={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
