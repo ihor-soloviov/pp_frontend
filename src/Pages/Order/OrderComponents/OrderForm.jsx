@@ -29,6 +29,7 @@ import { OrderPromo } from './OrderPromo';
 import { OrderPaymentType } from './OrderPaymentType';
 import { OrderComment } from './OrderComment';
 import BtnMain from '../../../components/Buttons/BtnMain';
+import { DotsLoader } from "../../../components/Loader/DotsLoader"
 
 const OrderForm = observer(
   ({
@@ -45,7 +46,7 @@ const OrderForm = observer(
     const [transactionStatus, setTransactionStatus] = useState(false);
 
     const [isOrderCreate, setIsOrderCreate] = useState(false);
-    const [error, setError] = useState({ status: false, currentError: '' });
+    const [isButtonLoading, setIsButtonLoading] = useState(false);
     const [payment, setPayment] = useState({ label: 'Онлайн', value: 'Онлайн' });
 
     //handlers
@@ -97,7 +98,7 @@ const OrderForm = observer(
           data.payment.sum,
           shoppingCart,
         );
-
+        setIsButtonLoading(false)
         clearCart();
       }
     }, [isOrderCreate]);
@@ -112,7 +113,7 @@ const OrderForm = observer(
       const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
       const orderData = createOrderData(orderFormData, cartItems, isPromotion);
       setOrderData(orderData);
-
+      setIsButtonLoading(true)
       if (orderFormData.paymentMethod === 'Готівка') {
         createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
         return;
@@ -150,8 +151,8 @@ const OrderForm = observer(
 
           <OrderComment />
 
-          <BtnMain fullWide onClick={onSubmit}>
-            Оформити замовлення
+          <BtnMain disabled={isButtonLoading} fullWide onClick={onSubmit}>
+            {isButtonLoading ? <DotsLoader /> : 'Оформити замовлення'}
           </BtnMain>
         </section>
       </React.Fragment>

@@ -84,7 +84,6 @@ export const setSpotIds = (spotOneDistance, spotTwoDistance, handleFormValueChan
 export const resetInputFields = (handleFormValueChange, setSpotOneDistance, setSpotTwoDistance) => {
   handleFormValueChange('street', '');
   handleFormValueChange('houseNumber', '');
-  handleFormValueChange('howToReciveOrder', '');
   handleFormValueChange('floor', '');
   handleFormValueChange('buildingCode', '');
   handleFormValueChange('entrance', '');

@@ -10,7 +10,6 @@ import shoppingCartStore from '../../store/shoping-cart-store';
 //Import components
 
 import OrderForm from './OrderComponents/OrderForm';
-import { calculateTotalPrice } from './OrderFunctions/OrderTools';
 import { dropInProducts } from '../../utils/animation';
 import modalsStore from '../../store/modal-store';
 import Popup from '../../components/Popup/Popup';
@@ -106,7 +105,7 @@ const Order = observer(({ handleError, setPromotionPopup }) => {
                     <div className='checkout__row'>
                       <p className='checkout__text'>Знижка:</p>
                       <p className='checkout__text'>
-                        {(calculateTotalPrice(cartItems) * (40 / 100)).toFixed(2)} ₴
+                        {(totalPrice * (40 / 100)).toFixed(2)} ₴
                       </p>
                     </div>
                   )}

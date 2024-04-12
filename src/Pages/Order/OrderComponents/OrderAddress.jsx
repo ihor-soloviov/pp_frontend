@@ -252,14 +252,14 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
             options={{
               bounds: customPolygonBounds,
               strictBounds: true,
-
               componentRestrictions: {
                 country: ['ua'],
               },
             }}
           >
             <InputText
-              autocomplete='off'
+              isStreet={true}
+              autoComplete='nope'
               id='order-address'
               name={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
               placeholder={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
