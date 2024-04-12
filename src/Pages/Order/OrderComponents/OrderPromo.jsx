@@ -64,11 +64,9 @@ export const OrderPromo = observer(
               />
             </label>
 
-            {promocode40 && (
-              <BtnMain onClick={handleActivatePromoClick} disabled={isPromotion}>
-                Застосувати
-              </BtnMain>
-            )}
+            <BtnMain onClick={handleActivatePromoClick} disabled={isPromotion}>
+              Застосувати
+            </BtnMain>
           </section>
         )}
 

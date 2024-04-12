@@ -44,9 +44,9 @@ const OrderForm = observer(
 
     const [transactionStatus, setTransactionStatus] = useState(false);
 
-  const [isOrderCreate, setIsOrderCreate] = useState(false);
-  const [error, setError] = useState({ status: false, currentError: '' });
-  const [payment, setPayment] = useState({ label: 'Онлайн', value: 'Онлайн' });
+    const [isOrderCreate, setIsOrderCreate] = useState(false);
+    const [error, setError] = useState({ status: false, currentError: '' });
+    const [payment, setPayment] = useState({ label: 'Онлайн', value: 'Онлайн' });
 
     //handlers
 
@@ -62,7 +62,7 @@ const OrderForm = observer(
       handleFormValueChange,
       orderFormData,
     } = shoppingCartStore;
-    const { name, phone, isAuthenticated } = userStore;
+    const { name, phone, isAuthenticated, promocode40 } = userStore;
 
     //Hooks
     const location = useLocation();
@@ -137,13 +137,14 @@ const OrderForm = observer(
           <OrderAddress setPayment={setPayment} handleError={handleError} />
 
           <OrderTime />
-
-          <OrderPromo
-            handleError={handleError}
-            isPromotion={isPromotion}
-            setPromotionPopup={setPromotionPopup}
-            setIsPromotion={setIsPromotion}
-          />
+          {promocode40 && (
+            <OrderPromo
+              handleError={handleError}
+              isPromotion={isPromotion}
+              setPromotionPopup={setPromotionPopup}
+              setIsPromotion={setIsPromotion}
+            />
+          )}
 
           <OrderPaymentType setPayment={setPayment} payment={payment} />
 
