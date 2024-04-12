@@ -4,11 +4,12 @@ import React from 'react';
 //Import Styles
 import './InputText.scss';
 
-const InputText = ({ name, placeholder, value, onChange, disabled, id }) => {
+const InputText = ({ name, placeholder, value, onChange, disabled, id, autocomplete = 'on' }) => {
   return (
     <label className={`inputText`}>
       <span>{name}</span>
       <input
+        autocomplete={autocomplete}
         id={id && id}
         type='text'
         placeholder={placeholder}
