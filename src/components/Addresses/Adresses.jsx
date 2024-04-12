@@ -77,7 +77,7 @@ const Addresses = observer(({ handleSidebar, handleError }) => {
             handleError={handleError}
           />
         )}
-        {adresses.length > 0 &&
+        {adresses?.length > 0 &&
           adresses.map((adress) => (
             <React.Fragment key={adress.addressId}>
               <CreatedAddress

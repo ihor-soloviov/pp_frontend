@@ -24,7 +24,7 @@ class UserStore {
     );
 
     reaction(
-      () => this.favoritProducts && this.favoritProducts.length > 0 && this.favoritProducts.slice(), // Використовуйте .slice() для створення копії масиву, якщо необхідно
+      () => Array.isArray(this.favoritProducts) ? this.favoritProducts.slice() : [], // Використовуйте .slice() для створення копії масиву, якщо необхідно
       (favoritProducts) => {
         if (this.isAuthenticated) {
           localStorage.setItem('favoritProducts', JSON.stringify(favoritProducts));
@@ -33,7 +33,7 @@ class UserStore {
     );
 
     reaction(
-      () => this.adresses && this.adresses.length > 0 && this.adresses.slice(),
+      () => Array.isArray(this.adresses) ? this.adresses.slice() : [],
       (adresses) => {
         if (this.isAuthenticated) {
           localStorage.setItem('user_adresses', JSON.stringify(adresses));
