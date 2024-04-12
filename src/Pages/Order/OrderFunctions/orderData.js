@@ -51,6 +51,13 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
   } = formData;
   return [
     { check: () => cartItems.length === 0, message: 'Будь ласка, оберіть товари для замовлення' },
+    {
+      check: () =>
+        !/^\+380 \((39|50|63|66|67|73|68|91|92|93|94|95|96|97|98|99)\) \d{3} \d{2} \d{2}$/.test(
+          number,
+        ),
+      message: 'Будь ласка, введіть коректний номер телефону',
+    },
     { check: () => number === '', message: 'Будь ласка, заповніть поле номеру телефону' },
     { check: () => !howToReciveOrder, message: 'Будь ласка, оберіть спосіб отримання замовлення' },
     {
