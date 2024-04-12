@@ -255,6 +255,7 @@ export const OrderAddress = observer(({ handleError }) => {
             }}
           >
             <InputText
+              id='order-address'
               name={'Адреса'}
               placeholder={'Адреса'}
               value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}

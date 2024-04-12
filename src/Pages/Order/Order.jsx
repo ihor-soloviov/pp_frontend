@@ -21,6 +21,9 @@ const Order = observer(({ handleError, setPromotionPopup }) => {
   const { thanksModal, thanksModalHandler } = modalsStore;
   const [isPromotion, setIsPromotion] = useState(false);
   const [posterOrder, setPosterOrder] = useState(null);
+  const result = totalPrice * 0.6 + deliveryPrice;
+
+  const formattedPrice = result % 1 === 0 ? result.toFixed(0) : result.toFixed(2);
 
   useEffect(() => {
     if (posterOrder) {
@@ -111,10 +114,7 @@ const Order = observer(({ handleError, setPromotionPopup }) => {
                   <div className='checkout__row'>
                     <p className='checkout__text checkout__text-bold'>Всього до сплати:</p>
                     <p className='checkout__text-bold'>
-                      {isPromotion
-                        ? (totalPrice * 0.6 + deliveryPrice).toFixed(2)
-                        : totalPrice + deliveryPrice}{' '}
-                      ₴
+                      {isPromotion ? formattedPrice : totalPrice + deliveryPrice} ₴
                     </p>
                   </div>
                 </div>
