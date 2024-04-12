@@ -152,7 +152,7 @@ const AddressModal = observer(
         if (!window.google.maps.geometry.poly.containsLocation(location, customPolygon)) {
           handleError({
             status: true,
-            currentError: 'Вибрана адреса знаходиться поза доступною зоною доставки',
+            currentError: 'Нажаль, ваша адреса за межами доставки',
           });
           setFieldValue('address', '');
           return;

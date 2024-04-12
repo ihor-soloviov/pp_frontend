@@ -54,8 +54,8 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
     { check: () => number === '', message: 'Будь ласка, заповніть поле номеру телефону' },
     { check: () => !howToReciveOrder, message: 'Будь ласка, оберіть спосіб отримання замовлення' },
     {
-      check: () => inputAddress?.value !== '',
-      message: 'Будь ласка, оберіть валідну адресу',
+      check: () => !street && !houseNumber && inputAddress?.value !== '',
+      message: 'Будь ласка, вкажіть коректну адресу',
     },
 
     {
@@ -67,10 +67,7 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
       check: () => howToReciveOrder === 'До дверей' && (!apartment || !entrance),
       message: 'Будь ласка, вкажіть номер квартири та парадну',
     },
-    {
-      check: () => paymentMethod === 'Готівка' && +change < totalPrice + deliveryPrice,
-      message: 'Будь ласка, вкажіть валідну суму для підрахунку решти',
-    },
+
     { check: () => !deliveryTime, message: 'Будь ласка, оберіть час отримання замовлення' },
     { check: () => totalPrice < 200, message: 'Мінімальна сумма замовлення 200 ₴' },
   ];
