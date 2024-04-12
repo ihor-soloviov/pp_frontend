@@ -35,6 +35,8 @@ const shoppingCartMapPromo = (products) =>
     };
   });
 
+const inputAddress = document.getElementById('order-address');
+
 export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice) => {
   const {
     number,
@@ -52,9 +54,15 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
     { check: () => number === '', message: 'Будь ласка, заповніть поле номеру телефону' },
     { check: () => !howToReciveOrder, message: 'Будь ласка, оберіть спосіб отримання замовлення' },
     {
+      check: () => inputAddress && inputAddress.value !== '',
+      message: 'Будь ласка, оберіть валідну адресу',
+    },
+
+    {
       check: () => !howToReciveOrder.includes('Самовивіз') && (!houseNumber || !street),
       message: 'Будь ласка, вкажіть адресу',
     },
+
     {
       check: () => howToReciveOrder === 'До дверей' && (!apartment || !entrance),
       message: 'Будь ласка, вкажіть номер квартири та парадну',

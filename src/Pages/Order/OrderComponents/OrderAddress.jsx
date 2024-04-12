@@ -259,6 +259,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
             }}
           >
             <InputText
+              id='order-address'
               name={'Назва вулиці і будинок (Сонячка 1)'}
               placeholder={'Назва вулиці і будинок (Сонячка 1)'}
               value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
