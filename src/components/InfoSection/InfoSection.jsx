@@ -89,7 +89,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
               Змінити номер
             </button>
           </div>
-          <div className='profile_info--head__button button'>
+          { /*         <div className='profile_info--head__button button'>
             <input
               disabled={!!file}
               type='file'
@@ -102,7 +102,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
               Завантажити фото
             </label>
             {file && <button onClick={() => uploadImage(file)}>send</button>}
-          </div>
+    </div>*/}
         </div>
         <ProfileLink handleSidebar={handleSidebar}>Інформація</ProfileLink>
         <div className='profile_info--head__mobile'>
@@ -119,7 +119,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 Змінити
               </button>
             </div>
-            <div className=''>
+            {/*            <div className=''>
               <input
                 disabled={file}
                 type='file'
@@ -132,7 +132,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
                 Завантажити фото
               </label>
               {file && <button onClick={() => uploadImage(file)}>send</button>}
-            </div>
+  </div>*/}
           </div>
         </div>
         <div className='profile_info--bonuses__mobile' />
