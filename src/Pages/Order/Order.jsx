@@ -16,7 +16,7 @@ import modalsStore from '../../store/modal-store';
 import Popup from '../../components/Popup/Popup';
 import Thanks from '../../components/Thanks/Thanks';
 
-const Order = observer(() => {
+const Order = observer(({ handleError, setPromotionPopup }) => {
   const { cartItems, totalPrice, deliveryPrice } = shoppingCartStore;
   const { thanksModal, thanksModalHandler } = modalsStore;
   const [isPromotion, setIsPromotion] = useState(false);
@@ -53,10 +53,12 @@ const Order = observer(() => {
         >
           <div className='order-page__content'>
             <OrderForm
+              setPromotionPopup={setPromotionPopup}
               setIsPromotion={setIsPromotion}
               isPromotion={isPromotion}
               posterOrder={posterOrder}
               setPosterOrder={setPosterOrder}
+              handleError={handleError}
             />
             <div className='checkout'>
               <div className='checkout__content'>

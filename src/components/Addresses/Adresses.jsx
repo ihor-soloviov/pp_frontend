@@ -13,7 +13,7 @@ import '../ProfileGrid/ProfileGrid.scss';
 import './Addresses.scss';
 import { observer } from 'mobx-react-lite';
 
-const Addresses = observer(({ handleSidebar }) => {
+const Addresses = observer(({ handleSidebar, handleError }) => {
   const { token, adresses, addToAdresses } = userStore;
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -74,6 +74,7 @@ const Addresses = observer(({ handleSidebar }) => {
             setIsEdit={setIsEdit}
             currentAddressId={currentAddressId}
             setCurrentAddressId={setCurrentAddressId}
+            handleError={handleError}
           />
         )}
         {adresses.length > 0 &&

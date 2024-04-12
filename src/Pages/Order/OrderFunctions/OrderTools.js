@@ -26,12 +26,12 @@ const getToken = () => {
   return null;
 };
 
-export const setTemporaryError = (error, setError) => {
-  setError({
+export const setTemporaryError = (error, handleError) => {
+  handleError({
     status: true,
     currentError: error,
   });
-  setTimeout(() => setError({ status: false, currentError: '' }), 3000);
+  setTimeout(() => handleError({ status: false, currentError: '' }), 3000);
 };
 
 export const getCurrentDate = () => {
