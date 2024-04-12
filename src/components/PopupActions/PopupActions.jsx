@@ -5,12 +5,13 @@ import popupActionsStore from '../../store/popup-action-store';
 //Import style
 
 import './PopupActions.scss';
+import classNames from 'classnames';
 
-const PopupActions = observer(({ action, error, onClick }) => {
+const PopupActions = observer(({ onOrderPage = { location: '' }, action, error, onClick }) => {
   const { setActions } = popupActionsStore;
-
+  console.log(onOrderPage.location === '/order')
   return (
-    <div className='popup-actions'>
+    <div className={classNames('popup-actions', { orderAction: onOrderPage.location === '/order' })}>
       <div className='popup-actions__content' onClick={onClick}>
         <div className={`popup-actions__ico`}>
           {error ? (

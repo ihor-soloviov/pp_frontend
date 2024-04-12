@@ -3,7 +3,7 @@ import { getCategories } from '../utils/menu';
 
 class MenuStore {
   categories = [];
-  currentCategoryId = '47';
+  currentCategoryId = '67';
   products = [];
 
   constructor() {

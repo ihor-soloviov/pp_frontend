@@ -10,12 +10,11 @@ import { sendFavsToServer } from '../../utils/favorites';
 import { observer } from 'mobx-react-lite';
 import userStore from '../../store/user-store';
 import popupActionsStore from '../../store/popup-action-store';
-import { AnimatePresence, motion } from 'framer-motion';
+
 import Popup from '../Popup/Popup';
 import ModificatorsPopup from '../../Pages/ProductPage/ModificatorsPopup';
 
 import './productCard.scss';
-import { dropInProducts } from '../../utils/animation';
 
 const ProductCard = observer(({ product }) => {
   const { token, favoritProducts, removeFromFavorit, addToFavorit } = userStore;
@@ -76,11 +75,8 @@ const ProductCard = observer(({ product }) => {
         </Popup>
       )}
 
-      <motion.div
-        variants={dropInProducts}
-        initial='hidden'
-        animate='visible'
-        exit='exit'
+      <div
+        
         className='product'
       >
         <div className='product__cta'>
@@ -147,7 +143,7 @@ const ProductCard = observer(({ product }) => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </React.Fragment>
   );
 });

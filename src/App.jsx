@@ -146,6 +146,7 @@ const App = observer(() => {
 
       {error.status && (
         <PopupActions
+          onOrderPage={{ location: location.pathname }}
           action={error.currentError}
           onClick={() =>
             setError({
