@@ -24,6 +24,10 @@ export const MobileMenu = observer(() => {
   const { authModalHandler, isMobileMenu, mobileMenuHandler } = modalsStore;
   const [dropdown, setDropdown] = useState(false);
 
+  const handleDropDown = () => {
+    setDropdown(prev => !prev)
+  }
+
   return (
     <div className={`mobile-menu ${isMobileMenu ? 'menu-slide-in' : 'menu-slide-out'}`}>
       <nav className='mobile-menu__navigation'>
@@ -34,9 +38,7 @@ export const MobileMenu = observer(() => {
           <li className='mobile-menu__link '>
             <div
               className={`mobile-menu__dropdown`}
-              onClick={() => {
-                setDropdown(!dropdown);
-              }}
+              onClick={handleDropDown}
             >
               <span>Меню</span>
               <svg
@@ -54,15 +56,16 @@ export const MobileMenu = observer(() => {
             </div>
             {dropdown && (
               <ul className='mobile-menu__submenu'>
-                {categories.map((el) => {
+                {categories.map(({ category_id, category_name }) => {
                   return (
                     <MobileLink
-                      key={el.category_id}
+                      key={category_id}
+                      id={category_id}
                       className='mobile-menu__sublink'
-                      to={`menu/${el.category_id}`}
-                      setDropdown={setDropdown}
+                      to={`menu/${category_id}`}
+                      handleDropDown={handleDropDown}
                     >
-                      {el.category_name}
+                      {category_name}
                     </MobileLink>
                   );
                 })}

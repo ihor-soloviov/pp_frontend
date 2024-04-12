@@ -1,25 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
-import { getProducts } from '../../utils/menu';
+import { getProductsByCategoryId } from '../../utils/menu';
 import menuStore from '../../store/menu-store';
 import { observer } from 'mobx-react-lite';
-import { useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { dropInCategories } from '../../utils/animation';
 
 export const Categories = observer(({ setProducts }) => {
-  const { id } = useParams();
   const { categories, currentCategoryId, setCurrentCategoryId } = menuStore;
 
   useEffect(() => {
-    getProducts(currentCategoryId, setProducts);
-  }, [currentCategoryId, setProducts]);
+    getProductsByCategoryId(currentCategoryId, setProducts)
+  }, [currentCategoryId]);
 
-  useEffect(() => {
-    if (id) {
-      setCurrentCategoryId(id);
-    }
-  }, [id, setCurrentCategoryId]);
 
   useEffect(() => {
     if (window.innerWidth < 1024) {
@@ -32,29 +26,31 @@ export const Categories = observer(({ setProducts }) => {
 
   if (categories) {
     return (
-      <motion.div
-        variants={dropInCategories}
-        initial='hidden'
-        animate='visible'
-        exit='exit'
-        className='categories__inner'
-      >
-        <div className='categories__list'>
-          {categories.map(({ category_id, category_name, order }) => (
-            <button
-              id={category_id}
-              name={order}
-              key={category_id}
-              className={classNames('categories__btn', {
-                'categories__btn-active': currentCategoryId === category_id,
-              })}
-              onClick={() => setCurrentCategoryId(category_id)}
-            >
-              {category_name}
-            </button>
-          ))}
-        </div>
-      </motion.div>
+      <AnimatePresence>
+        <m.div
+          variants={dropInCategories}
+          initial='hidden'
+          animate='visible'
+          exit='exit'
+          className='categories__inner'
+        >
+          <div className='categories__list'>
+            {categories.map(({ category_id, category_name, order }) => (
+              <button
+                id={category_id}
+                name={order}
+                key={category_id}
+                className={classNames('categories__btn', {
+                  'categories__btn-active': currentCategoryId === category_id,
+                })}
+                onClick={() => setCurrentCategoryId(category_id)}
+              >
+                {category_name}
+              </button>
+            ))}
+          </div>
+        </m.div>
+      </AnimatePresence>
     );
   }
 });
