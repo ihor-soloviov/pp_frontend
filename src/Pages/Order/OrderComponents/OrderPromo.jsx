@@ -6,15 +6,12 @@ import { observer } from 'mobx-react-lite';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
 
 export const OrderPromo = observer(
-  ({
-    handleError,
-    isPromotion,
-    setPromotionPopup,
-    setIsPromotion,
-  }) => {
+  ({ handleError, isPromotion, setPromotionPopup, setIsPromotion }) => {
     const { promocode40, isAuthenticated } = userStore;
     const { totalPrice, handleFormValueChange } = shoppingCartStore;
-    const [promo, setPromo] = useState('');
+    const [promo, setPromo] = useState(
+      promocode40 ? { label: '40%', value: '40%' } : { label: '', value: '' },
+    );
 
     const handleActivatePromoClick = () => {
       if (promo.label !== '40%') {
@@ -22,7 +19,6 @@ export const OrderPromo = observer(
       }
 
       if (totalPrice < 200) {
-
         handleError({
           status: true,
           currentError: 'Мінімальна сумма замовлення 200 ₴',
@@ -34,10 +30,9 @@ export const OrderPromo = observer(
             currentError: '',
           });
         }, 2000);
-
       } else {
-        
         setPromotionPopup(true);
+        handleFormValueChange('promoCode', promo);
         setTimeout(() => {
           setPromotionPopup(false);
         }, 2500);
