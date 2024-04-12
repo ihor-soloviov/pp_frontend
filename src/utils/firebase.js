@@ -162,7 +162,6 @@ const authentication = (
           dateOfBirth: response.data.dateOfBirth,
         });
         authModalHandler(false);
-        navigate("/profile/info");
       } else {
 
       }
@@ -217,7 +216,6 @@ const registration = (
           dateOfBirth: data.date_of_birth
         });
         authModalHandler(false);
-        navigate("/profile/info");
       }
     })
     .catch((err) => console.error(err));
