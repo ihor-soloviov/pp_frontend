@@ -4,11 +4,13 @@ import BtnMain from '../../../components/Buttons/BtnMain';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import { observer } from 'mobx-react-lite';
 import { CustomSelect } from '../../../components/CustomSelect/CustomSelect';
+import modalsStore from '../../../store/modal-store';
 
 export const OrderPromo = observer(
   ({ handleError, isPromotion, setPromotionPopup, setIsPromotion }) => {
     const { promocode40, isAuthenticated } = userStore;
     const { totalPrice, handleFormValueChange } = shoppingCartStore;
+    const { isDiscountHandler } = modalsStore
     const [promo, setPromo] = useState(
       promocode40 ? { label: '40%', value: '40%' } : { label: '', value: '' },
     );
@@ -71,7 +73,7 @@ export const OrderPromo = observer(
         )}
 
         {promocode40 && (
-          <div className='order-page__have-promocode'>
+          <div className='order-page__have-promocode' onClick={() => isDiscountHandler(true)}>
             <span className='promo-text'>У ВАС Є ПРОМОКОД НА ЗНИЖКУ 40%</span>
             <div className='order-page__arrow'>
               <svg width='17' height='20' fill='none' xmlns='http://www.w3.org/2000/svg'>

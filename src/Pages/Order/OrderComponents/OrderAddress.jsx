@@ -43,6 +43,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
   const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
   const { floor, buildingCode, entrance, apartment, howToReciveOrder } = orderFormData;
 
+
   const customPolygon = new window.google.maps.Polygon({
     paths: polygonPaths,
   });
@@ -69,6 +70,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
   const [addressAutocomplete, setAddresstAutocomplete] = useState(null);
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
+  const [isVisible, setIsVisible] = useState(true)
 
   const handleChangeAddress = (e) => {
     if (e.value === null) {
@@ -97,6 +99,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
   };
 
   const handleStreetChange = (value) => {
+    setIsVisible(false)
     resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
     setAddressInput(value);
   };
@@ -185,11 +188,14 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
 
   useEffect(() => {
     if (howToReciveOrder.includes('Самовивіз')) {
+      setIsVisible(false)
       handleFormValueChange('spot_id', howToReciveOrder === 'Самовивіз1' ? 1 : 2);
       if (howToReciveOrder === 'Самовивіз2') {
         setPayment({ label: 'Онлайн', value: 'Онлайн' });
         handleFormValueChange('paymentMethod', 'Онлайн');
       }
+    } else {
+      setIsVisible(true)
     }
   }, [howToReciveOrder]);
 
@@ -229,7 +235,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
     <section className='order-page__section'>
       <h3 className='order-page__header'>Спосіб отримання замовлення</h3>
 
-      {adresses.length > 0 && (
+      {isVisible && adresses.length > 0 && (
         <label className='address-label'>
           Збережні адреси
           <CustomSelect
@@ -242,34 +248,37 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
         </label>
       )}
 
-      <section className='order-page__section-inputs order-page__section-inputs-row'>
-        <>
-          <Autocomplete
-            types={['address']}
-            className='autocomplete-wrap'
-            onLoad={(autocomplete) => setAddresstAutocomplete(autocomplete)}
-            onPlaceChanged={handleAutoAddressChange}
-            options={{
-              bounds: customPolygonBounds,
-              strictBounds: true,
-              componentRestrictions: {
-                country: ['ua'],
-              },
-            }}
-          >
-            <InputText
-              isStreet={true}
-              autoComplete='nope'
-              id='order-address'
-              name={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
-              placeholder={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
-              value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
-              onChange={handleStreetChange}
-              disabled={isSavedAddressSelected}
-            />
-          </Autocomplete>
-        </>
-      </section>
+      {isVisible && (
+        <section className='order-page__section-inputs order-page__section-inputs-row'>
+          <React.Fragment>
+            <Autocomplete
+              types={['address']}
+              className='autocomplete-wrap'
+              onLoad={(autocomplete) => setAddresstAutocomplete(autocomplete)}
+              onPlaceChanged={handleAutoAddressChange}
+              options={{
+                bounds: customPolygonBounds,
+                strictBounds: true,
+                componentRestrictions: {
+                  country: ['ua'],
+                },
+              }}
+            >
+              <InputText
+                isStreet={true}
+                autoComplete='nope'
+                id='order-address'
+                name={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
+                placeholder={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
+                value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
+                onChange={handleStreetChange}
+                disabled={isSavedAddressSelected}
+              />
+            </Autocomplete>
+          </React.Fragment>
+
+        </section>
+      )}
       <section className='order-page__section-inputs'>
         <RadioButton
           data={radioOptions}
