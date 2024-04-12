@@ -9,7 +9,7 @@ const InputText = ({ name, placeholder, value, onChange, disabled, id, autocompl
     <label className={`inputText`}>
       <span>{name}</span>
       <input
-        autocomplete={autocomplete}
+        autoComplete={autocomplete}
         id={id && id}
         type='text'
         placeholder={placeholder}
