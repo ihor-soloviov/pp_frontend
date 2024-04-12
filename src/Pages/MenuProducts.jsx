@@ -12,7 +12,7 @@ const MenuProducts = React.memo(({ products }) => {
             entry.target.classList.add('product-visible');
           }
         });
-      });
+      }, { threshold: 0 });
       console.log(document.querySelectorAll('#product'));
       const hiddenElements = document.querySelectorAll('#product');
 
