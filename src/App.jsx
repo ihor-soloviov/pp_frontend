@@ -96,7 +96,10 @@ const App = observer(() => {
       <ActionPopup />
       {isLoader && <Loader />}
       {isDiscountModal && (
-        <Popup closeModal={() => isDiscountHandler(false)}>
+        <Popup closeModal={() => {
+          isDiscountHandler(false)
+          navigate('/order')
+        }}>
           <DiscountModal />
         </Popup>
       )}

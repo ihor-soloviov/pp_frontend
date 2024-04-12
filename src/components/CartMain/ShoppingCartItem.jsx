@@ -6,9 +6,11 @@ const ShoppingCartItem = observer(({ id }) => {
   const { removeFromCart, getItemById, updateItemQuantity } = shoppingCartStore;
   const cartItem = getItemById(id);
 
-  if (!cartItem) return null;
+  const { preview, name, weight, price, count, mods, cartItemId, totalPrice } = cartItem;
 
-  const { preview, name, weight, price, count, mods, cartItemId } = cartItem;
+  console.log(cartItem)
+
+  if (!cartItem) return null;
 
   return (
     <li className='shopping-cart__item'>
@@ -37,7 +39,7 @@ const ShoppingCartItem = observer(({ id }) => {
 
           <p className='shopping-cart__weight'>{weight} г</p>
           <div className='shopping-cart__row'>
-            <p className='shopping-cart__price'>{price * count} ₴</p>
+            <p className='shopping-cart__price'>{totalPrice} ₴</p>
             <div className='counter'>
               <div
                 className='counter__btn counter__btn--light'
