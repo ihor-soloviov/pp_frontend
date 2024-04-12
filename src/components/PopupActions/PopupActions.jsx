@@ -9,7 +9,6 @@ import classNames from 'classnames';
 
 const PopupActions = observer(({ onOrderPage = { location: '' }, action, error, onClick }) => {
   const { setActions } = popupActionsStore;
-  console.log(onOrderPage.location === '/order')
   return (
     <div className={classNames('popup-actions', { orderAction: onOrderPage.location === '/order' })}>
       <div className='popup-actions__content' onClick={onClick}>
