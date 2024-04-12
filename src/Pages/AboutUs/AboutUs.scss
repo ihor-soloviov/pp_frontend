@@ -276,7 +276,7 @@ body {
 .gallery-img-mob {
   border-radius: 10px;
 }
-.gallery-img-mob.desc {
+.desc {
   display: none;
 }
 
@@ -288,9 +288,9 @@ body {
   .gallery-img-mob {
     display: none;
   }
-
-  .gallery-img-mob.desc {
+.desc {
     display: block;
+    width: 670px;
   }
 }
 @media screen and (min-width: 1367px) {

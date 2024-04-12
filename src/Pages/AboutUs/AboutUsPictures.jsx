@@ -214,7 +214,6 @@ const AboutUsPictures = () => {
             <div className='gallery-img-wrap'>
               <LazyLoadImage
                 className='gallery-img-mob desc'
-                width={670}
                 src={img07desc}
                 type='image/jpeg'
                 media='(min-width:768px)'
@@ -224,7 +223,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 srcSet={img13desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -235,7 +234,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 src={img09desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -244,7 +243,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 srcSet={img15desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -255,7 +254,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 src={img12desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -264,7 +263,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 src={img14desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -275,7 +274,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 src={img11desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -284,7 +283,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 src={img10desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -294,7 +293,7 @@ const AboutUsPictures = () => {
             <div className='gallery-img-wrap'>
               <LazyLoadImage
                 className='gallery-img-mob desc'
-                width={670}
+
                 src={img16desc}
                 type='image/jpeg'
                 media='(min-width:768px)'
@@ -304,7 +303,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 srcSet={img18desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -315,7 +314,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 src={img17desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -324,7 +323,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 srcSet={img19desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -334,7 +333,7 @@ const AboutUsPictures = () => {
             <div className='gallery-img-wrap'>
               <LazyLoadImage
                 className='gallery-img-mob desc'
-                width={670}
+
                 src={img20desc}
                 type='image/jpeg'
                 media='(min-width:768px)'
@@ -344,7 +343,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 srcSet={img22desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -355,7 +354,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 src={img21desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
@@ -364,7 +363,7 @@ const AboutUsPictures = () => {
               <LazyLoadImage
                 className='gallery-img-mob desc'
                 srcSet={img23desc}
-                width={670}
+
                 type='image/jpeg'
                 media='(min-width:768px)'
               />
