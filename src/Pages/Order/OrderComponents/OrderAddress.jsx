@@ -40,7 +40,7 @@ const radioOptions = [
   },
 ]
 
-export const OrderAddress = observer(() => {
+export const OrderAddress = observer(({ setPayment }) => {
   const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
   const { floor, buildingCode, entrance, apartment, howToReciveOrder } = orderFormData;
 
@@ -190,6 +190,10 @@ export const OrderAddress = observer(() => {
   useEffect(() => {
     if (howToReciveOrder.includes('Самовивіз')) {
       handleFormValueChange('spot_id', howToReciveOrder === 'Самовивіз1' ? 1 : 2);
+      if (howToReciveOrder === 'Самовивіз2') {
+        setPayment({ label: 'Онлайн', value: 'Онлайн' });
+        handleFormValueChange('paymentMethod', 'Онлайн')
+      }
     }
   }, [howToReciveOrder]);
 
@@ -259,8 +263,8 @@ export const OrderAddress = observer(() => {
             }}
           >
             <InputText
-              name={'Адреса'}
-              placeholder={'Адреса'}
+              name={'Назва вулиці і будинок (Сонячка 1)'}
+              placeholder={'Назва вулиці і будинок (Сонячка 1)'}
               value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
               onChange={handleStreetChange}
               disabled={isSavedAddressSelected}

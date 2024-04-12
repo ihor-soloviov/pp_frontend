@@ -6,7 +6,7 @@ const ShoppingCartItem = observer(({ id }) => {
   const { removeFromCart, getItemById, updateItemQuantity } = shoppingCartStore;
   const cartItem = getItemById(id);
 
-  const { preview, name, weight, price, count, mods, cartItemId, totalPrice } = cartItem;
+  const { preview, name, weight, count, mods, cartItemId, totalPrice } = cartItem;
 
   console.log(cartItem)
 

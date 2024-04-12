@@ -38,6 +38,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
 
   const [isOrderCreate, setIsOrderCreate] = useState(false);
   const [error, setError] = useState({ status: false, currentError: '' });
+  const [payment, setPayment] = useState({ label: 'Онлайн', value: 'Онлайн' });
 
   //handlers
   const handleError = (newErrorState) => setError(newErrorState);
@@ -136,7 +137,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
           number={orderFormData.number}
         />
 
-        <OrderAddress />
+        <OrderAddress setPayment={setPayment} />
 
         <OrderTime />
 
@@ -147,7 +148,7 @@ const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, poste
           setIsPromotion={setIsPromotion}
         />
 
-        <OrderPaymentType />
+        <OrderPaymentType setPayment={setPayment} payment={payment} />
 
         <OrderComment />
 
