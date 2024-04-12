@@ -17,7 +17,6 @@ const Menu = observer(() => {
   const { setProductsByCategoryId } = menuStore;
 
   useEffect(() => {
-    console.log(products)
     if (products?.length) {
       setProductsByCategoryId(products);
     }
@@ -33,7 +32,7 @@ const Menu = observer(() => {
       </div>
 
       {products
-        ? <LazyMotion features={domAnimation}><MenuProducts products={products} /></LazyMotion>
+        ? <MenuProducts products={products} />
         : <Loading />
       }
     </React.Fragment>

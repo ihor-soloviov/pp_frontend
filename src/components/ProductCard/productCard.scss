@@ -1,9 +1,14 @@
 .product {
-  max-width: 315px;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateY(50%);
+  transition: all 0.4s;
+
+  position: relative;
+  max-width: 315px;
   &:hover {
     .product__preview {
       opacity: 0.9;
@@ -144,6 +149,18 @@
     line-height: 130%;
 
     color: #12130f;
+  }
+}
+
+.product-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+@media(prefers-reduced-motion) {
+  .product {
+    transition: none;
   }
 }
 

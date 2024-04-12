@@ -1,5 +1,5 @@
 //Import React
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { url } from '../../api';
 
@@ -24,6 +24,8 @@ const ProductCard = observer(({ product }) => {
   const [count, setCount] = useState(1);
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [selectedModificators, setSelectedModificators] = useState([]);
+
+
 
   const addProductToCart = () => {
     const productWithMods = { ...product, mods: selectedModificators };
@@ -74,8 +76,7 @@ const ProductCard = observer(({ product }) => {
         </Popup>
       )}
 
-      <div className='product'
-      >
+      <div className='product' id='product'>
         <div className='product__cta'>
           <div
             className={classNames('product__like', {
