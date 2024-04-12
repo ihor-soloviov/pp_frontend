@@ -14,7 +14,6 @@ export const Banner = observer(() => {
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       addAnimation();
     }
-
     function addAnimation() {
       scrollers.forEach(scroller => {
         scroller.setAttribute('data-animated', true);
@@ -32,7 +31,7 @@ export const Banner = observer(() => {
   }, [])
 
   return (
-    <div className='banner'>
+    <div className='banner container-banner'>
       <section className="banner__info">
         <h1>зареєструйся <br /> на сайті</h1>
         <p>та отримай знижку на перше {window.innerWidth < 1024 && <br />} замовлення</p>

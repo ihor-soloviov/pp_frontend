@@ -6,8 +6,8 @@ import { Banner } from '../../components/Banner/Banner';
 
 export const Main = () => (
   <React.Fragment>
+    <Banner />
     <Container>
-      <Banner />
       <Menu />
     </Container>
 

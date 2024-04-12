@@ -61,7 +61,7 @@ export const getCategories = async () => {
   }
 };
 
-export const getProducts = async (id, setProducts) => {
+export const getProductsByCategoryId = async (id, setProducts) => {
   try {
     const response = await axios.get(`${url}/api/products/${id}`, { headers });
     if (!response?.data) {
@@ -69,7 +69,6 @@ export const getProducts = async (id, setProducts) => {
     }
 
     const productsData = response.data;
-    console.log(productsData);
     view_item_list(productsData[0].category, id, productsData)
     setProducts(productsData);
   } catch (error) {

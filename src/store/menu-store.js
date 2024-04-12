@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, reaction, runInAction } from 'mobx';
 import { getCategories } from '../utils/menu';
 
 class MenuStore {
@@ -9,6 +9,7 @@ class MenuStore {
   constructor() {
     makeAutoObservable(this);
     this.fetchCategories();
+
   }
 
   fetchCategories = async () => {
@@ -25,6 +26,14 @@ class MenuStore {
   setCurrentCategoryId = (id) => {
     this.currentCategoryId = id;
   };
+
+  handleMenuCategory = (dropDownHandler, id) => {
+    if (!id) {
+      return
+    }
+    dropDownHandler();
+    this.setCurrentCategoryId(id)
+  }
 
   setProductsByCategoryId = (products) => {
     this.products = products;

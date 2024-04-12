@@ -31,7 +31,7 @@ const Footer = observer(() => {
         <div className='footer__content'>
           <div className='footer__top'>
             <div className='footer__logo'>
-              <img src={logo} alt='' />
+              <img onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} src={logo} alt='' />
             </div>
             <nav className='footer__column'>
               <p className='footer__title'>Меню:</p>

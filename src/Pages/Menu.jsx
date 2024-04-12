@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import menuStore from '../store/menu-store';
 //Import Components
-import ProductCard from '../components/ProductCard/ProductCard';
 import { Categories } from '../components/Categories/Categories';
 
 //Impost styles
 import './menu.scss';
 import { Loading } from '../components/Loading/Loading';
+import { LazyMotion, domAnimation } from 'framer-motion';
+import MenuProducts from './MenuProducts';
 
 const Menu = observer(() => {
   const [products, setProducts] = useState(null);
@@ -25,25 +26,15 @@ const Menu = observer(() => {
     <React.Fragment>
       <div className='categories' id='menu'>
         <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
-        <Categories setProducts={setProducts} />
+        <LazyMotion features={domAnimation}>
+          <Categories setProducts={setProducts} />
+        </LazyMotion>
       </div>
 
-      {products ? (
-
-        <div className='menu__products'>
-          {products.map((product) => {
-            if (product.spots[0].visible !== '0') {
-              return (
-                <React.Fragment key={product.product_id}>
-                  <ProductCard product={product} />
-                </React.Fragment>
-              )
-            }
-          })}
-        </div>
-      ) : (
-        <Loading />
-      )}
+      {products
+        ? <MenuProducts products={products} />
+        : <Loading />
+      }
     </React.Fragment>
   );
 });
