@@ -260,8 +260,8 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
           >
             <InputText
               id='order-address'
-              name={'Назва вулиці і будинок (Сонячна, 1)'}
-              placeholder={'Назва вулиці і будинок (Сонячна, 1)'}
+              name={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
+              placeholder={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
               value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
               onChange={handleStreetChange}
               disabled={isSavedAddressSelected}
