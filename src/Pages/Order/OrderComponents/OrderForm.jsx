@@ -44,7 +44,9 @@ const OrderForm = observer(
 
     const [transactionStatus, setTransactionStatus] = useState(false);
 
-    const [isOrderCreate, setIsOrderCreate] = useState(false);
+  const [isOrderCreate, setIsOrderCreate] = useState(false);
+  const [error, setError] = useState({ status: false, currentError: '' });
+  const [payment, setPayment] = useState({ label: 'Онлайн', value: 'Онлайн' });
 
     //handlers
 
@@ -132,7 +134,7 @@ const OrderForm = observer(
         <section className='order-page__form'>
           <OrderContacts name={orderFormData.name} number={orderFormData.number} />
 
-          <OrderAddress handleError={handleError} />
+          <OrderAddress setPayment={setPayment} handleError={handleError} />
 
           <OrderTime />
 
@@ -143,7 +145,7 @@ const OrderForm = observer(
             setIsPromotion={setIsPromotion}
           />
 
-          <OrderPaymentType />
+          <OrderPaymentType setPayment={setPayment} payment={payment} />
 
           <OrderComment />
 
