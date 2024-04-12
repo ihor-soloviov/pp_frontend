@@ -54,7 +54,11 @@ export const getValidateRules = (formData, cartItems, totalPrice, deliveryPrice)
     { check: () => number === '', message: 'Будь ласка, заповніть поле номеру телефону' },
     { check: () => !howToReciveOrder, message: 'Будь ласка, оберіть спосіб отримання замовлення' },
     {
-      check: () => !street && !houseNumber && inputAddress?.value !== '',
+      check: () =>
+        !howToReciveOrder.includes('Самовивіз') &&
+        !street &&
+        !houseNumber &&
+        inputAddress?.value !== '',
       message: 'Будь ласка, вкажіть коректну адресу',
     },
 
