@@ -188,7 +188,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
       handleFormValueChange('spot_id', howToReciveOrder === 'Самовивіз1' ? 1 : 2);
       if (howToReciveOrder === 'Самовивіз2') {
         setPayment({ label: 'Онлайн', value: 'Онлайн' });
-        handleFormValueChange('paymentMethod', 'Онлайн')
+        handleFormValueChange('paymentMethod', 'Онлайн');
       }
     }
   }, [howToReciveOrder]);
@@ -260,8 +260,8 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
           >
             <InputText
               id='order-address'
-              name={'Назва вулиці і будинок (Сонячка 1)'}
-              placeholder={'Назва вулиці і будинок (Сонячка 1)'}
+              name={'Назва вулиці і будинок (Сонячна, 1)'}
+              placeholder={'Назва вулиці і будинок (Сонячна, 1)'}
               value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
               onChange={handleStreetChange}
               disabled={isSavedAddressSelected}
