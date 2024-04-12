@@ -114,6 +114,28 @@ const App = observer(() => {
       <Header />
       <MobileMenu />
       <ActionPopup />
+      {error.status && (
+        <PopupActions
+          onOrderPage={{ location: location.pathname }}
+          action={error.currentError}
+          onClick={() =>
+            setError({
+              status: false,
+              currentError: '',
+            })
+          }
+          error
+        />
+      )}
+
+      {promotionPopup && (
+        <PopupActions
+          action={'Ваш промокод застосован'}
+          onClick={() => {
+            setPromotionPopup(false);
+          }}
+        />
+      )}
       {isLoader && <Loader />}
       {isDiscountModal && (
         <Popup
@@ -144,27 +166,7 @@ const App = observer(() => {
       </Routes>
       <Footer />
 
-      {error.status && (
-        <PopupActions
-          action={error.currentError}
-          onClick={() =>
-            setError({
-              status: false,
-              currentError: '',
-            })
-          }
-          error
-        />
-      )}
 
-      {promotionPopup && (
-        <PopupActions
-          action={'Ваш промокод застосован'}
-          onClick={() => {
-            setPromotionPopup(false);
-          }}
-        />
-      )}
     </LoadScript>
   );
 });

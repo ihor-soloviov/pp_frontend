@@ -33,6 +33,13 @@
   }
 }
 
+.orderAction {
+  top: unset;
+  left: unset;
+  right: 148px;
+  bottom: 120px;
+}
+
 @media screen and (max-width: 786px) {
   .popup-actions {
     background: #12130f;
@@ -68,5 +75,12 @@
         opacity: 0.8;
       }
     }
+  }
+
+  .orderAction {
+    top: 120px;
+    left: unset;
+    right: 0;
+    bottom: unset;
   }
 }

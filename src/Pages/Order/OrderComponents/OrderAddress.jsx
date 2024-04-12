@@ -99,7 +99,6 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
   };
 
   const handleStreetChange = (value) => {
-    setIsVisible(false)
     resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
     setAddressInput(value);
   };

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import menuStore from '../store/menu-store';
-
 //Import Components
 import ProductCard from '../components/ProductCard/ProductCard';
 import { Categories } from '../components/Categories/Categories';
@@ -30,6 +29,7 @@ const Menu = observer(() => {
       </div>
 
       {products ? (
+
         <div className='menu__products'>
           {products.map((product) => {
             if (product.spots[0].visible !== '0') {
