@@ -16,7 +16,6 @@ import {
 import { Autocomplete } from '@react-google-maps/api';
 
 import '../Order.scss';
-import PopupActions from '../../../components/PopupActions/PopupActions';
 
 const radioOptions = [
   { id: 1, value: 'До дверей', label: 'До дверей' },
@@ -38,9 +37,9 @@ const radioOptions = [
     label: 'Самовивіз',
     info: '(Одеса, провулок Економічний 1)',
   },
-]
+];
 
-export const OrderAddress = observer(() => {
+export const OrderAddress = observer(({ handleError }) => {
   const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
   const { floor, buildingCode, entrance, apartment, howToReciveOrder } = orderFormData;
 
@@ -63,7 +62,6 @@ export const OrderAddress = observer(() => {
     })),
   ];
 
-  const [error, setError] = useState({ status: false, currentError: '' });
   const [dropAddress, setDropAddress] = useState(null);
   const [currentAddressInfo, setCurrentAddressInfo] = useState(null);
   const [isSavedAddressSelected, setIsSavedAddressSelected] = useState(false);
@@ -72,8 +70,6 @@ export const OrderAddress = observer(() => {
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
 
-  const handleError = (newErrorState) => setError(newErrorState);
-
   const handleChangeAddress = (e) => {
     if (e.value === null) {
       setDropAddress(e.value);
@@ -81,12 +77,11 @@ export const OrderAddress = observer(() => {
       setIsSavedAddressSelected(false);
       setAddressInput('');
       resetInputFields(handleFormValueChange, setSpotOneDistance, setSpotTwoDistance);
-      return
+      return;
     }
     totalPrice < 500 ? setDeliveryPrice(60) : setDeliveryPrice(0);
     setDropAddress(e.value);
     setIsSavedAddressSelected(true);
-
   };
 
   const onOptionChange = (event) => {
@@ -120,6 +115,7 @@ export const OrderAddress = observer(() => {
           status: true,
           currentError: 'Вибрана адреса знаходиться поза доступною зоною доставки',
         });
+
         setAddressInput('');
         return;
       }
@@ -325,20 +321,6 @@ export const OrderAddress = observer(() => {
             disabled={isSavedAddressSelected}
           />
         </section>
-      )}
-      {error.status && (
-        <div className='popupWrapOrder'>
-          <PopupActions
-            action={error.currentError}
-            onClick={() =>
-              setError({
-                status: false,
-                currentError: '',
-              })
-            }
-            error
-          />
-        </div>
       )}
     </section>
   );

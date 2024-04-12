@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import { nanoid } from 'nanoid';
-import PopupActions from '../PopupActions/PopupActions';
 import Popup from '../Popup/Popup';
 import hover from '../../../src/assets/radiobuttons/hover.svg';
 import selected from '../../../src/assets/radiobuttons/selected.svg';
@@ -26,6 +25,7 @@ const AddressModal = observer(
     adresses,
     currentAddressId,
     setCurrentAddressId,
+    handleError,
   }) => {
     const { token, addToAdresses } = userStore;
     const [currentAddressState, setCurrentAddressState] = useState(null);
@@ -33,12 +33,10 @@ const AddressModal = observer(
     const [selectedOption, setSelectedOption] = useState('house');
     const { setActions } = popupActionsStore;
     const [addressAutocomplete, setAddressAutocomplete] = useState(null);
-    const [error, setError] = useState({ status: false, currentError: '' });
+
     const [validAddress, setValidAddress] = useState(false);
     const [streetAndHouse, setStreetAndHouse] = useState(null);
     const [fullAddress, setFullAddress] = useState(null);
-
-    const handleError = (newErrorState) => setError(newErrorState);
 
     console.log('validAddress', validAddress);
 
@@ -409,20 +407,6 @@ const AddressModal = observer(
               </div>
             </form>
           </div>
-          {error.status && (
-            <div className='popupWrapAddress'>
-              <PopupActions
-                action={error.currentError}
-                onClick={() =>
-                  setError({
-                    status: false,
-                    currentError: '',
-                  })
-                }
-                error
-              />
-            </div>
-          )}
         </Popup>
       </>
     );

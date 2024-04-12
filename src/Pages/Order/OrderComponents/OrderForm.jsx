@@ -20,7 +20,6 @@ import {
 } from '../OrderFunctions/OrderTools';
 
 import { purchase } from '../../../gm4';
-import PopupActions from '../../../components/PopupActions/PopupActions';
 
 import '../Order.scss';
 import { OrderContacts } from './OrderContacts';
@@ -31,132 +30,130 @@ import { OrderPaymentType } from './OrderPaymentType';
 import { OrderComment } from './OrderComment';
 import BtnMain from '../../../components/Buttons/BtnMain';
 
-const OrderForm = observer(({ setIsPromotion, isPromotion, setPosterOrder, posterOrder }) => {
-  //States
-  const [promotionPopup, setPromotionPopup] = useState(false);
-  const [transactionStatus, setTransactionStatus] = useState(false);
+const OrderForm = observer(
+  ({
+    setIsPromotion,
+    isPromotion,
+    setPosterOrder,
+    posterOrder,
+    handleError,
 
-  const [isOrderCreate, setIsOrderCreate] = useState(false);
-  const [error, setError] = useState({ status: false, currentError: '' });
+    setPromotionPopup,
+  }) => {
+    //States
 
-  //handlers
-  const handleError = (newErrorState) => setError(newErrorState);
-  const handleTemporaryError = (message) => setTemporaryError(message, setError);
+    const [transactionStatus, setTransactionStatus] = useState(false);
 
-  //stores
-  const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
-  const { cartItems, clearCart, totalPrice, deliveryPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
-  const { name, phone, isAuthenticated } = userStore;
+    const [isOrderCreate, setIsOrderCreate] = useState(false);
 
-  //Hooks
-  const location = useLocation();
+    //handlers
 
-  useCheckTransactionStatus(location.search, setTransactionStatus);
+    const handleTemporaryError = (message) => setTemporaryError(message, handleError);
 
-  //функції які потребують авторизованності
-  useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
+    //stores
+    const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
+    const {
+      cartItems,
+      clearCart,
+      totalPrice,
+      deliveryPrice,
+      handleFormValueChange,
+      orderFormData,
+    } = shoppingCartStore;
+    const { name, phone, isAuthenticated } = userStore;
 
-    handleFormValueChange('name', name);
-    handleFormValueChange('number', phone);
-    checkCurrentUserPromo();
-  }, [isAuthenticated]);
+    //Hooks
+    const location = useLocation();
 
-  //створення замовлення в постер
-  useEffect(() => {
-    if (transactionStatus) {
-      createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-    }
-  }, [transactionStatus]);
+    useCheckTransactionStatus(location.search, setTransactionStatus);
 
-  useEffect(() => {
-    if (isOrderCreate) {
-      const data = JSON.parse(localStorage.getItem('user_order_data'));
-      const shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'));
-      setPosterOrder(JSON.parse(localStorage.getItem('poster_order')));
-      purchase(
-        JSON.parse(localStorage.getItem('poster_order')).incoming_order_id,
-        data.payment.sum,
-        shoppingCart,
-      );
+    //функції які потребують авторизованності
+    useEffect(() => {
+      if (!isAuthenticated) {
+        return;
+      }
 
-      clearCart();
-    }
-  }, [isOrderCreate]);
+      handleFormValueChange('name', name);
+      handleFormValueChange('number', phone);
+      checkCurrentUserPromo();
+    }, [isAuthenticated]);
 
+    //створення замовлення в постер
+    useEffect(() => {
+      if (transactionStatus) {
+        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+      }
+    }, [transactionStatus]);
 
-  const onSubmit = useCallback(() => {
-    const errorMessage = validateOrderData(orderFormData, cartItems, totalPrice, deliveryPrice);
-    if (errorMessage) {
-      handleTemporaryError(errorMessage);
-      return;
-    }
+    useEffect(() => {
+      if (isOrderCreate) {
+        const data = JSON.parse(localStorage.getItem('user_order_data'));
+        const shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'));
+        setPosterOrder(JSON.parse(localStorage.getItem('poster_order')));
+        purchase(
+          JSON.parse(localStorage.getItem('poster_order')).incoming_order_id,
+          data.payment.sum,
+          shoppingCart,
+        );
 
-    const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
-    const orderData = createOrderData(orderFormData, cartItems, isPromotion);
-    setOrderData(orderData);
+        clearCart();
+      }
+    }, [isOrderCreate]);
 
-    if (orderFormData.paymentMethod === 'Готівка') {
-      createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-      return;
-    }
+    const onSubmit = useCallback(() => {
+      const errorMessage = validateOrderData(orderFormData, cartItems, totalPrice, deliveryPrice);
+      if (errorMessage) {
+        handleTemporaryError(errorMessage);
+        return;
+      }
 
-    createTransaction(amount, setPaymentData);
-  }, [orderFormData, cartItems, isPromotion, createTransaction, createOrder, setPaymentData, setError]);
+      const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
+      const orderData = createOrderData(orderFormData, cartItems, isPromotion);
+      setOrderData(orderData);
 
-  return (
-    <React.Fragment>
-      {!!error.status && (
-        <PopupActions
-          action={error.currentError}
-          onClick={() =>
-            setError({
-              status: false,
-              currentError: '',
-            })
-          }
-          error
-        />
-      )}
+      if (orderFormData.paymentMethod === 'Готівка') {
+        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+        return;
+      }
 
-      {promotionPopup && (
-        <PopupActions
-          action={'Ваш промокод застосован'}
-          onClick={() => {
-            setPromotionPopup(false);
-          }}
-        />
-      )}
+      createTransaction(amount, setPaymentData);
+    }, [
+      orderFormData,
+      cartItems,
+      isPromotion,
+      createTransaction,
+      createOrder,
+      setPaymentData,
+      handleError,
+    ]);
 
-      <section className='order-page__form'>
-        <OrderContacts
-          name={orderFormData.name}
-          number={orderFormData.number}
-        />
+    return (
+      <React.Fragment>
+        <section className='order-page__form'>
+          <OrderContacts name={orderFormData.name} number={orderFormData.number} />
 
-        <OrderAddress />
+          <OrderAddress handleError={handleError} />
 
-        <OrderTime />
+          <OrderTime />
 
-        <OrderPromo
-          handleError={handleError}
-          isPromotion={isPromotion}
-          setPromotionPopup={setPromotionPopup}
-          setIsPromotion={setIsPromotion}
-        />
+          <OrderPromo
+            handleError={handleError}
+            isPromotion={isPromotion}
+            setPromotionPopup={setPromotionPopup}
+            setIsPromotion={setIsPromotion}
+          />
 
-        <OrderPaymentType />
+          <OrderPaymentType />
 
-        <OrderComment />
+          <OrderComment />
 
-        <BtnMain fullWide onClick={onSubmit}>
-          Оформити замовлення
-        </BtnMain>
-      </section>
-    </React.Fragment>
-  );
-});
+          <BtnMain fullWide onClick={onSubmit}>
+            Оформити замовлення
+          </BtnMain>
+        </section>
+      </React.Fragment>
+    );
+  },
+);
 
 export default OrderForm;

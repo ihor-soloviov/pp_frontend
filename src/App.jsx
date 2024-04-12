@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //Import React
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Import Routing
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
@@ -35,6 +35,7 @@ import { DiscountModal } from './components/DiscountModal/DiscountModal';
 
 import { LoadScript } from '@react-google-maps/api';
 import { places, googleMapsApiKey } from './utils/googleMap';
+import PopupActions from './components/PopupActions/PopupActions';
 const tagManagerArgs = {
   gtmId: 'GTM-WPHZCLVL',
 };
@@ -48,6 +49,20 @@ const App = observer(() => {
     modalsStore;
   const { userLogout } = userStore;
 
+  const [promotionPopup, setPromotionPopup] = useState(false);
+  const [error, setError] = useState({ status: false, currentError: '' });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleError({
+        status: false,
+        currentError: '',
+      });
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [error]);
+  const handleError = (newErrorState) => setError(newErrorState);
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
     setLoader();
@@ -107,14 +122,39 @@ const App = observer(() => {
         </Route>
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/about-us' element={<AboutUs />} />
-        <Route path='/order' element={<Order />} />
+        <Route
+          path='/order'
+          element={<Order handleError={handleError} setPromotionPopup={setPromotionPopup} />}
+        />
         <Route path='/contact' element={<Contact />} />
         <Route path='/offero' element={<Offero />} />
         <Route path='/payment-and-delivery' element={<PaymentAndDelivery />} />
-        <Route path='/profile/*' element={<Profile />} />
+        <Route path='/profile/*' element={<Profile handleError={handleError} />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
+
+      {error.status && (
+        <PopupActions
+          action={error.currentError}
+          onClick={() =>
+            setError({
+              status: false,
+              currentError: '',
+            })
+          }
+          error
+        />
+      )}
+
+      {promotionPopup && (
+        <PopupActions
+          action={'Ваш промокод застосован'}
+          onClick={() => {
+            setPromotionPopup(false);
+          }}
+        />
+      )}
     </LoadScript>
   );
 });
