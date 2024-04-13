@@ -4,7 +4,7 @@ import added from '../../assets/added.svg';
 import classNames from 'classnames';
 import { handleModificatorChange } from '../../utils/menu';
 
-const getFactoredName = (name) => name.split(' ').slice(0, 2).join(' ');
+// const getFactoredName = (name) => name.split(' ').slice(0, 2).join(' ');
 const getDefaultValue = (group) =>
   group.modifications.find((mod) => mod.name.toLowerCase().includes('без'));
 
@@ -50,7 +50,7 @@ const GroupOfModificators = ({ group, setSelectedModificators }) => {
             src={selectedOption === modificator.dish_modification_id ? added : plus}
             alt='add the item to cart'
           />
-          <b>{getFactoredName(modificator.name)}</b>
+          <b>{modificator.name}</b>
           <span>{modificator.price === 0 ? '' : `${modificator.price}₴`}</span>
         </div>
       ))}
