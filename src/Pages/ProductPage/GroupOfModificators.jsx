@@ -36,15 +36,6 @@ const GroupOfModificators = ({ group, setSelectedModificators }) => {
     [group.dish_modification_group_id, group.modifications, setSelectedModificators],
   );
 
-  const priceChecker = (modificator, index) => {
-    if (modificator.price === 0) {
-      return ''
-    } else {
-      return `${modificator.price}₴/${[3, 6, 9].includes(modificator.brutto) ? `${(1 + index) * 3} шт ` : `${modificator.brutto}г`}`;
-
-    }
-  }
-
   return (
     <React.Fragment>
       {group.modifications.map((modificator, index) => (
@@ -60,7 +51,7 @@ const GroupOfModificators = ({ group, setSelectedModificators }) => {
             alt='add the item to cart'
           />
           <b>{getFactoredName(modificator.name)}</b>
-          <span>{priceChecker(modificator, index)}</span>
+          <span>{modificator.price === 0 ? '' : `${modificator.price}₴`}</span>
         </div>
       ))}
     </React.Fragment>

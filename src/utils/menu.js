@@ -92,3 +92,12 @@ export const getProductById = async (id, setProduct, products, setProducts) => {
     console.error(error);
   }
 };
+
+export const priceChecker = (modificator, index) => {
+  if (modificator.price === 0) {
+    return ''
+  } else {
+    return `${modificator.price}₴/${[3, 4, 6, 9].includes(modificator.brutto) ? `${(1 + index) * 3} шт ` : `${modificator.brutto}г`}`;
+
+  }
+}
