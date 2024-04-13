@@ -25,6 +25,24 @@ const ProductCard = observer(({ product }) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [selectedModificators, setSelectedModificators] = useState([]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      const entry = entries[0]; // Беремо перший (і єдиний) елемент масиву
+      if (entry.isIntersecting) {
+        entry.target.classList.add('product-visible');
+      }
+    }, { threshold: 0 });
+    const hiddenElement = document.querySelectorAll(`#product${product_id}`);
+
+    hiddenElement.forEach(el => observer.observe(el));
+
+    // Cleanup function
+    return () => {
+      hiddenElement.forEach(el => observer.unobserve(el));
+      observer.disconnect();
+    };
+  }, [product_id]);
+
 
 
   const addProductToCart = () => {
@@ -76,7 +94,7 @@ const ProductCard = observer(({ product }) => {
         </Popup>
       )}
 
-      <div className='product' id='product'>
+      <div className='product' id={`product${product_id}`}>
         <div className='product__cta'>
           <div
             className={classNames('product__like', {

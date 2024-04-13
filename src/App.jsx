@@ -52,6 +52,7 @@ const App = observer(() => {
   const [promotionPopup, setPromotionPopup] = useState(false);
   const [error, setError] = useState({ status: false, currentError: '' });
 
+
   useEffect(() => {
     let timer;
     if (error.status) {
