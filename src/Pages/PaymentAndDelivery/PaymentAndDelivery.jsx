@@ -347,7 +347,7 @@ export const PaymentAndDelivery = () => (
             </ul>
           </div>
           <div className="deliveryMap">
-            <Map poligon={true} />
+            <Map poligon={true} zoom={12} />
             <h3>Райони доставки</h3>
           </div>
         </div>

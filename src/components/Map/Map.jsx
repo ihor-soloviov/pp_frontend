@@ -3,13 +3,13 @@ import { GoogleMap, MarkerF, PolygonF } from '@react-google-maps/api';
 import { center, containerStyle, options } from '../../Pages/Contact/data';
 import { polygonPaths } from '../../utils/distance';
 
-export const Map = ({ poligon = false }) => {
+export const Map = ({ poligon = false, zoom }) => {
   return (
     <div className='contact__map'>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={16}
+        zoom={zoom}
         options={options}
       >
         {poligon && (

@@ -20,7 +20,7 @@ import { DotsLoader } from "../../components/Loader/DotsLoader";
 
 const ProductPage = observer(() => {
   const { id } = useParams();
-  const { products } = menuStore
+  const { products, setProductsByCategoryId } = menuStore
 
   const [count, setCount] = useState(1);
 
@@ -29,8 +29,8 @@ const ProductPage = observer(() => {
   const [isPopupOpened, setIsPopupOpened] = useState(false)
 
   useEffect(() => {
-    getProductById(id, setProduct);
-  }, [id]);
+    getProductById(id, setProduct, products, setProductsByCategoryId);
+  }, [id, products, setProductsByCategoryId]);
 
   const addProductToCart = () => {
     const productWithMods = { ...product, mods: selectedModificators }

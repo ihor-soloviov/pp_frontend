@@ -41,7 +41,7 @@ const Contact = () => {
             </ul>
           </div>
           <div className='contact__column'>
-            <Map />
+            <Map zoom={16} />
           </div>
         </div>
       </Container>

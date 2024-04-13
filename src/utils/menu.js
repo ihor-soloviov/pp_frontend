@@ -76,14 +76,18 @@ export const getProductsByCategoryId = async (id, setProducts) => {
   }
 };
 
-export const getProductById = async (id, setProduct) => {
+export const getProductById = async (id, setProduct, products, setProducts) => {
   try {
     // Перший запит
     const product = await axios.get(`${url}/api/product/${id}`, { headers });
 
     if (product.data) {
       setProduct(product.data);
+      if (!products || products.length === 0) {
+        getProductsByCategoryId(product.data.menu_category_id, setProducts)
+      }
     }
+
   } catch (error) {
     console.error(error);
   }
