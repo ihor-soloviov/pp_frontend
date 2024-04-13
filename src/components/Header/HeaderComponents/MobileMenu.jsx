@@ -14,7 +14,7 @@ const citiesInfo = [
     label: 'Одеса',
     phone: '+380 (98) 727-19-91',
     href: 'tel:+380987271991',
-    street: 'вул. Лентейнанта Шмідта 25',
+    street: 'вулиця Маршала Малиновскього, 18',
   },
 ];
 
@@ -56,8 +56,8 @@ export const MobileMenu = observer(() => {
             </div>
             {dropdown && (
               <ul className='mobile-menu__submenu'>
-                {categories.map(({ category_id, category_name }) => {
-                  return (
+                {categories.map(
+                  ({ category_id, category_name }) => (
                     <MobileLink
                       key={category_id}
                       id={category_id}
@@ -67,8 +67,8 @@ export const MobileMenu = observer(() => {
                     >
                       {category_name}
                     </MobileLink>
-                  );
-                })}
+                  )
+                )}
               </ul>
             )}
           </li>
@@ -111,21 +111,21 @@ export const MobileMenu = observer(() => {
           <div className='menu-footer'>
             <div className='menu-footer__langs'>
               <p className='lang lang-active'>UA</p>
-              <p className='lang '>DE</p>
+              <p style={{cursor: "help"}} title='Demnächst verfügbar' className='lang '>DE</p>
             </div>
             <div className='menu-footer__cities'>
-              {citiesInfo.map((el) => (
-                <div key={el.label} className='city'>
-                  <span>{el.label}:</span>
-                  <a href={el.href}>{el.phone}</a>
-                  <p>{el.street}</p>
+              {citiesInfo.map(({ label, href, street, phone }) => (
+                <div key={label} className='city'>
+                  <span>{label}:</span>
+                  <a href={href}>{phone}</a>
+                  <p>{street}</p>
                 </div>
               ))}
             </div>
             <div className='menu-footer__links'>
               <a
                 className='footer__links'
-                href='https://www.instagram.com/polarpelmeni/'
+                href='https://www.instagram.com/polar.pelmeni?utm_source=qr'
                 target='_blank'
                 rel='noreferrer'
               >

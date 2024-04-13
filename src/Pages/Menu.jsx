@@ -24,12 +24,12 @@ const Menu = observer(() => {
 
   return (
     <React.Fragment>
-      <div className='categories' id='menu'>
+      <section className='categories' id='menu'>
         <h1 className='title__h1'>Куштуй тільки найсмачніше</h1>
         <LazyMotion features={domAnimation}>
           <Categories setProducts={setProducts} />
         </LazyMotion>
-      </div>
+      </section>
 
       {products
         ? <MenuProducts products={products} />

@@ -6,8 +6,10 @@ import menuStore from '../../store/menu-store';
 import { observer } from 'mobx-react-lite';
 import { m, AnimatePresence } from 'framer-motion';
 import { dropInCategories } from '../../utils/animation';
+import { useLocation } from 'react-router-dom';
 
 export const Categories = observer(({ setProducts }) => {
+  const { pathname } = useLocation();
   const { categories, currentCategoryId, setCurrentCategoryId } = menuStore;
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export const Categories = observer(({ setProducts }) => {
     return (
       <AnimatePresence>
         <m.div
+          id='catHeader'
           variants={dropInCategories}
           initial='hidden'
           animate='visible'
@@ -43,7 +46,12 @@ export const Categories = observer(({ setProducts }) => {
                 className={classNames('categories__btn', {
                   'categories__btn-active': currentCategoryId === category_id,
                 })}
-                onClick={() => setCurrentCategoryId(category_id)}
+                onClick={() => {
+                  if (window.innerWidth < 1024) {
+                    window.scrollTo({ top: pathname.includes('menu') ? 101 : 700, behavior: 'smooth' })
+                  }
+                  setCurrentCategoryId(category_id)
+                }}
               >
                 {category_name}
               </button>

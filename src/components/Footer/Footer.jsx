@@ -159,7 +159,7 @@ const Footer = observer(() => {
                 </div>
               </div>
               <li className='pp-mob'>
-                <Link>© 2023 Polar Pelmeni</Link>
+                <Link to='/' onClick={() => window.screenTop({ top: 0, behavior: 'smooth' })} >© 2023 Polar Pelmeni</Link>
               </li>
             </div>
           </div>

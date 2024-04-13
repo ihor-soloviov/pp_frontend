@@ -28,9 +28,9 @@
 }
 
 .categories {
-  margin-bottom: 48px;
   width: 100%;
-
+  background-color: #fff;
+  margin-bottom: 48px;
   &__inner {
     display: flex;
     justify-content: center;
@@ -80,7 +80,13 @@
 
 @media screen and (max-width: 768px) {
   .categories {
-    margin-bottom: 48px;
+    position: sticky;
+    top: 20px;
+    z-index: 399;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    box-shadow: -1px 10px 24px -11px rgba(218, 221, 222, 0.3);
+  
 
     h1 {
       font-size: 28px;

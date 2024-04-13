@@ -3,7 +3,7 @@ import ProductCard from '../components/ProductCard/ProductCard';
 
 const MenuProducts = React.memo(({ products }) => {
   return (
-    <div className='menu__products'>
+    <section className='menu__products'>
       {products.map(product => {
         if (product.spots[0].visible !== '0') {
           return (
@@ -15,7 +15,7 @@ const MenuProducts = React.memo(({ products }) => {
           return null
         }
       })}
-    </div>
+    </section>
   )
 })
 export default MenuProducts

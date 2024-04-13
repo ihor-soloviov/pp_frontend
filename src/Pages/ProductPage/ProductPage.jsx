@@ -49,6 +49,8 @@ const ProductPage = observer(() => {
       product.category_name
     );
 
+    console.log(product)
+
     const { out, product_name, description, price, group_modifications, ingredients } = product;
 
     return (
