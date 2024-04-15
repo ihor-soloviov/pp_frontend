@@ -186,15 +186,23 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
   }, [spotOneDistance, spotTwoDistance]);
 
   useEffect(() => {
-    if (howToReciveOrder.includes('Самовивіз')) {
-      setIsVisible(false)
-      handleFormValueChange('spot_id', howToReciveOrder === 'Самовивіз1' ? 1 : 2);
-      if (howToReciveOrder === 'Самовивіз2') {
+    // Показати або приховати в залежності від умови
+    const isVisible = !howToReciveOrder.includes('Самовивіз');
+    setIsVisible(isVisible);
+
+    if (isVisible) {
+      // Якщо не самовивіз, встановлюємо спосіб оплати "Онлайн"
+      setPayment({ label: 'Онлайн', value: 'Онлайн' });
+    } else {
+      // Якщо самовивіз, визначаємо id точки самовивозу
+      const spotId = howToReciveOrder === 'Самовивіз1' ? 1 : 2;
+      handleFormValueChange('spot_id', spotId);
+
+      if (howToReciveOrder !== 'Самовивіз1') {
+        // Якщо самовивіз не перший варіант, встановлюємо спосіб оплати та метод оплати "Онлайн"
         setPayment({ label: 'Онлайн', value: 'Онлайн' });
         handleFormValueChange('paymentMethod', 'Онлайн');
       }
-    } else {
-      setIsVisible(true)
     }
   }, [howToReciveOrder]);
 

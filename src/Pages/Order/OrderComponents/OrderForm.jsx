@@ -54,12 +54,11 @@ const OrderForm = observer(
     const handleTemporaryError = (message) => setTemporaryError(message, handleError);
 
     //stores
-    const { setOrderData, setPaymentData, setPosterResponse } = orderStore;
+    const { setPaymentData, setPosterResponse } = orderStore;
     const {
       cartItems,
       clearCart,
       totalPrice,
-      deliveryPrice,
       handleFormValueChange,
       orderFormData,
     } = shoppingCartStore;
@@ -69,6 +68,7 @@ const OrderForm = observer(
     const location = useLocation();
 
     useCheckTransactionStatus(location.search, setTransactionStatus);
+    
 
     //функції які потребують авторизованності
     useEffect(() => {
@@ -104,7 +104,7 @@ const OrderForm = observer(
     }, [isOrderCreate]);
 
     const onSubmit = useCallback(() => {
-      const errorMessage = validateOrderData(orderFormData, cartItems, totalPrice, deliveryPrice);
+      const errorMessage = validateOrderData(orderFormData, cartItems, totalPrice, isPromotion);
       if (errorMessage) {
         handleTemporaryError(errorMessage);
         return;
@@ -112,14 +112,15 @@ const OrderForm = observer(
 
       const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
       const orderData = createOrderData(orderFormData, cartItems, isPromotion);
-      setOrderData(orderData);
+      console.log(orderData)
+      // setOrderData(orderData);
       setIsButtonLoading(true)
-      if (orderFormData.paymentMethod === 'Готівка') {
-        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-        return;
-      }
+      // if (orderFormData.paymentMethod === 'Готівка') {
+      //   createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+      //   return;
+      // }
 
-      createTransaction(amount, setPaymentData);
+      // createTransaction(amount, setPaymentData);
     }, [
       orderFormData,
       cartItems,

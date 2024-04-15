@@ -30,14 +30,14 @@ const shoppingCartMapPromo = (products) =>
     }
 
     return {
-      id: '2', //id акції на -40%
+      id: 15, //id акції на -40%
       involved_products: [productMapping],
     };
   });
 
 const inputAddress = document.getElementById('order-address');
 
-export const getValidateRules = (formData, cartItems, totalPrice) => {
+export const getValidateRules = (formData, cartItems, totalPrice, isPromotion) => {
   const {
     number,
     howToReciveOrder,
@@ -46,7 +46,11 @@ export const getValidateRules = (formData, cartItems, totalPrice) => {
     deliveryTime,
     apartment,
     entrance,
+    paymentMethod,
   } = formData;
+
+  const orderPrice = isPromotion ? totalPrice * 0.6 : totalPrice;
+
   return [
     { check: () => cartItems.length === 0, message: 'Будь ласка, оберіть товари для замовлення' },
     {
@@ -69,6 +73,10 @@ export const getValidateRules = (formData, cartItems, totalPrice) => {
       check: () => !howToReciveOrder.includes('Самовивіз') && (!houseNumber || !street),
       message: 'Будь ласка, вкажіть адресу',
     },
+    {
+      check: () => howToReciveOrder !== 'Самовивіз1' && paymentMethod === 'Готівка',
+      message: 'Оплата готівкою доступна тільки у закладі',
+    },
 
     {
       check: () => howToReciveOrder === 'До дверей' && (!apartment || !entrance),
@@ -76,7 +84,7 @@ export const getValidateRules = (formData, cartItems, totalPrice) => {
     },
 
     { check: () => !deliveryTime, message: 'Будь ласка, оберіть час отримання замовлення' },
-    { check: () => totalPrice < 200, message: 'Мінімальна сумма замовлення 200 ₴' },
+    { check: () => orderPrice < 200, message: 'Мінімальна сумма замовлення 200 ₴' },
   ];
 };
 
@@ -113,8 +121,8 @@ export const getOrderData = (formData, products, isPromotion) => {
   const devicesComment = withoutDevices ? ', Без приборів' : '';
   const callOrNot = NotCall ? ', Не передзвонювати' : '';
   const orderRecive = howToReciveOrder.includes('Самовивіз') ? ', Самовивіз' : '';
-  const isProm = isPromotion ? ' Знижка 40%' : '';
-  const com = `Кількість персон: ${personCount},${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`;
+  const isProm = isPromotion ? ', Знижка 40%' : '';
+  const com = `Кількість персон: ${personCount}${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`;
 
   return {
     spot_id: spot_id,
