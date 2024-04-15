@@ -34,7 +34,7 @@ const Contact = () => {
               </li>
               <li className='contact__item'>
                 <span className='contact__item-title'>Email</span>
-                <a href='mailto:support@polarpelmeni.com' className='contact__item-link'>
+                <a href='mailto:polarpelmeni.od@gmail.com' className='contact__item-link'>
                   support@polarpelmeni.com
                 </a>
               </li>

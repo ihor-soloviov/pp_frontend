@@ -82,7 +82,7 @@ const Footer = observer(() => {
               </li>
             </ul>
             <div className='footer__bottom-contacts'>
-              <a href='mailto:support@polarpelmeni.com'>support@polarpelmeni.com</a>
+              <a href='mailto:polarpelmeni.od@gmail.com'>support@polarpelmeni.com</a>
               <div className='footer__social-icons'>
                 <a
                   className='footer__social'
