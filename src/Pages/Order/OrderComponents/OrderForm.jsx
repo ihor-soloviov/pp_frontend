@@ -29,7 +29,7 @@ import { OrderPromo } from './OrderPromo';
 import { OrderPaymentType } from './OrderPaymentType';
 import { OrderComment } from './OrderComment';
 import BtnMain from '../../../components/Buttons/BtnMain';
-import { DotsLoader } from "../../../components/Loader/DotsLoader"
+import { DotsLoader } from '../../../components/Loader/DotsLoader';
 
 const OrderForm = observer(
   ({
@@ -54,21 +54,15 @@ const OrderForm = observer(
     const handleTemporaryError = (message) => setTemporaryError(message, handleError);
 
     //stores
-    const { setPaymentData, setPosterResponse } = orderStore;
-    const {
-      cartItems,
-      clearCart,
-      totalPrice,
-      handleFormValueChange,
-      orderFormData,
-    } = shoppingCartStore;
+    const { setPaymentData, setPosterResponse, setOrderData } = orderStore;
+    const { cartItems, clearCart, totalPrice, handleFormValueChange, orderFormData } =
+      shoppingCartStore;
     const { name, phone, isAuthenticated, promocode40 } = userStore;
 
     //Hooks
     const location = useLocation();
 
     useCheckTransactionStatus(location.search, setTransactionStatus);
-    
 
     //функції які потребують авторизованності
     useEffect(() => {
@@ -98,7 +92,7 @@ const OrderForm = observer(
           data.payment.sum,
           shoppingCart,
         );
-        setIsButtonLoading(false)
+        setIsButtonLoading(false);
         clearCart();
       }
     }, [isOrderCreate]);
@@ -112,15 +106,15 @@ const OrderForm = observer(
 
       const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
       const orderData = createOrderData(orderFormData, cartItems, isPromotion);
-      console.log(orderData)
-      // setOrderData(orderData);
-      setIsButtonLoading(true)
-      // if (orderFormData.paymentMethod === 'Готівка') {
-      //   createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-      //   return;
-      // }
+      console.log(orderData);
+      setOrderData(orderData);
+      setIsButtonLoading(true);
+      if (orderFormData.paymentMethod === 'Готівка') {
+        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+        return;
+      }
 
-      // createTransaction(amount, setPaymentData);
+      createTransaction(amount, setPaymentData);
     }, [
       orderFormData,
       cartItems,
