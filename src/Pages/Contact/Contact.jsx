@@ -35,7 +35,7 @@ const Contact = () => {
               <li className='contact__item'>
                 <span className='contact__item-title'>Email</span>
                 <a href='mailto:polarpelmeni.od@gmail.com' className='contact__item-link'>
-                  support@polarpelmeni.com
+                  polarpelmeni.od@gmail.com
                 </a>
               </li>
             </ul>
