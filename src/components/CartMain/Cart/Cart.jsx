@@ -2,8 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartItem from '../ShoppingCartItem';
 import { begin_checkout } from '../../../gm4';
-import userStore from '../../../store/user-store';
-import modalStore from "../../../store/modal-store"
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import BtnMain from '../../Buttons/BtnMain';
 import { useEffect } from 'react';
@@ -13,8 +11,6 @@ import { observer } from 'mobx-react-lite';
 
 export const Cart = observer(({ isOpen, setIsOpen, setError }) => {
   const { cartItems, totalPrice, deliveryPrice, itemCount } = shoppingCartStore;
-  const { isAuthenticated } = userStore;
-  const { isDiscountHandler } = modalStore;
   const navigate = useNavigate();
 
   const makeAnOrderClick = () => {
@@ -22,13 +18,9 @@ export const Cart = observer(({ isOpen, setIsOpen, setError }) => {
       setError(true);
       setTimeout(() => setError(false), 3000);
     } else {
-      if (isAuthenticated) {
-        begin_checkout(cartItems);
-        setIsOpen(!isOpen);
-        navigate('/order');
-      } else {
-        isDiscountHandler(true);
-      }
+      begin_checkout(cartItems);
+      navigate('/order');
+      setIsOpen(!isOpen);
     }
   }
 

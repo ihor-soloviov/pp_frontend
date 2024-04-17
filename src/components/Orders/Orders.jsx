@@ -16,8 +16,6 @@ const Orders = ({ handleSidebar }) => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null)
 
-
-
   const { token } = userStore;
 
 
@@ -41,7 +39,6 @@ const Orders = ({ handleSidebar }) => {
 
   const openMainModal = (order) => {
     setSelectedOrder(order);
-
     setMainModalOpen(true);
 
   };

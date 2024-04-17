@@ -7,7 +7,6 @@ import InfoSection from '../../components/InfoSection/InfoSection';
 import Addresses from '../../components/Addresses/Adresses';
 import Favorites from '../../components/Favorites/Favorites';
 import Orders from '../../components/Orders/Orders';
-import Bonus from '../../components/Bonus/Bonus';
 import MobileSidebar from '../../components/MobileSidebar/MobileSidebar';
 
 const Profile = React.memo(({ handleError }) => {
@@ -38,7 +37,6 @@ const Profile = React.memo(({ handleError }) => {
             />
             <Route path='history' element={<Orders handleSidebar={handleSidebar} />} />
             <Route path='favourite' element={<Favorites handleSidebar={handleSidebar} />} />
-            <Route path='bonuses' element={<Bonus handleSidebar={handleSidebar} />} />
           </Routes>
         </ProfileGrid>
       </Container>
