@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
+import userStore from '../../store/user-store';
+import modalsStore from '../../store/modal-store';
 import './Banner.scss';
 
-export const Banner = () => {
+export const Banner = observer(() => {
+  const { isAuthenticated } = userStore;
+  const { authModalHandler } = modalsStore;
 
   useEffect(() => {
     const scrollers = document.querySelectorAll('.banner');
@@ -29,8 +34,17 @@ export const Banner = () => {
     <div className='banner container-banner'>
       <section className="banner__info">
         <h1>Реєструйся <br /> на сайті</h1>
-        <p>та отримай бонуси і подарунки </p>
-
+        <p>та отримуй бонуси і подарунки </p>
+        {!isAuthenticated &&
+          (
+            <button onClick={() => {
+              authModalHandler(true)
+            }}
+            >
+              Зареєструватися
+            </button>
+          )
+        }
       </section>
       <ul className="banner__inner-anim">
         <li className='anim-item'>POLAR PELMENI</li>
@@ -39,4 +53,4 @@ export const Banner = () => {
       </ul>
     </div>
   )
-}
+})

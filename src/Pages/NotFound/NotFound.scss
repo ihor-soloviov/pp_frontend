@@ -1,11 +1,28 @@
+@import '../../style/colors.scss';
+
 .notFound {
   max-width: 1350px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  gap: 20px;
 
   img {
     width: 306px;
-    
+  }
+
+  .toHome {
+    padding: 8px 12px;
+    border: 1px solid $accentColorActive;
+    border-radius: 8px;
+    background-color: $accentColorActive;
+    transition: transform 0.2s ease-in-out;
+    color: #fff;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
