@@ -69,7 +69,7 @@ const App = observer(() => {
 
   const handleError = (newErrorState) => setError(newErrorState);
   useEffect(() => {
-    ReactPixel.init(958294685685916);
+    ReactPixel.init(1434514707452322);
     TagManager.initialize(tagManagerArgs);
     setLoader();
   }, []);
