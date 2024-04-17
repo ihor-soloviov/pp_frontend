@@ -14,7 +14,6 @@ const MobileSidebar = observer(({ handleSidebar }) => {
     'Улюблені блюда',
     'Збережені адреси',
     'Історія замовлень',
-    'Бонуси',
     'Вихід',
   ];
   return (
@@ -26,7 +25,6 @@ const MobileSidebar = observer(({ handleSidebar }) => {
             <div className='contacts'>
               <div className='contacts_name'>{name}</div>
               <div className='contacts_phone mobile'>{phone}</div>
-              <div className='contacts_bonuses'></div>
             </div>
           </div>
           <div className='mobile-inner'>

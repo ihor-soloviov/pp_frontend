@@ -25,7 +25,6 @@ import '../Order.scss';
 import { OrderContacts } from './OrderContacts';
 import { OrderAddress } from './OrderAddress';
 import { OrderTime } from './OrderTime';
-import { OrderPromo } from './OrderPromo';
 import { OrderPaymentType } from './OrderPaymentType';
 import { OrderComment } from './OrderComment';
 import BtnMain from '../../../components/Buttons/BtnMain';
@@ -57,7 +56,7 @@ const OrderForm = observer(
     const { setPaymentData, setPosterResponse, setOrderData } = orderStore;
     const { cartItems, clearCart, totalPrice, handleFormValueChange, orderFormData } =
       shoppingCartStore;
-    const { name, phone, isAuthenticated, promocode40 } = userStore;
+    const { name, phone, isAuthenticated } = userStore;
 
     //Hooks
     const location = useLocation();
@@ -133,14 +132,14 @@ const OrderForm = observer(
           <OrderAddress setPayment={setPayment} handleError={handleError} />
 
           <OrderTime />
-          {promocode40 && (
+          {/*
             <OrderPromo
               handleError={handleError}
               isPromotion={isPromotion}
               setPromotionPopup={setPromotionPopup}
               setIsPromotion={setIsPromotion}
             />
-          )}
+    */}
 
           <OrderPaymentType setPayment={setPayment} payment={payment} />
 

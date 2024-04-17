@@ -12,13 +12,11 @@ const SidebarLink = observer(({
   handleSidebar,
 }) => {
 
-
   const links = [
     "info",
     "favourite",
     "addresses",
     "history",
-    "bonuses",
     "signout",
   ];
 
