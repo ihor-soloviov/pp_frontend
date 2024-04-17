@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { observer } from "mobx-react-lite";
 import './Banner.scss';
 
 export const Banner = () => {
@@ -29,8 +28,8 @@ export const Banner = () => {
   return (
     <div className='banner container-banner'>
       <section className="banner__info">
-        <h1>зареєструйся <br /> на сайті</h1>
-        <p>та отримай знижку на перше {window.innerWidth < 1024 && <br />} замовлення</p>
+        <h1>Реєструйся <br /> на сайті</h1>
+        <p>та отримай бонуси і подарунки </p>
 
       </section>
       <ul className="banner__inner-anim">

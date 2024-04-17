@@ -55,7 +55,6 @@ const Orders = ({ handleSidebar }) => {
     setConfirmModalOpen(false);
   };
 
-
   return (
     <React.Fragment>
       <section className="grid_layout--main orders">
