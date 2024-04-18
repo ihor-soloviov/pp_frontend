@@ -36,6 +36,7 @@ import ReactPixel from "react-facebook-pixel";
 import { LoadScript } from '@react-google-maps/api';
 import { places, googleMapsApiKey } from './utils/googleMap';
 import PopupActions from './components/PopupActions/PopupActions';
+import RegistrationThanks from './components/Thanks/RegistrationThanks';
 const tagManagerArgs = {
   gtmId: 'GTM-WPHZCLVL',
 };
@@ -45,7 +46,7 @@ const App = observer(() => {
   const navigate = useNavigate();
 
   //Store
-  const { authModalHandler, authModal, isLoader, setLoader, isDiscountModal, isDiscountHandler } =
+  const { authModalHandler, authModal, isLoader, setLoader, isDiscountModal, isDiscountHandler, thanksRegModal, thanksRegModalHandler } =
     modalsStore;
   const { userLogout } = userStore;
 
@@ -69,7 +70,7 @@ const App = observer(() => {
 
   const handleError = (newErrorState) => setError(newErrorState);
   useEffect(() => {
-    ReactPixel.init(1434514707452322);
+    ReactPixel.init(1370948317640361);
     TagManager.initialize(tagManagerArgs);
     setLoader();
   }, []);
@@ -110,6 +111,11 @@ const App = observer(() => {
       {authModal && (
         <Popup closeModal={() => authModalHandler(false)}>
           <SignUp />
+        </Popup>
+      )}
+      {thanksRegModal && (
+        <Popup closeModal={() => thanksRegModalHandler(false)}>
+          <RegistrationThanks />
         </Popup>
       )}
       <Header />

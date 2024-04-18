@@ -13,7 +13,7 @@ import OrderForm from './OrderComponents/OrderForm';
 import { dropInProducts } from '../../utils/animation';
 import modalsStore from '../../store/modal-store';
 import Popup from '../../components/Popup/Popup';
-import Thanks from '../../components/Thanks/Thanks';
+import OrderThanks from '../../components/Thanks/OrderThanks';
 
 const Order = observer(({ handleError, setPromotionPopup }) => {
   const { cartItems, totalPrice, deliveryPrice } = shoppingCartStore;
@@ -39,12 +39,13 @@ const Order = observer(({ handleError, setPromotionPopup }) => {
             thanksModalHandler(false);
           }}
         >
-          <Thanks
+          <OrderThanks
             orderId={posterOrder.incoming_order_id}
             deliveryTime={posterOrder.delivery_time}
           />
         </Popup>
-      )}
+      )
+      }
       <Container>
         <motion.div
           variants={dropInProducts}

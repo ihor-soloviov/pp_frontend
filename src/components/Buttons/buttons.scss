@@ -7,9 +7,6 @@ button {
   height: fit-content;
 }
 
-.btn {
-}
-
 .btn-main {
   cursor: pointer;
   transition: linear 0.25s;
@@ -74,5 +71,16 @@ button {
 
   &-fw {
     width: 100%;
+  }
+}
+
+.btn-orange {
+  background-color: $accentColor;
+  color: #fff;
+  border: 1px solid $accentColor;
+  &:hover {
+    background-color: #f63a0a;
+    border: 1px solid $accentColor;
+    color: #fff;
   }
 }

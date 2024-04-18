@@ -7,6 +7,8 @@ class ModalsStore {
   isLoader = false;
   isMobileMenu = false;
   isDiscountModal = false;
+  thanksRegModal = false;
+
 
   constructor() {
     makeAutoObservable(this);
@@ -27,6 +29,10 @@ class ModalsStore {
   thanksModalHandler = (isOpen) => {
     this.thanksModal = isOpen;
   };
+
+  thanksRegModalHandler = (isOpen) => {
+    this.thanksRegModal = isOpen
+  }
 
   isLoaderHandler = (isOpen) => {
     this.isLoader = isOpen;

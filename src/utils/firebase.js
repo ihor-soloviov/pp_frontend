@@ -14,8 +14,10 @@ import { v4 } from "uuid"
 
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebaseConfig";
+import modalsStore from "../store/modal-store";
 
 const { setUserDataToStore, changePhoneNumber, setUserAvatar } = userStore;
+const { thanksRegModalHandler } = modalsStore;
 
 const imageListRef = ref(storage, "avatars/")
 
@@ -131,7 +133,6 @@ const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberCha
 
 const authentication = (
   accessToken,
-  navigate,
   authModalHandler,
   setStep
 ) => {
@@ -216,6 +217,7 @@ const registration = (
           dateOfBirth: data.date_of_birth
         });
         authModalHandler(false);
+        thanksRegModalHandler(true);
       }
     })
     .catch((err) => console.error(err));

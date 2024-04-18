@@ -9,7 +9,7 @@ const BtnSecondary = (props) => {
     <button
       className={`btn btn-secondary ${
         props.fullWide === true && 'btn-secondary-fw'
-      } `}
+      } ${props.className && 'btn-orange'}`}
       onClick={props.onClick}
       disabled={props.disabled}
     >
