@@ -32,7 +32,6 @@ import { Loader } from './components/Loader/Loader';
 import TagManager from 'react-gtm-module';
 import userStore from './store/user-store';
 import { DiscountModal } from './components/DiscountModal/DiscountModal';
-import ReactPixel from "react-facebook-pixel";
 import { LoadScript } from '@react-google-maps/api';
 import { places, googleMapsApiKey } from './utils/googleMap';
 import PopupActions from './components/PopupActions/PopupActions';
@@ -70,7 +69,6 @@ const App = observer(() => {
 
   const handleError = (newErrorState) => setError(newErrorState);
   useEffect(() => {
-    ReactPixel.init(1370948317640361);
     TagManager.initialize(tagManagerArgs);
     setLoader();
   }, []);
