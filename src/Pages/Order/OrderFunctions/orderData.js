@@ -106,7 +106,7 @@ export const getOrderData = (formData, products, isPromotion) => {
     personCount,
     comment,
     paymentMethod,
-    NotCall,
+    doNotCall,
   } = formData;
 
   const address1 = `Вулиця: ${street} , Дім: ${houseNumber}`;
@@ -119,7 +119,7 @@ export const getOrderData = (formData, products, isPromotion) => {
   const delivery_time =
     deliveryTime === 'На зараз' ? getCurrentDate() : dateFormatter(selectedTime);
   const devicesComment = withoutDevices ? ', Без приборів' : '';
-  const callOrNot = NotCall ? ', Не передзвонювати' : '';
+  const callOrNot = doNotCall ? ', Не передзвонювати' : '';
   const orderRecive = howToReciveOrder.includes('Самовивіз') ? ', Самовивіз' : '';
   const isProm = isPromotion ? ', Знижка 40%' : '';
   const com = `Кількість персон: ${personCount}${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`;
