@@ -33,9 +33,9 @@ export const Banner = observer(() => {
   return (
     <div className='banner container-banner'>
       <section className="banner__info">
-        <h1>Реєструйся <br /> на сайті</h1>
-        <p>та отримуй бонуси і подарунки </p>
-        {!isAuthenticated &&
+        <h1>Котлети по-Київськи <br /> у подарунок</h1>
+        <p>до кожної порції Polar Pelmeni</p>
+        {!isAuthenticated ?
           (
             <button onClick={() => {
               authModalHandler(true)
@@ -44,6 +44,7 @@ export const Banner = observer(() => {
               Зареєструватися
             </button>
           )
+          : <span />
         }
       </section>
       <ul className="banner__inner-anim">

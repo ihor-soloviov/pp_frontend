@@ -152,6 +152,7 @@ const authentication = (
     .then((response) => {
       console.log(response);
       if (response.status === 200) {
+        authModalHandler(false);
         setUserDataToStore({
           name: response.data.name,
           phone: response.data.phone,
@@ -162,9 +163,8 @@ const authentication = (
           addresses: response.data.addresses,
           dateOfBirth: response.data.dateOfBirth,
         });
-        authModalHandler(false);
       } else {
-
+////
       }
     })
     .catch((error) => {
