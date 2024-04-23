@@ -118,11 +118,13 @@ export const getOrderData = (formData, products, isPromotion) => {
   const serviceMode = howToReciveOrder.includes('Самовивіз') ? 2 : 3;
   const delivery_time =
     deliveryTime === 'На зараз' ? getCurrentDate() : dateFormatter(selectedTime);
-  const devicesComment = withoutDevices ? ', Без приборів' : '';
-  const callOrNot = doNotCall ? ', Не передзвонювати' : '';
-  const orderRecive = howToReciveOrder.includes('Самовивіз') ? ', Самовивіз' : '';
-  const isProm = isPromotion ? ', Знижка 40%' : '';
-  const com = `Кількість персон: ${personCount}${devicesComment}${callOrNot}${orderRecive}${isProm}, Коментар від користувача: ${comment}`;
+  const devicesComment = withoutDevices ? ', без приборів' : '';
+  const callOrNot = doNotCall ? ', не передзвонювати' : '';
+  const orderRecive = howToReciveOrder.includes('Самовивіз') ? ', самовивіз' : '';
+  const cashPayment = paymentMethod === 'Готівка';
+  const paymentComment = cashPayment ? ', оплата готівкою' : ', оплата карткою';
+  // const isProm = isPromotion ? ', Знижка 40%' : '';
+  const com = `Кількість персон: ${personCount}${devicesComment}${callOrNot}${orderRecive}${paymentComment}, Коментар від користувача: ${comment}`;
 
   return {
     spot_id: spot_id,
@@ -135,7 +137,7 @@ export const getOrderData = (formData, products, isPromotion) => {
       comment: isAddressComment ? 'Вийду до машини' : '',
     },
     payment: {
-      type: paymentMethod === 'Готівка' ? 0 : 1,
+      type: cashPayment ? 0 : 1,
       sum: isPromotion ? calculateTotalPrice(products) * (60 / 100) : calculateTotalPrice(products),
       currency: 'UAH',
     },
