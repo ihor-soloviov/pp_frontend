@@ -194,8 +194,6 @@ export const createTransaction = async (amount, setPaymentData) => {
 
     setPaymentData(responseData);
 
-    console.log('createTransaction:', responseData, payment_url);
-
     window.location.replace(payment_url);
   } catch (err) {
     console.error(err);

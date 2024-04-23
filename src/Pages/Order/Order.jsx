@@ -56,10 +56,7 @@ const Order = observer(({ handleError, setPromotionPopup }) => {
         >
           <div className='order-page__content'>
             <OrderForm
-              setPromotionPopup={setPromotionPopup}
-              setIsPromotion={setIsPromotion}
               isPromotion={isPromotion}
-              posterOrder={posterOrder}
               setPosterOrder={setPosterOrder}
               handleError={handleError}
             />

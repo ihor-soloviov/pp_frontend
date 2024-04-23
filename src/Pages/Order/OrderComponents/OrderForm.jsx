@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useCheckTransactionStatus } from '../../../utils/useCheckLiqpay';
-import { observer } from 'mobx-react-lite';
+import { purchase } from '../../../gm4';
 
+import { observer } from 'mobx-react-lite';
 import orderStore from '../../../store/order-store';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import userStore from '../../../store/user-store';
 
 //Import Functios
+import { useCheckTransactionStatus } from '../../../utils/useCheckLiqpay';
 import {
   createOrder,
   createTransaction,
@@ -19,38 +20,27 @@ import {
   createOrderData,
 } from '../OrderFunctions/OrderTools';
 
-import { purchase } from '../../../gm4';
+import BtnMain from '../../../components/Buttons/BtnMain';
+import { DotsLoader } from '../../../components/Loader/DotsLoader';
 
-import '../Order.scss';
 import { OrderContacts } from './OrderContacts';
 import { OrderAddress } from './OrderAddress';
 import { OrderTime } from './OrderTime';
 import { OrderPaymentType } from './OrderPaymentType';
 import { OrderComment } from './OrderComment';
-import BtnMain from '../../../components/Buttons/BtnMain';
-import { DotsLoader } from '../../../components/Loader/DotsLoader';
+
+import '../Order.scss';
 
 const OrderForm = observer(
   ({
-    setIsPromotion,
     isPromotion,
     setPosterOrder,
-    posterOrder,
     handleError,
-
-    setPromotionPopup,
   }) => {
-    //States
-
     const [transactionStatus, setTransactionStatus] = useState(false);
-
     const [isOrderCreate, setIsOrderCreate] = useState(false);
     const [isButtonLoading, setIsButtonLoading] = useState(false);
     const [payment, setPayment] = useState({ label: 'Онлайн', value: 'Онлайн' });
-
-    //handlers
-
-    const handleTemporaryError = (message) => setTemporaryError(message, handleError);
 
     //stores
     const { setPaymentData, setPosterResponse, setOrderData } = orderStore;
@@ -60,8 +50,10 @@ const OrderForm = observer(
 
     //Hooks
     const location = useLocation();
-
     useCheckTransactionStatus(location.search, setTransactionStatus);
+
+    //handlers
+    const handleTemporaryError = (message) => setTemporaryError(message, handleError);
 
     //функції які потребують авторизованності
     useEffect(() => {
