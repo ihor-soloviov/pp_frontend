@@ -49,7 +49,7 @@ const SignUp = observer(() => {
       onSendOtp(phoneNumber, setVerifId, setStep)
     } else if (step === 'STEP_02') {
       setIsButtonLoading(true)
-      onVerify(verifId, verificationCode, setStep, setToken, navigate, authModalHandler)
+      onVerify(verifId, verificationCode, setStep, setToken, authModalHandler)
     } else {
       setIsButtonLoading(true)
       registration(
@@ -57,7 +57,6 @@ const SignUp = observer(() => {
         userEmail,
         token,
         phoneNumber,
-        navigate,
         authModalHandler
       )
     }

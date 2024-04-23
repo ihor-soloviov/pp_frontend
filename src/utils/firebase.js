@@ -56,7 +56,7 @@ const onSendOtp = async (phoneNumber, setVerifId, setStep) => {
   }
 };
 
-const onVerify = async (verifId, verificationCode, setStep, setToken, navigate, authModalHandler) => {
+const onVerify = async (verifId, verificationCode, setStep, setToken, authModalHandler) => {
   if (!verifId || !verificationCode) {
     console.error("Invalid verification ID or OTP");
     return;
@@ -71,7 +71,7 @@ const onVerify = async (verifId, verificationCode, setStep, setToken, navigate, 
     console.log(accessToken)
 
     setToken(accessToken);
-    authentication(accessToken, navigate, authModalHandler, setStep);
+    authentication(accessToken, authModalHandler, setStep);
 
   } catch (error) {
     console.error("Error signing in with OTP:", error);
@@ -164,7 +164,7 @@ const authentication = (
           dateOfBirth: response.data.dateOfBirth,
         });
       } else {
-////
+        ////
       }
     })
     .catch((error) => {
@@ -178,7 +178,6 @@ const registration = (
   userEmail,
   token,
   phoneNumber,
-  navigate,
   authModalHandler
 ) => {
   const userData = {
@@ -208,6 +207,7 @@ const registration = (
           email: userEmail,
           token: token,
         });
+        authModalHandler(false);
         setUserDataToStore({
           name: userName,
           phone: phoneNumber,
@@ -216,7 +216,7 @@ const registration = (
           promocode40: data.promocode40,
           dateOfBirth: data.date_of_birth
         });
-        authModalHandler(false);
+
         thanksRegModalHandler(true);
       }
     })
