@@ -19,7 +19,7 @@
 
   @include onMobile {
     background-image: url('../../assets/bannerMob.webp');
-    height: 550px;
+    height: 600px;
     width: 350px;
   }
 }
@@ -70,13 +70,23 @@
     height: 24px;
   }
 
+  &-add {
+    position: absolute;
+    bottom: -82px;
+    color: #fff;
+    font-family: Golos Text;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+  }
+
   @include onMobile {
     top: unset;
-    bottom: 25px;
+    bottom: 85px;
     left: 22px;
 
     h1 {
-      font-size: 22px;
+      font-size: 20px; 
       margin-bottom: 20px;
     }
 
@@ -84,13 +94,26 @@
       font-size: 14px;
       box-sizing: border-box;
       max-width: 296px;
-      margin-bottom: 28px;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 14px; 
+      position: absolute;
+      bottom: -60px;
     }
 
     span {
       display: block;
       width: 120px;
       height: 21px;
+    }
+
+    &-add {
+      font-size: 12px; 
+      width: 200px;
+      bottom: -20px;
     }
   }
 }
@@ -103,7 +126,7 @@
   color: white;
 
   @include onMobile {
-    bottom: 233px;
+    bottom: 255px;
   }
 }
 

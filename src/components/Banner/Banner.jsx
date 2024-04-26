@@ -33,7 +33,7 @@ export const Banner = observer(() => {
   return (
     <div className='banner container-banner'>
       <section className="banner__info">
-        <h1>Котлети по-Київськи <br /> у подарунок</h1>
+        <h1>Котлети по-Київськи <br /> у подарунок *</h1>
         <p>до кожної порції Polar Pelmeni</p>
         {!isAuthenticated ?
           (
@@ -46,6 +46,9 @@ export const Banner = observer(() => {
           )
           : <span />
         }
+        <div className="banner__info-add">
+          * - котлети автоматично додаються при {window.innerWidth < 1024 && <br />} підтвердженні замовлення оператором
+        </div>
       </section>
       <ul className="banner__inner-anim">
         <li className='anim-item'>POLAR PELMENI</li>
