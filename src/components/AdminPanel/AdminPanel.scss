@@ -1,0 +1,53 @@
+.spot-list {
+  display: flex;
+  flex-direction: row;
+  gap: 150px;
+  margin-left: 150px;
+}
+
+.spot-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.spot-title {
+  width: fit-content;
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.spot-status-text {
+  margin: 0 auto;
+  font-size: 20px;
+  margin-bottom: 40px;
+  width: fit-content;
+}
+
+.spot-status {
+  margin-left: 5px;
+}
+
+.spot-btn-wrap {
+  display: flex;
+  gap: 40px;
+}
+
+.spot-btn {
+  outline: none;
+  width: 140px;
+  height: 50px;
+  font-size: 18px;
+  color: white;
+  border-radius: 32px;
+}
+
+.spot-btn:first-child {
+  background-color: red;
+}
+
+.spot-btn:last-child {
+  background-color: green;
+}

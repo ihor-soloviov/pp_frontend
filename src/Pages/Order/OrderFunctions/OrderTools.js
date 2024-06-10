@@ -3,7 +3,8 @@ import { url } from '../../../api';
 
 import userStore from '../../../store/user-store';
 import { getOrderData, getValidateRules } from './orderData';
-
+import shoppingCartStore from '../../../store/shoping-cart-store';
+const { spotOneStatus, spotTwoStatus } = shoppingCartStore;
 const { userPromocodeNotUse, userPromocode } = userStore;
 
 export const calculateTotalPrice = (items) => items.reduce((acc, item) => acc + item.totalPrice, 0);
@@ -13,6 +14,16 @@ export const headers = {
   'Access-Control-Allow-Origin': '*',
 };
 
+export const checkAndSelectOppositeSpot = (spot_id) => {
+  switch (spot_id) {
+    case 1:
+      return !spotOneStatus && spotTwoStatus ? 2 : spot_id;
+    case 2:
+      return !spotTwoStatus && spotOneStatus ? 1 : spot_id;
+    default:
+      return spot_id;
+  }
+};
 const getToken = () => {
   const userDataFromLS = localStorage.getItem('userData');
   console.log('Отримали userData з LS');

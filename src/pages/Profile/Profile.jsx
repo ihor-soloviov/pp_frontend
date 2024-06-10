@@ -8,6 +8,7 @@ import Addresses from '../../components/Addresses/Adresses';
 import Favorites from '../../components/Favorites/Favorites';
 import Orders from '../../components/Orders/Orders';
 import MobileSidebar from '../../components/MobileSidebar/MobileSidebar';
+import AdminPanel from '../../components/AdminPanel/AdminPanel';
 
 const Profile = React.memo(({ handleError }) => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
@@ -37,6 +38,7 @@ const Profile = React.memo(({ handleError }) => {
             />
             <Route path='history' element={<Orders handleSidebar={handleSidebar} />} />
             <Route path='favourite' element={<Favorites handleSidebar={handleSidebar} />} />
+            <Route path='admin-bar' element={<AdminPanel handleSidebar={handleSidebar} />} />
           </Routes>
         </ProfileGrid>
       </Container>

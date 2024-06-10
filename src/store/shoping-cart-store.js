@@ -1,13 +1,15 @@
-import axios from "axios";
-import { makeAutoObservable, reaction } from "mobx";
-import { url } from "../api";
-import { getCurrentDate } from "../Pages/Order/OrderFunctions/OrderTools";
+import axios from 'axios';
+import { makeAutoObservable, reaction } from 'mobx';
+import { url } from '../api';
+import { getCurrentDate } from '../Pages/Order/OrderFunctions/OrderTools';
 
 class ShoppingCartStore {
   cartItems = [];
   promocode = false;
-  totalPrice = 0
+  totalPrice = 0;
   deliveryPrice = 60;
+  spotOneStatus = true;
+  spotTwoStatus = true;
   orderFormData = {
     spot_id: '',
     name: '',
@@ -30,14 +32,19 @@ class ShoppingCartStore {
     personCount: 1,
     comment: '',
     doNotCall: false,
-  }
+  };
 
   constructor() {
     makeAutoObservable(this);
     this.loadCartFromLocalStorage();
     reaction(
       () => [this.cartItems, this.totalPrice, this.deliveryPrice],
-      () => this.saveCartToLocalStorage()
+      () => this.saveCartToLocalStorage(),
+    );
+
+    reaction(
+      () => [this.spotOneStatus, this.spotTwoStatus],
+      () => {},
     );
   }
 
@@ -55,19 +62,25 @@ class ShoppingCartStore {
 
   handleFormValueChange = (field, value) => {
     this.orderFormData[field] = value;
-  }
+  };
 
   updateDeliveryPrice = (newPrice) => {
-    this.deliveryPrice = this.orderFormData.howToReciveOrder.includes('Самовивіз') ? 0 : (newPrice > 500 ? 0 : 60);
-  }
+    this.deliveryPrice = this.orderFormData.howToReciveOrder.includes('Самовивіз')
+      ? 0
+      : newPrice > 500
+        ? 0
+        : 60;
+  };
 
   calculateProductTotalPrice = ({ price, count, mods = [] }) => {
     return count * (price + mods.reduce((acc, mod) => acc + (mod.price || 0), 0));
-  }
+  };
 
   findExistingProductIndex = (id, mods) => {
-    return this.cartItems.findIndex(item => item.id === id && JSON.stringify(item.mods) === JSON.stringify(mods));
-  }
+    return this.cartItems.findIndex(
+      (item) => item.id === id && JSON.stringify(item.mods) === JSON.stringify(mods),
+    );
+  };
 
   addProduct = (product) => {
     const existingProductIndex = this.findExistingProductIndex(product.id, product.mods);
@@ -87,16 +100,16 @@ class ShoppingCartStore {
   };
 
   removeFromCart = (cartItemId) => {
-    const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
+    const itemIndex = this.cartItems.findIndex((item) => item.cartItemId === cartItemId);
     if (itemIndex > -1) {
       this.totalPrice -= this.cartItems[itemIndex].totalPrice;
       this.cartItems.splice(itemIndex, 1);
       this.updateDeliveryPrice(this.totalPrice);
     }
-  }
+  };
 
   updateItemQuantity = (cartItemId, newCount) => {
-    const itemIndex = this.cartItems.findIndex(item => item.cartItemId === cartItemId);
+    const itemIndex = this.cartItems.findIndex((item) => item.cartItemId === cartItemId);
     if (itemIndex > -1) {
       const item = this.cartItems[itemIndex];
       const newTotalPrice = this.calculateProductTotalPrice({ ...item, count: newCount });
@@ -105,7 +118,7 @@ class ShoppingCartStore {
       item.totalPrice = newTotalPrice;
       this.updateDeliveryPrice(this.totalPrice);
     }
-  }
+  };
 
   repeatTheOrder = async (orderId) => {
     try {
@@ -116,33 +129,48 @@ class ShoppingCartStore {
         this.totalPrice = products.reduce((total, item) => total + item.totalPrice, 0);
       }
     } catch (error) {
-      console.error("Не вдалося додати продукти до кошика:", error);
+      console.error('Не вдалося додати продукти до кошика:', error);
     }
-  }
+  };
 
   clearCart = () => {
     this.cartItems = [];
     this.totalPrice = 0;
     this.deliveryPrice = 60;
-    ['shoppingCart', 'totalPrice', 'deliveryPrice', 'posterOrder', 'poster_order', 'user_payment_data', 'user_order_data'].forEach(key => localStorage.removeItem(key));
-  }
+    [
+      'shoppingCart',
+      'totalPrice',
+      'deliveryPrice',
+      'posterOrder',
+      'poster_order',
+      'user_payment_data',
+      'user_order_data',
+    ].forEach((key) => localStorage.removeItem(key));
+  };
 
   cartPromocode() {
     this.promocode = true;
   }
 
+  setSpotOneStatus = (status) => {
+    this.spotOneStatus = status;
+  };
+
+  setSpotTwoStatus = (status) => {
+    this.spotTwoStatus = status;
+  };
+
   setDeliveryPrice = (price) => {
-    this.deliveryPrice = price
-  }
+    this.deliveryPrice = price;
+  };
 
   get itemCount() {
     return this.cartItems.length;
   }
 
   getItemById = (cartItemId) => {
-    return this.cartItems.find(item => item.cartItemId === cartItemId);
-  }
-
+    return this.cartItems.find((item) => item.cartItemId === cartItemId);
+  };
 }
 
 const shoppingCartStore = new ShoppingCartStore();

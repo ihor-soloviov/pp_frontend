@@ -2,6 +2,7 @@ import { makeAutoObservable, reaction } from 'mobx';
 
 class UserStore {
   isAuthenticated = false;
+  isAdmin = true;
   name = null;
   phone = null;
   email = null;
@@ -24,7 +25,7 @@ class UserStore {
     );
 
     reaction(
-      () => Array.isArray(this.favoritProducts) ? this.favoritProducts.slice() : [], // Використовуйте .slice() для створення копії масиву, якщо необхідно
+      () => (Array.isArray(this.favoritProducts) ? this.favoritProducts.slice() : []), // Використовуйте .slice() для створення копії масиву, якщо необхідно
       (favoritProducts) => {
         if (this.isAuthenticated) {
           localStorage.setItem('favoritProducts', JSON.stringify(favoritProducts));
@@ -33,7 +34,7 @@ class UserStore {
     );
 
     reaction(
-      () => Array.isArray(this.adresses) ? this.adresses.slice() : [],
+      () => (Array.isArray(this.adresses) ? this.adresses.slice() : []),
       (adresses) => {
         if (this.isAuthenticated) {
           localStorage.setItem('user_adresses', JSON.stringify(adresses));
@@ -43,8 +44,28 @@ class UserStore {
   }
 
   get userDataForLocalStorage() {
-    const { isAuthenticated, name, phone, email, token, promocode40, dateOfBirth, avatar } = this;
-    return { isAuthenticated, name, phone, email, token, promocode40, dateOfBirth, avatar };
+    const {
+      isAuthenticated,
+      name,
+      phone,
+      email,
+      token,
+      promocode40,
+      dateOfBirth,
+      avatar,
+      isAdmin,
+    } = this;
+    return {
+      isAuthenticated,
+      name,
+      phone,
+      email,
+      token,
+      promocode40,
+      dateOfBirth,
+      avatar,
+      isAdmin,
+    };
   }
 
   loadUserDataFromLocalStorage = () => {
@@ -91,6 +112,7 @@ class UserStore {
     favorites,
     addresses,
     dateOfBirth,
+    isAdmin,
   }) => {
     console.log('setUserDataToStore');
     this.isAuthenticated = true;
@@ -102,6 +124,7 @@ class UserStore {
     this.promocode40 = promocode40;
     this.adresses = addresses;
     this.favoritProducts = favorites;
+    this.isAdmin = isAdmin;
   };
 
   userLogout = () => {
@@ -112,6 +135,7 @@ class UserStore {
     this.token = null;
     this.promocode40 = false;
     this.dateOfBirth = null;
+    this.isAdmin = true;
     this.adresses = [];
   };
 
