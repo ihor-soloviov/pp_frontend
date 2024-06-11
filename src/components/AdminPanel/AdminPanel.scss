@@ -1,8 +1,18 @@
+.spot-main-wrap {
+  position: relative;
+  height: 500px;
+  width: 380px;
+  margin: 0 auto;
+}
+
 .spot-list {
   display: flex;
-  flex-direction: row;
-  gap: 150px;
-  margin-left: 150px;
+  flex-direction: column;
+  gap: 50px;
+  margin: 0 auto;
+  position: absolute;
+  width: fit-content;
+  left: 15px;
 }
 
 .spot-item {
@@ -30,6 +40,13 @@
   margin-left: 5px;
 }
 
+.opened {
+  color: green;
+}
+.closed {
+  color: red;
+}
+
 .spot-btn-wrap {
   display: flex;
   gap: 40px;
@@ -50,4 +67,75 @@
 
 .spot-btn:last-child {
   background-color: green;
+}
+
+@media screen and (min-width: 768px) {
+  .spot-main-wrap {
+    width: fit-content;
+    height: fit-content;
+  }
+  .spot-list {
+    gap: 80px;
+    height: auto;
+    position: static;
+    margin-left: 150px;
+  }
+
+  .spot-title {
+    font-size: 22px;
+    font-weight: 500;
+
+    margin-bottom: 30px;
+  }
+
+  .spot-status-text {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+
+  .spot-status {
+    margin-left: 5px;
+  }
+
+  .spot-btn-wrap {
+    gap: 40px;
+  }
+
+  .spot-btn {
+    width: 140px;
+    height: 50px;
+  }
+}
+@media screen and (min-width: 1360px) {
+  .spot-list {
+    gap: 150px;
+    margin-left: 150px;
+    flex-direction: row;
+  }
+
+  .spot-title {
+    font-size: 22px;
+    font-weight: 500;
+
+    margin-bottom: 30px;
+  }
+
+  .spot-status-text {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+
+  .spot-status {
+    margin-left: 5px;
+  }
+
+  .spot-btn-wrap {
+    gap: 40px;
+  }
+
+  .spot-btn {
+    width: 140px;
+    height: 50px;
+    font-size: 18px;
+  }
 }

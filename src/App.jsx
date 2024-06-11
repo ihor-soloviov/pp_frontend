@@ -36,6 +36,7 @@ import { LoadScript } from '@react-google-maps/api';
 import { places, googleMapsApiKey } from './utils/googleMap';
 import PopupActions from './components/PopupActions/PopupActions';
 import RegistrationThanks from './components/Thanks/RegistrationThanks';
+import { shouldShowTimePopup, timeErrorText } from './utils/getWorkTime';
 const tagManagerArgs = {
   gtmId: 'GTM-WPHZCLVL',
 };
@@ -45,23 +46,43 @@ const App = observer(() => {
   const navigate = useNavigate();
 
   //Store
-  const { authModalHandler, authModal, isLoader, setLoader, isDiscountModal, isDiscountHandler, thanksRegModal, thanksRegModalHandler } =
-    modalsStore;
+  const {
+    authModalHandler,
+    authModal,
+    isLoader,
+    setLoader,
+    isDiscountModal,
+    isDiscountHandler,
+    thanksRegModal,
+    thanksRegModalHandler,
+  } = modalsStore;
   const { userLogout } = userStore;
 
   const [promotionPopup, setPromotionPopup] = useState(false);
+
   const [error, setError] = useState({ status: false, currentError: '' });
 
+  useEffect(() => {
+    const showTimePopup = shouldShowTimePopup();
+    showTimePopup &&
+      setError({
+        status: true,
+        currentError: timeErrorText,
+      });
+  }, []);
 
   useEffect(() => {
     let timer;
     if (error.status) {
-      timer = setTimeout(() => {
-        handleError({
-          status: false,
-          currentError: '',
-        });
-      }, 2000);
+      timer = setTimeout(
+        () => {
+          handleError({
+            status: false,
+            currentError: '',
+          });
+        },
+        error.currentError === timeErrorText ? 6000 : 2000,
+      );
     }
 
     return () => clearTimeout(timer);
@@ -170,8 +191,6 @@ const App = observer(() => {
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
-
-
     </LoadScript>
   );
 });

@@ -1,4 +1,4 @@
-export const shouldShowPopup = () => {
+export const shouldShowTimePopup = () => {
   // Получаем текущее время
   const currentTime = new Date();
   // Получаем час и минуты
@@ -16,3 +16,5 @@ export const shouldShowPopup = () => {
     (currentHour === popupEndTimeHour && currentMinute <= popupEndTimeMinute)
   );
 };
+export const timeErrorText =
+  'Нажаль, ми вже закриті, але ми з нетерпінням чекаємо завтрашнього дня, щоб вас нагодувати';

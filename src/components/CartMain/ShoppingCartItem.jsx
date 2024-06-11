@@ -8,8 +8,6 @@ const ShoppingCartItem = observer(({ id }) => {
 
   const { preview, name, weight, count, mods, cartItemId, totalPrice } = cartItem;
 
-  console.log(cartItem)
-
   if (!cartItem) return null;
 
   return (

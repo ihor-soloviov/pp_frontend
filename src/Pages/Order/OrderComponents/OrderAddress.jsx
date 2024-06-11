@@ -40,9 +40,26 @@ const radioOptions = [
 ];
 
 export const OrderAddress = observer(({ setPayment, handleError }) => {
-  const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
-  const { floor, buildingCode, entrance, apartment, howToReciveOrder } = orderFormData;
+  const {
+    setDeliveryPrice,
+    totalPrice,
+    handleFormValueChange,
+    orderFormData,
+    spotOneStatus,
+    spotTwoStatus,
+  } = shoppingCartStore;
+  const { floor, buildingCode, entrance, apartment, howToReciveOrder, spot_id } = orderFormData;
 
+  const checkAndSelectOppositeSpot = (spot_id) => {
+    switch (spot_id) {
+      case 1:
+        return !spotOneStatus && spotTwoStatus ? 2 : spot_id;
+      case 2:
+        return !spotTwoStatus && spotOneStatus ? 1 : spot_id;
+      default:
+        return spot_id;
+    }
+  };
 
   const customPolygon = new window.google.maps.Polygon({
     paths: polygonPaths,
@@ -70,7 +87,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
   const [addressAutocomplete, setAddresstAutocomplete] = useState(null);
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(true);
 
   const handleChangeAddress = (e) => {
     if (e.value === null) {
@@ -238,6 +255,13 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
     return cleanup;
   }, []);
 
+  useEffect(() => {
+    if (spot_id === 1 || spot_id === 2) {
+      const finalSpotId = checkAndSelectOppositeSpot(spot_id);
+      handleFormValueChange('spot_id', finalSpotId);
+    }
+  }, [spot_id]);
+
   return (
     <section className='order-page__section'>
       <h3 className='order-page__header'>Спосіб отримання замовлення</h3>
@@ -277,13 +301,14 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
                 id='order-address'
                 name={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
                 placeholder={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
-                value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
+                value={
+                  currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput
+                }
                 onChange={handleStreetChange}
                 disabled={isSavedAddressSelected}
               />
             </Autocomplete>
           </React.Fragment>
-
         </section>
       )}
       <section className='order-page__section-inputs'>

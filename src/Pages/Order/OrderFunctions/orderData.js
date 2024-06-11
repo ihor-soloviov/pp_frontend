@@ -1,12 +1,4 @@
-import shoppingCartStore from '../../../store/shoping-cart-store';
-import {
-  getCurrentDate,
-  dateFormatter,
-  calculateTotalPrice,
-  checkAndSelectOppositeSpot,
-} from './OrderTools';
-
-const { spotOneStatus, spotTwoStatus } = shoppingCartStore;
+import { getCurrentDate, dateFormatter, calculateTotalPrice } from './OrderTools';
 
 const shoppingCartMap = (products) =>
   products.map((item) => {
@@ -60,12 +52,6 @@ export const getValidateRules = (formData, cartItems, totalPrice, isPromotion) =
   const orderPrice = isPromotion ? totalPrice * 0.6 : totalPrice;
 
   return [
-    {
-      check: () => !spotOneStatus && !spotTwoStatus,
-      message:
-        'Нажаль, ми вже закриті, але ми з нетерпінням чекаємо завтрашнього дня, щоб вас нагодувати',
-    },
-
     { check: () => cartItems.length === 0, message: 'Будь ласка, оберіть товари для замовлення' },
     {
       check: () =>
@@ -141,10 +127,10 @@ export const getOrderData = (formData, products, isPromotion) => {
   const paymentComment = cashPayment ? ', оплата готівкою' : ', оплата карткою';
   // const isProm = isPromotion ? ', Знижка 40%' : '';
   const com = `Кількість персон: ${personCount}${devicesComment}${callOrNot}${orderRecive}${paymentComment}, Коментар від користувача: ${comment}`;
-  const finalSpotId = checkAndSelectOppositeSpot(spot_id);
+  //   const finalSpotId = checkAndSelectOppositeSpot(spot_id);
 
   return {
-    spot_id: finalSpotId,
+    spot_id: spot_id,
     first_name: name,
     phone: number,
     products: shoppingCartMap(products),

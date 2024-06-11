@@ -41,10 +41,10 @@ class ShoppingCartStore {
       () => [this.cartItems, this.totalPrice, this.deliveryPrice],
       () => this.saveCartToLocalStorage(),
     );
-
+    this.loadSpotStatusFromLocalStorage();
     reaction(
       () => [this.spotOneStatus, this.spotTwoStatus],
-      () => {},
+      () => this.saveSpotStatusToLocalStorage(),
     );
   }
 
@@ -58,6 +58,16 @@ class ShoppingCartStore {
     localStorage.setItem('shoppingCart', JSON.stringify(this.cartItems));
     localStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
     localStorage.setItem('deliveryPrice', JSON.stringify(this.deliveryPrice));
+  }
+
+  loadSpotStatusFromLocalStorage() {
+    this.spotOneStatus = JSON.parse(localStorage.getItem('spotOneStatus') || 'true');
+    this.spotTwoStatus = JSON.parse(localStorage.getItem('spotOneStatus') || 'true');
+  }
+
+  saveSpotStatusToLocalStorage() {
+    localStorage.setItem('spotOneStatus', JSON.stringify(this.spotOneStatus));
+    localStorage.setItem('spotTwoStatus', JSON.stringify(this.spotTwoStatus));
   }
 
   handleFormValueChange = (field, value) => {

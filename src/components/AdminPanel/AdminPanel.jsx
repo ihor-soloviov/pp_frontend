@@ -6,8 +6,7 @@ import './AdminPanel.scss';
 const AdminPanel = ({ handleSidebar }) => {
   const spotList = ['Заклад 1', 'Заклад 2'];
   const { spotOneStatus, spotTwoStatus, setSpotOneStatus, setSpotTwoStatus } = shoppingCartStore;
-  console.log('spotOneStatus', spotOneStatus);
-  console.log('spotTwoStatus', spotTwoStatus);
+
   const closeSpotClick = (spot) => {
     spot === 'Заклад 1' ? setSpotOneStatus(false) : setSpotTwoStatus(false);
   };
@@ -17,15 +16,29 @@ const AdminPanel = ({ handleSidebar }) => {
   };
 
   return (
-    <>
-      <ProfileLink handleSidebar={handleSidebar}>Управління закладами</ProfileLink>
+    <div className='spot-main-wrap'>
+      <div className='spot-main-title'>
+        <ProfileLink handleSidebar={handleSidebar}>Управління закладами</ProfileLink>
+      </div>
       <ul className='spot-list'>
         {spotList.map((spot) => (
           <li className='spot-item' key={spot}>
             <p className='spot-title'>{spot}</p>
             <p className='spot-status-text'>
               Статус:
-              <span className='spot-status'>
+              <span
+                className={`spot-status ${
+                  spot === 'Заклад 1'
+                    ? spotOneStatus
+                      ? 'opened'
+                      : 'closed'
+                    : spot === 'Заклад 2'
+                      ? spotTwoStatus
+                        ? 'opened'
+                        : 'closed'
+                      : ''
+                }`}
+              >
                 {spot === 'Заклад 1'
                   ? spotOneStatus
                     ? 'Відчинено'
@@ -46,7 +59,7 @@ const AdminPanel = ({ handleSidebar }) => {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 

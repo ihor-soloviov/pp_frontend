@@ -61,11 +61,8 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
       const response = await axios.put(`${url}/api/updateInfo/`, formData);
 
       if (response.status === 200) {
-        console.log(response.data);
         setUserDataToStore({ ...response.data });
       }
-
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -89,7 +86,7 @@ const InfoSection = observer(({ handleSidebar, isSidebarClosed }) => {
               Змінити номер
             </button>
           </div>
-          { /*         <div className='profile_info--head__button button'>
+          {/*         <div className='profile_info--head__button button'>
             <input
               disabled={!!file}
               type='file'

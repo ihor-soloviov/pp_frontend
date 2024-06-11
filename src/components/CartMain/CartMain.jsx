@@ -14,6 +14,7 @@ const CartMain = observer(() => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [spotError, setSpotError] = useState(false);
 
   const popupError = useCallback((err) => {
     if (err) {
@@ -23,9 +24,25 @@ const CartMain = observer(() => {
     }
   }, []);
 
+  const getSpotError = useCallback((err) => {
+    if (err) {
+      return (
+        <PopupActions
+          action={
+            'Нажаль, ми вже закриті, але ми з нетерпінням чекаємо завтрашнього дня, щоб вас нагодувати'
+          }
+          error
+        />
+      );
+    } else {
+      return null;
+    }
+  }, []);
+
   return (
     <React.Fragment>
       {popupError(error)}
+      {getSpotError(spotError)}
       <button className='card' onClick={() => setIsOpen(!isOpen)}>
         <div className={`card__ico`}>
           <svg
@@ -56,7 +73,14 @@ const CartMain = observer(() => {
         <span className='card__text'>Кошик</span>
       </button>
       <AnimatePresence>
-        {isOpen && <Cart isOpen={isOpen} setIsOpen={setIsOpen} setError={setError} />}
+        {isOpen && (
+          <Cart
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            setError={setError}
+            setSpotError={setSpotError}
+          />
+        )}
       </AnimatePresence>
     </React.Fragment>
   );
