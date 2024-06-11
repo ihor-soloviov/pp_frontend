@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from 'react';
 
 //Import Routing
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 
 //Import MOBX
 import { observer } from 'mobx-react-lite';
 import modalsStore from './store/modal-store';
+import shoppingCartStore from './store/shoping-cart-store';
 
 //Import pages
 import Profile from './Pages/Profile/Profile';
@@ -59,7 +60,7 @@ const App = observer(() => {
   const { userLogout } = userStore;
 
   const [promotionPopup, setPromotionPopup] = useState(false);
-
+  const { spotOneStatus, spotTwoStatus } = shoppingCartStore;
   const [error, setError] = useState({ status: false, currentError: '' });
 
   useEffect(() => {
@@ -182,7 +183,13 @@ const App = observer(() => {
         <Route path='/about-us' element={<AboutUs />} />
         <Route
           path='/order'
-          element={<Order handleError={handleError} setPromotionPopup={setPromotionPopup} />}
+          element={
+            !spotOneStatus && !spotTwoStatus ? (
+              <Navigate to='/' />
+            ) : (
+              <Order handleError={handleError} setPromotionPopup={setPromotionPopup} />
+            )
+          }
         />
         <Route path='/contact' element={<Contact />} />
         <Route path='/offero' element={<Offero />} />

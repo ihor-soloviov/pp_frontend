@@ -2,7 +2,7 @@ import { makeAutoObservable, reaction } from 'mobx';
 
 class UserStore {
   isAuthenticated = false;
-  isAdmin = true;
+  isAdmin = false;
   name = null;
   phone = null;
   email = null;
@@ -135,7 +135,7 @@ class UserStore {
     this.token = null;
     this.promocode40 = false;
     this.dateOfBirth = null;
-    this.isAdmin = true;
+    this.isAdmin = false;
     this.adresses = [];
   };
 

@@ -4,7 +4,10 @@ import ProfileLink from '../ProfileLink/ProfileLink';
 import './AdminPanel.scss';
 
 const AdminPanel = ({ handleSidebar }) => {
-  const spotList = ['Заклад 1', 'Заклад 2'];
+  const spotList = [
+    { street: 'Малиновскього, 18', title: 'Заклад 1' },
+    { street: 'Економічний провулок, 1', title: 'Заклад 2' },
+  ];
   const { spotOneStatus, spotTwoStatus, setSpotOneStatus, setSpotTwoStatus } = shoppingCartStore;
 
   const closeSpotClick = (spot) => {
@@ -21,25 +24,26 @@ const AdminPanel = ({ handleSidebar }) => {
         <ProfileLink handleSidebar={handleSidebar}>Управління закладами</ProfileLink>
       </div>
       <ul className='spot-list'>
-        {spotList.map((spot) => (
-          <li className='spot-item' key={spot}>
-            <p className='spot-title'>{spot}</p>
+        {spotList.map(({ title, street }) => (
+          <li className='spot-item' key={title}>
+            <p className='spot-title'>{title}</p>
+            <p className='spot-title'>{street}</p>
             <p className='spot-status-text'>
               Статус:
               <span
                 className={`spot-status ${
-                  spot === 'Заклад 1'
+                  title === 'Заклад 1'
                     ? spotOneStatus
                       ? 'opened'
                       : 'closed'
-                    : spot === 'Заклад 2'
+                    : title === 'Заклад 2'
                       ? spotTwoStatus
                         ? 'opened'
                         : 'closed'
                       : ''
                 }`}
               >
-                {spot === 'Заклад 1'
+                {title === 'Заклад 1'
                   ? spotOneStatus
                     ? 'Відчинено'
                     : 'Зачинено'
@@ -49,10 +53,10 @@ const AdminPanel = ({ handleSidebar }) => {
               </span>
             </p>
             <div className='spot-btn-wrap'>
-              <button onClick={() => closeSpotClick(spot)} type='button' className='spot-btn'>
+              <button onClick={() => closeSpotClick(title)} type='button' className='spot-btn'>
                 Зачинити
               </button>
-              <button onClick={() => openSpotClick(spot)} type='button' className='spot-btn'>
+              <button onClick={() => openSpotClick(title)} type='button' className='spot-btn'>
                 Відчинити
               </button>
             </div>
