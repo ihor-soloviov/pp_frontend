@@ -51,37 +51,46 @@ const App = observer(() => {
   const {
     authModalHandler,
     authModal,
+    timeModal,
+    lightModal,
     isLoader,
     setLoader,
     isDiscountModal,
     isDiscountHandler,
     thanksRegModal,
+    lightModalHandler,
+    timeModalHandler,
     thanksRegModalHandler,
   } = modalsStore;
   const { userLogout } = userStore;
 
   const [promotionPopup, setPromotionPopup] = useState(false);
-
+  const [showTimeModal, setShowTimeModal] = useState(false);
+  const [showLightModal, setShowLightModal] = useState(false);
   const [statusResponse, setStatusResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [showTimeModal, setShowTimeModal] = useState(false);
-  const [showLightModal, setShowLightModal] = useState(false);
-
-  console.log('statusResponse app', statusResponse);
-
+  // Проверяем рабочие часы при загрузке компонента, если нерабочее время - сохраняем стейт в MobX и показываем модалку времени
   useEffect(() => {
-    shouldShowTimePopup() && setShowTimeModal(true);
+    if (shouldShowTimePopup()) {
+      timeModalHandler(true);
+      setShowTimeModal(true);
+    }
   }, []);
 
+  // Проверяем, если идет загрузка- скрываем по дефолту модалку света, если все заведения закрыты- сохраняем стейт в MobX и показываем модалку света
   useEffect(() => {
     if (isLoading) {
-      setShowLightModal(false);
+      lightModalHandler(false);
     } else {
-      setShowLightModal(!statusResponse);
+      if (!isLoading && statusResponse === false) {
+        lightModalHandler(!statusResponse);
+        setShowLightModal(!statusResponse);
+      }
     }
   }, [statusResponse, isLoading]);
 
+  // Делаем запрос для получение статусов заведений при рендере компонента
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setIsLoading(true);
@@ -163,7 +172,7 @@ const App = observer(() => {
           <RegistrationThanks />
         </Popup>
       )}
-      <Header />
+      <Header setShowTimeModal={setShowTimeModal} setShowLightModal={setShowLightModal} />
       <MobileMenu />
       <ActionPopup />
 
@@ -180,10 +189,10 @@ const App = observer(() => {
           error
         />
       )}
-      {showLightModal && (
+      {lightModal && !shouldShowTimePopup() && (
         <WorkModal showModal={showLightModal} setShowModal={setShowLightModal} modalType='light' />
       )}
-      {showTimeModal && (
+      {timeModal && (
         <WorkModal showModal={showTimeModal} setShowModal={setShowTimeModal} modalType='time' />
       )}
       {promotionPopup && (
@@ -214,7 +223,14 @@ const App = observer(() => {
         <Route path='/about-us' element={<AboutUs />} />
         <Route
           path='/order'
-          element={<Order handleError={handleError} setPromotionPopup={setPromotionPopup} />}
+          element={
+            <Order
+              setShowTimeModal={setShowTimeModal}
+              setShowLightModal={setShowLightModal}
+              handleError={handleError}
+              setPromotionPopup={setPromotionPopup}
+            />
+          }
         />
         <Route path='/contact' element={<Contact />} />
         <Route path='/offero' element={<Offero />} />
