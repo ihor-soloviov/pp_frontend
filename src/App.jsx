@@ -70,6 +70,10 @@ const App = observer(() => {
   const [statusResponse, setStatusResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log('timeModal', timeModal);
+  console.log('lightModal', lightModal);
+  console.log('statusResponse', statusResponse);
+
   // Проверяем рабочие часы при загрузке компонента, если нерабочее время - сохраняем стейт в MobX и показываем модалку времени
   useEffect(() => {
     if (shouldShowTimePopup()) {
@@ -225,6 +229,7 @@ const App = observer(() => {
           path='/order'
           element={
             <Order
+              setStatusResponseApp={setStatusResponse}
               setShowTimeModal={setShowTimeModal}
               setShowLightModal={setShowLightModal}
               handleError={handleError}

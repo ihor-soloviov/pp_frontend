@@ -19,7 +19,13 @@ import { fetchIsAnyOpenSpot } from '../../utils/spotStatusApi';
 import { shouldShowTimePopup } from '../../utils/getWorkTime';
 
 const Order = observer(
-  ({ handleError, setPromotionPopup, setShowTimeModal, setShowLightModal }) => {
+  ({
+    handleError,
+    setPromotionPopup,
+    setStatusResponseApp,
+    setShowTimeModal,
+    setShowLightModal,
+  }) => {
     const { cartItems, totalPrice, deliveryPrice } = shoppingCartStore;
     const { thanksModal, thanksModalHandler, timeModal, lightModal } = modalsStore;
     const [isPromotion, setIsPromotion] = useState(false);
@@ -37,6 +43,7 @@ const Order = observer(
         try {
           const { isAnySpotOpen } = await fetchIsAnyOpenSpot();
           setStatusResponse(isAnySpotOpen);
+          setStatusResponseApp(isAnySpotOpen);
         } catch (error) {
           console.error('Failed to fetch spot status:', error);
         } finally {
