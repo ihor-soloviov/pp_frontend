@@ -12,8 +12,9 @@ export const shouldShowTimePopup = () => {
 
   // Проверяем, находится ли текущее время в интервале для отображения PopUp
   return (
-    (currentHour >= popupStartTime && currentHour < 24) ||
-    (currentHour === popupEndTimeHour && currentMinute <= popupEndTimeMinute)
+    (currentHour >= popupStartTime && currentHour < 24) || // С 21:00 до полуночи
+    (currentHour >= 0 && currentHour < popupEndTimeHour) || // С полуночи до 09:00
+    (currentHour === popupEndTimeHour && currentMinute <= popupEndTimeMinute) // С 09:00 до 09:30
   );
 };
 export const timeErrorText =

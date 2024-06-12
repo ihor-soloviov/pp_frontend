@@ -3,12 +3,11 @@
 import React, { useEffect, useState } from 'react';
 
 //Import Routing
-import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 //Import MOBX
 import { observer } from 'mobx-react-lite';
 import modalsStore from './store/modal-store';
-import shoppingCartStore from './store/shoping-cart-store';
 
 //Import pages
 import Profile from './Pages/Profile/Profile';
@@ -31,13 +30,15 @@ import { ActionPopup } from './components/ActionPopup/ActionPopup';
 import { Loader } from './components/Loader/Loader';
 //Import Utils
 import TagManager from 'react-gtm-module';
+import { fetchIsAnyOpenSpot } from './utils/spotStatusApi';
 import userStore from './store/user-store';
 import { DiscountModal } from './components/DiscountModal/DiscountModal';
 import { LoadScript } from '@react-google-maps/api';
 import { places, googleMapsApiKey } from './utils/googleMap';
 import PopupActions from './components/PopupActions/PopupActions';
 import RegistrationThanks from './components/Thanks/RegistrationThanks';
-import { shouldShowTimePopup, timeErrorText } from './utils/getWorkTime';
+import WorkModal from './components/WorkModal/WorkModal';
+import { shouldShowTimePopup } from './utils/getWorkTime';
 const tagManagerArgs = {
   gtmId: 'GTM-WPHZCLVL',
 };
@@ -60,30 +61,54 @@ const App = observer(() => {
   const { userLogout } = userStore;
 
   const [promotionPopup, setPromotionPopup] = useState(false);
-  const { spotOneStatus, spotTwoStatus } = shoppingCartStore;
-  const [error, setError] = useState({ status: false, currentError: '' });
+
+  const [statusResponse, setStatusResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [showTimeModal, setShowTimeModal] = useState(false);
+  const [showLightModal, setShowLightModal] = useState(false);
+
+  console.log('statusResponse app', statusResponse);
 
   useEffect(() => {
-    const showTimePopup = shouldShowTimePopup();
-    showTimePopup &&
-      setError({
-        status: true,
-        currentError: timeErrorText,
-      });
+    shouldShowTimePopup() && setShowTimeModal(true);
   }, []);
+
+  useEffect(() => {
+    if (isLoading) {
+      setShowLightModal(false);
+    } else {
+      setShowLightModal(!statusResponse);
+    }
+  }, [statusResponse, isLoading]);
+
+  useEffect(() => {
+    const fetchDataAndUpdateState = async () => {
+      setIsLoading(true);
+      try {
+        const { isAnySpotOpen } = await fetchIsAnyOpenSpot();
+        setStatusResponse(isAnySpotOpen);
+      } catch (error) {
+        console.error('Failed to fetch spot status:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDataAndUpdateState();
+  }, []);
+
+  const [error, setError] = useState({ status: false, currentError: '' });
 
   useEffect(() => {
     let timer;
     if (error.status) {
-      timer = setTimeout(
-        () => {
-          handleError({
-            status: false,
-            currentError: '',
-          });
-        },
-        error.currentError === timeErrorText ? 6000 : 2000,
-      );
+      timer = setTimeout(() => {
+        handleError({
+          status: false,
+          currentError: '',
+        });
+      }, 2000);
     }
 
     return () => clearTimeout(timer);
@@ -141,6 +166,7 @@ const App = observer(() => {
       <Header />
       <MobileMenu />
       <ActionPopup />
+
       {error.status && (
         <PopupActions
           onOrderPage={{ location: location.pathname }}
@@ -154,7 +180,12 @@ const App = observer(() => {
           error
         />
       )}
-
+      {showLightModal && (
+        <WorkModal showModal={showLightModal} setShowModal={setShowLightModal} modalType='light' />
+      )}
+      {showTimeModal && (
+        <WorkModal showModal={showTimeModal} setShowModal={setShowTimeModal} modalType='time' />
+      )}
       {promotionPopup && (
         <PopupActions
           action={'Ваш промокод застосован'}
@@ -183,13 +214,7 @@ const App = observer(() => {
         <Route path='/about-us' element={<AboutUs />} />
         <Route
           path='/order'
-          element={
-            !spotOneStatus && !spotTwoStatus ? (
-              <Navigate to='/' />
-            ) : (
-              <Order handleError={handleError} setPromotionPopup={setPromotionPopup} />
-            )
-          }
+          element={<Order handleError={handleError} setPromotionPopup={setPromotionPopup} />}
         />
         <Route path='/contact' element={<Contact />} />
         <Route path='/offero' element={<Offero />} />

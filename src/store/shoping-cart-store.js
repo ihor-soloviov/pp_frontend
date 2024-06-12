@@ -8,8 +8,7 @@ class ShoppingCartStore {
   promocode = false;
   totalPrice = 0;
   deliveryPrice = 60;
-  spotOneStatus = true;
-  spotTwoStatus = true;
+
   orderFormData = {
     spot_id: '',
     name: '',
@@ -41,11 +40,6 @@ class ShoppingCartStore {
       () => [this.cartItems, this.totalPrice, this.deliveryPrice],
       () => this.saveCartToLocalStorage(),
     );
-    this.loadSpotStatusFromLocalStorage();
-    reaction(
-      () => [this.spotOneStatus, this.spotTwoStatus],
-      () => this.saveSpotStatusToLocalStorage(),
-    );
   }
 
   loadCartFromLocalStorage() {
@@ -58,16 +52,6 @@ class ShoppingCartStore {
     localStorage.setItem('shoppingCart', JSON.stringify(this.cartItems));
     localStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
     localStorage.setItem('deliveryPrice', JSON.stringify(this.deliveryPrice));
-  }
-
-  loadSpotStatusFromLocalStorage() {
-    this.spotOneStatus = JSON.parse(localStorage.getItem('spotOneStatus') || 'true');
-    this.spotTwoStatus = JSON.parse(localStorage.getItem('spotOneStatus') || 'true');
-  }
-
-  saveSpotStatusToLocalStorage() {
-    localStorage.setItem('spotOneStatus', JSON.stringify(this.spotOneStatus));
-    localStorage.setItem('spotTwoStatus', JSON.stringify(this.spotTwoStatus));
   }
 
   handleFormValueChange = (field, value) => {
@@ -161,14 +145,6 @@ class ShoppingCartStore {
   cartPromocode() {
     this.promocode = true;
   }
-
-  setSpotOneStatus = (status) => {
-    this.spotOneStatus = status;
-  };
-
-  setSpotTwoStatus = (status) => {
-    this.spotTwoStatus = status;
-  };
 
   setDeliveryPrice = (price) => {
     this.deliveryPrice = price;

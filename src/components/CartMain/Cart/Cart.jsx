@@ -9,21 +9,14 @@ import { dropInCart } from '../../../utils/animation';
 import { motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
 
-export const Cart = observer(({ isOpen, setIsOpen, setError, setSpotError }) => {
-  const { cartItems, totalPrice, deliveryPrice, itemCount, spotOneStatus, spotTwoStatus } =
-    shoppingCartStore;
+export const Cart = observer(({ isOpen, setIsOpen, setError }) => {
+  const { cartItems, totalPrice, deliveryPrice, itemCount } = shoppingCartStore;
   const navigate = useNavigate();
 
   const makeAnOrderClick = () => {
     if (totalPrice < 200) {
       setError(true);
       setTimeout(() => setError(false), 3000);
-      return;
-    }
-    if (!spotOneStatus && !spotTwoStatus) {
-      setSpotError(true);
-      setTimeout(() => setSpotError(false), 3000);
-      return;
     } else {
       begin_checkout(cartItems);
       navigate('/order');

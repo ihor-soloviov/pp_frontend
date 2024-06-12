@@ -1,5 +1,5 @@
 import { getCurrentDate, dateFormatter, calculateTotalPrice } from './OrderTools';
-
+import { shouldShowTimePopup } from '../../../utils/getWorkTime';
 const shoppingCartMap = (products) =>
   products.map((item) => {
     // Ініціалізація базового об'єкта для кожного продукту
@@ -52,6 +52,11 @@ export const getValidateRules = (formData, cartItems, totalPrice, isPromotion) =
   const orderPrice = isPromotion ? totalPrice * 0.6 : totalPrice;
 
   return [
+    {
+      check: () => shouldShowTimePopup(),
+      message:
+        'Нажаль, ми вже закриті, але ми з нетерпінням чекаємо завтрашнього дня, щоб вас нагодувати',
+    },
     { check: () => cartItems.length === 0, message: 'Будь ласка, оберіть товари для замовлення' },
     {
       check: () =>

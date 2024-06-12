@@ -1,21 +1,54 @@
 import { observer } from 'mobx-react';
-import shoppingCartStore from '../../store/shoping-cart-store';
+import { ThreeDots } from 'react-loader-spinner';
+import {
+  fetchAllSpotStatuses,
+  openSpotStatusById,
+  closeSpotStatusById,
+} from '../../utils/spotStatusApi';
 import ProfileLink from '../ProfileLink/ProfileLink';
 import './AdminPanel.scss';
+import { useEffect, useState } from 'react';
 
 const AdminPanel = ({ handleSidebar }) => {
-  const spotList = [
-    { street: 'Малиновскього, 18', title: 'Заклад 1' },
-    { street: 'Економічний провулок, 1', title: 'Заклад 2' },
-  ];
-  const { spotOneStatus, spotTwoStatus, setSpotOneStatus, setSpotTwoStatus } = shoppingCartStore;
+  const [statusResponse, setStatusResponse] = useState(null);
 
-  const closeSpotClick = (spot) => {
-    spot === 'Заклад 1' ? setSpotOneStatus(false) : setSpotTwoStatus(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchDataAndUpdateState = async () => {
+      setIsLoading(true);
+      const response = await fetchAllSpotStatuses();
+      setStatusResponse(response);
+      setIsLoading(false);
+    };
+
+    fetchDataAndUpdateState();
+  }, []);
+
+  console.log('response', statusResponse);
+
+  const closeSpotClick = async (id) => {
+    try {
+      setIsLoading(true);
+      await closeSpotStatusById(id);
+      const response = await fetchAllSpotStatuses();
+      setStatusResponse(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
-  const openSpotClick = (spot) => {
-    spot === 'Заклад 1' ? setSpotOneStatus(true) : setSpotTwoStatus(true);
+  const openSpotClick = async (id) => {
+    try {
+      setIsLoading(true);
+      await openSpotStatusById(id);
+      const response = await fetchAllSpotStatuses();
+      setStatusResponse(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   return (
@@ -24,45 +57,40 @@ const AdminPanel = ({ handleSidebar }) => {
         <ProfileLink handleSidebar={handleSidebar}>Управління закладами</ProfileLink>
       </div>
       <ul className='spot-list'>
-        {spotList.map(({ title, street }) => (
-          <li className='spot-item' key={title}>
-            <p className='spot-title'>{title}</p>
-            <p className='spot-title'>{street}</p>
-            <p className='spot-status-text'>
-              Статус:
-              <span
-                className={`spot-status ${
-                  title === 'Заклад 1'
-                    ? spotOneStatus
-                      ? 'opened'
-                      : 'closed'
-                    : title === 'Заклад 2'
-                      ? spotTwoStatus
-                        ? 'opened'
-                        : 'closed'
-                      : ''
-                }`}
-              >
-                {title === 'Заклад 1'
-                  ? spotOneStatus
-                    ? 'Відчинено'
-                    : 'Зачинено'
-                  : spotTwoStatus
-                    ? 'Відчинено'
-                    : 'Зачинено'}
-              </span>
-            </p>
-            <div className='spot-btn-wrap'>
-              <button onClick={() => closeSpotClick(title)} type='button' className='spot-btn'>
-                Зачинити
-              </button>
-              <button onClick={() => openSpotClick(title)} type='button' className='spot-btn'>
-                Відчинити
-              </button>
-            </div>
-          </li>
-        ))}
+        {statusResponse &&
+          statusResponse.map(({ id, title, street, isOpen }) => (
+            <li className='spot-item' key={id}>
+              <p className='spot-title'>{title}</p>
+              <p className='spot-title'>{street}</p>
+              <p className='spot-status-text'>
+                Статус:
+                <span className={`spot-status ${isOpen ? 'opened' : 'closed'}`}>
+                  {isOpen ? 'відчинено' : 'зачинено'}
+                </span>
+              </p>
+              <div className='spot-btn-wrap'>
+                <button onClick={() => closeSpotClick(id)} type='button' className='spot-btn'>
+                  Зачинити
+                </button>
+                <button onClick={() => openSpotClick(id)} type='button' className='spot-btn'>
+                  Відчинити
+                </button>
+              </div>
+            </li>
+          ))}
       </ul>
+      {isLoading && (
+        <ThreeDots
+          visible={true}
+          height='50'
+          width='50'
+          color='#f32c40'
+          radius='9'
+          ariaLabel='three-dots-loading'
+          wrapperStyle={{}}
+          wrapperClass='loader'
+        />
+      )}
     </div>
   );
 };
