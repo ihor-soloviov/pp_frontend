@@ -31,7 +31,11 @@ const Footer = observer(() => {
         <div className='footer__content'>
           <div className='footer__top'>
             <div className='footer__logo'>
-              <img onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} src={logo} alt='' />
+              <img
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                src={logo}
+                alt=''
+              />
             </div>
             <nav className='footer__column'>
               <p className='footer__title'>Меню:</p>
@@ -61,6 +65,12 @@ const Footer = observer(() => {
                   </ul>
                 </div>
               ))}
+            </div>
+            <div className='footer__column'>
+              <div className='footer__contact'>
+                <p className='footer__title_time contact'>Графік роботи:</p>
+                <p className='footer__time-text'>Пн-Нд: 9:30-21:00</p>
+              </div>
             </div>
           </div>
           <div className='footer__bottom'>
@@ -159,7 +169,9 @@ const Footer = observer(() => {
                 </div>
               </div>
               <li className='pp-mob'>
-                <Link to='/' onClick={() => window.screenTop({ top: 0, behavior: 'smooth' })} >© 2023 Polar Pelmeni</Link>
+                <Link to='/' onClick={() => window.screenTop({ top: 0, behavior: 'smooth' })}>
+                  © 2023 Polar Pelmeni
+                </Link>
               </li>
             </div>
           </div>

@@ -8,7 +8,7 @@ import orderStore from '../../../store/order-store';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import userStore from '../../../store/user-store';
 
-//Import Functios
+//Import Functions
 import { useCheckTransactionStatus } from '../../../utils/useCheckLiqpay';
 import {
   createOrder,
@@ -19,6 +19,9 @@ import {
   calculateFinalAmount,
   createOrderData,
 } from '../OrderFunctions/OrderTools';
+import { fetchIsAnyOpenSpot } from '../../../utils/spotStatusApi';
+import { shouldShowTimePopup } from '../../../utils/getWorkTime';
+import { checkAndSelectOppositeSpot } from '../../../utils/distance';
 
 import BtnMain from '../../../components/Buttons/BtnMain';
 import { DotsLoader } from '../../../components/Loader/DotsLoader';
@@ -30,9 +33,6 @@ import { OrderPaymentType } from './OrderPaymentType';
 import { OrderComment } from './OrderComment';
 
 import '../Order.scss';
-import { fetchIsAnyOpenSpot } from '../../../utils/spotStatusApi';
-import { shouldShowTimePopup } from '../../../utils/getWorkTime';
-import { checkAndSelectOppositeSpot } from '../../../utils/distance';
 
 const OrderForm = observer(
   ({
@@ -53,8 +53,6 @@ const OrderForm = observer(
     const { cartItems, clearCart, totalPrice, handleFormValueChange, orderFormData } =
       shoppingCartStore;
     const { name, phone, isAuthenticated } = userStore;
-
-    console.log('orderFormData', { ...orderFormData });
 
     //Hooks
     const location = useLocation();
@@ -126,8 +124,7 @@ const OrderForm = observer(
         }
 
         const finalSpotId = await checkAndSelectOppositeSpot(orderFormData.spot_id);
-        console.log('finalSpotId', finalSpotId);
-        console.log('howToReciveOrder', orderFormData.howToReciveOrder);
+
         //  Проверяем если тип доставки самовывоз, и выбраный спот не рбаотает, то выдаем попап и выходим
         if (
           finalSpotId !== orderFormData.spot_id &&
