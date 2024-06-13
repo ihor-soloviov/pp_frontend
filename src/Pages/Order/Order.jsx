@@ -37,6 +37,7 @@ const Order = observer(
     const navigate = useNavigate();
     const formattedPrice = result % 1 === 0 ? result.toFixed(0) : result.toFixed(2);
 
+    // Делаем запрос для получение статусов заведений при рендере компонента
     useEffect(() => {
       const fetchDataAndUpdateState = async () => {
         setIsLoading(true);
@@ -54,6 +55,7 @@ const Order = observer(
       fetchDataAndUpdateState();
     }, []);
 
+    // Проверяем, если если не рабочее время, или оба спота закрыты- редимрект на главную с соответсвующей модалкой
     useEffect(() => {
       if ((!isLoading && statusResponse === false) || shouldShowTimePopup()) {
         navigate('/');
@@ -106,6 +108,7 @@ const Order = observer(
                 handleError={handleError}
                 setShowTimeModal={setShowTimeModal}
                 setShowLightModal={setShowLightModal}
+                setStatusResponseApp={setStatusResponseApp}
               />
               <div className='checkout'>
                 <div className='checkout__content'>

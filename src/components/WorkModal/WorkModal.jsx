@@ -1,6 +1,7 @@
 import './WorkModal.scss';
 import { timeErrorText } from '../../utils/getWorkTime';
 const WorkModal = ({ setShowModal, showModal, modalType }) => {
+  console.log('modalType', modalType);
   const closeModalClick = () => setShowModal(false);
   return (
     <div className={`work-modal-backdrop ${showModal ? 'open' : ''}`}>
@@ -29,7 +30,7 @@ const WorkModal = ({ setShowModal, showModal, modalType }) => {
             </svg>
           </button>
 
-          {modalType === 'light' ? (
+          {modalType === 'light' && (
             <>
               <svg
                 className='work-icon'
@@ -51,7 +52,9 @@ const WorkModal = ({ setShowModal, showModal, modalType }) => {
                 незручності та сподіваємося на якнайшвидше відновлення обслуговування.
               </p>
             </>
-          ) : (
+          )}
+
+          {modalType === 'time' && (
             <>
               <svg
                 className='work-icon'

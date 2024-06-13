@@ -16,7 +16,7 @@ import {
 import { Autocomplete } from '@react-google-maps/api';
 
 import '../Order.scss';
-import { fetchAllSpotStatuses } from '../../../utils/spotStatusApi';
+import { checkAndSelectOppositeSpot } from '../../../utils/distance';
 
 const radioOptions = [
   { id: 1, value: 'До дверей', label: 'До дверей' },
@@ -43,22 +43,6 @@ const radioOptions = [
 export const OrderAddress = observer(({ setPayment, handleError }) => {
   const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
   const { floor, buildingCode, entrance, apartment, howToReciveOrder, spot_id } = orderFormData;
-
-  const checkAndSelectOppositeSpot = async (spot_id) => {
-    const response = await fetchAllSpotStatuses();
-
-    const spotOneStatus = response[0].isOpen;
-    const spotTwoStatus = response[1].isOpen;
-
-    switch (spot_id) {
-      case 1:
-        return !spotOneStatus && spotTwoStatus ? 2 : spot_id;
-      case 2:
-        return !spotTwoStatus && spotOneStatus ? 1 : spot_id;
-      default:
-        return spot_id;
-    }
-  };
 
   const customPolygon = new window.google.maps.Polygon({
     paths: polygonPaths,
@@ -253,17 +237,6 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
 
     return cleanup;
   }, []);
-
-  useEffect(() => {
-    const setFinalSpotId = async () => {
-      if (spot_id === 1 || spot_id === 2) {
-        const finalSpotId = await checkAndSelectOppositeSpot(spot_id);
-        handleFormValueChange('spot_id', finalSpotId);
-      }
-    };
-
-    setFinalSpotId();
-  }, [spot_id]);
 
   return (
     <section className='order-page__section'>

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { purchase } from '../../../gm4';
 
 import { observer } from 'mobx-react-lite';
@@ -32,9 +32,17 @@ import { OrderComment } from './OrderComment';
 import '../Order.scss';
 import { fetchIsAnyOpenSpot } from '../../../utils/spotStatusApi';
 import { shouldShowTimePopup } from '../../../utils/getWorkTime';
+import { checkAndSelectOppositeSpot } from '../../../utils/distance';
 
 const OrderForm = observer(
-  ({ isPromotion, setPosterOrder, handleError, setShowTimeModal, setShowLightModal }) => {
+  ({
+    isPromotion,
+    setPosterOrder,
+    handleError,
+    setShowTimeModal,
+    setShowLightModal,
+    setStatusResponseApp,
+  }) => {
     const [transactionStatus, setTransactionStatus] = useState(false);
     const [isOrderCreate, setIsOrderCreate] = useState(false);
     const [isButtonLoading, setIsButtonLoading] = useState(false);
@@ -46,8 +54,11 @@ const OrderForm = observer(
       shoppingCartStore;
     const { name, phone, isAuthenticated } = userStore;
 
+    console.log('orderFormData', { ...orderFormData });
+
     //Hooks
     const location = useLocation();
+    const navigate = useNavigate();
     useCheckTransactionStatus(location.search, setTransactionStatus);
 
     //handlers
@@ -98,21 +109,43 @@ const OrderForm = observer(
       try {
         const { isAnySpotOpen } = await fetchIsAnyOpenSpot();
         if (!isAnySpotOpen) {
-          setShowLightModal(true);
           setIsButtonLoading(false);
+          navigate('/');
+          setStatusResponseApp(isAnySpotOpen);
           return;
         }
 
         //  Проверяем рабочее время
 
         if (shouldShowTimePopup()) {
+          setIsButtonLoading(false);
+          navigate('/');
           setShowTimeModal(true);
+
+          return;
+        }
+
+        const finalSpotId = await checkAndSelectOppositeSpot(orderFormData.spot_id);
+        console.log('finalSpotId', finalSpotId);
+        console.log('howToReciveOrder', orderFormData.howToReciveOrder);
+        //  Проверяем если тип доставки самовывоз, и выбраный спот не рбаотает, то выдаем попап и выходим
+        if (
+          finalSpotId !== orderFormData.spot_id &&
+          orderFormData.howToReciveOrder.includes('Самовивіз')
+        ) {
+          handleTemporaryError('Нажаль, обраний заклад тимчасово не працює');
           setIsButtonLoading(false);
           return;
         }
 
         const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
-        const orderData = createOrderData(orderFormData, cartItems, isPromotion);
+
+        // Если все проверки пройдены и этот заказ- не самовывоз, то выставлаем финальный spot_id в зависимости от статуса спотов
+        const orderData = createOrderData(
+          { ...orderFormData, spot_id: finalSpotId },
+          cartItems,
+          isPromotion,
+        );
 
         setOrderData(orderData);
 
@@ -124,7 +157,7 @@ const OrderForm = observer(
         createTransaction(amount, setPaymentData);
       } catch (error) {
         console.error('Failed to fetch spot status:', error);
-        handleTemporaryError('Oops... Please try again.');
+        handleTemporaryError('Помилка серверу, спробуйте ще раз');
         setIsButtonLoading(false);
       }
     }, [

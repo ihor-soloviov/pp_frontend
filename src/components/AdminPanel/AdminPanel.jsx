@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { ThreeDots } from 'react-loader-spinner';
+
 import {
   fetchAllSpotStatuses,
   openSpotStatusById,
@@ -8,6 +8,7 @@ import {
 import ProfileLink from '../ProfileLink/ProfileLink';
 import './AdminPanel.scss';
 import { useEffect, useState } from 'react';
+import { Loading } from '../Loading/Loading';
 
 const AdminPanel = ({ handleSidebar }) => {
   const [statusResponse, setStatusResponse] = useState(null);
@@ -79,18 +80,7 @@ const AdminPanel = ({ handleSidebar }) => {
             </li>
           ))}
       </ul>
-      {isLoading && (
-        <ThreeDots
-          visible={true}
-          height='50'
-          width='50'
-          color='#f32c40'
-          radius='9'
-          ariaLabel='three-dots-loading'
-          wrapperStyle={{}}
-          wrapperClass='loader'
-        />
-      )}
+      {isLoading && <Loading />}
     </div>
   );
 };
