@@ -8,9 +8,14 @@ import Addresses from '../../components/Addresses/Adresses';
 import Favorites from '../../components/Favorites/Favorites';
 import Orders from '../../components/Orders/Orders';
 import MobileSidebar from '../../components/MobileSidebar/MobileSidebar';
+import AdminPanel from '../../components/AdminPanel/AdminPanel';
+import userStore from '../../store/user-store';
+import { Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
-const Profile = React.memo(({ handleError }) => {
+const Profile = observer(({ handleError }) => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
+  const { isAdmin } = userStore;
   const location = useLocation();
   const pathlink = location.pathname.replace('/profile/', '');
 
@@ -37,6 +42,10 @@ const Profile = React.memo(({ handleError }) => {
             />
             <Route path='history' element={<Orders handleSidebar={handleSidebar} />} />
             <Route path='favourite' element={<Favorites handleSidebar={handleSidebar} />} />
+            <Route
+              path='admin-bar'
+              element={isAdmin ? <AdminPanel handleSidebar={handleSidebar} /> : <Navigate to='/' />}
+            />
           </Routes>
         </ProfileGrid>
       </Container>

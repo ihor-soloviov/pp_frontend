@@ -1,3 +1,5 @@
+import { fetchAllSpotStatuses } from './spotStatusApi';
+
 export const polygonPaths = [
   { lat: 46.45166673859898, lng: 30.768502518442684 },
   { lat: 46.442002530249624, lng: 30.771964651313617 },
@@ -91,6 +93,22 @@ export const resetInputFields = (handleFormValueChange, setSpotOneDistance, setS
   handleFormValueChange('spot_id', '');
   setSpotOneDistance(null);
   setSpotTwoDistance(null);
+};
+
+export const checkAndSelectOppositeSpot = async (spot_id) => {
+  const response = await fetchAllSpotStatuses();
+
+  const spotOneStatus = response[0].isOpen;
+  const spotTwoStatus = response[1].isOpen;
+
+  switch (spot_id) {
+    case 1:
+      return !spotOneStatus && spotTwoStatus ? 2 : spot_id;
+    case 2:
+      return !spotTwoStatus && spotOneStatus ? 1 : spot_id;
+    default:
+      return spot_id;
+  }
 };
 
 export const pullInputFields = (

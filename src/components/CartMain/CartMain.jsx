@@ -5,7 +5,6 @@ import shoppingCartStore from '../../store/shoping-cart-store';
 import PopupActions from '../PopupActions/PopupActions';
 import { Cart } from './Cart/Cart';
 import { AnimatePresence } from 'framer-motion';
-
 //Import Styles
 import './card.scss';
 
@@ -26,6 +25,7 @@ const CartMain = observer(() => {
   return (
     <React.Fragment>
       {popupError(error)}
+
       <button className='card' onClick={() => setIsOpen(!isOpen)}>
         <div className={`card__ico`}>
           <svg

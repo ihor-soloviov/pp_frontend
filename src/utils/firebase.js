@@ -1,39 +1,40 @@
-import axios from "axios";
-import { url } from "../api";
-import userStore from "../store/user-store";
-import { auth } from "../firebaseConfig";
+import axios from 'axios';
+import { url } from '../api';
+import userStore from '../store/user-store';
+import { auth } from '../firebaseConfig';
 import {
   PhoneAuthProvider,
   RecaptchaVerifier,
   signInWithCredential,
   signInWithPhoneNumber,
   updatePhoneNumber,
-} from "firebase/auth";
+} from 'firebase/auth';
 
-import { v4 } from "uuid"
+import { v4 } from 'uuid';
 
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebaseConfig";
-import modalsStore from "../store/modal-store";
+import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebaseConfig';
+import modalsStore from '../store/modal-store';
 
 const { setUserDataToStore, changePhoneNumber, setUserAvatar } = userStore;
 const { thanksRegModalHandler } = modalsStore;
 
-const imageListRef = ref(storage, "avatars/")
+const imageListRef = ref(storage, 'avatars/');
 
 const setUpRecaptcha = () => {
   window.recaptchaVerifier = new RecaptchaVerifier(
-    "recaptcha-container",
+    'recaptcha-container',
     {
-      size: "invisible"
-    }, auth
+      size: 'invisible',
+    },
+    auth,
   );
 };
 
 const onSendOtp = async (phoneNumber, setVerifId, setStep) => {
   // Ensure that the phone number is valid before sending OTP
   if (!phoneNumber) {
-    console.error("Invalid phone number");
+    console.error('Invalid phone number');
     return;
   }
 
@@ -42,47 +43,42 @@ const onSendOtp = async (phoneNumber, setVerifId, setStep) => {
   }
 
   try {
-    const result = await signInWithPhoneNumber(
-      auth,
-      phoneNumber,
-      window.recaptchaVerifier
-    );
-    console.log(result)
-    console.log("OTP sent successfully");
+    const result = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+    console.log(result);
+    console.log('OTP sent successfully');
     setVerifId(result.verificationId);
-    setStep("STEP_02")
+    setStep('STEP_02');
   } catch (error) {
-    console.error("Error sending OTP:", error);
+    console.error('Error sending OTP:', error);
   }
 };
 
 const onVerify = async (verifId, verificationCode, setStep, setToken, authModalHandler) => {
   if (!verifId || !verificationCode) {
-    console.error("Invalid verification ID or OTP");
+    console.error('Invalid verification ID or OTP');
     return;
   }
 
   try {
     const credential = PhoneAuthProvider.credential(verifId, verificationCode);
     const userCredentials = await signInWithCredential(auth, credential);
-    console.log("Successfully signed in with OTP", userCredentials);
+    console.log('Successfully signed in with OTP', userCredentials);
 
     const accessToken = userCredentials.user.uid;
-    console.log(accessToken)
+    console.log(accessToken);
 
     setToken(accessToken);
     authentication(accessToken, authModalHandler, setStep);
-
   } catch (error) {
-    console.error("Error signing in with OTP:", error);
-    setStep("STEP_03")
+    console.error('Error signing in with OTP:', error);
+    setStep('STEP_03');
   }
 };
 
 const onSetNewPhone = async (phoneNumber, setVerifId, setStep) => {
   if (!phoneNumber) {
-    console.error("Invalid phone number");
-    return
+    console.error('Invalid phone number');
+    return;
   }
 
   if (!window.recaptchaVerifier) {
@@ -93,60 +89,62 @@ const onSetNewPhone = async (phoneNumber, setVerifId, setStep) => {
     const provider = new PhoneAuthProvider(auth);
     const verificationId = await provider.verifyPhoneNumber(phoneNumber, window.recaptchaVerifier);
     if (verificationId) {
-      setVerifId(verificationId)
-      setStep("STEP_02")
+      setVerifId(verificationId);
+      setStep('STEP_02');
     }
-
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-const onVerifNewNumber = async (verificationId, verificationCode, setIsNumberChanging, phoneNumber, token) => {
+const onVerifNewNumber = async (
+  verificationId,
+  verificationCode,
+  setIsNumberChanging,
+  phoneNumber,
+  token,
+) => {
   const user = auth.currentUser;
   const formatedPhone = phoneNumber.replace(/[\s()]/g, '');
 
   if (!user) {
-    console.log("шото нахуй не так")
+    console.log('шото нахуй не так');
   }
 
   try {
     const phoneCredential = PhoneAuthProvider.credential(verificationId, verificationCode);
     await updatePhoneNumber(user, phoneCredential);
 
-    changePhoneNumber(phoneNumber)
+    changePhoneNumber(phoneNumber);
 
     try {
-      const response = await axios.put(`${url}/api/updatePhone`, { token: token, phone: formatedPhone })
-      console.log(response)
+      const response = await axios.put(`${url}/api/updatePhone`, {
+        token: token,
+        phone: formatedPhone,
+      });
+      console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
-
-    setIsNumberChanging(false)
+    setIsNumberChanging(false);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
+};
 
-}
-
-const authentication = (
-  accessToken,
-  authModalHandler,
-  setStep
-) => {
+const authentication = (accessToken, authModalHandler, setStep) => {
   const data = {
     token: accessToken,
   };
 
-  console.log("AUTH TOKEN in AUTH:", data);
+  console.log('AUTH TOKEN in AUTH:', data);
   const tokenJSON = JSON.stringify(data);
-  console.log("tokenJSON:", tokenJSON);
+  console.log('tokenJSON:', tokenJSON);
   axios
     .post(`${url}/api/auth`, tokenJSON, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
     .then((response) => {
@@ -158,6 +156,7 @@ const authentication = (
           phone: response.data.phone,
           email: response.data.email,
           token: response.data.token,
+          isAdmin: response.data.isAdmin,
           promocode40: response.data.promocode40,
           favorites: response.data.favorites,
           addresses: response.data.addresses,
@@ -169,17 +168,11 @@ const authentication = (
     })
     .catch((error) => {
       console.error(error);
-      setStep("STEP_03")
+      setStep('STEP_03');
     });
 };
 
-const registration = (
-  userName,
-  userEmail,
-  token,
-  phoneNumber,
-  authModalHandler
-) => {
+const registration = (userName, userEmail, token, phoneNumber, authModalHandler) => {
   const userData = {
     name: userName,
     email: userEmail,
@@ -193,7 +186,7 @@ const registration = (
   axios
     .post(`${url}/api/registrate`, userDataJSON, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
     .then((response) => {
@@ -201,7 +194,7 @@ const registration = (
 
       if (response.status === 200) {
         console.log(data);
-        console.log("user data", {
+        console.log('user data', {
           name: userName,
           phone: phoneNumber,
           email: userEmail,
@@ -214,7 +207,7 @@ const registration = (
           email: userEmail,
           token: token,
           promocode40: data.promocode40,
-          dateOfBirth: data.date_of_birth
+          dateOfBirth: data.date_of_birth,
         });
 
         thanksRegModalHandler(true);
@@ -231,14 +224,14 @@ const downloadURLs = async (imageListRef, fileName) => {
       const url = await getDownloadURL(el);
       avatarLinksArray.push(url);
     }
-    const usersAvatar = avatarLinksArray.find(el => el.includes(fileName));
+    const usersAvatar = avatarLinksArray.find((el) => el.includes(fileName));
 
-    localStorage.setItem('userPhoto', usersAvatar)
-    setUserAvatar(usersAvatar)
+    localStorage.setItem('userPhoto', usersAvatar);
+    setUserAvatar(usersAvatar);
   } catch (error) {
     console.error('Помилка при отриманні URL:', error);
   }
-}
+};
 
 const uploadImage = async (file) => {
   if (!file) {
@@ -249,12 +242,12 @@ const uploadImage = async (file) => {
 
   try {
     await uploadBytes(imageRef, file);
-    alert("Фото успішно завантажено");
+    alert('Фото успішно завантажено');
     downloadURLs(imageListRef, newName);
   } catch (error) {
     console.error('Помилка при завантаженні фото:', error);
   }
-}
+};
 
 export {
   setUpRecaptcha,
@@ -265,5 +258,5 @@ export {
   onSetNewPhone,
   onVerifNewNumber,
   downloadURLs,
-  uploadImage
-}
+  uploadImage,
+};

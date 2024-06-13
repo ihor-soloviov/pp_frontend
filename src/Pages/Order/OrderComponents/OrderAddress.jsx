@@ -16,6 +16,7 @@ import {
 import { Autocomplete } from '@react-google-maps/api';
 
 import '../Order.scss';
+import { checkAndSelectOppositeSpot } from '../../../utils/distance';
 
 const radioOptions = [
   { id: 1, value: 'До дверей', label: 'До дверей' },
@@ -41,8 +42,7 @@ const radioOptions = [
 
 export const OrderAddress = observer(({ setPayment, handleError }) => {
   const { setDeliveryPrice, totalPrice, handleFormValueChange, orderFormData } = shoppingCartStore;
-  const { floor, buildingCode, entrance, apartment, howToReciveOrder } = orderFormData;
-
+  const { floor, buildingCode, entrance, apartment, howToReciveOrder, spot_id } = orderFormData;
 
   const customPolygon = new window.google.maps.Polygon({
     paths: polygonPaths,
@@ -70,7 +70,7 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
   const [addressAutocomplete, setAddresstAutocomplete] = useState(null);
   const [spotOneDistance, setSpotOneDistance] = useState(null);
   const [spotTwoDistance, setSpotTwoDistance] = useState(null);
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(true);
 
   const handleChangeAddress = (e) => {
     if (e.value === null) {
@@ -277,13 +277,14 @@ export const OrderAddress = observer(({ setPayment, handleError }) => {
                 id='order-address'
                 name={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
                 placeholder={'Назва вулиці і будинок (наприклад: Сонячна, 1)'}
-                value={currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput}
+                value={
+                  currentAddressInfo && dropAddress ? currentAddressInfo.address : addressInput
+                }
                 onChange={handleStreetChange}
                 disabled={isSavedAddressSelected}
               />
             </Autocomplete>
           </React.Fragment>
-
         </section>
       )}
       <section className='order-page__section-inputs'>

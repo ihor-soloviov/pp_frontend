@@ -30,12 +30,15 @@ import { ActionPopup } from './components/ActionPopup/ActionPopup';
 import { Loader } from './components/Loader/Loader';
 //Import Utils
 import TagManager from 'react-gtm-module';
+import { fetchIsAnyOpenSpot } from './utils/spotStatusApi';
 import userStore from './store/user-store';
 import { DiscountModal } from './components/DiscountModal/DiscountModal';
 import { LoadScript } from '@react-google-maps/api';
 import { places, googleMapsApiKey } from './utils/googleMap';
 import PopupActions from './components/PopupActions/PopupActions';
 import RegistrationThanks from './components/Thanks/RegistrationThanks';
+import WorkModal from './components/WorkModal/WorkModal';
+import { shouldShowTimePopup } from './utils/getWorkTime';
 const tagManagerArgs = {
   gtmId: 'GTM-WPHZCLVL',
 };
@@ -45,13 +48,66 @@ const App = observer(() => {
   const navigate = useNavigate();
 
   //Store
-  const { authModalHandler, authModal, isLoader, setLoader, isDiscountModal, isDiscountHandler, thanksRegModal, thanksRegModalHandler } =
-    modalsStore;
+  const {
+    authModalHandler,
+    authModal,
+    timeModal,
+    lightModal,
+    isLoader,
+    setLoader,
+    isDiscountModal,
+    isDiscountHandler,
+    thanksRegModal,
+    lightModalHandler,
+    timeModalHandler,
+    thanksRegModalHandler,
+  } = modalsStore;
   const { userLogout } = userStore;
 
   const [promotionPopup, setPromotionPopup] = useState(false);
-  const [error, setError] = useState({ status: false, currentError: '' });
+  const [showTimeModal, setShowTimeModal] = useState(false);
+  const [showLightModal, setShowLightModal] = useState(false);
+  const [statusResponse, setStatusResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Проверяем рабочие часы при загрузке компонента, если нерабочее время - сохраняем стейт в MobX и показываем модалку времени
+  useEffect(() => {
+    if (shouldShowTimePopup()) {
+      timeModalHandler(true);
+      setShowTimeModal(true);
+    }
+  }, []);
+
+  // Проверяем, если идет загрузка- скрываем по дефолту модалку света, если все споты закрыты- сохраняем стейт в MobX и показываем модалку света
+  useEffect(() => {
+    if (isLoading) {
+      lightModalHandler(false);
+    } else {
+      if (!isLoading && statusResponse === false) {
+        lightModalHandler(!statusResponse);
+        setShowLightModal(!statusResponse);
+      }
+    }
+  }, [statusResponse, isLoading]);
+
+  // Делаем запрос для получение статусов заведений при рендере компонента
+  useEffect(() => {
+    const fetchDataAndUpdateState = async () => {
+      setIsLoading(true);
+      try {
+        const { isAnySpotOpen } = await fetchIsAnyOpenSpot();
+        setStatusResponse(isAnySpotOpen);
+      } catch (error) {
+        console.error('Failed to fetch spot status:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDataAndUpdateState();
+  }, []);
+
+  const [error, setError] = useState({ status: false, currentError: '' });
 
   useEffect(() => {
     let timer;
@@ -116,9 +172,10 @@ const App = observer(() => {
           <RegistrationThanks />
         </Popup>
       )}
-      <Header />
+      <Header setShowTimeModal={setShowTimeModal} setShowLightModal={setShowLightModal} />
       <MobileMenu />
       <ActionPopup />
+
       {error.status && (
         <PopupActions
           onOrderPage={{ location: location.pathname }}
@@ -132,7 +189,12 @@ const App = observer(() => {
           error
         />
       )}
-
+      {lightModal && !shouldShowTimePopup() && (
+        <WorkModal showModal={showLightModal} setShowModal={setShowLightModal} modalType='light' />
+      )}
+      {timeModal && (
+        <WorkModal showModal={showTimeModal} setShowModal={setShowTimeModal} modalType='time' />
+      )}
       {promotionPopup && (
         <PopupActions
           action={'Ваш промокод застосован'}
@@ -161,7 +223,15 @@ const App = observer(() => {
         <Route path='/about-us' element={<AboutUs />} />
         <Route
           path='/order'
-          element={<Order handleError={handleError} setPromotionPopup={setPromotionPopup} />}
+          element={
+            <Order
+              setStatusResponseApp={setStatusResponse}
+              setShowTimeModal={setShowTimeModal}
+              setShowLightModal={setShowLightModal}
+              handleError={handleError}
+              setPromotionPopup={setPromotionPopup}
+            />
+          }
         />
         <Route path='/contact' element={<Contact />} />
         <Route path='/offero' element={<Offero />} />
@@ -170,8 +240,6 @@ const App = observer(() => {
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
-
-
     </LoadScript>
   );
 });

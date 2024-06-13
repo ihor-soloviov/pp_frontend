@@ -1,0 +1,136 @@
+.work-modal-backdrop {
+  background: rgba(24, 24, 24, 0.29);
+  backdrop-filter: blur(0.25px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1100;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 250ms ease-in-out;
+}
+
+.work-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+  height: 100dvh;
+  transition: opacity 250ms ease-in-out;
+}
+
+.work-modal {
+  background-color: #fff;
+  width: 375px;
+  height: 439px;
+  position: relative;
+  padding: 40px 20px 50px;
+  border-radius: 20px;
+}
+
+.work-modal-container {
+  width: 335px;
+  margin: 0 auto;
+}
+
+.work-btn {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  outline: none;
+  border: none;
+  border-radius: 50%;
+  background-color: #f3f3f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-btn-icon {
+}
+
+.work-icon {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 46px;
+}
+
+.work-title {
+  color: #ff5124;
+  font-family: Unbounded;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+  width: fit-content;
+  margin: 0 auto;
+  margin-bottom: 24px;
+}
+
+.work-subtitle {
+  color: #ff5124;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+}
+
+.work-text {
+  color: #ff5124;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%;
+  margin-bottom: 75px;
+}
+
+.work-bottom-text-wrap {
+  width: 319px;
+  background-color: #ffeee9;
+  padding: 12px 16px;
+  border-radius: 7px;
+  margin: 0 auto;
+}
+
+.work-bottom-text {
+  color: #ff5124;
+  font-family: Golos Text;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+@media screen and (min-width: 1366px) {
+  .work-modal {
+    width: 426px;
+    height: 397px;
+    padding: 40px 24px 46px;
+    border-radius: 15px;
+  }
+
+  .work-modal-container {
+    width: 347px;
+  }
+
+  .work-icon {
+    margin-bottom: 40px;
+  }
+
+  .work-text {
+    margin-bottom: 42px;
+  }
+
+  .work-bottom-text-wrap {
+    width: 338px;
+  }
+}

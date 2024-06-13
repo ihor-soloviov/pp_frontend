@@ -7,13 +7,14 @@ import cross from '../../../src/assets/Vector.svg';
 import { observer } from 'mobx-react-lite';
 
 const MobileSidebar = observer(({ handleSidebar }) => {
-  const { name, phone, avatar } = userStore;
+  const { name, phone, avatar, isAdmin } = userStore;
 
   const sidebarLinks = [
     'Інформація',
     'Улюблені блюда',
     'Збережені адреси',
     'Історія замовлень',
+    'Управління закладами',
     'Вихід',
   ];
   return (
@@ -38,11 +39,13 @@ const MobileSidebar = observer(({ handleSidebar }) => {
           </div>
         </div>
         <ul className='sidebar-mobile__list'>
-          {sidebarLinks.map((el, index) => (
-            <SidebarLink key={index} index={index} handleSidebar={handleSidebar}>
-              {el}
-            </SidebarLink>
-          ))}
+          {sidebarLinks.map((el, index) =>
+            el === 'Управління закладами' && !isAdmin ? null : (
+              <SidebarLink key={index} index={index} handleSidebar={handleSidebar}>
+                {el}
+              </SidebarLink>
+            ),
+          )}
         </ul>
       </section>
     </>

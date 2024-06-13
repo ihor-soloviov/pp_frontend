@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from 'mobx';
 
 class ModalsStore {
   authModal = false;
@@ -8,15 +8,16 @@ class ModalsStore {
   isMobileMenu = false;
   isDiscountModal = false;
   thanksRegModal = false;
-
+  timeModal = false;
+  lightModal = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   mobileMenuHandler = () => {
-    this.isMobileMenu = !this.isMobileMenu
-  }
+    this.isMobileMenu = !this.isMobileMenu;
+  };
 
   authModalHandler = (isOpen) => {
     this.authModal = isOpen;
@@ -31,16 +32,24 @@ class ModalsStore {
   };
 
   thanksRegModalHandler = (isOpen) => {
-    this.thanksRegModal = isOpen
-  }
+    this.thanksRegModal = isOpen;
+  };
 
   isLoaderHandler = (isOpen) => {
     this.isLoader = isOpen;
   };
 
+  timeModalHandler = (isOpen) => {
+    this.timeModal = isOpen;
+  };
+
+  lightModalHandler = (isOpen) => {
+    this.lightModal = isOpen;
+  };
+
   isDiscountHandler = (isOpen) => {
-    this.isDiscountModal = isOpen
-  }
+    this.isDiscountModal = isOpen;
+  };
 
   setLoader = () => {
     runInAction(() => {
@@ -51,7 +60,7 @@ class ModalsStore {
         this.isLoader = false;
       });
     }, 1500);
-  }
+  };
 }
 
 const modalsStore = new ModalsStore();

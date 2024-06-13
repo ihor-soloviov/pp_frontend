@@ -22,7 +22,7 @@ export const Cart = observer(({ isOpen, setIsOpen, setError }) => {
       navigate('/order');
       setIsOpen(!isOpen);
     }
-  }
+  };
 
   useEffect(() => {
     const handleCloseModal = (event) => {
@@ -146,14 +146,11 @@ export const Cart = observer(({ isOpen, setIsOpen, setError }) => {
               <p className='shopping-cart__text-final'>{totalPrice + deliveryPrice} ₴</p>
             </div>
           </div>
-          <BtnMain
-            fullWide
-            onClick={makeAnOrderClick}
-          >
+          <BtnMain fullWide onClick={makeAnOrderClick}>
             Замовити
           </BtnMain>
         </div>
       )}
     </motion.div>
-  )
+  );
 });

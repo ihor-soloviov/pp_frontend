@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable } from 'mobx';
 
 class OrderStore {
   paymentData = null;
@@ -12,17 +12,17 @@ class OrderStore {
 
   setPaymentData = (paymentData) => {
     this.paymentData = paymentData;
-    localStorage.setItem("user_payment_data", JSON.stringify(paymentData));
+    localStorage.setItem('user_payment_data', JSON.stringify(paymentData));
   };
 
   setOrderData = (orderData) => {
     this.orderData = orderData;
-    localStorage.setItem("user_order_data", JSON.stringify(orderData));
+    localStorage.setItem('user_order_data', JSON.stringify(orderData));
   };
 
   setPosterResponse = (posterOrder) => {
     this.posterOrder = posterOrder;
-    localStorage.setItem("poster_order", JSON.stringify(posterOrder));
+    localStorage.setItem('poster_order', JSON.stringify(posterOrder));
   };
 
   usedPromocode = () => {

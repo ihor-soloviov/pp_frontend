@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { purchase } from '../../../gm4';
 
 import { observer } from 'mobx-react-lite';
@@ -8,7 +8,7 @@ import orderStore from '../../../store/order-store';
 import shoppingCartStore from '../../../store/shoping-cart-store';
 import userStore from '../../../store/user-store';
 
-//Import Functios
+//Import Functions
 import { useCheckTransactionStatus } from '../../../utils/useCheckLiqpay';
 import {
   createOrder,
@@ -19,6 +19,9 @@ import {
   calculateFinalAmount,
   createOrderData,
 } from '../OrderFunctions/OrderTools';
+import { fetchIsAnyOpenSpot } from '../../../utils/spotStatusApi';
+import { shouldShowTimePopup } from '../../../utils/getWorkTime';
+import { checkAndSelectOppositeSpot } from '../../../utils/distance';
 
 import BtnMain from '../../../components/Buttons/BtnMain';
 import { DotsLoader } from '../../../components/Loader/DotsLoader';
@@ -36,6 +39,9 @@ const OrderForm = observer(
     isPromotion,
     setPosterOrder,
     handleError,
+    setShowTimeModal,
+    setShowLightModal,
+    setStatusResponseApp,
   }) => {
     const [transactionStatus, setTransactionStatus] = useState(false);
     const [isOrderCreate, setIsOrderCreate] = useState(false);
@@ -50,6 +56,7 @@ const OrderForm = observer(
 
     //Hooks
     const location = useLocation();
+    const navigate = useNavigate();
     useCheckTransactionStatus(location.search, setTransactionStatus);
 
     //handlers
@@ -88,24 +95,68 @@ const OrderForm = observer(
       }
     }, [isOrderCreate]);
 
-    const onSubmit = useCallback(() => {
+    const onSubmit = useCallback(async () => {
       const errorMessage = validateOrderData(orderFormData, cartItems, totalPrice, isPromotion);
       if (errorMessage) {
         handleTemporaryError(errorMessage);
         return;
       }
-
-      const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
-      const orderData = createOrderData(orderFormData, cartItems, isPromotion);
-      console.log(orderData);
-      setOrderData(orderData);
       setIsButtonLoading(true);
-      if (orderFormData.paymentMethod === 'Готівка') {
-        createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
-        return;
-      }
 
-      createTransaction(amount, setPaymentData);
+      //  Проверяем, есть ли работающие споты
+      try {
+        const { isAnySpotOpen } = await fetchIsAnyOpenSpot();
+        if (!isAnySpotOpen) {
+          setIsButtonLoading(false);
+          navigate('/');
+          setStatusResponseApp(isAnySpotOpen);
+          return;
+        }
+
+        //  Проверяем рабочее время
+
+        if (shouldShowTimePopup()) {
+          setIsButtonLoading(false);
+          navigate('/');
+          setShowTimeModal(true);
+
+          return;
+        }
+
+        const finalSpotId = await checkAndSelectOppositeSpot(orderFormData.spot_id);
+
+        //  Проверяем если тип доставки самовывоз, и выбраный спот не рбаотает, то выдаем попап и выходим
+        if (
+          finalSpotId !== orderFormData.spot_id &&
+          orderFormData.howToReciveOrder.includes('Самовивіз')
+        ) {
+          handleTemporaryError('Нажаль, обраний заклад тимчасово не працює');
+          setIsButtonLoading(false);
+          return;
+        }
+
+        const amount = calculateFinalAmount(cartItems, isPromotion, orderFormData.howToReciveOrder);
+
+        // Если все проверки пройдены и этот заказ- не самовывоз, то выставлаем финальный spot_id в зависимости от статуса спотов
+        const orderData = createOrderData(
+          { ...orderFormData, spot_id: finalSpotId },
+          cartItems,
+          isPromotion,
+        );
+
+        setOrderData(orderData);
+
+        if (orderFormData.paymentMethod === 'Готівка') {
+          createOrder(setPosterResponse, setIsOrderCreate, isPromotion);
+          return;
+        }
+
+        createTransaction(amount, setPaymentData);
+      } catch (error) {
+        console.error('Failed to fetch spot status:', error);
+        handleTemporaryError('Помилка серверу, спробуйте ще раз');
+        setIsButtonLoading(false);
+      }
     }, [
       orderFormData,
       cartItems,

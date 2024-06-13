@@ -210,7 +210,6 @@ export const checkTransactionStatus = async (setTransactionStatus) => {
       setTransactionStatus(false);
       return;
     }
-
     const data = { order_id: user_payment_data.transactionId };
     const response = await axios.post(`${url}/api/getStatus`, data, { headers });
 
