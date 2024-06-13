@@ -11,8 +11,9 @@ import MobileSidebar from '../../components/MobileSidebar/MobileSidebar';
 import AdminPanel from '../../components/AdminPanel/AdminPanel';
 import userStore from '../../store/user-store';
 import { Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
-const Profile = React.memo(({ handleError }) => {
+const Profile = observer(({ handleError }) => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const { isAdmin } = userStore;
   const location = useLocation();
